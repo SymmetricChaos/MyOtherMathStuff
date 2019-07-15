@@ -5,10 +5,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from Utils import make_canvas
 
-def interpolation(x1,y1,x2,y2,p):
-    """The point that is some exactly p% of the wat between x and y"""
-    x = (x1)*(1-p) + (x2)*(p)
-    y = (y1)*(1-p) + (y2)*(p)
+def interpolation(X,Y,p):
+    """The point that is some exactly p percent of the wat between x and y"""
+    x = X[0]*(1-p) + X[1]*p
+    y = Y[0]*(1-p) + Y[1]*p
     return [x,y]
 
 #def bezierQuad(begin=[0,0],end=[0,0],control=[0,0]):
@@ -37,36 +37,40 @@ def interpolation(x1,y1,x2,y2,p):
 
 def bezier_quadratic(begin=[0,0],end=[0,0],control=[0,0],N=50):
     """
-    The simplest interesting Bezier curve is quadratic
-    It interpolates between two lines to creates a curve
+    The simplest interesting Bezier curve interpolates between two lines
+    It is considered a quadratic curve
     """
     t = np.linspace(0,1,N)
-    P0 = interpolation(begin[0],begin[1],control[0],control[1],t)
-    P1 = interpolation(control[0],control[1],end[0],end[1],t)
+    P0 = interpolation(begin,control,t)
+    P1 = interpolation(control,end,t)
     
-    X,Y = interpolation(P0[0],P0[1],P1[0],P1[1],t)
-    
+    X,Y = interpolation(P0,P1,t)
+    return X,Y
     
 
-def bezier(L):
+def bezier(L,N=50):
     """
     Bezier curves of any complexity are possible
-    They interpolate between several lines (or between several Bezier curves)
+    They interpolate between several lines or, equivalently, between several Bezier curves
     """
     Qold = L.copy()
     while True:
         P = []
         if len(Qold) == 1:
-            return Qold
+            return Qold[0]
         for i in range(len(Qold)-1):
-            t = np.linspace(0,1,50)
-            P.append(interpolation(Qold[i][0],Qold[i][1],Qold[i+1][0],Qold[i+1][1],t))
+            t = np.linspace(0,1,N)
+            P.append(interpolation(Qold[i],Qold[i+1],t))
 
         Qold = P.copy()
         
-pts = [[-2.5,-1.5],[-1,2],[0,-5],[-2,3],[5,1],[2.5,-1.5]]
+
+pts = [[-2.5,-1.5],[-1,2],[0,-5],[-2,3],[5,1]]
 XY = bezier(pts)
-
-print(pts)
-
-print(interpolation(0,0,1,1,.5))
+plt.plot(XY[0],XY[1])
+plt.scatter(pts[0][0],pts[0][1])
+plt.scatter(pts[1][0],pts[1][1])
+plt.scatter(pts[2][0],pts[2][1])
+plt.scatter(pts[3][0],pts[3][1])
+plt.scatter(pts[4][0],pts[4][1])
+plt.scatter(pts[5][0],pts[5][1])
