@@ -1,8 +1,7 @@
 # A bezier curve is the linear interpolation of several bezier curves.
 
 import numpy as np
-import matplotlib.pyplot as plt
-from Utils import make_canvas
+
 
 def interpolation(A,B,p):
     """The point that is some exactly p percent of the way between A and B"""
@@ -42,15 +41,3 @@ def bezier(begin,end,control,N=50):
             P.append(interpolation(L[i],L[i+1],t))
 
         L = P.copy()
-        
-
-fig,ax = make_canvas([-2.5,2.5],[-2.5,2.5])
-
-pts = [[0,1.5],[.5,-1]]
-
-X,Y = bezier([-2,0],[2,0],pts)
-
-plt.plot(X,Y)
-
-plt.scatter(pts[0][0],pts[0][1],color='k')
-plt.scatter(pts[1][0],pts[1][1],color='k')
