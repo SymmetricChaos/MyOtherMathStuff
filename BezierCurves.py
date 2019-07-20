@@ -1,7 +1,7 @@
 # A bezier curve is the linear interpolation of several bezier curves.
 
 import numpy as np
-
+import matplotlib.pyplot as plt
 
 def interpolation(A,B,p):
     """The point that is some exactly p percent of the way between A and B"""
@@ -10,7 +10,7 @@ def interpolation(A,B,p):
     return [x,y]
 
 
-def bezier_quadratic(begin=[0,0],end=[0,0],control=[0,0],N=50):
+def bezier_quadratic(begin,end,control,N=50):
     """
     The simplest interesting Bezier curve interpolates between two lines
     It is considered a quadratic curve
@@ -19,9 +19,6 @@ def bezier_quadratic(begin=[0,0],end=[0,0],control=[0,0],N=50):
     P0 = interpolation(begin,control,t)
     P1 = interpolation(control,end,t)
     X,Y = interpolation(P0,P1,t)
-#    plt.plot(P0[0],P0[1])
-#    plt.plot(P1[0],P1[1])
-#    plt.plot(X,Y)
     return X,Y
     
 
@@ -38,6 +35,21 @@ def bezier(begin,end,control,N=50):
             return L[0]
         for i in range(len(L)-1):
             t = np.linspace(0,1,N)
-            P.append(interpolation(L[i],L[i+1],t))
+            interp = interpolation(L[i],L[i+1],t)
+            P.append(interp)
 
         L = P.copy()
+
+def bezier_string_art(begin,end,control,N=15,color='salmon'):
+    t = np.linspace(0,1,N)
+    Ax, Ay = interpolation(begin,control,t)
+    Bx, By = interpolation(control,end,t)
+    
+    for ax,bx,ay,by in zip(Ax,Bx,Ay,By):
+        plt.plot([ax,bx],[ay,by],color=color)
+    
+    plt.plot([begin[0],control[0]],[begin[1],control[1]],color='gray')
+    plt.plot([control[0],end[0]],[control[1],end[1]],color='gray')
+    
+    X,Y = interpolation([Ax,Ay],[Bx,By],t)
+    plt.scatter(X,Y,color='black',zorder=5)
