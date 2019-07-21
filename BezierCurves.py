@@ -40,7 +40,7 @@ def bezier(begin,end,control,N=50):
 
         L = P.copy()
 
-def bezier_string_art(begin,end,control,N=15,color='salmon'):
+def bezier_string_art_quadratic(begin,end,control,N=15,color='salmon'):
     t = np.linspace(0,1,N)
     Ax, Ay = interpolation(begin,control,t)
     Bx, By = interpolation(control,end,t)
@@ -53,3 +53,23 @@ def bezier_string_art(begin,end,control,N=15,color='salmon'):
     
     X,Y = interpolation([Ax,Ay],[Bx,By],t)
     plt.scatter(X,Y,color='black',zorder=5)
+    
+def bezier_string_art_cubic(begin,end,control1,control2,N=15,color='salmon'):
+    t = np.linspace(0,1,N)
+    Ax, Ay = interpolation(begin,control1,t)
+    Bx, By = interpolation(control1,control2,t)
+    Cx, Cy = interpolation(control2,end,t)
+    
+    Dx, Dy = interpolation([Ax,Ay],[Bx,By],t)
+    Ex, Ey = interpolation([Bx,By],[Cx,Cy],t)
+    
+    Fx, Fy = interpolation([Dx,Dy],[Ex,Ey],t)
+    
+    colors = ['red','green','gray']
+    for i,curves in enumerate([ [Ax,Bx,Ay,By], [Bx,Cx,By,Cy], [Dx,Ex,Dy,Ey] ]):
+    
+        for ax,bx,ay,by in zip(*curves):
+            plt.plot([ax,bx],[ay,by],color=colors[i],zorder=-i)
+        
+    
+    plt.scatter(Fx,Fy,color='black')
