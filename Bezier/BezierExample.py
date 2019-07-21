@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from Utils import make_canvas
+from Utils.Drawing import make_canvas
 from BezierCurves import bezier
 
 fig,ax = make_canvas([-2.5,2.5],[-2.5,2.5])

@@ -21,3 +21,4 @@ for x in linspace(2,4,1000):
 # In order to see the attractors we use transparent dots
 make_canvas([2,4],[-.5,1.5],[15,15])
 plt.scatter(X,Y,s=1,alpha=.1)
+ 
