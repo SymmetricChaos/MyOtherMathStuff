@@ -1,4 +1,4 @@
-from Utils import make_canvas
+from Utils.Drawing import make_canvas
 from BezierCurves import bezier_string_art_quadratic, bezier_string_art_cubic
 
 begin = [-2,-1]
