@@ -1,17 +1,21 @@
 from numpy import linspace
 import matplotlib.pyplot as plt
+from Utils import make_canvas
 
 def logistic_map(x,r,n,last=1):
     for i in range(n):
-        if n > n-last:
+        if i > n-last:
             yield x
         x = r*x*(1-x)
 
 X = []
 Y = []
-for x in linspace(-1.5,3.5,200):
-    for y in logistic_map(.5,x,25):
+for x in linspace(0,3.7,1000):
+    for y in logistic_map(.5,x,50,20):
         X.append(x)
         Y.append(y)
 print(len(Y))
-plt.scatter(X,Y,s=1)
+
+
+make_canvas([0,4],[-.5,1.5],[12,8])
+plt.scatter(X,Y,s=1,alpha=.2)
