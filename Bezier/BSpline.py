@@ -54,7 +54,7 @@ for i in range(4):
         
     plt.plot(X,Y)
     
-# B-Splines of order one are triangles
+# B-Splines of order two are finally smooth
 make_canvas([0,5])
 for i in range(3):
     X = []
