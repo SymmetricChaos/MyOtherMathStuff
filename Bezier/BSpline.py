@@ -13,10 +13,18 @@ def B_spline_recur(x,i,order,knots):
         return B_order_0(x,i,knots)
     else:
         lower_1 = B_spline_recur(x,i,order-1,knots)
-        cons_1 = (x-knots[i])/(knots[i+order]-knots[i])
+        
+        if knots[i+order] == knots[i]:
+            cons_1 = 0
+        else:
+            cons_1 = (x-knots[i])/(knots[i+order]-knots[i])
         
         lower_2 = B_spline_recur(x,i+1,order-1,knots)
-        cons_2 = (knots[i+order+1]-x)/(knots[i+order+1]-knots[i+1])
+        
+        if knots[i+order+1] == knots[i+1]:
+            cons_2 = 0
+        else:
+            cons_2 = (knots[i+order+1]-x)/(knots[i+order+1]-knots[i+1])
         
         return lower_1*cons_1 + lower_2*cons_2
 
@@ -26,14 +34,14 @@ def B_spline_recur(x,i,order,knots):
     
         
 
-knots = [0,1,2,3,4,5]
+knots = [0,0,2,5,5,5]
 control = [0,1,0]
 degree = len(knots)-len(control)-1
 
 print(degree)
 
 # B-Splines of order zero are step functions
-make_canvas([0,5])
+make_canvas([0,5],[0,2])
 for i in range(5):
     X = []
     Y = []
@@ -44,7 +52,7 @@ for i in range(5):
     plt.plot(X,Y)
     
 # B-Splines of order one are triangles
-make_canvas([0,5])
+make_canvas([0,5],[0,2])
 for i in range(4):
     X = []
     Y = []
@@ -55,7 +63,7 @@ for i in range(4):
     plt.plot(X,Y)
     
 # B-Splines of order two are finally smooth
-make_canvas([0,5])
+make_canvas([0,5],[0,2])
 for i in range(3):
     X = []
     Y = []
