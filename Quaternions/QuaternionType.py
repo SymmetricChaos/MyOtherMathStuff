@@ -51,3 +51,9 @@ class H:
         self.j = q_j(j)
         self.k = q_k(k)
     
+    def __add__(self,other):
+        return H(self.coef+other.coef,
+                 self.i+other.i,
+                 self.j+other.j,
+                 self.k+other.k)
+    
