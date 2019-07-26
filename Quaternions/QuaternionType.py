@@ -3,6 +3,17 @@ class q_i:
     def __init__(self,coef=1):
         self.coef = coef
         
+    def __str__(self):
+        if self.coef == 0:
+            return ""
+        elif self.coef == 1:
+            out = ""
+        elif self.coef == -1:
+            out = "-"
+        else:
+            out = str(self.coef)
+        return out + "i"
+        
     def __mul__(self,other):
         pr = self.coef*other.coef
         if type(other) == q_i:
@@ -17,7 +28,18 @@ class q_j:
     
     def __init__(self,coef=1):
         self.coef = coef
-        
+    
+    def __str__(self):
+        if self.coef == 0:
+            return ""
+        elif self.coef == 1:
+            out = ""
+        elif self.coef == -1:
+            out = "-"
+        else:
+            out = str(self.coef)
+        return out + "j"
+    
     def __mul__(self,other):
         pr = self.coef*other.coef
         if type(other) == q_i:
@@ -27,11 +49,23 @@ class q_j:
         if type(other) == q_k:
             return q_i(pr)
         return q_j(pr)
+    
         
 class q_k:
     
     def __init__(self,coef=1):
         self.coef = coef
+        
+    def __str__(self):
+        if self.coef == 0:
+            return ""
+        elif self.coef == 1:
+            out = ""
+        elif self.coef == -1:
+            out = "-"
+        else:
+            out = str(self.coef)
+        return out + "k"
         
     def __mul__(self,other):
         pr = self.coef*other.coef
@@ -42,6 +76,7 @@ class q_k:
         if type(other) == q_k:
             return -pr
         return q_k(pr)
+    
         
 class H:
     
@@ -51,9 +86,16 @@ class H:
         self.j = q_j(j)
         self.k = q_k(k)
     
+    def __str__(self):
+        out = ""
+        for co in [self.coef,self.i,self.j,self.k]:
+            out += str(co)
+        return out
+    
     def __add__(self,other):
         return H(self.coef+other.coef,
                  self.i+other.i,
                  self.j+other.j,
                  self.k+other.k)
-    
+
+print(H())
