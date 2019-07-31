@@ -1,7 +1,6 @@
 ## https://programmingdesignsystems.com/color/perceptually-uniform-color-spaces/
 ## https://matplotlib.org/users/artists.html
 
-import matplotlib as mpl
 from matplotlib.colors import hsv_to_rgb
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
