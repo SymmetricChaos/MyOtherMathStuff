@@ -2,11 +2,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def simple_sandpile(width=101,size=pow(2,14)):
+def simple_sandpile(width=101,size=14):
     
-
+    s = pow(2,size)
     G = np.zeros((width,width),dtype=int)
-    G[width//2][width//2] = size
+    G[width//2][width//2] = s
 
     while(True):
         c = (G > 3).sum()
@@ -21,7 +21,7 @@ def simple_sandpile(width=101,size=pow(2,14)):
         G[x[0],x[1]-1] += m
     return(G)
 
-x = simple_sandpile()
+x = simple_sandpile(201,16)
 
 fig = plt.figure()
 fig.set_size_inches(10,10)
