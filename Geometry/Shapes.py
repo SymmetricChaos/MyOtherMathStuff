@@ -13,12 +13,25 @@ class Circle:
         circ = plt.Circle(self.pos,radius = self.r, fc = "#00000000", ec = color)
         ax.add_patch(circ)
         
-#class Ellipse:
-#    def __init__(self,a,b,pos=[0,0]):
-#        self.a = a
-#        self.b = b
-#        self.area = np.pi*a*b
-#        self.ecc = 
-#        self.foci
-#        
+#    def points(self,n):
         
+        
+class Ellipse:
+    def __init__(self,a,b,pos=[0,0]):
+        if b > a:
+            print("major axis a must be greater than minor axis b, converting")
+            a,b = b,a
+        self.a = a
+        self.b = b
+        self.area = np.pi*a*b
+        self.ecc = np.sqrt(1-((b*b)/(a*a)))
+        self.focal_dist = self.ecc*a
+
+#    def draw(self,color="black"):
+
+#    def points(self,n):
+        
+
+e = Ellipse(3,1)
+print(e.ecc)
+print(e.focal_dist)
