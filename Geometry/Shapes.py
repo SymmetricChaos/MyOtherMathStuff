@@ -13,8 +13,18 @@ class Circle:
         circ = plt.Circle(self.pos,radius = self.r, fc = "#00000000", ec = color)
         ax.add_patch(circ)
         
-#    def points(self,n):
-        
+    def points(self,n=100):
+        th = np.linspace(0,2*np.pi,n)
+        return [[x*self.r,y*self.r] for x,y in zip(np.sin(th),np.cos(th))]
+      
+    def points_x(self,n=100):
+        th = np.linspace(0,2*np.pi,n)
+        return np.sin(th)*self.r
+    
+    def points_y(self,n=100):
+        th = np.linspace(0,2*np.pi,n)
+        return np.cos(th)*self.r
+           
         
 class Ellipse:
     def __init__(self,a,b,pos=[0,0]):
@@ -29,9 +39,29 @@ class Ellipse:
 
 #    def draw(self,color="black"):
 
-#    def points(self,n):
+    def points(self,n=100):
+        th = np.linspace(0,2*np.pi,n)
+        return [[x*self.a,y*self.b] for x,y in zip(np.sin(th),np.cos(th))]
+      
+    def points_x(self,n=100):
+        th = np.linspace(0,2*np.pi,n)
+        return np.sin(th)*self.a
+    
+    def points_y(self,n=100):
+        th = np.linspace(0,2*np.pi,n)
+        return np.cos(th)*self.b
         
 
 #e = Ellipse(3,1)
 #print(e.ecc)
 #print(e.focal_dist)
+#
+#c = Circle(3)
+#x = c.points_x()
+#y = c.points_y()
+#plt.scatter(x,y)
+        
+#e = Ellipse(3,1)
+#x = e.points_x()
+#y = e.points_y()
+#plt.scatter(x,y)
