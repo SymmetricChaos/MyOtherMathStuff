@@ -37,7 +37,10 @@ class Ellipse:
         self.ecc = np.sqrt(1-((b*b)/(a*a)))
         self.focal_dist = self.ecc*a
 
-#    def draw(self,color="black"):
+    def draw(self,color="black"):
+        ax = plt.gca()
+        circ = plt.Ellipse(self.pos, width = self.a, height = self.b, fc = "#00000000", ec = color)
+        ax.add_patch(circ)
 
     def points(self,n=100):
         th = np.linspace(0,2*np.pi,n)
