@@ -18,8 +18,8 @@ class Circle:
         
 class Ellipse:
     def __init__(self,a,b,pos=[0,0]):
+        # Silently orient the ellipse so that a is always the semimajor axis
         if b > a:
-            print("major axis a must be greater than minor axis b, converting")
             a,b = b,a
         self.a = a
         self.b = b
@@ -32,6 +32,6 @@ class Ellipse:
 #    def points(self,n):
         
 
-e = Ellipse(3,1)
-print(e.ecc)
-print(e.focal_dist)
+#e = Ellipse(3,1)
+#print(e.ecc)
+#print(e.focal_dist)
