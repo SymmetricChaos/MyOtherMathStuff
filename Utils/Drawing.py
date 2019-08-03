@@ -1,9 +1,15 @@
 import matplotlib.pyplot as plt
+from Utils.ListManip import tuples_to_lists
 
 def make_canvas(x,y=None,size=None):
+    # If y is not provided make the y-axis the same as the x
     if not y:
         y = x
-    if not size:
+    # If only a single value is given for size assume it is a square
+    if type(size) == int or type(size) == float:
+        size = [size,size]
+    # If size is not provided take a guess as a good square size
+    elif not size:
         xlim = abs(x[0]-x[1])
         ylim = abs(y[0]-y[1])
         xco = min(xlim,ylim)/ylim
@@ -14,3 +20,12 @@ def make_canvas(x,y=None,size=None):
     ax = plt.axes(xlim=x, ylim=y)
     ax.axis('off')
     return fig, ax
+
+
+def plot_points(P,**kwargs):
+    x,y = tuples_to_lists(P)
+    plt.plot(x,y,**kwargs)
+    
+def scatter_points(P,**kwargs):
+    x,y = tuples_to_lists(P)
+    plt.scatter(x,y,**kwargs)
