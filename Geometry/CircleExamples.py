@@ -13,4 +13,3 @@ for C in circs:
 
 for i in range(3):
     circle_intersect(circs[i].pos,circs[i].r,circs[(i+1)%3].pos,circs[(i+1)%3].r,dots=True)
-

@@ -55,16 +55,5 @@ class Ellipse:
         return np.cos(th)*self.b
         
 
-#e = Ellipse(3,1)
-#print(e.ecc)
-#print(e.focal_dist)
-#
-#c = Circle(3)
-#x = c.points_x()
-#y = c.points_y()
-#plt.scatter(x,y)
-        
-#e = Ellipse(3,1)
-#x = e.points_x()
-#y = e.points_y()
-#plt.scatter(x,y)
+    def foci(self):
+        return [[-self.focal_dist,self.focal_dist],[0,0]]
