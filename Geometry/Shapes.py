@@ -54,6 +54,5 @@ class Ellipse:
         th = np.linspace(0,2*np.pi,n)
         return np.cos(th)*self.b
         
-
     def foci(self):
-        return [[-self.focal_dist,self.focal_dist],[0,0]]
+        return [[-self.focal_dist,0],[self.focal_dist,0]]

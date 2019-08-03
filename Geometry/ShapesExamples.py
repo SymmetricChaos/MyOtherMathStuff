@@ -1,6 +1,9 @@
 from Shapes import Circle, Ellipse
 from Utils.Drawing import make_canvas
+from Utils.ListManip import tuples_to_lists
 import matplotlib.pyplot as plt
+from AffineTransforms import rotate
+import numpy as np
 
 make_canvas([-3,3])
 
@@ -21,3 +24,15 @@ y = e.points_y()
 plt.plot(x,y)
 plt.scatter(e.focal_dist,0,color='orange')
 plt.scatter(-e.focal_dist,0,color='orange')
+
+
+E = e.points()
+E += e.foci()
+E = np.asarray(E)
+P = rotate(E,1)
+
+x,y = tuples_to_lists(P)
+
+make_canvas([-3,3])
+plt.plot(x[:-2],y[:-2])
+plt.scatter(x[-2:],y[-2:],color='orange')
