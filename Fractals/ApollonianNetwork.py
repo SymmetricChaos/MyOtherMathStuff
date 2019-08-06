@@ -2,7 +2,7 @@
 
 import numpy as np
 from Geometry.Shapes import Circle
-from Utils.Drawing import make_canvas
+from Utils.Drawing import make_canvas, connect
 
 def complex_center(C):
     assert type(C) == Circle
@@ -52,13 +52,13 @@ def second_solution(F,A,B,C):
     
 def apollo_recur(a,b,c,d,lim,itr,lines,circles):
     
-#    if lines == True:
-#        if a.r > 0 and b.r > 0:
-#            connect([a.pos.real,a.pos.imag],[b.pos.real,b.pos.imag])
-#        if a.r > 0 and c.r > 0:
-#            connect([a.pos.real,a.pos.imag],[c.pos.real,c.pos.imag])
-#        if a.r > 0 and d.r > 0:
-#            connect([a.pos.real,a.pos.imag],[d.pos.real,d.pos.imag])
+    if lines == True:
+        if a.r > 0 and b.r > 0:
+            connect(a.pos,b.pos,color="black")
+        if a.r > 0 and c.r > 0:
+            connect(a.pos,c.pos,color="black")
+        if a.r > 0 and d.r > 0:
+            connect(a.pos,d.pos,color="black")
     
 
     if itr == 0:
@@ -86,25 +86,25 @@ def apollo_recur(a,b,c,d,lim,itr,lines,circles):
         apollo_recur(e3,a,b,c,lim,itr+1,lines,circles)
         
 
-def ApollonianGasket(A,B,C,lim=10,lines=False,circles=True):
+def ApollonianGasket(A,B,C,lim=50,lines=False,circles=True):
     a,b,c,d = tan_circ_from_radii(A,B,C)
 
     ax,fig = make_canvas([-a.r-(a.r/20),a.r+(a.r/20)],[-a.r-(a.r/20),a.r+(a.r/20)],[16,16])
     
     if circles == True:
-        a.draw(color='red')
-        b.draw(color='blue')
+        a.draw()
+        b.draw()
         c.draw()
         d.draw()
         
-#    if lines == True:
-#        connect([b.pos.real,b.pos.imag],[c.pos.real,c.pos.imag])
-#        connect([c.pos.real,c.pos.imag],[d.pos.real,d.pos.imag])
-#        connect([d.pos.real,d.pos.imag],[b.pos.real,b.pos.imag])
+    if lines == True:
+        connect(b.pos,c.pos,color="black")
+        connect(c.pos,d.pos,color="black")
+        connect(d.pos,b.pos,color="black")
         
     apollo_recur(a,b,c,d,lim,0,lines,circles)
     
 
 N = 10
-ApollonianGasket(1,1,1,N,lines=False,circles=True)
+ApollonianGasket(1,1,1,N,lines=True,circles=True)
 #plt.savefig("ApollonianLines{}.png".format(N),dpi=400)

@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import matplotlib.lines as lines
 from Utils.ListManip import tuples_to_lists
 
 def make_canvas(x,y=None,size=None):
@@ -29,3 +30,8 @@ def plot_points(P,**kwargs):
 def scatter_points(P,**kwargs):
     x,y = tuples_to_lists(P)
     plt.scatter(x,y,**kwargs)
+    
+def connect(A,B,**kwargs):
+    ax = plt.gca()
+    line = lines.Line2D([A[0],B[0]], [A[1],B[1]], axes=ax,**kwargs)
+    ax.add_line(line)

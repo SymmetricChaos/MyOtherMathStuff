@@ -56,3 +56,4 @@ class Ellipse:
         
     def foci(self):
         return [[-self.focal_dist,0],[self.focal_dist,0]]
+    
