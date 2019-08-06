@@ -22,20 +22,20 @@ def outer_circ(A,B,C):
 
 def tan_circ_from_radii(a,b,c):
     C2 = Circle(a,[0,0])
-    C3 = Circle(b,[0,a+b])
+    C3 = Circle(b,[a+b,0])
     p4x = (a*a + a*b + a*c - b*c)/(a+b)
     p4y = np.sqrt((a+c)*(a+c) - p4x*p4x)
     C4 = Circle(c,[p4x,p4y])
     C1 = outer_circ(C2,C3,C4)
     
     ## Center the cirlces
-#    C2.pos[0] -= C1.pos[0]
-#    C2.pos[1] -= C1.pos[1]
-#    C3.pos[0] -= C1.pos[0]
-#    C3.pos[1] -= C1.pos[1]
-#    C4.pos[0] -= C1.pos[0]
-#    C4.pos[1] -= C1.pos[1]
-#    C1.pos = [0,0]
+    C2.pos[0] -= C1.pos[0]
+    C2.pos[1] -= C1.pos[1]
+    C3.pos[0] -= C1.pos[0]
+    C3.pos[1] -= C1.pos[1]
+    C4.pos[0] -= C1.pos[0]
+    C4.pos[1] -= C1.pos[1]
+    C1.pos = [0,0]
     
     return C1,C2,C3,C4
 
@@ -102,7 +102,7 @@ def ApollonianGasket(A,B,C,lim=10,lines=False,circles=True):
 #        connect([c.pos.real,c.pos.imag],[d.pos.real,d.pos.imag])
 #        connect([d.pos.real,d.pos.imag],[b.pos.real,b.pos.imag])
         
-#    apollo_recur(a,b,c,d,lim,0,lines,circles)
+    apollo_recur(a,b,c,d,lim,0,lines,circles)
     
 
 N = 10
