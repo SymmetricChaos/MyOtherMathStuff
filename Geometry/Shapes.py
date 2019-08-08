@@ -8,9 +8,11 @@ class Circle:
         self.area = r*r*np.pi
         self.pos = pos
     
-    def draw(self,color="black"):
+    def draw(self,facecolor="white",edgecolor="black",linewidth=1,linestyle="-"):
         ax = plt.gca()
-        circ = plt.Circle(self.pos,radius = self.r, fc = "#00000000", ec = color)
+        circ = plt.Circle(self.pos,radius = self.r,
+                          edgecolor = edgecolor, facecolor = facecolor,
+                          linewidth = linewidth, linestyle = linestyle)
         ax.add_patch(circ)
         
     def points(self,n=100):
@@ -37,9 +39,11 @@ class Ellipse:
         self.ecc = np.sqrt(1-((b*b)/(a*a)))
         self.focal_dist = self.ecc*a
 
-    def draw(self,color="black"):
+    def draw(self,facecolor="white",edgecolor="black",linewidth=1,linestyle="-"):
         ax = plt.gca()
-        circ = plt.Ellipse(self.pos, width = self.a, height = self.b, fc = "#00000000", ec = color)
+        circ = plt.Ellipse(self.pos, width = self.a, height = self.b,
+                          edgecolor = edgecolor, facecolor = facecolor,
+                          linewidth = linewidth, linestyle = linestyle)
         ax.add_patch(circ)
 
     def points(self,n=100):

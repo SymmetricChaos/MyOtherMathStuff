@@ -93,9 +93,9 @@ def ApollonianGasket(A,B,C,lim=50,lines=False,circles=True):
     
     if circles == True:
         a.draw()
-        b.draw()
-        c.draw()
-        d.draw()
+        b.draw(edgecolor='red',linewidth=3)
+        c.draw(edgecolor='red',linewidth=3)
+        d.draw(edgecolor='red',linewidth=3)
         
     if lines == True:
         connect(b.pos,c.pos,color="black")
@@ -105,6 +105,6 @@ def ApollonianGasket(A,B,C,lim=50,lines=False,circles=True):
     apollo_recur(a,b,c,d,lim,0,lines,circles)
     
 
-N = 10
-ApollonianGasket(1,1,1,N,lines=True,circles=True)
+N = 6
+ApollonianGasket(1,2,1.2,N,lines=True,circles=True)
 #plt.savefig("ApollonianLines{}.png".format(N),dpi=400)
