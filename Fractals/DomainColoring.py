@@ -3,9 +3,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.colors import hsv_to_rgb
-import time
-from numba import vectorize
-import cmath
 
 def Hcomplex(z): # compute the hue (color) based on angle
     H=np.angle(z)/(2*np.pi)+1
@@ -16,7 +13,7 @@ def Vcomplex(z): # compute the value (darkess) based on absolute value
     return (1.0-1/(1+x**4))**0.1
 
 
-def domainColor(f, X = (-1,1), Y = (-1,1), res = 3000):
+def domain_coloring(f, X = (-1,1), Y = (-1,1), res = 3000):
     xx = np.linspace(X[0],X[1],res) 
     yy = np.linspace(Y[0],Y[1],res) 
     x,y = np.meshgrid(xx,yy)
@@ -54,7 +51,7 @@ def domainColor(f, X = (-1,1), Y = (-1,1), res = 3000):
     
     plt.imshow(RGB,interpolation="bicubic")
     
-def domainColor_Contour(f, X = (-1,1), Y = (-1,1), res = 4000):
+def domain_coloring_contour(f, X = (-1,1), Y = (-1,1), res = 3000):
     xx = np.linspace(X[0],X[1],res,dtype=np.float64) 
     yy = np.linspace(Y[0],Y[1],res,dtype=np.float64) 
     x,y = np.meshgrid(xx,yy)
@@ -98,22 +95,5 @@ def domainColor_Contour(f, X = (-1,1), Y = (-1,1), res = 4000):
 
     plt.imshow(RGB,interpolation="bicubic")
 
-
-
-#@vectorize(["complex128(complex128)"], target = "cuda")
-def complexCUDA(z):
-    return (z*z*z)-2
-
-
-f = lambda z: z**z
-
-r = 4
-X = (-r,r)
-Y = (-r,r)
-
-
-domainColor_Contour(complexCUDA,X,Y,500)
-#domainColor(f,X,Y)
-#plt.savefig("DomainColoring{}.png".format(time.time()),dpi=400)
 
 
