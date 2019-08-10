@@ -1,3 +1,5 @@
+from random import uniform, choices
+
 class Bitstring:
     
     def __init__(self,bits=[]):
@@ -19,5 +21,20 @@ class Bitstring:
     def __getitem__(self,n):
         return self.bits[n]
     
+    def __eq__(self,other):
+        return self.bits == other.bits
+    
     def copy(self):
         return Bitstring(self.bits[:])
+    
+    def corrupt(self,p):
+        for i in range(len(self)):
+            x = uniform(0,1)
+            if x < p:
+                self.bits[i] = (self.bits[i]+1)%2
+                
+def random_bitstring(n):
+    B = choices([0,1],k=n)
+    return Bitstring(B)
+
+#def text_to_bitstyring(s):
