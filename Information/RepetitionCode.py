@@ -1,4 +1,4 @@
-from BitstringType import Bitstring, text_to_bitstring
+from BitstringType import Bitstring, text_to_bitstring, bitstring_to_text
 
 def repetition_encode(B):
     assert type(B) == Bitstring
@@ -15,8 +15,9 @@ def repetition_decode(B):
 
 b = text_to_bitstring("The")
 ecc = repetition_encode(b)
-ecc.corrupt(.1)
+ecc.corrupt(.07)
 dec = repetition_decode(ecc)
 print(b)
 print(dec)
-print(b==dec)
+print(bitstring_to_text(b))
+print(bitstring_to_text(dec))

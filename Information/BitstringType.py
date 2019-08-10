@@ -43,5 +43,14 @@ def random_bitstring(n):
 def text_to_bitstring(s):
     out = ""
     for let in s:
-        out += bin(ord("A"))[2:]
+        out += bin(ord(let))[2:]
     return Bitstring(out)
+
+def bitstring_to_text(B):
+    a = [B.bits[i * 7:(i + 1) * 7] for i in range((len(B.bits) + 8) // 7 )]
+    a = a[:-1]
+    out = ""
+    for let in a:
+        bs = Bitstring("".join([str(i) for i in let]))
+        out += chr(int(bs))
+    return out
