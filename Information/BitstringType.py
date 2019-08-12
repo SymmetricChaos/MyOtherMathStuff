@@ -33,6 +33,10 @@ class Bitstring:
     def __getitem__(self,n):
         return self.bits[n]
     
+    def __setitem__(self,n,val):
+        assert val == 0 or val == 1
+        self.bits[n] = val
+    
     def __eq__(self,other):
         return self.bits == other.bits
     
