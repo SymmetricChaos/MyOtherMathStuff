@@ -94,6 +94,3 @@ def domain_coloring_contour(f, X = (-1,1), Y = (-1,1), res = 3000):
     fig.add_axes(ax)
 
     plt.imshow(RGB,interpolation="bicubic")
-
-
-
