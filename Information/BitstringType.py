@@ -1,19 +1,28 @@
 from random import uniform, choices
+import re
+
+r = re.compile("[^01]+")
+a = "[[0 1 1 0 0 1 1]]"
+print()
 
 class Bitstring:
     
     def __init__(self,bits=""):
-        assert type(bits) == str
-        for i in bits:
-            if i not in "01":
-                raise Exception(f"{i} {type(i)} is not a valid bit")
-        self.bits = [int(i) for i in bits]
+        
+        # Coerce input to string then strip everything except 0s and 1s
+        # This lets us ingest strings, lists, and even numpy objects
+        S = re.sub("[^01]+","",str(bits))
+        
+        self.bits = [int(i) for i in S]
 
     def __str__(self):
         out = ""
         for i in self.bits:
             out += str(i)
         return out
+    
+    def __add__(self,other):
+        return Bitstring(self.bits+other.bits)
     
     def __int__(self):
         return int(str(self), 2)
