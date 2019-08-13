@@ -38,7 +38,6 @@ def hamming_encode(B):
     chunks = [B.bits[i * 4:(i + 1) * 4] for i in range((len(B.bits) + 5) // 4 )]
     for i in chunks:
         if len(i) == 4:
-#            print(encode_with_mat(i))
             out += Bitstring(encode_with_mat(i))
             
     return out

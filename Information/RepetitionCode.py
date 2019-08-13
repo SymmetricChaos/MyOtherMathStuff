@@ -13,9 +13,9 @@ def repetition_decode(B):
     out = ["0" if sum(i) < 2 else "1" for i in out]
     return Bitstring("".join(out))
 
-b = text_to_bitstring("The")
+b = text_to_bitstring("Thefox")
 ecc = repetition_encode(b)
-ecc.corrupt(.07)
+ecc.corrupt(.15)
 dec = repetition_decode(ecc)
 print(b)
 print(dec)
