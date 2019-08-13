@@ -61,3 +61,18 @@ class Ellipse:
     def foci(self):
         return [[-self.focal_dist,0],[self.focal_dist,0]]
     
+class Polygon:
+    def __init__(self,verts):
+        self.verts = verts
+
+    def draw(self,facecolor="white",edgecolor="black",linewidth=1,linestyle="-"):
+        ax = plt.gca()
+        circ = plt.Polygon(self.verts,
+                          edgecolor = edgecolor, facecolor = facecolor,
+                          linewidth = linewidth, linestyle = linestyle)
+        ax.add_patch(circ)
+
+
+#    def verts_x(self):
+#    
+#    def verts_y(self):
