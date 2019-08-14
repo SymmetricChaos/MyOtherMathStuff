@@ -24,18 +24,17 @@ letter_F.draw()
 
 letter_F.verts = rotate(np.array(letter_F.verts),1)
 letter_F.verts = shift_xy(np.array(letter_F.verts),-.3,-2)
-
-print(letter_F.verts)
-
 letter_F.draw()
-#make_canvas([-3,3],size=4)
-#plot_points(E[:-2])
-#scatter_points(E[100:101],color='orange')
-#scatter_points(E[101:102],color='green')
-#
-#
-#P = reflect_y(rotate(E,1))
-#make_canvas([-3,3],size=4)
-#plot_points(P[:-2])
-#scatter_points(P[100:101],color='orange')
-#scatter_points(P[101:102],color='green')
+
+
+make_canvas([-3,3],size=4)
+plot_points(E[:-2])
+scatter_points(E[100:101],color='orange')
+scatter_points(E[101:102],color='green')
+
+
+P = reflect_y(rotate(E,1))
+make_canvas([-3,3],size=4)
+plot_points(P[:-2])
+scatter_points(P[100:101],color='orange')
+scatter_points(P[101:102],color='green')

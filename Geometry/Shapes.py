@@ -60,10 +60,12 @@ class Ellipse:
         
     def foci(self):
         return [[-self.focal_dist,0],[self.focal_dist,0]]
-    
+
+
 class Polygon:
     def __init__(self,verts):
         self.verts = verts
+
 
     def draw(self,facecolor="white",edgecolor="black",linewidth=1,linestyle="-"):
         ax = plt.gca()
@@ -72,7 +74,16 @@ class Polygon:
                           linewidth = linewidth, linestyle = linestyle)
         ax.add_patch(circ)
 
+    def area(self):
+        area = 0
+        for i in range(len(self.verts)-1):
+            area += self.verts[i][0]*self.verts[i+1][1] - self.verts[i+1][0]*self.verts[i][1]
+        return area/2
+    
+    def verts_x(self):
+        return [i[0] for i in self.verts]
+    
+    def verts_y(self):
+        return [i[1] for i in self.verts]
 
-#    def verts_x(self):
-#    
-#    def verts_y(self):
+#def star_polygon(p,q):
