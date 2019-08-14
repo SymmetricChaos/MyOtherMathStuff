@@ -12,10 +12,13 @@ def outer_circ(A,B,C):
     Acen = complex_center(A)
     Bcen = complex_center(B)
     Ccen = complex_center(C)
-    c4 = -2*np.sqrt(A.cur*B.cur + B.cur*C.cur + A.cur*C.cur) + A.cur + B.cur + C.cur
-    m4 = (-2 * np.sqrt(A.cur*Acen*B.cur*Bcen + 
-                       A.cur*Acen*C.cur*Ccen + 
-                       B.cur*Bcen*C.cur*Ccen) + A.cur*Acen + B.cur*Bcen + C.cur*Ccen)/c4
+    Acur = 1/A.r
+    Bcur = 1/B.r
+    Ccur = 1/C.r
+    c4 = -2*np.sqrt(Acur*Bcur + Bcur*Ccur + Acur*Ccur) + Acur + Bcur + Ccur
+    m4 = (-2 * np.sqrt(Acur*Acen*Bcur*Bcen + 
+                       Acur*Acen*Ccur*Ccen + 
+                       Bcur*Bcen*Ccur*Ccen) + Acur*Acen + Bcur*Bcen + Ccur*Ccen)/c4
     
     return Circle(1/c4,[m4.real,m4.imag])
 
@@ -45,8 +48,12 @@ def second_solution(F,A,B,C):
     Bcen = complex_center(B)
     Ccen = complex_center(C)
     Fcen = complex_center(F)
-    curn = 2*(A.cur+B.cur+C.cur) - F.cur
-    posn = (2*(A.cur*Acen+B.cur*Bcen+C.cur*Ccen) - F.cur*Fcen)/curn
+    Acur = 1/A.r
+    Bcur = 1/B.r
+    Ccur = 1/C.r
+    Fcur = 1/F.r
+    curn = 2*(Acur+Bcur+Ccur) - Fcur
+    posn = (2*(Acur*Acen+Bcur*Bcen+Ccur*Ccen) - Fcur*Fcen)/curn
     return Circle(1/curn,[posn.real,posn.imag])
 
     
@@ -60,7 +67,6 @@ def apollo_recur(a,b,c,d,lim,itr,lines,circles):
         if a.r > 0 and d.r > 0:
             connect(a.pos,d.pos,color="black")
     
-
     if itr == 0:
         e0 = second_solution(a,b,c,d)
         if circles == True:
@@ -68,19 +74,20 @@ def apollo_recur(a,b,c,d,lim,itr,lines,circles):
         apollo_recur(e0,b,c,d,lim,itr+1,lines,circles)
     
     e1 = second_solution(b,a,c,d)
-    if e1.cur < lim:
+    e2 = second_solution(c,a,b,d)
+    e3 = second_solution(d,a,b,c)
+    
+    if e1.r > lim:
         if circles == True:
             e1.draw()
         apollo_recur(e1,a,c,d,lim,itr+1,lines,circles)
     
-    e2 = second_solution(c,a,b,d)
-    if e2.cur < lim:
+    if e2.r > lim:
         if circles == True:
             e2.draw()
         apollo_recur(e2,a,b,d,lim,itr+1,lines,circles)
         
-    e3 = second_solution(d,a,b,c)
-    if e3.cur < lim:
+    if e3.r > lim:
         if circles == True:
             e3.draw()
         apollo_recur(e3,a,b,c,lim,itr+1,lines,circles)
@@ -90,9 +97,9 @@ def ApollonianGasket(A,B,C,lim=50,lines=False,circles=True):
     a,b,c,d = tan_circ_from_radii(A,B,C)
 
     ax,fig = make_canvas([-a.r-(a.r/20),a.r+(a.r/20)],[-a.r-(a.r/20),a.r+(a.r/20)],[16,16])
-    
+
     if circles == True:
-        a.draw()
+        a.draw(edgecolor='red',linewidth=5)
         b.draw(edgecolor='red',linewidth=5)
         c.draw(edgecolor='red',linewidth=5)
         d.draw(edgecolor='red',linewidth=5)
@@ -105,6 +112,6 @@ def ApollonianGasket(A,B,C,lim=50,lines=False,circles=True):
     apollo_recur(a,b,c,d,lim,0,lines,circles)
     
 
-N = 100
-ApollonianGasket(1,2,1.2,N,lines=False,circles=True)
+N = .01
+ApollonianGasket(1,1,1,N,lines=False,circles=True)
 #plt.savefig("ApollonianLines{}.png".format(N),dpi=400)
