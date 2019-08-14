@@ -113,5 +113,11 @@ class Polygon:
     def center(self):
         return [ np.mean(self.verts_x()), np.mean(self.verts_y())]
 
+#def regular_polygon(p,r=1):
 
-#def star_polygon(p,q):
+#def star_polygon(p,q,r=1):
+    
+        
+#def polygon_intersection(polygon):
+#    v = polygon.verts
+#    

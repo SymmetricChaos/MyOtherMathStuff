@@ -99,7 +99,7 @@ def ApollonianGasket(A,B,C,lim=50,lines=False,circles=True):
     ax,fig = make_canvas([-a.r-(a.r/20),a.r+(a.r/20)],[-a.r-(a.r/20),a.r+(a.r/20)],[16,16])
 
     if circles == True:
-        a.draw(edgecolor='red',linewidth=5)
+        a.draw(edgecolor='salmon',facecolor='salmon')
         b.draw(edgecolor='red',linewidth=5)
         c.draw(edgecolor='red',linewidth=5)
         d.draw(edgecolor='red',linewidth=5)
@@ -112,6 +112,6 @@ def ApollonianGasket(A,B,C,lim=50,lines=False,circles=True):
     apollo_recur(a,b,c,d,lim,0,lines,circles)
     
 
-N = .01
+N = .02
 ApollonianGasket(1,1,1,N,lines=False,circles=True)
 #plt.savefig("ApollonianLines{}.png".format(N),dpi=400)
