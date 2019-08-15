@@ -114,8 +114,17 @@ class Polygon:
     def center(self):
         return [ np.mean(self.verts_x()), np.mean(self.verts_y())]
 
+
+    def shift_center(self):
+        x,y = self.center()
+        self.verts = [[i[0]-x,i[1]-y] for i in self.verts]
+
+
+    def shift_xy(self,x=0,y=0):
+        self.verts = [[i[0]+x,i[1]+y] for i in self.verts]
+
+
 def regular_polygon(n,r=1,pos=[0,0]):
-    print(pos)
     c = Circle(r=r,pos=pos)
     return Polygon(c.points(n+1)[0:-1])
 
