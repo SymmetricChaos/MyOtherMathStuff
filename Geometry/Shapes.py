@@ -17,17 +17,17 @@ class Circle:
         
     def points(self,n=100):
         th = np.linspace(0,2*np.pi,n)
-        return [[x*self.r,y*self.r] for x,y in zip(np.sin(th),np.cos(th))]
+        return [[x*self.r+self.pos[0],y*self.r+self.pos[1]] for x,y in zip(np.sin(th),np.cos(th))]
       
         
     def points_x(self,n=100):
         th = np.linspace(0,2*np.pi,n)
-        return np.sin(th)*self.r
+        return np.sin(th)*self.r+self.pos[0]
     
     
     def points_y(self,n=100):
         th = np.linspace(0,2*np.pi,n)
-        return np.cos(th)*self.r
+        return np.cos(th)*self.r+self.pos[1]
     
     
     def area(self):
@@ -67,7 +67,7 @@ class Ellipse:
         
     
     def foci(self):
-        return [[-self.focal_dist,0],[self.focal_dist,0]]
+        return [[-self.focal_dist(),0],[self.focal_dist(),0]]
 
 
     def area(self):
@@ -113,7 +113,10 @@ class Polygon:
     def center(self):
         return [ np.mean(self.verts_x()), np.mean(self.verts_y())]
 
-#def regular_polygon(p,r=1):
+def regular_polygon(n,r=1,pos=[0,0]):
+    print(pos)
+    c = Circle(r=r,pos=pos)
+    return Polygon(c.points(n+1)[0:-1])
 
 #def star_polygon(p,q,r=1):
     

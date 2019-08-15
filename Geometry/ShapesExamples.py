@@ -1,4 +1,4 @@
-from Shapes import Circle, Ellipse, Polygon
+from Shapes import Circle, Ellipse, Polygon, regular_polygon
 from Utils.Drawing import make_canvas, plot_points, scatter_points
 import matplotlib.pyplot as plt
 from AffineTransforms import rotate, reflect_y, shift_xy
@@ -27,14 +27,14 @@ letter_F.verts = shift_xy(np.array(letter_F.verts),-.3,-2)
 letter_F.draw()
 
 
-make_canvas([-3,3],size=4)
-plot_points(E[:-2])
-scatter_points(E[100:101],color='orange')
-scatter_points(E[101:102],color='green')
-
-
 P = reflect_y(rotate(E,1))
 make_canvas([-3,3],size=4)
 plot_points(P[:-2])
 scatter_points(P[100:101],color='orange')
 scatter_points(P[101:102],color='green')
+
+pent = regular_polygon(5)
+hexa = regular_polygon(6,.8,[0,.9])
+make_canvas([-3,3],size=4)
+hexa.draw()
+pent.draw()
