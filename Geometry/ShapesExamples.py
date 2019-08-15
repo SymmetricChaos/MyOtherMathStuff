@@ -1,4 +1,4 @@
-from Shapes import Circle, Ellipse, Polygon, regular_polygon
+from Shapes import Circle, Ellipse, Polygon, regular_polygon, star_polygon
 from Utils.Drawing import make_canvas, plot_points, scatter_points
 import matplotlib.pyplot as plt
 from AffineTransforms import rotate, reflect_y, shift_xy
@@ -38,3 +38,6 @@ hexa = regular_polygon(6,.8,[0,.9])
 make_canvas([-3,3],size=4)
 hexa.draw()
 pent.draw()
+
+star = star_polygon(7,3,pos=[0,-1.5])
+star.draw()

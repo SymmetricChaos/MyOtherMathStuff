@@ -96,6 +96,7 @@ class Polygon:
 
 
     def area(self):
+        # Needs to check for self intersection
         area = 0
         for i in range(len(self.verts)-1):
             area += self.verts[i][0]*self.verts[i+1][1] - self.verts[i+1][0]*self.verts[i][1]
@@ -118,8 +119,14 @@ def regular_polygon(n,r=1,pos=[0,0]):
     c = Circle(r=r,pos=pos)
     return Polygon(c.points(n+1)[0:-1])
 
-#def star_polygon(p,q,r=1):
-    
+def star_polygon(p,q,r=1,pos=[0,0]):
+    V = regular_polygon(p,r=r,pos=pos).verts
+    star = []
+    pos = 0
+    for i in range(p*q):
+        star.append(V[pos])
+        pos = (pos+q)%p
+    return Polygon(star)
         
 #def polygon_intersection(polygon):
 #    v = polygon.verts
