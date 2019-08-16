@@ -132,6 +132,11 @@ class Polygon:
         self.verts = [[i[0]-x,i[1]-y] for i in self.verts]
 
 
+    def shift_centroid(self):
+        x,y = self.centroid()
+        self.verts = [[i[0]-x,i[1]-y] for i in self.verts]
+
+
     def shift_xy(self,x=0,y=0):
         self.verts = [[i[0]+x,i[1]+y] for i in self.verts]
 
