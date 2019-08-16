@@ -91,6 +91,15 @@ class Ellipse:
     
     def focal_dist(self):
         return self.ecc()*self.a
+    
+    
+    def shift_center(self):
+        self.pos = [0,0]
+
+
+    def shift_xy(self,x=0,y=0):
+        self.pos = [self.pos[0]+x, self.pos[1]+y]
+
 
 
 class Polygon:
