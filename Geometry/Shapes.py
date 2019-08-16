@@ -100,7 +100,7 @@ class Polygon:
         area = 0
         for i in range(len(self.verts)-1):
             area += self.verts[i][0]*self.verts[i+1][1] - self.verts[i+1][0]*self.verts[i][1]
-        return area/2
+        return abs(area/2)
     
 
     def verts_x(self):
@@ -113,6 +113,18 @@ class Polygon:
 
     def center(self):
         return [ np.mean(self.verts_x()), np.mean(self.verts_y())]
+
+
+    def centroid(self):
+        x = 0
+        y = 0
+        A = self.area()
+        X = self.verts_x()
+        Y = self.verts_y()
+        for i in range(len(self.verts)-1):
+            x += (X[i]+X[i+1])*(X[i]*Y[i+1]-X[i+1]*Y[i])
+            y += (Y[i]+Y[i+1])*(X[i]*Y[i+1]-X[i+1]*Y[i])
+        return [x/6*A,y/6*A]
 
 
     def shift_center(self):

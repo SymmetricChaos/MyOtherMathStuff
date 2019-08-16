@@ -19,25 +19,29 @@ E = np.asarray(E)
 
 letter_F = Polygon([[0,0],[.5,0],[.5,1.5],[1.5,1.5],[1.5,2],[.5,2],[.5,2.5],[2,2.5],[2,3],[0,3]])
 
-make_canvas([-3,3],size=4)
+make_canvas([-4,4])
+
+#letter_F.verts = rotate(np.array(letter_F.verts),1)
+#letter_F.verts = shift_xy(np.array(letter_F.verts),-.3,-2)
+letter_F.shift_center()
 letter_F.draw()
 
-letter_F.verts = rotate(np.array(letter_F.verts),1)
-letter_F.verts = shift_xy(np.array(letter_F.verts),-.3,-2)
-letter_F.draw()
+scatter_points([letter_F.center()],color='red',zorder=3)
+scatter_points([letter_F.centroid()],color='blue',zorder=3)
 
+print(letter_F.verts_x())
 
-P = reflect_y(rotate(E,1))
-make_canvas([-3,3],size=4)
-plot_points(P[:-2])
-scatter_points(P[100:101],color='orange')
-scatter_points(P[101:102],color='green')
-
-pent = regular_polygon(5)
-hexa = regular_polygon(6,.8,[0,.9])
-make_canvas([-3,3],size=4)
-hexa.draw()
-pent.draw()
-
-star = star_polygon(7,3,pos=[0,-1.5])
-star.draw()
+#P = reflect_y(rotate(E,1))
+#make_canvas([-3,3],size=4)
+#plot_points(P[:-2])
+#scatter_points(P[100:101],color='orange')
+#scatter_points(P[101:102],color='green')
+#
+#pent = regular_polygon(5)
+#hexa = regular_polygon(6,.8,[0,.9])
+#make_canvas([-3,3],size=4)
+#hexa.draw()
+#pent.draw()
+#
+#star = star_polygon(7,3,pos=[0,-1.5])
+#star.draw()
