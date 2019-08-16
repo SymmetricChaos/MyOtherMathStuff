@@ -32,6 +32,16 @@ class Circle:
     
     def area(self):
         return self.r*self.r*np.pi
+
+
+    def shift_center(self):
+        self.pos = [0,0]
+
+
+    def shift_xy(self,x=0,y=0):
+        self.pos = [self.pos[0]+x, self.pos[1]+y]
+
+
            
         
 class Ellipse:
@@ -41,6 +51,7 @@ class Ellipse:
             a,b = b,a
         self.a = a
         self.b = b
+        self.pos = pos
 
 
     def draw(self,facecolor="white",edgecolor="black",linewidth=1,linestyle="-"):
@@ -53,21 +64,21 @@ class Ellipse:
 
     def points(self,n=100):
         th = np.linspace(0,2*np.pi,n)
-        return [[x*self.a,y*self.b] for x,y in zip(np.sin(th),np.cos(th))]
+        return [[x*self.a+self.pos[0],y*self.b+self.pos[0]] for x,y in zip(np.sin(th),np.cos(th))]
       
         
     def points_x(self,n=100):
         th = np.linspace(0,2*np.pi,n)
-        return np.sin(th)*self.a
+        return np.sin(th)*self.a+self.pos[0]
     
     
     def points_y(self,n=100):
         th = np.linspace(0,2*np.pi,n)
-        return np.cos(th)*self.b
+        return np.cos(th)*self.b+self.pos[1]
         
     
     def foci(self):
-        return [[-self.focal_dist(),0],[self.focal_dist(),0]]
+        return [[-self.focal_dist(),self.pos[1]],[self.focal_dist(),self.pos[1]]]
 
 
     def area(self):
