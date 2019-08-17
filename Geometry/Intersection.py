@@ -13,6 +13,7 @@ def intersect(m1,b1,m2,b2):
     y = x*m1+b1
     return x,y
 
+
 mb1 = [2,.5]
 mb2 = [-3,1]
 mxbline(mb1)

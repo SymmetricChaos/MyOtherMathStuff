@@ -165,6 +165,7 @@ def regular_polygon(n,r=1,pos=[0,0]):
     c = Circle(r=r,pos=pos)
     return Polygon(c.points(n+1)[0:-1])
 
+
 def star_polygon(p,q,r=1,pos=[0,0]):
     V = regular_polygon(p,r=r,pos=pos).verts
     star = []
@@ -173,7 +174,10 @@ def star_polygon(p,q,r=1,pos=[0,0]):
         star.append(V[pos])
         pos = (pos+q)%p
     return Polygon(star)
-        
+
+
 #def polygon_intersection(polygon):
+#   """Check if a polygon is self intersecting"""
 #    v = polygon.verts
-#    
+
+#def polygon_hull(polygon):
