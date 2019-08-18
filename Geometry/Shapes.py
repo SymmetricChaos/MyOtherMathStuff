@@ -150,6 +150,7 @@ class Polygon:
 
 
     def centroid(self):
+        print("centroid does not calculate correctly")
         x = 0
         y = 0
         A = self.area()
