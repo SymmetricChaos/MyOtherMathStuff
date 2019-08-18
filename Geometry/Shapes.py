@@ -164,6 +164,13 @@ class Polygon:
     def scale(self,s):
         M = np.array([[s,0],[0,s]])
         self.verts = np.matmul(self.verts,M)
+        
+        
+    def rotate(self,th):
+        """Rotate by full-turns"""
+        th = np.pi*2*th
+        M = np.array([[np.cos(th),np.sin(th)],[-np.sin(th),np.cos(th)]])
+        self.verts = np.matmul(self.verts,M)
     
 
 def regular_polygon(n,r=1,pos=[0,0]):
