@@ -1,6 +1,5 @@
 from Shapes import Polygon
 from Utils.Drawing import make_canvas
-import numpy as np
 
 letter_F = Polygon([[0,0],[.5,0],[.5,1.5],[1.5,1.5],[1.5,2],[.5,2],[.5,2.5],[2,2.5],[2,3],[0,3]])
 
