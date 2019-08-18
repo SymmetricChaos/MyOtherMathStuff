@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from ConvexHull import convex_hull
 from Utils.Drawing import scatter_points, plot_points
+from CheckIntersect import do_intersect
 
 class Circle:
     def __init__(self,r,pos=[0,0]):
@@ -130,19 +131,19 @@ class Polygon:
     def signed_area(self):
         # Needs to check for self intersection
         area = 0
-        v = self.verts[:]
+        v = self.verts.copy()
         v += [v[0]]
-        for i in range(len(self.verts)):
+        for i in range(len(v)-1):
             area += v[i][0]*v[i+1][1] - v[i+1][0]*v[i][1]
         return area/2
 
 
     def verts_x(self):
-        return [i[0] for i in self.verts[:]]
+        return [i[0] for i in self.verts]
 
 
     def verts_y(self):
-        return [i[1] for i in self.verts[:]]
+        return [i[1] for i in self.verts]
 
 
     def center(self):
@@ -154,14 +155,14 @@ class Polygon:
         x = 0
         y = 0
         A = self.area()
-        X = self.verts_x()[:]
-        Y = self.verts_y()[:]
+        X = self.verts_x()
+        Y = self.verts_y()
         X += [X[0]]
         Y += [Y[0]]
-        for i in range(len(self.verts)):
+        for i in range(len(X)-1):
             x += (X[i] + X[i+1]) * (X[i]*Y[i+1] - X[i+1]*Y[i])
             y += (Y[i] + Y[i+1]) * (X[i]*Y[i+1] - X[i+1]*Y[i])
-        return [x/6*A,y/6*A]
+        return [x/(6*A),y/(6*A)]
 
 
     def shift_center(self):
@@ -188,6 +189,11 @@ class Polygon:
         th = np.pi*2*th
         M = np.array([[np.cos(th),-np.sin(th)],[np.sin(th),np.cos(th)]])
         self.verts = np.matmul(self.verts,M)
+
+    
+    def simple(self):
+        return not check_self_intersect(self)
+
 
 
 class PolygonSet:
@@ -226,3 +232,16 @@ def star_polygon(p,q,r=1,pos=[0,0]):
 
 def polygon_hull(polygon):
     return Polygon(convex_hull(polygon))
+
+
+def check_self_intersect(polygon):
+    """Crude slow way to check for self intersection"""
+    V = polygon.verts.copy()
+    m = len(V)
+    for i in range(m):
+        for j in range(m):
+            if (i+1)%m == j or (i-1)%m == j or i == j:
+                pass
+            else:
+                if do_intersect(V[i%m],V[(i+1)%m],V[j%m],V[(j+1)%m]):
+                    return True
