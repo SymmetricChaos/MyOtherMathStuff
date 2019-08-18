@@ -109,19 +109,14 @@ class Polygon:
         self.verts = verts
 
 
-    def draw(self,facecolor="white",edgecolor="black",linewidth=1,linestyle="-"):
+    def draw(self,facecolor="#00000000",edgecolor="black",**kwargs):
         ax = plt.gca()
-        circ = plt.Polygon(self.verts,
-                          edgecolor = edgecolor, facecolor = facecolor,
-                          linewidth = linewidth, linestyle = linestyle)
-        ax.add_patch(circ)
+        poly = plt.Polygon(self.verts,facecolor=facecolor,edgecolor=edgecolor,**kwargs)
+        ax.add_patch(poly)
 
-    def draw_points(self,**kwargs):
-        scatter_points(self.verts,kwargs)
-        
-        
-#    def draw_points(self,facecolor="white",edgecolor="black",linewidth=1,linestyle="-"):
-#        scatter_points()
+
+    def draw_points(self,color="black",**kwargs):
+        scatter_points(self.verts,color=color,**kwargs)
 
 
     def copy(self):
@@ -129,19 +124,25 @@ class Polygon:
 
 
     def area(self):
+        return abs(self.signed_area())
+    
+    
+    def signed_area(self):
         # Needs to check for self intersection
         area = 0
-        for i in range(len(self.verts)-1):
-            area += self.verts[i][0]*self.verts[i+1][1] - self.verts[i+1][0]*self.verts[i][1]
-        return abs(area/2)
-    
+        v = self.verts[:]
+        v += [v[0]]
+        for i in range(len(self.verts)):
+            area += v[i][0]*v[i+1][1] - v[i+1][0]*v[i][1]
+        return area/2
+
 
     def verts_x(self):
-        return [i[0] for i in self.verts]
+        return [i[0] for i in self.verts[:]]
 
 
     def verts_y(self):
-        return [i[1] for i in self.verts]
+        return [i[1] for i in self.verts[:]]
 
 
     def center(self):
@@ -152,11 +153,13 @@ class Polygon:
         x = 0
         y = 0
         A = self.area()
-        X = self.verts_x()
-        Y = self.verts_y()
-        for i in range(len(self.verts)-1):
-            x += (X[i]+X[i+1])*(X[i]*Y[i+1]-X[i+1]*Y[i])
-            y += (Y[i]+Y[i+1])*(X[i]*Y[i+1]-X[i+1]*Y[i])
+        X = self.verts_x()[:]
+        Y = self.verts_y()[:]
+        X += [X[0]]
+        Y += [Y[0]]
+        for i in range(len(self.verts)):
+            x += (X[i] + X[i+1]) * (X[i]*Y[i+1] - X[i+1]*Y[i])
+            y += (Y[i] + Y[i+1]) * (X[i]*Y[i+1] - X[i+1]*Y[i])
         return [x/6*A,y/6*A]
 
 
@@ -182,9 +185,8 @@ class Polygon:
     def rotate(self,th):
         """Rotate by full-turns around the origin"""
         th = np.pi*2*th
-        M = np.array([[np.cos(th),np.sin(th)],[-np.sin(th),np.cos(th)]])
+        M = np.array([[np.cos(th),-np.sin(th)],[np.sin(th),np.cos(th)]])
         self.verts = np.matmul(self.verts,M)
-
 
 
 class PolygonSet:
