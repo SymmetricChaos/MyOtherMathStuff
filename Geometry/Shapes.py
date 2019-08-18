@@ -107,6 +107,8 @@ class Ellipse:
 
 class Polygon:
     def __init__(self,verts):
+        if len(verts) < 3:
+            raise Exception("Not a polygon.")
         self.verts = verts
 
 
@@ -129,13 +131,15 @@ class Polygon:
     
     
     def signed_area(self):
-        # Needs to check for self intersection
-        area = 0
-        v = self.verts.copy()
-        v += [v[0]]
-        for i in range(len(v)-1):
-            area += v[i][0]*v[i+1][1] - v[i+1][0]*v[i][1]
-        return area/2
+        if self.simple():
+            area = 0
+            v = self.verts.copy()
+            v += [v[0]]
+            for i in range(len(v)-1):
+                area += v[i][0]*v[i+1][1] - v[i+1][0]*v[i][1]
+            return area/2
+        else:
+            raise Exception("Area not uniquely defined by self-intersecting polygons.")
 
 
     def verts_x(self):
@@ -179,16 +183,24 @@ class Polygon:
         self.verts = [[i[0]+x,i[1]+y] for i in self.verts]
 
 
-    def scale(self,s):
+    def scale(self,s=1):
         M = np.array([[s,0],[0,s]])
         self.verts = np.matmul(self.verts,M)
         
         
-    def rotate(self,th):
+    def rotate(self,th=0):
         """Rotate by full-turns around the origin"""
         th = np.pi*2*th
         M = np.array([[np.cos(th),-np.sin(th)],[np.sin(th),np.cos(th)]])
         self.verts = np.matmul(self.verts,M)
+
+
+    def mirror_x(self):
+        self.verts = [[-i[0],i[1]] for i in self.verts]
+
+
+    def mirror_y(self):
+        self.verts = [[i[0],-i[1]] for i in self.verts]
 
     
     def simple(self):
@@ -231,6 +243,7 @@ def star_polygon(p,q,r=1,pos=[0,0]):
 
 
 def polygon_hull(polygon):
+    """Return to convex hull of a polygon"""
     return Polygon(convex_hull(polygon))
 
 
@@ -245,3 +258,7 @@ def check_self_intersect(polygon):
             else:
                 if do_intersect(V[i%m],V[(i+1)%m],V[j%m],V[(j+1)%m]):
                     return True
+                
+
+
+    
