@@ -114,6 +114,9 @@ class Polygon:
                           linewidth = linewidth, linestyle = linestyle)
         ax.add_patch(circ)
 
+    def copy(self):
+        return Polygon(self.verts[:])
+
 
     def area(self):
         # Needs to check for self intersection
@@ -167,11 +170,31 @@ class Polygon:
         
         
     def rotate(self,th):
-        """Rotate by full-turns"""
+        """Rotate by full-turns around the origin"""
         th = np.pi*2*th
         M = np.array([[np.cos(th),np.sin(th)],[-np.sin(th),np.cos(th)]])
         self.verts = np.matmul(self.verts,M)
-    
+
+
+
+class PolygonSet:
+    def __init__(self,polygons):
+        assert type(polygons) == list
+        for i in polygons:
+            assert type(i) == Polygon
+        self.polygons = polygons
+
+
+    def draw(self,facecolor="white",edgecolor="black",linewidth=1,linestyle="-"):
+        for poly in self.polygons:
+            poly.draw(facecolor,edgecolor,linewidth,linestyle)
+
+
+    def shift_xy(self,x=0,y=0):
+        for poly in self.polygons:
+            poly.shift_xy(x,y)
+
+
 
 def regular_polygon(n,r=1,pos=[0,0]):
     c = Circle(r=r,pos=pos)
