@@ -18,15 +18,3 @@ letter_F.shift_xy(x=-3.8,y=.6)
 for i in range(6):
     letter_F.draw(linewidth=3,edgecolor='red')
     letter_F.shift_xy(x=1.5)
-
-
-from ConvexHull import convex_hull
-
-
-ax,fig = make_canvas([-4,4],[-4,4],show_axes=False)
-letter_F.shift_center()
-print(letter_F.verts)
-print(convex_hull(letter_F))
-n = Polygon(convex_hull(letter_F))
-
-n.draw()

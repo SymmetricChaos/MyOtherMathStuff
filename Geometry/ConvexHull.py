@@ -14,10 +14,8 @@ def convex_hull(polygon):
     xs = [i[0] for i in V]
     cur = V[np.argmin(xs)]
     
-    # Keep track of positions
     P = []
     while True:
-        # Put the current point on the list
         P.append(cur)
         end = V[0]
         
@@ -30,14 +28,10 @@ def convex_hull(polygon):
             if cur == end or lineside(cur,end,V[j]):
                 end = V[j]
                 
-        # Once that is done we have our new current point
         cur = end
         
-        
-        # Check if we've reached the place where we started
         if end == P[0]:
             P.append(cur)
             break
 
-    
     return P

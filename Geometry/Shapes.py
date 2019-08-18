@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from ConvexHull import convex_hull
 
 class Circle:
     def __init__(self,r,pos=[0,0]):
@@ -211,8 +212,5 @@ def star_polygon(p,q,r=1,pos=[0,0]):
     return Polygon(star)
 
 
-#def polygon_intersection(polygon):
-#   """Check if a polygon is self intersecting"""
-#    v = polygon.verts
-
-#def polygon_hull(polygon):
+def polygon_hull(polygon):
+    return Polygon(convex_hull(polygon))
