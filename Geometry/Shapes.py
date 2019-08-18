@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from ConvexHull import convex_hull
+from Utils.Drawing import scatter_points, plot_points
 
 class Circle:
     def __init__(self,r,pos=[0,0]):
@@ -114,6 +115,14 @@ class Polygon:
                           edgecolor = edgecolor, facecolor = facecolor,
                           linewidth = linewidth, linestyle = linestyle)
         ax.add_patch(circ)
+
+    def draw_points(self,**kwargs):
+        scatter_points(self.verts,kwargs)
+        
+        
+#    def draw_points(self,facecolor="white",edgecolor="black",linewidth=1,linestyle="-"):
+#        scatter_points()
+
 
     def copy(self):
         return Polygon(self.verts[:])
