@@ -21,6 +21,9 @@ def make_canvas(x,y=None,size=None,show_axes=False):
     ax = plt.axes(xlim=x, ylim=y)
     if show_axes == False:
         ax.axis('off')
+        ax.set_xticks([])
+        ax.set_yticks([])
+    plt.tight_layout()
     return fig, ax
 
 
