@@ -23,7 +23,7 @@ def shear(P,x=1,y=1):
 
 def scale(P,s=1):
     assert type(P) == np.ndarray
-    M = np.array([[1,s],[s,1]])
+    M = np.array([[0,s],[s,0]])
     return np.matmul(P,M)
 
 def reflect_line(P,m=1):

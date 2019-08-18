@@ -161,6 +161,11 @@ class Polygon:
         self.verts = [[i[0]+x,i[1]+y] for i in self.verts]
 
 
+    def scale(self,s):
+        M = np.array([[s,0],[0,s]])
+        self.verts = np.matmul(self.verts,M)
+    
+
 def regular_polygon(n,r=1,pos=[0,0]):
     c = Circle(r=r,pos=pos)
     return Polygon(c.points(n+1)[0:-1])

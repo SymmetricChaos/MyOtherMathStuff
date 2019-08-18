@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import matplotlib.lines as lines
 from Utils.ListManip import tuples_to_lists
 
-def make_canvas(x,y=None,size=None):
+def make_canvas(x,y=None,size=None,show_axes=False):
     # If y is not provided make the y-axis the same as the x
     if not y:
         y = x
@@ -19,7 +19,8 @@ def make_canvas(x,y=None,size=None):
     fig = plt.figure()
     fig.set_size_inches(size[0], size[1])
     ax = plt.axes(xlim=x, ylim=y)
-    ax.axis('off')
+    if show_axes == False:
+        ax.axis('off')
     return fig, ax
 
 
