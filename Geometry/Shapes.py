@@ -123,14 +123,17 @@ class Polygon:
 
 
     def copy(self):
+        """Create an identical Polygon"""
         return Polygon(self.verts[:])
 
 
     def area(self):
+        """Calculate area"""
         return abs(self.signed_area())
     
     
     def signed_area(self):
+        """Calculate signed area"""
         if self.simple():
             area = 0
             v = self.verts.copy()
@@ -139,7 +142,7 @@ class Polygon:
                 area += v[i][0]*v[i+1][1] - v[i+1][0]*v[i][1]
             return area/2
         else:
-            raise Exception("Area not uniquely defined by self-intersecting polygons.")
+            raise Exception("Area not uniquely defined for self-intersecting polygons.")
 
 
     def verts_x(self):
@@ -170,20 +173,24 @@ class Polygon:
 
 
     def shift_center(self):
+        """Center the polygon using arithmetic mean of the vertices"""
         x,y = self.center()
         self.verts = [[i[0]-x,i[1]-y] for i in self.verts]
 
 
     def shift_centroid(self):
+        """Center the polygon using centroid"""
         x,y = self.centroid()
         self.verts = [[i[0]-x,i[1]-y] for i in self.verts]
 
 
     def shift_xy(self,x=0,y=0):
+        """Shift position"""
         self.verts = [[i[0]+x,i[1]+y] for i in self.verts]
 
 
     def scale(self,s=1):
+        """Scale relative to the origin"""
         M = np.array([[s,0],[0,s]])
         self.verts = np.matmul(self.verts,M)
         
@@ -196,14 +203,17 @@ class Polygon:
 
 
     def mirror_x(self):
+        """Mirror across the x axis"""
         self.verts = [[-i[0],i[1]] for i in self.verts]
 
 
     def mirror_y(self):
+        """Mirror across the y axis"""
         self.verts = [[i[0],-i[1]] for i in self.verts]
 
     
     def simple(self):
+        """Check if the polygon is simple"""
         return not check_self_intersect(self)
 
 
