@@ -1,6 +1,6 @@
 from Shapes import Circle, Ellipse
 from Utils.Drawing import make_canvas, plot_points, scatter_points
-from AffineTransforms import rotate, reflect_y, shift_xy
+from AffineTransforms import rotate, reflect_y
 import numpy as np
 
 
