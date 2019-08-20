@@ -32,6 +32,7 @@ class Polygon:
         return abs(self.signed_area())
     
     
+    # Needs to check for self intersection
     def signed_area(self):
         """Calculate signed area"""
         area = 0
@@ -54,6 +55,8 @@ class Polygon:
         return [i[1] for i in self.verts]
 
 
+    # Simpler and quicker than calculating the centroid but less
+    # meaningful mathematically
     def center(self):
         """Return arithmetic mean of the vertices"""
         return [ np.mean(self.verts_x()), np.mean(self.verts_y())]
@@ -112,6 +115,17 @@ class Polygon:
         M = np.array([[np.cos(th),-np.sin(th)],[np.sin(th),np.cos(th)]])
         self.verts = np.matmul(self.verts,M)
         self.shift_xy(x,y)
+        
+        
+    def rotate_centroid(self,th=0):
+        """Rotate by full-turns around the centroid of the polygon"""
+        th = np.pi*2*th
+        x,y = self.centroid()
+        self.shift_ccentroid()
+        M = np.array([[np.cos(th),-np.sin(th)],[np.sin(th),np.cos(th)]])
+        self.verts = np.matmul(self.verts,M)
+        self.shift_xy(x,y)
+
 
     def mirror_x(self):
         """Mirror across the x axis"""
