@@ -1,24 +1,17 @@
 from Polygons import Polygon
 from Utils.Drawing import make_canvas, scatter_points
 
-F = Polygon([[0,0],[.5,0],[.5,1.5],[1.5,1.5],[1.5,2],[.5,2],[.5,2.5],[2,2.5],[2,3],[0,3]])
-F.scale(.9)
-F.shift_centroid()
+F1 = Polygon([[0,0],[.5,0],[.5,1.5],[1.5,1.5],[1.5,2],[.5,2],[.5,2.5],[2,2.5],[2,3],[0,3]])
+F2 = F1.copy()
+F1.scale(.9)
+F1.shift_centroid()
+F2.scale(.9)
+F2.shift_center()
 for i in range(5):
     make_canvas([-3,3],size=3)
     scatter_points([[0,0]],color='black')
-    F.draw()
-    F.rotate(.2)
-
-
+    F1.draw()
+    F1.rotate(.2)
+    F2.draw(edgecolor='gray')
+    F2.rotate(.2)
     
-#F = Polygon([[0,0],[0,1],[1,1],[1,0]])
-#F.scale(.9)
-#F.shift_center()
-#for i in range(3):
-#    make_canvas([-3,3],size=3)
-#    F.rotate(.2)
-#    F.draw()
-#    t = F.centroid()
-#    scatter_points([t],color='blue',zorder=3)
-
