@@ -45,18 +45,22 @@ class Polygon:
 
 
     def verts_x(self):
+        """x-coordinates of the vertices"""
         return [i[0] for i in self.verts]
 
 
     def verts_y(self):
+        """y-coordinates of the vertices"""
         return [i[1] for i in self.verts]
 
 
     def center(self):
+        """Return arithmetic mean of the vertices"""
         return [ np.mean(self.verts_x()), np.mean(self.verts_y())]
 
 
     def centroid(self):
+        """Return centroid of the polygon"""
         x = 0
         y = 0
         A = self.signed_area()
@@ -121,7 +125,7 @@ class Polygon:
     
     def simple(self):
         """Check if the polygon is simple"""
-        print("Function is not reliable")
+        print("method is not reliable")
         return not check_self_intersect(self)
 
 
