@@ -36,10 +36,12 @@ class Polygon:
         """Calculate signed area"""
         if self.simple():
             area = 0
-            v = self.verts.copy()
-            v += [v[0]]
-            for i in range(len(v)-1):
-                area += v[i][0]*v[i+1][1] - v[i+1][0]*v[i][1]
+            X = self.verts_x()
+            Y = self.verts_y()
+            X += [X[0]]
+            Y += [Y[0]]
+            for i in range(len(X)-1):
+                area += X[i]*Y[i+1] - X[i+1]*Y[i]
             return area/2
         else:
             raise Exception("Area not uniquely defined for self-intersecting polygons.")
@@ -58,10 +60,9 @@ class Polygon:
 
 
     def centroid(self):
-        print("centroid does not calculate correctly")
         x = 0
         y = 0
-        A = self.area()
+        A = self.signed_area()
         X = self.verts_x()
         Y = self.verts_y()
         X += [X[0]]
@@ -103,7 +104,7 @@ class Polygon:
     
     
     def rotate_center(self,th=0):
-        """Rotate by full-turns around the center"""
+        """Rotate by full-turns around the center of the polygon"""
         th = np.pi*2*th
         x,y = self.center()
         self.shift_center()
