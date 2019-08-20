@@ -34,17 +34,14 @@ class Polygon:
     
     def signed_area(self):
         """Calculate signed area"""
-        if self.simple():
-            area = 0
-            X = self.verts_x()
-            Y = self.verts_y()
-            X += [X[0]]
-            Y += [Y[0]]
-            for i in range(len(X)-1):
-                area += X[i]*Y[i+1] - X[i+1]*Y[i]
-            return area/2
-        else:
-            raise Exception("Area not uniquely defined for self-intersecting polygons.")
+        area = 0
+        X = self.verts_x()
+        Y = self.verts_y()
+        X += [X[0]]
+        Y += [Y[0]]
+        for i in range(len(X)-1):
+            area += X[i]*Y[i+1] - X[i+1]*Y[i]
+        return area/2
 
 
     def verts_x(self):
@@ -124,6 +121,7 @@ class Polygon:
     
     def simple(self):
         """Check if the polygon is simple"""
+        print("Function is not reliable")
         return not check_self_intersect(self)
 
 
