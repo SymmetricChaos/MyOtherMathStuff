@@ -1,20 +1,25 @@
-from Polygons import Polygon
+from Polygons import Polygon, PolygonSet
 from Utils.Drawing import make_canvas
 
-letter_F = Polygon([[0,0],[.5,0],[.5,1.5],[1.5,1.5],[1.5,2],[.5,2],[.5,2.5],[2,2.5],[2,3],[0,3]])
+F = Polygon([[0,0],[.5,0],[.5,1.5],[1.5,1.5],[1.5,2],[.5,2],[.5,2.5],[2,2.5],[2,3],[0,3]])
+F.scale(.4)
+Frot = F.copy()
+Frot.rotate(.5)
+Frot.shift_xy(.5,.5)
+
+
+S = PolygonSet([F,Frot])
+S.shift_xy(-4,-.2)
+
+
+F.shift_centroid()
+F.shift_xy(-4)
+ax,fig = make_canvas([-4,4],[-1.5,1.5],show_axes=False)
+for i in range(9):
+    F.draw(linewidth=3)
+    F.shift_xy(1)
 
 ax,fig = make_canvas([-4,4],[-1.5,1.5],show_axes=False)
-letter_F.scale(.5)
-letter_F.shift_center()
-letter_F.rotate(.5)
-letter_F.shift_xy(x=-4,y=-.6)
-for i in range(6):
-    letter_F.draw(linewidth=3)
-    letter_F.shift_xy(x=1.5)
-
-letter_F.shift_center()
-letter_F.rotate(.5)
-letter_F.shift_xy(x=-3.8,y=.6)
-for i in range(6):
-    letter_F.draw(linewidth=3,edgecolor='red')
-    letter_F.shift_xy(x=1.5)
+for i in range(9):
+    S.draw(linewidth=3)
+    S.shift_xy(1)

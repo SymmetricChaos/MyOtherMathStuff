@@ -149,12 +149,12 @@ class PolygonSet:
         assert type(polygons) == list
         for i in polygons:
             assert type(i) == Polygon
-        self.polygons = polygons
+        self.polygons = [p.copy() for p in polygons]
 
 
-    def draw(self,facecolor="white",edgecolor="black",linewidth=1,linestyle="-"):
+    def draw(self,facecolor="#00000000",edgecolor="black",**kwargs):
         for poly in self.polygons:
-            poly.draw(facecolor,edgecolor,linewidth,linestyle)
+            poly.draw(facecolor=facecolor,edgecolor=edgecolor,**kwargs)
 
 
     def shift_xy(self,x=0,y=0):
