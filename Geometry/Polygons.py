@@ -188,6 +188,7 @@ class PolygonSet:
             poly.shift(x,y)
 
 
+    # This doesn't actually calculate the centroid of the set like I thought
     def _centroid(self):
         """Centroid of the set"""
         x,y = 0,0
