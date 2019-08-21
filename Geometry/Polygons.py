@@ -174,6 +174,10 @@ class PolygonSet:
         self.polygons = [p.copy() for p in polygons]
 
 
+    def __getitem__(self,n):
+        return self.polygons[n]
+
+
     def draw(self,facecolor="#00000000",edgecolor="black",**kwargs):
         for poly in self.polygons:
             poly.draw(facecolor=facecolor,edgecolor=edgecolor,**kwargs)
@@ -216,6 +220,8 @@ class PolygonSet:
         x,y = self.centroid
         for poly in self.polygons:
             poly.shift(-x,-y)
+
+
 
 
     # Properties to make access more intuitive
