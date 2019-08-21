@@ -162,6 +162,14 @@ class PolygonSet:
             poly.shift_xy(x,y)
 
 
+    def centroid(self):
+        """Centroid of the set"""
+        x,y = 0,0
+        for poly in self.polygons:
+            xp,yp = poly.centroid()
+            x += xp
+            y += yp
+        return [x/len(self.polygons),y/len(self.polygons)]
 
 def regular_polygon(n,r=1,pos=[0,0]):
     c = Circle(r=r,pos=pos)
