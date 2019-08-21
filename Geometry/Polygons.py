@@ -202,10 +202,18 @@ class PolygonSet:
             X += x
             Y += y
         return [np.mean(X), np.mean(Y)]
-    
-    
+
+
     def shift_center(self):
+        """Put center of the set at the origin"""
         x,y = self.center
+        for poly in self.polygons:
+            poly.shift(-x,-y)
+
+
+    def shift_centroid(self):
+        """Put centroid of the set at the origin"""
+        x,y = self.centroid
         for poly in self.polygons:
             poly.shift(-x,-y)
 
