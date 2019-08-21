@@ -171,6 +171,16 @@ class PolygonSet:
             y += yp
         return [x/len(self.polygons),y/len(self.polygons)]
 
+    def center(self):
+        """Center of the set"""
+        X,Y = [],[]
+        for poly in self.polygons:
+            x,y = poly.verts_x(),poly.verts_y()
+            X += x
+            Y += y
+        return [np.mean(X), np.mean(Y)]
+
+
 def regular_polygon(n,r=1,pos=[0,0]):
     c = Circle(r=r,pos=pos)
     return Polygon(c.points(n+1)[0:-1])
@@ -191,6 +201,9 @@ def polygon_hull(polygon):
     return Polygon(convex_hull(polygon))
 
 
+# This function is not reliable
+# It detects intersections that don't exist
+#   Known case: some rotations of a simple polygon appear as self intersecting
 def check_self_intersect(polygon):
     """Crude slow way to check for self intersection"""
     V = polygon.verts.copy()
