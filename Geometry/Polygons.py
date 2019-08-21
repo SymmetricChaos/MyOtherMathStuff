@@ -119,7 +119,7 @@ class Polygon:
     def rotate_centroid(self,th=0):
         """Rotate by full-turns around the centroid of the polygon"""
         x,y = self.centroid
-        self.shift_ccentroid()
+        self.shift_centroid()
         self.rotate(th)
         self.shift(x,y)
 
@@ -222,6 +222,25 @@ class PolygonSet:
             poly.shift(-x,-y)
 
 
+    def rotate(self,th):
+        for poly in self.polygons:
+            poly.rotate(th)
+            
+
+    def rotate_center(self,th=0):
+        """Rotate by full-turns around the center of the set"""
+        x,y = self.center
+        self.shift_center()
+        self.rotate(th)
+        self.shift(x,y)
+        
+        
+    def rotate_centroid(self,th=0):
+        """Rotate by full-turns around the centroid of the set"""
+        x,y = self.centroid
+        self.shift_centroid()
+        self.rotate(th)
+        self.shift(x,y)
 
 
     # Properties to make access more intuitive

@@ -23,3 +23,10 @@ ax,fig = make_canvas([-4,4],[-1.5,1.5],show_axes=False)
 for i in range(9):
     S.draw(linewidth=3)
     S.shift(1)
+
+ax,fig = make_canvas([-4,4],[-1.5,1.5],show_axes=False)
+S.shift(-8.5)
+for i in range(5):
+    S.draw(linewidth=3)
+    S.shift(1.5)
+    S.rotate_center(.035)
