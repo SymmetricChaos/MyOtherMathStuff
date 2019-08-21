@@ -9,6 +9,8 @@ class Polygon:
     def __init__(self,verts):
         if len(verts) < 3:
             raise Exception("Not a polygon.")
+        for i in verts:
+            assert len(i) == 2
         self.verts = verts
 
     def draw(self,facecolor="#00000000",edgecolor="black",**kwargs):
@@ -108,38 +110,51 @@ class Polygon:
     
     def rotate_center(self,th=0):
         """Rotate by full-turns around the center of the polygon"""
-        th = np.pi*2*th
         x,y = self.center
         self.shift_center()
-        M = np.array([[np.cos(th),-np.sin(th)],[np.sin(th),np.cos(th)]])
-        self.verts = np.matmul(self.verts,M)
+        self.rotate(th)
         self.shift_xy(x,y)
         
         
     def rotate_centroid(self,th=0):
         """Rotate by full-turns around the centroid of the polygon"""
-        th = np.pi*2*th
         x,y = self.centroid
         self.shift_ccentroid()
-        M = np.array([[np.cos(th),-np.sin(th)],[np.sin(th),np.cos(th)]])
-        self.verts = np.matmul(self.verts,M)
+        self.rotate(th)
         self.shift_xy(x,y)
 
 
-    def mirror_x(self):
-        """Mirror across the x axis"""
-        self.verts = [[-i[0],i[1]] for i in self.verts]
+    def mirror(self,axis):
+        """Mirror across an axis"""
+        if axis == "x" or axis == "X":
+            self.verts = [[-i[0],i[1]] for i in self.verts]
+        elif axis == "y" or axis == "Y":
+            self.verts = [[i[0],-i[1]] for i in self.verts]
+        else:
+            raise ValueError("Axis must be x or y")
 
 
-    def mirror_y(self):
-        """Mirror across the y axis"""
-        self.verts = [[i[0],-i[1]] for i in self.verts]
+    def mirror_center(self,axis):
+        """Mirror across center"""
+        x,y = self.center
+        self.shift_center()
+        self.mirror(axis)
+        self.shift_xy(x,y)
 
-    
+
+    def mirror_centroid(self,axis):
+        """Mirror across centroid"""
+        x,y = self.centroid
+        self.shift_centroid()
+        self.mirror(axis)
+        self.shift_xy(x,y)
+        
+            
     def simple(self):
         """Check if the polygon is simple"""
         print("method is not reliable")
         return not check_self_intersect(self)
+
 
     # Properties to make access more intuitive
     area = property(_area)
@@ -187,6 +202,7 @@ class PolygonSet:
             X += x
             Y += y
         return [np.mean(X), np.mean(Y)]
+
 
     # Properties to make access more intuitive
     center = property(_center)
