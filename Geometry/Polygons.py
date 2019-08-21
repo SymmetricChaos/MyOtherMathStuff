@@ -90,7 +90,7 @@ class Polygon:
         self.verts = [[i[0]-x,i[1]-y] for i in self.verts]
 
 
-    def shift_xy(self,x=0,y=0):
+    def shift(self,x=0,y=0):
         """Shift position"""
         self.verts = [[i[0]+x,i[1]+y] for i in self.verts]
 
@@ -113,7 +113,7 @@ class Polygon:
         x,y = self.center
         self.shift_center()
         self.rotate(th)
-        self.shift_xy(x,y)
+        self.shift(x,y)
         
         
     def rotate_centroid(self,th=0):
@@ -121,7 +121,7 @@ class Polygon:
         x,y = self.centroid
         self.shift_ccentroid()
         self.rotate(th)
-        self.shift_xy(x,y)
+        self.shift(x,y)
 
 
     def mirror(self,axis):
@@ -139,7 +139,7 @@ class Polygon:
         x,y = self.center
         self.shift_center()
         self.mirror(axis)
-        self.shift_xy(x,y)
+        self.shift(x,y)
 
 
     def mirror_centroid(self,axis):
@@ -147,7 +147,7 @@ class Polygon:
         x,y = self.centroid
         self.shift_centroid()
         self.mirror(axis)
-        self.shift_xy(x,y)
+        self.shift(x,y)
         
             
     def simple(self):
@@ -179,9 +179,9 @@ class PolygonSet:
             poly.draw(facecolor=facecolor,edgecolor=edgecolor,**kwargs)
 
 
-    def shift_xy(self,x=0,y=0):
+    def shift(self,x=0,y=0):
         for poly in self.polygons:
-            poly.shift_xy(x,y)
+            poly.shift(x,y)
 
 
     def _centroid(self):
@@ -202,11 +202,18 @@ class PolygonSet:
             X += x
             Y += y
         return [np.mean(X), np.mean(Y)]
+    
+    
+    def shift_center(self):
+        x,y = self.center
+        for poly in self.polygons:
+            poly.shift(-x,-y)
 
 
     # Properties to make access more intuitive
     center = property(_center)
     centroid = property(_centroid)
+
 
 
 def regular_polygon(n,r=1,pos=[0,0]):
