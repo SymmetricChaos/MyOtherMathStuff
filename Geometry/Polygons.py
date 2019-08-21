@@ -11,7 +11,6 @@ class Polygon:
             raise Exception("Not a polygon.")
         self.verts = verts
 
-
     def draw(self,facecolor="#00000000",edgecolor="black",**kwargs):
         ax = plt.gca()
         poly = plt.Polygon(self.verts,facecolor=facecolor,edgecolor=edgecolor,**kwargs)
@@ -27,17 +26,17 @@ class Polygon:
         return Polygon(self.verts[:])
 
 
-    def area(self):
+    def _area(self):
         """Calculate area"""
-        return abs(self.signed_area())
+        return abs(self.signed_area)
     
     
     # Needs to check for self intersection
-    def signed_area(self):
+    def _signed_area(self):
         """Calculate signed area"""
         area = 0
-        X = self.verts_x()
-        Y = self.verts_y()
+        X = self.x
+        Y = self.y
         X += [X[0]]
         Y += [Y[0]]
         for i in range(len(X)-1):
@@ -45,30 +44,30 @@ class Polygon:
         return area/2
 
 
-    def verts_x(self):
+    def _x(self):
         """x-coordinates of the vertices"""
         return [i[0] for i in self.verts]
 
 
-    def verts_y(self):
+    def _y(self):
         """y-coordinates of the vertices"""
         return [i[1] for i in self.verts]
 
 
     # Simpler and quicker than calculating the centroid but less
     # meaningful mathematically
-    def center(self):
+    def _center(self):
         """Return arithmetic mean of the vertices"""
-        return [ np.mean(self.verts_x()), np.mean(self.verts_y())]
+        return [ np.mean(self.x), np.mean(self.y)]
 
 
-    def centroid(self):
+    def _centroid(self):
         """Return centroid of the polygon"""
         x = 0
         y = 0
-        A = self.signed_area()
-        X = self.verts_x()
-        Y = self.verts_y()
+        A = self.signed_area
+        X = self.x
+        Y = self.y
         X += [X[0]]
         Y += [Y[0]]
         for i in range(len(X)-1):
@@ -85,7 +84,7 @@ class Polygon:
 
     def shift_centroid(self):
         """Center the polygon using centroid"""
-        x,y = self.centroid()
+        x,y = self.centroid
         self.verts = [[i[0]-x,i[1]-y] for i in self.verts]
 
 
@@ -110,7 +109,7 @@ class Polygon:
     def rotate_center(self,th=0):
         """Rotate by full-turns around the center of the polygon"""
         th = np.pi*2*th
-        x,y = self.center()
+        x,y = self.center
         self.shift_center()
         M = np.array([[np.cos(th),-np.sin(th)],[np.sin(th),np.cos(th)]])
         self.verts = np.matmul(self.verts,M)
@@ -120,7 +119,7 @@ class Polygon:
     def rotate_centroid(self,th=0):
         """Rotate by full-turns around the centroid of the polygon"""
         th = np.pi*2*th
-        x,y = self.centroid()
+        x,y = self.centroid
         self.shift_ccentroid()
         M = np.array([[np.cos(th),-np.sin(th)],[np.sin(th),np.cos(th)]])
         self.verts = np.matmul(self.verts,M)
@@ -142,6 +141,14 @@ class Polygon:
         print("method is not reliable")
         return not check_self_intersect(self)
 
+    # Properties to make access more intuitive
+    area = property(_area)
+    signed_area = property(_signed_area)
+    center = property(_center)
+    centroid = property(_centroid)
+    x = property(_x)
+    y = property(_y)
+    
 
 
 class PolygonSet:
@@ -162,23 +169,28 @@ class PolygonSet:
             poly.shift_xy(x,y)
 
 
-    def centroid(self):
+    def _centroid(self):
         """Centroid of the set"""
         x,y = 0,0
         for poly in self.polygons:
-            xp,yp = poly.centroid()
+            xp,yp = poly.centroid
             x += xp
             y += yp
         return [x/len(self.polygons),y/len(self.polygons)]
 
-    def center(self):
+
+    def _center(self):
         """Center of the set"""
         X,Y = [],[]
         for poly in self.polygons:
-            x,y = poly.verts_x(),poly.verts_y()
+            x,y = poly.x, poly.y
             X += x
             Y += y
         return [np.mean(X), np.mean(Y)]
+
+    # Properties to make access more intuitive
+    center = property(_center)
+    centroid = property(_centroid)
 
 
 def regular_polygon(n,r=1,pos=[0,0]):
