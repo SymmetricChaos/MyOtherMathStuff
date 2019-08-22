@@ -21,7 +21,6 @@ class Polygon:
 
 
     def draw_points(self,color="black",**kwargs):
-        ax = plt.gca()
         scatter_points(self.verts,color=color,**kwargs)
 
 
@@ -82,7 +81,7 @@ class Polygon:
 
     def shift_center(self):
         """Center the polygon using arithmetic mean of the vertices"""
-        x,y = self.center()
+        x,y = self.center
         self.verts = [[i[0]-x,i[1]-y] for i in self.verts]
 
 
