@@ -22,12 +22,18 @@ class Polygon:
 
     def draw_points(self,color="black",**kwargs):
         scatter_points(self.verts,color=color,**kwargs)
-
+        
 
     def copy(self):
         """Create an identical Polygon"""
         return Polygon(self.verts[:])
 
+
+    def __str__(self):
+        out = ""
+        for v in self.verts:
+            out += f"({round(v[0],2)},{round(v[1],2)})\n"
+        return out
 
     def _area(self):
         """Calculate area"""
@@ -155,7 +161,7 @@ class Polygon:
         """Check if the polygon is simple"""
         print("method is not reliable")
         return not check_self_intersect(self)
-
+    
 
     # Properties to make access more intuitive
     area = property(_area)

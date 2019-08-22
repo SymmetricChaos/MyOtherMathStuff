@@ -39,6 +39,10 @@ S1.draw(linewidth=3)
 S1[2].draw_points(zorder=3,color='orange',s=200)
 for i in S1:
     scatter_points([i.centroid],color='black')
+
+for i in S1:
+    print(i)
+    print()
     
 # Show the originals have not been changed
 ax,fig = make_canvas([-4,4])
