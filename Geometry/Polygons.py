@@ -281,7 +281,7 @@ def star_polygon(p,q,r=1,pos=[0,0]):
 
 def polygon_hull(polygon):
     """Return to convex hull of a polygon"""
-    return Polygon(convex_hull(polygon))
+    return Polygon(convex_hull(polygon)[:-1])
 
 
 # This function is not reliable
