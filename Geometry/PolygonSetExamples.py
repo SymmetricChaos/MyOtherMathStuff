@@ -28,10 +28,10 @@ C = regular_polygon(3,r=.5,pos=[0,-2.5])
 S1 = PolygonSet([F,B,C])
 S1[0].rotate_centroid(-.1)
 S1[1].rotate(.07)
-#S1.draw_points()
 
 
 ax,fig = make_canvas([-4,4])
 S1.draw(linewidth=3)
+S1[2].draw_points(zorder=3,color='orange',s=200)
 for i in S1:
     scatter_points([i.centroid])
