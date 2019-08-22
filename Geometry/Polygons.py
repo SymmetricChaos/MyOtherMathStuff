@@ -13,6 +13,7 @@ class Polygon:
             assert len(i) == 2
         self.verts = verts
 
+
     def draw(self,facecolor="#00000000",edgecolor="black",**kwargs):
         ax = plt.gca()
         poly = plt.Polygon(self.verts,facecolor=facecolor,edgecolor=edgecolor,**kwargs)
@@ -20,6 +21,7 @@ class Polygon:
 
 
     def draw_points(self,color="black",**kwargs):
+        ax = plt.gca()
         scatter_points(self.verts,color=color,**kwargs)
 
 
@@ -183,7 +185,13 @@ class PolygonSet:
             poly.draw(facecolor=facecolor,edgecolor=edgecolor,**kwargs)
 
 
+    def draw_points(self,color="black",**kwargs):
+        for poly in self.polygons:
+            poly.draw_points(color,**kwargs)
+
+
     def shift(self,x=0,y=0):
+        """Shift all polygons in the set"""
         for poly in self.polygons:
             poly.shift(x,y)
 
@@ -224,6 +232,7 @@ class PolygonSet:
 
 
     def rotate(self,th):
+        """Rotate the set around the origin"""
         for poly in self.polygons:
             poly.rotate(th)
             
