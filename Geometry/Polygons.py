@@ -32,7 +32,7 @@ class Polygon:
     def __str__(self):
         out = ""
         for v in self.verts:
-            out += f"({round(v[0],2)},{round(v[1],2)})\n"
+            out += f"({round(v[0],2)} , {round(v[1],2)})\n"
         return out
 
     def _area(self):
@@ -85,16 +85,16 @@ class Polygon:
         return [x/(6*A),y/(6*A)]
 
 
-    def shift_center(self):
+    def shift_center(self,x=0,y=0):
         """Center the polygon using arithmetic mean of the vertices"""
-        x,y = self.center
-        self.verts = [[i[0]-x,i[1]-y] for i in self.verts]
+        oldx,oldy = self.center
+        self.verts = [[i[0]-oldx+x,i[1]-oldy+y] for i in self.verts]
 
 
-    def shift_centroid(self):
+    def shift_centroid(self,x=0,y=0):
         """Center the polygon using centroid"""
-        x,y = self.centroid
-        self.verts = [[i[0]-x,i[1]-y] for i in self.verts]
+        oldx,oldy= self.centroid
+        self.verts = [[i[0]-oldx+x,i[1]-oldy+y] for i in self.verts]
 
 
     def shift(self,x=0,y=0):
@@ -222,18 +222,18 @@ class PolygonSet:
         return [np.mean(X), np.mean(Y)]
 
 
-    def shift_center(self):
-        """Put center of the set at the origin"""
-        x,y = self.center
+    def shift_center(self,x=0,y=0):
+        """Put center of the set at a given point"""
+        oldx,oldy = self.center
         for poly in self.polygons:
-            poly.shift(-x,-y)
+            poly.shift(-oldx+x,-oldy+y)
 
 
-    def shift_centroid(self):
-        """Put centroid of the set at the origin"""
-        x,y = self.centroid
+    def shift_centroid(self,x=0,y=0):
+        """Put centroid of the set at a given point"""
+        oldx,oldy = self.centroid
         for poly in self.polygons:
-            poly.shift(-x,-y)
+            poly.shift(-oldx+x,-oldy+y)
 
 
     def rotate(self,th):
