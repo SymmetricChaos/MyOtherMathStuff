@@ -179,11 +179,10 @@ class Polygon:
         self.shift(xold,yold)
     
             
-    def simple(self):
-        """Check if the polygon is simple"""
-        print("method is not reliable")
-        return not check_self_intersect(self)
-    
+    def affine(self,a,b,c,d):
+        """Abitrary affine transformation relative to the origin"""
+        M = np.array([[a,b],[c,d]])
+        self.verts = np.matmul(self.verts,M)
 
     # Properties to make access more intuitive
     area = property(_area)
