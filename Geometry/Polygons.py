@@ -102,82 +102,72 @@ class Polygon:
         self.verts = [[i[0]+x,i[1]+y] for i in self.verts]
 
 
-    def scale(self,s=1):
-        """Scale relative to the origin"""
+    def scale(self,s=1,pos=None):
+        """Scale relative to the some point"""
+        
+        if pos:
+            xold,yold = pos
+        else:
+            xold,yold = self.center
+        
+        self.shift(-xold,-yold)
+        
         M = np.array([[s,0],[0,s]])
         self.verts = np.matmul(self.verts,M)
         
+        self.shift(xold,yold)
         
-    def rotate(self,th=0):
-        """Rotate by full-turns around the origin"""
+        
+    def rotate(self,th=0,pos=None):
+        """Rotate by full-turns around some point"""
+        
+        if pos:
+            xold,yold = pos
+        else:
+            xold,yold = self.center
+        
+        self.shift(-xold,-yold)
+        
         th = np.pi*2*th
         M = np.array([[np.cos(th),-np.sin(th)],[np.sin(th),np.cos(th)]])
         self.verts = np.matmul(self.verts,M)
     
-    
-    def rotate_center(self,th=0):
-        """Rotate by full-turns around the center of the polygon"""
-        x,y = self.center
-        self.shift_center()
-        self.rotate(th)
-        self.shift(x,y)
-        
-        
-    def rotate_centroid(self,th=0):
-        """Rotate by full-turns around the centroid of the polygon"""
-        x,y = self.centroid
-        self.shift_centroid()
-        self.rotate(th)
-        self.shift(x,y)
+        self.shift(xold,yold)
 
 
-    def mirror(self,axis):
+    def mirror(self,axis,pos=None):
         """Mirror across an axis"""
-        if axis == "x" or axis == "X":
+        if pos:
+            xold,yold = pos
+        else:
+            xold,yold = self.center
+            
+        self.shift(-xold,-yold)
+        
+        if axis in "Xx":
             self.verts = [[-i[0],i[1]] for i in self.verts]
-        elif axis == "y" or axis == "Y":
+        elif axis in "Yy":
             self.verts = [[i[0],-i[1]] for i in self.verts]
         else:
             raise ValueError("Axis must be x or y")
-
-
-    def mirror_center(self,axis):
-        """Mirror across center"""
-        x,y = self.center
-        self.shift_center()
-        self.mirror(axis)
-        self.shift(x,y)
-
-
-    def mirror_centroid(self,axis):
-        """Mirror across centroid"""
-        x,y = self.centroid
-        self.shift_centroid()
-        self.mirror(axis)
-        self.shift(x,y)
+        
+        self.shift(xold,yold)
         
 
-    def stretch(self,x=1,y=1):
-        """Stretch relative to the origin"""
+    def stretch(self,x=1,y=1,pos=None):
+        """Stretch relative to some point"""
+        if pos:
+            xold,yold = pos
+        else:
+            xold,yold = self.center
+
+        self.shift(-xold,-yold)
+        
         M = np.array([[x,0],[0,y]])
         self.verts = np.matmul(self.verts,M)
         
-    
-    def stretch_center(self,x=1,y=1):
-        """Stretch relative to the center"""
-        xold,yold = self.center
-        self.shift_center()
-        self.stretch(x,y)
         self.shift(xold,yold)
-        
-        
-    def stretch_centroid(self,x=1,y=1):
-        """Stretch relative to the centroid"""
-        xold,yold = self.centroid
-        self.shift_centroid()
-        self.stretch(x,y)
-        self.shift(xold,yold)
-    
+
             
     def affine(self,a,b,c,d):
         """Abitrary affine transformation relative to the origin"""
