@@ -156,6 +156,28 @@ class Polygon:
         self.mirror(axis)
         self.shift(x,y)
         
+
+    def stretch(self,x=1,y=1):
+        """Stretch relative to the origin"""
+        M = np.array([[x,0],[0,y]])
+        self.verts = np.matmul(self.verts,M)
+        
+    
+    def stretch_center(self,x=1,y=1):
+        """Stretch relative to the center"""
+        xold,yold = self.center
+        self.shift_center()
+        self.stretch(x,y)
+        self.shift(xold,yold)
+        
+        
+    def stretch_centroid(self,x=1,y=1):
+        """Stretch relative to the centroid"""
+        xold,yold = self.centroid
+        self.shift_centroid()
+        self.stretch(x,y)
+        self.shift(xold,yold)
+    
             
     def simple(self):
         """Check if the polygon is simple"""

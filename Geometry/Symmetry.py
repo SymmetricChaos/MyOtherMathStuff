@@ -3,17 +3,22 @@ from Utils.Drawing import make_canvas
 
 F = Polygon([[0,0],[.5,0],[.5,1.5],[1.5,1.5],[1.5,2],[.5,2],[.5,2.5],[2,2.5],[2,3],[0,3]])
 F.scale(.4)
-Frot = F.copy()
-Frot.rotate(.5)
-Frot.shift(.5,.5)
 
 
-S = PolygonSet([F,Frot])
-S.shift(-4,-.2)
+S1 = PolygonSet([F,F])
+S1[1].rotate(.5)
+S1[1].shift(.5,.5)
+S1.shift(-4,-.2)
+
+S2 = PolygonSet([F,F])
+S2[1].mirror_center("x")
+S2[1].shift(1)
+S2.shift(-3.8,-.5)
 
 
 F.shift_centroid()
 F.shift(-4)
+
 ax,fig = make_canvas([-4,4],[-1.5,1.5],show_axes=False)
 for i in range(9):
     F.draw(linewidth=3)
@@ -21,6 +26,10 @@ for i in range(9):
 
 ax,fig = make_canvas([-4,4],[-1.5,1.5],show_axes=False)
 for i in range(9):
-    S.draw(linewidth=3)
-    S.shift(1)
+    S1.draw(linewidth=3)
+    S1.shift(1)
 
+ax,fig = make_canvas([-4,4],[-1.5,1.5],show_axes=False)
+for i in range(4):
+    S2.draw(linewidth=3)
+    S2.shift(2)
