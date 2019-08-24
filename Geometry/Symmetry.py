@@ -67,6 +67,20 @@ S5.shift(-3.2)
 
 
 
+S6a = PolygonSet([F,F])
+S6a[0].shift(.6,-.6)
+
+S6a[1].mirror("x")
+S6a[1].shift(-.3,-.6)
+
+S6b = S6a.copy()
+S6b.mirror("y",pos=[0,0])
+S6b.shift(1)
+
+S6 = S6a+S6b
+S6.shift(-4.2)
+
+
 F.shift_centroid()
 F.shift(-3.6)
 
@@ -106,3 +120,9 @@ for i in range(8):
     S5.draw(linewidth=3)
     S5.shift(2)
 plt.title("Frieze Group p2mm",fontsize=20)
+
+ax,fig = make_canvas([-4,4],[-1.5,1.5])
+for i in range(5):
+    S6.draw(linewidth=3)
+    S6.shift(2)
+plt.title("Frieze Group p2mg",fontsize=20)

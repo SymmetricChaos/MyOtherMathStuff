@@ -194,6 +194,16 @@ class PolygonSet:
 
     def __getitem__(self,n):
         return self.polygons[n]
+    
+    
+    def __add__(self,other):
+        assert type(other) == PolygonSet
+        L = self.polygons + other.polygons
+        return PolygonSet(L)
+            
+
+    def copy(self):
+        return PolygonSet(self.polygons[:])
 
 
     def draw(self,facecolor="#00000000",edgecolor="black",**kwargs):
@@ -267,6 +277,23 @@ class PolygonSet:
         self.shift_centroid()
         self.rotate(th)
         self.shift(x,y)
+        
+    def mirror(self,axis,pos=None):
+        """Mirror across an axis"""
+        if pos:
+            xold,yold = pos
+        else:
+            xold,yold = self.center
+            
+        self.shift(-xold,-yold)
+        
+        if axis in "XxYy":
+            for poly in self.polygons:
+                poly.mirror(axis,pos=[xold,yold])
+        else:
+            raise ValueError("Axis must be x or y")
+        
+        self.shift(xold,yold)
 
 
     # Properties to make access more intuitive
