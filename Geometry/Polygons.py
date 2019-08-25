@@ -34,6 +34,10 @@ class Polygon:
         for v in self.verts:
             out += f"({round(v[0],2)} , {round(v[1],2)})\n"
         return out
+    
+    def __add__(self,other):
+        assert type(other) == Polygon
+        return PolygonSet([self,other])
 
     def _area(self):
         """Calculate area"""
@@ -86,13 +90,13 @@ class Polygon:
 
 
     def shift_center(self,x=0,y=0):
-        """Center the polygon using arithmetic mean of the vertices"""
+        """Place the center on some point"""
         oldx,oldy = self.center
         self.verts = [[i[0]-oldx+x,i[1]-oldy+y] for i in self.verts]
 
 
     def shift_centroid(self,x=0,y=0):
-        """Center the polygon using centroid"""
+        """Place the centroid on some point"""
         oldx,oldy= self.centroid
         self.verts = [[i[0]-oldx+x,i[1]-oldy+y] for i in self.verts]
 
@@ -197,9 +201,16 @@ class PolygonSet:
     
     
     def __add__(self,other):
-        assert type(other) == PolygonSet
-        L = self.polygons + other.polygons
-        return PolygonSet(L)
+        if type(other) == Polygon:
+            return PolygonSet(self.polygons + [other.copy()])
+        if type(other) == PolygonSet:
+            L = self.polygons + other.polygons
+            return PolygonSet(L)
+        else:
+            raise Exception("Incompatible types")
+            
+    def __radd__(self,other):
+        return self+other
             
 
     def copy(self):
