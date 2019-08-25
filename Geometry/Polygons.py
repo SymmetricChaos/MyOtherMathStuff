@@ -34,10 +34,12 @@ class Polygon:
         for v in self.verts:
             out += f"({round(v[0],2)} , {round(v[1],2)})\n"
         return out
-    
+
+
     def __add__(self,other):
         assert type(other) == Polygon
         return PolygonSet([self,other])
+
 
     def _area(self):
         """Calculate area"""
@@ -208,7 +210,8 @@ class PolygonSet:
             return PolygonSet(L)
         else:
             raise Exception("Incompatible types")
-            
+
+
     def __radd__(self,other):
         return self+other
             
@@ -288,7 +291,8 @@ class PolygonSet:
         self.shift_centroid()
         self.rotate(th)
         self.shift(x,y)
-        
+
+
     def mirror(self,axis,pos=None):
         """Mirror across an axis"""
         if pos:
