@@ -46,7 +46,7 @@ class Circle:
            
         
 class Ellipse:
-    def __init__(self,a,b,pos=[0,0]):
+    def __init__(self,a=1,b=1,pos=[0,0]):
         # Silently orient the ellipse so that a is always the semimajor axis
         if b > a:
             a,b = b,a
@@ -100,3 +100,4 @@ class Ellipse:
 
     def shift_xy(self,x=0,y=0):
         self.pos = [self.pos[0]+x, self.pos[1]+y]
+
