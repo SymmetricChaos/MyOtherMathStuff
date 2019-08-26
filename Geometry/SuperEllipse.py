@@ -16,7 +16,10 @@ class SuperEllipse:
         x = self.a*np.cos(th)**(2/self.n)
         y = self.b*np.sin(th)**(2/self.n)
         
-        X = np.append(x,[-x,-x])
-        Y = np.append(y,[y,-y])
+#        X = np.append(x,[-x])
+#        Y = np.append(y,[-y])
+#
+#        plt.plot(X[1:],Y[1:],color='black')
 
-        plt.plot(X[1:],Y[1:],color='black')
+        plt.plot(x,y)
+        plt.plot(-x,-y)
