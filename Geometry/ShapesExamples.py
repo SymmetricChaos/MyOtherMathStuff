@@ -1,5 +1,4 @@
 from Shapes import Circle, Ellipse
-from ReuleauxTriangle import ReuleauxTriangle
 from Utils.Drawing import make_canvas, plot_points, scatter_points
 from AffineTransforms import rotate, reflect_y
 import numpy as np
@@ -22,8 +21,3 @@ make_canvas([-3,3],size=4)
 plot_points(P[:-2])
 scatter_points(P[100:101],color='orange')
 scatter_points(P[101:102],color='green')
-
-A = ReuleauxTriangle()
-
-make_canvas([-3,3],size=4)
-A.draw()

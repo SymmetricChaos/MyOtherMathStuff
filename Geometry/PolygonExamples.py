@@ -11,7 +11,7 @@ letter_F.rotate(.15)
 letter_F.shift_center()
 letter_F.draw()
 
-scatter_points([letter_F.center()],color='red',zorder=3)
+scatter_points([letter_F.center],color='red',zorder=3)
 
 make_canvas([-3,3],size=5)
 plt.title("Convex Hull of F")
@@ -27,9 +27,9 @@ make_canvas([-3,3],size=5)
 plt.title("Letter F Rotated Around Own Center")
 letter_F.scale(.7)
 letter_F.draw(edgecolor='gray')
-letter_F.rotate_center(.15)
+letter_F.rotate(.15)
 letter_F.draw()
-scatter_points([letter_F.center()],color='red',zorder=3)
+scatter_points([letter_F.center],color='red',zorder=3)
 scatter_points([[0,0]],color='black',zorder=3)
 
 
