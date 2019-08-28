@@ -11,9 +11,10 @@ class ReuleauxTriangle:
         
     def draw(self,p=100):
         c = Circle(self.r,self.pos)
-
+        r = np.sqrt(3)
+        
         for i in c.points(4)[:3]:
-            a = Circle(np.sqrt(3),i)
+            a = Circle(r,i)
             a.draw(facecolor="#00000000")
         
 

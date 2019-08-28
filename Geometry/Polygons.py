@@ -92,13 +92,13 @@ class Polygon:
 
 
     def shift_center(self,x=0,y=0):
-        """Place the center on some point"""
+        """Place the center on some point, by default the origin"""
         oldx,oldy = self.center
         self.verts = [[i[0]-oldx+x,i[1]-oldy+y] for i in self.verts]
 
 
     def shift_centroid(self,x=0,y=0):
-        """Place the centroid on some point"""
+        """Place the centroid on some point, by default the origin"""
         oldx,oldy= self.centroid
         self.verts = [[i[0]-oldx+x,i[1]-oldy+y] for i in self.verts]
 
@@ -214,7 +214,18 @@ class PolygonSet:
 
     def __radd__(self,other):
         return self+other
-            
+
+
+    def append(self,other):
+        if type(other) == Polygon:
+            self.verts.append(other)
+        if type(other) == list:
+            for i in other:
+                assert type(i) == Polygon, "Can only append polygons"
+            self.verts += other
+        else:
+            raise Exception("Incompatible types")
+
 
     def copy(self):
         return PolygonSet(self.polygons[:])
