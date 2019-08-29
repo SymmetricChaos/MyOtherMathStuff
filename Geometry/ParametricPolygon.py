@@ -11,4 +11,4 @@ def parametric_polygon(n,r=1,pts=None):
     x = r*h*np.cos(2*np.pi*th)
     y = r*h*np.sin(2*np.pi*th)
     
-    return [(a,b) for a,b in zip(x,y)]
+    return [(a,b) for a,b in zip(x[:-1],y[:-1])]
