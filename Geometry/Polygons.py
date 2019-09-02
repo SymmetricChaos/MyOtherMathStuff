@@ -1,9 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from ConvexHull import convex_hull
+from Geometry.ConvexHull import convex_hull
 from Utils.Drawing import scatter_points
-from CheckIntersect import do_intersect
-from Shapes import Circle
+from Geometry.CheckIntersect import do_intersect
+from Geometry.Shapes import Circle
 
 class Polygon:
     def __init__(self,verts):
