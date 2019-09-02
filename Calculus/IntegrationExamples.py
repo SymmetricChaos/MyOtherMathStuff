@@ -26,7 +26,7 @@ for i in [1,.5,.1]:
     print("By the rectangular rule {:.3f}".format(R))
     print("By the trapezoidal rule {:.3f}".format(T))
 
-make_canvas([-6,6],[-13,13])
+make_canvas([-5.1,5.1],[-14,14])
 plt.plot(x,y)
 plt.plot([-5,5],[0,0],"k-")
 a, b = -5, 5
@@ -40,11 +40,11 @@ while a < b:
     P.draw(facecolor="#11111111")
     a += s
     
-make_canvas([-6,6],[-13,13])
+make_canvas([-5.1,5.1],[-14,14])
 plt.plot(x,y)
 plt.plot([-5,5],[0,0],"k-")
 a, b = -5, 5
-s = 1
+s = .5
 while a < b:
     P = Polygon([[a,0],
                  [a,func(a)],
