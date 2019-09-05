@@ -1,4 +1,4 @@
-from Polygons import Polygon, regular_polygon, polygon_hull
+from Polygons import Polygon, regular_polygon, polygon_hull, Chain
 from Utils.Drawing import make_canvas, scatter_points
 import matplotlib.pyplot as plt
 
@@ -39,3 +39,6 @@ hexa = regular_polygon(6,.8,[0,.9])
 make_canvas([-3,3],size=4)
 hexa.draw(edgecolor="black")
 pent.draw(edgecolor="black")
+C = Chain([[0,0],[.8,.4],[1,1.3],[-1,1]])
+C.draw()
+print(C.length)
