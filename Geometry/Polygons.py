@@ -59,6 +59,19 @@ class Polygon:
         return area/2
 
 
+    def _perimeter(self):
+        """Perimeter of the polygon"""
+        V = self.verts[:] + [self.verts[0]]
+        per = 0
+        for pos in range(len(V)-1):
+            A = V[pos]
+            B = V[pos+1]
+            xdiff = A[0] - B[0]
+            ydiff = A[1] - B[1]
+            per += np.sqrt(xdiff**2 + ydiff**2)
+        return per
+    
+
     def _x(self):
         """x-coordinates of the vertices"""
         return [i[0] for i in self.verts]
@@ -67,9 +80,6 @@ class Polygon:
     def _y(self):
         """y-coordinates of the vertices"""
         return [i[1] for i in self.verts]
-    
-    def _perimeter(self):
-        """Permieter of the polygon"""
 
 
     # Simpler and quicker than calculating the centroid but less
@@ -188,9 +198,12 @@ class Polygon:
     signed_area = property(_signed_area)
     center = property(_center)
     centroid = property(_centroid)
+    perimeter = property(_perimeter)
     x = property(_x)
     y = property(_y)
     
+    
+
 class Chain:
     def __init__(self,verts):
         if len(verts) < 2:
@@ -207,6 +220,7 @@ class Chain:
     def draw_points(self,color="black",**kwargs):
         scatter_points(self.verts,color=color,**kwargs)
         
+
 
 class PolygonSet:
     def __init__(self,polygons):
