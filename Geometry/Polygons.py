@@ -203,7 +203,7 @@ class Polygon:
     y = property(_y)
     
     
-
+## Basically just a polygon that isn't closed
 class Chain:
     def __init__(self,verts):
         if len(verts) < 2:
@@ -222,6 +222,10 @@ class Chain:
         """Draw the vertices of the chain"""
         scatter_points(self.verts,color=color,**kwargs)
         
+    
+    def copy(self):
+        """Create an identical Chain"""
+        return Polygon(self.verts[:])
     
     def _length(self):
         """Length of the chain"""
@@ -244,6 +248,12 @@ class Chain:
     def _y(self):
         """y-coordinates of the vertices"""
         return [i[1] for i in self.verts]
+    
+    
+    def shift(self,x=0,y=0):
+        """Shift position"""
+        self.verts = [[i[0]+x,i[1]+y] for i in self.verts]
+
     
     
     length = property(_length)
