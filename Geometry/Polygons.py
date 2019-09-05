@@ -67,6 +67,9 @@ class Polygon:
     def _y(self):
         """y-coordinates of the vertices"""
         return [i[1] for i in self.verts]
+    
+    def _perimeter(self):
+        """Permieter of the polygon"""
 
 
     # Simpler and quicker than calculating the centroid but less
@@ -195,7 +198,8 @@ class Chain:
         for i in verts:
             assert len(i) == 2
         self.verts = verts
-        
+
+
     def draw(self,color="black",**kwargs):
         plot_points(self.verts,color=color,**kwargs)
         
