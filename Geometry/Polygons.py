@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from Geometry.ConvexHull import convex_hull
-from Utils.Drawing import scatter_points
+from Utils.Drawing import scatter_points, plot_points
 from Geometry.CheckIntersect import do_intersect
 from Geometry.Shapes import Circle
 
@@ -188,7 +188,21 @@ class Polygon:
     x = property(_x)
     y = property(_y)
     
+class Chain:
+    def __init__(self,verts):
+        if len(verts) < 2:
+            raise Exception("Not a chain.")
+        for i in verts:
+            assert len(i) == 2
+        self.verts = verts
+        
+    def draw(self,color="black",**kwargs):
+        plot_points(self.verts,color=color,**kwargs)
+        
 
+    def draw_points(self,color="black",**kwargs):
+        scatter_points(self.verts,color=color,**kwargs)
+        
 
 class PolygonSet:
     def __init__(self,polygons):
