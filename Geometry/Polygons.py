@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from Geometry.ConvexHull import convex_hull
-from Utils.Drawing import scatter_points, plot_points
+from Utils.Drawing import scatter_points
 from Geometry.CheckIntersect import do_intersect
 from Geometry.Shapes import Circle
 

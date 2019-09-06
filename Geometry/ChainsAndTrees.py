@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 from Utils.Drawing import scatter_points, plot_points
 
 ## Basically just a polygon that isn't closed
@@ -59,4 +58,26 @@ class Chain:
     length = property(_length)
     x = property(_x)
     y = property(_y)
+
+
+# Sum of chains
+#class Tree:
+#    def __init__(self,chains):
+#        for i in chains:
+#            assert type(i) == Chain
+#        self.chains = chains
         
+        
+        
+def chain_sum(A,B,v):
+    assert type(A) == Chain
+    assert type(B) == Chain
+    assert type(v) == int
+    A = A.copy()
+    B = B.copy()
+        
+    A.shift(-A.x[0]+B.x[v],-A.y[0]+B.y[v])
+    
+    A.draw()
+    B.draw()
+    
