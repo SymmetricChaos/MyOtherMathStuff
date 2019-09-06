@@ -193,6 +193,7 @@ class Polygon:
         M = np.array([[a,b],[c,d]])
         self.verts = np.matmul(self.verts,M)
 
+
     # Properties to make access more intuitive
     area = property(_area)
     signed_area = property(_signed_area)
@@ -221,12 +222,13 @@ class Chain:
     def draw_points(self,color="black",**kwargs):
         """Draw the vertices of the chain"""
         scatter_points(self.verts,color=color,**kwargs)
-        
-    
+
+
     def copy(self):
         """Create an identical Chain"""
         return Polygon(self.verts[:])
-    
+
+
     def _length(self):
         """Length of the chain"""
         V = self.verts
@@ -248,14 +250,14 @@ class Chain:
     def _y(self):
         """y-coordinates of the vertices"""
         return [i[1] for i in self.verts]
-    
-    
+
+
     def shift(self,x=0,y=0):
         """Shift position"""
         self.verts = [[i[0]+x,i[1]+y] for i in self.verts]
 
-    
-    
+
+    # Properties to make access more intuitive
     length = property(_length)
     x = property(_x)
     y = property(_y)
