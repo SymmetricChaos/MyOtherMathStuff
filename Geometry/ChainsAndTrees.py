@@ -60,14 +60,29 @@ class Chain:
     y = property(_y)
 
 
-# Sum of chains
-#class Tree:
-#    def __init__(self,chains):
-#        for i in chains:
-#            assert type(i) == Chain
-#        self.chains = chains
+
+# To work as sums of chains
+# Have to be a lot more complicated though
+class Tree:
+    def __init__(self,verts,links):
+        self.verts = verts
+        self.links = links
         
+    # verts should be a list of coordinates
         
+    # links should be a dict like
+    # links = {0 : [1],
+    #          1 : [2,4],
+    #          2 : [3],
+    #          3 : [5]}
+    
+    def draw(self):
+        for L in self.links.items():
+            v = L[0]
+            next_v = L[1]
+            for n in next_v:
+                plot_points([v,n])
+    
         
 def chain_sum(A,B,v):
     assert type(A) == Chain
