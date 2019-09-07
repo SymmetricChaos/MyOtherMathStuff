@@ -64,9 +64,21 @@ class Chain:
 # To work as sums of chains
 # Have to be a lot more complicated though
 class Tree:
-    def __init__(self,verts,links):
+    def __init__(self,verts,links=None):
+        for i in verts:
+            assert len(i) == 2
         self.verts = verts
-        self.links = links
+        
+        # If links are provided follow them
+        # Otherwise interpret as a chain
+        if links:
+            self.links = links
+        else:
+            self.links = dict()
+            for i in range(len(verts)-1):
+                self.links[i] = [i+1]
+            self.links[len(verts)-1] = []
+
         
     # verts should be a list of coordinates
         
@@ -76,14 +88,16 @@ class Tree:
     #          2 : [3],
     #          3 : [5]}
     
-    def draw(self):
+    def draw(self,color="black",**kwargs):
         for L in self.links.items():
             v = L[0]
             next_v = L[1]
             for n in next_v:
-                plot_points([v,n])
+                plot_points([self.verts[v],self.verts[n]],
+                            color=color,**kwargs)
     
-        
+
+
 def chain_sum(A,B,v):
     assert type(A) == Chain
     assert type(B) == Chain
