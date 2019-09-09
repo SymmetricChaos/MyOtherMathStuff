@@ -69,6 +69,18 @@ class Tree:
             assert len(i) == 2
         self.verts = verts
         
+        # links should be a dict with the relative
+        # offset that defines the edge. So a value
+        # of 1 indicates that the point has an edge
+        # going to the next vertex in verts, while
+        # a value of 2 means it has an edge going to
+        # the vertex after that.
+        # links = {0 : [1],
+        #           1 : [1,2], 
+        #           2 : [], 
+        #           3 : [1],
+        #           4 : []}
+        
         # If links are provided follow them
         # Otherwise interpret as a chain
         if links:
@@ -76,31 +88,31 @@ class Tree:
         else:
             self.links = dict()
             for i in range(len(verts)-1):
-                self.links[i] = [i+1]
+                self.links[i] = [1]
             self.links[len(verts)-1] = []
         
+        # Check for any leaves that might
+        # not have been specified and make
+        # sure they are included
         for v in range(len(verts)):
             if v not in self.links.keys():
                 self.links[v] = []
-        
-    # verts should be a list of coordinates
-        
-    # links should be a dict like
-    # links = {0 : [1],
-    #          1 : [2,4],
-    #          2 : [3],
-    #          3 : [5]}
+
     
     def draw(self,color="black",**kwargs):
         for L in self.links.items():
             v = L[0]
-            next_v = L[1]
-            for n in next_v:
-                plot_points([self.verts[v],self.verts[n]],
+            edges = L[1]
+            for n in edges:
+                plot_points([self.verts[v],self.verts[n+v]],
                             color=color,**kwargs)
     
 
-
+# Place root of one tree at some vertex of
+# another tree
+# How to merge the tree lists correctly?
+# If trees used relative offset to say where they
+# link to merging them would be easy
 def tree_sum(A,B,v):
     assert type(A) == Tree
     assert type(B) == Tree
@@ -112,16 +124,6 @@ def tree_sum(A,B,v):
     print("B")
     print(B.links)
     
-
-def chain_sum(A,B,v):
-    assert type(A) == Chain
-    assert type(B) == Chain
-    assert type(v) == int
-    A = A.copy()
-    B = B.copy()
-        
-    A.shift(-A.x[0]+B.x[v],-A.y[0]+B.y[v])
-    
-    A.draw()
-    B.draw()
+    new_verts = A.verts + B.verts
+    new_links = dict()
     
