@@ -78,7 +78,10 @@ class Tree:
             for i in range(len(verts)-1):
                 self.links[i] = [i+1]
             self.links[len(verts)-1] = []
-
+        
+        for v in range(len(verts)):
+            if v not in self.links.keys():
+                self.links[v] = []
         
     # verts should be a list of coordinates
         
@@ -97,6 +100,18 @@ class Tree:
                             color=color,**kwargs)
     
 
+
+def tree_sum(A,B,v):
+    assert type(A) == Tree
+    assert type(B) == Tree
+    assert type(v) == int
+    
+    print("A")
+    print(A.links)
+    
+    print("B")
+    print(B.links)
+    
 
 def chain_sum(A,B,v):
     assert type(A) == Chain
