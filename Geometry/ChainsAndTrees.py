@@ -1,4 +1,5 @@
 import numpy as np
+import copy
 from Utils.Drawing import scatter_points, plot_points
 
 ## Basically just a polygon that isn't closed
@@ -67,45 +68,40 @@ class Tree:
     def __init__(self,verts,links=None):
         for i in verts:
             assert len(i) == 2
-        self.verts = verts
+        if len(verts) > len(links):
+            raise Exception("Every vertex must have its links specified. If there are none use []")
+        if len(verts) < len(links):
+            raise Exception("Every vertex must have its links specified. If there are none use []")
+        self.verts = copy.deepcopy(verts)
         
-        # links should be a dict with the relative
+        
+        # links should be a list with the relative
         # offset that defines the edge. So a value
         # of 1 indicates that the point has an edge
         # going to the next vertex in verts, while
         # a value of 2 means it has an edge going to
         # the vertex after that.
-        # links = {0 : [1],
-        #           1 : [1,2], 
-        #           2 : [], 
-        #           3 : [1],
-        #           4 : []}
-        
         # If links are provided follow them
         # Otherwise interpret as a chain
         if links:
-            self.links = links
+            self.links = copy.deepcopy(links)
         else:
-            self.links = dict()
-            for i in range(len(verts)-1):
-                self.links[i] = [1]
-            self.links[len(verts)-1] = []
+            self.links = [1]*(len(verts)-1)+[]
         
-        # Check for any leaves that might
-        # not have been specified and make
-        # sure they are included
-        for v in range(len(verts)):
-            if v not in self.links.keys():
-                self.links[v] = []
 
-    
     def draw(self,color="black",**kwargs):
-        for L in self.links.items():
-            v = L[0]
-            edges = L[1]
-            for n in edges:
-                plot_points([self.verts[v],self.verts[n+v]],
+        for pos,offsets in enumerate(self.links):
+            for n in offsets:
+                plot_points([self.verts[pos],self.verts[pos+n]],
                             color=color,**kwargs)
+                
+    def copy(self):
+        return Tree(copy.deepcopy(self.verts),copy.deepcopy(self.links))
+
+
+    def shift(self,x=0,y=0):
+        """Shift position"""
+        self.verts = [[i[0]+x,i[1]+y] for i in self.verts]
     
 
 # Place root of one tree at some vertex of
@@ -118,12 +114,20 @@ def tree_sum(A,B,v):
     assert type(B) == Tree
     assert type(v) == int
     
-    print("A")
-    print(A.links)
+    A = A.copy()
+    B = B.copy()
     
-    print("B")
-    print(B.links)
+    A.shift(B.verts[v][0]-A.verts[0][0],
+            B.verts[v][1]-A.verts[0][1])
     
     new_verts = A.verts + B.verts
-    new_links = dict()
+    new_links = A.links + B.links
+    print(new_verts)
+    print(new_links)
+    print(new_links[v])
+    new_links[v].append(len(A.links)-v+1)
+    
+    print(new_links)
+    
+    return Tree(new_verts,new_links)
     
