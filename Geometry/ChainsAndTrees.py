@@ -120,13 +120,12 @@ def tree_sum(A,B,v):
     A.shift(B.verts[v][0]-A.verts[0][0],
             B.verts[v][1]-A.verts[0][1])
     
-    new_verts = A.verts + B.verts
-    new_links = A.links + B.links
-    print(new_verts)
+    new_verts = B.verts + A.verts[1:]
+    new_links = B.links + A.links[1:]
+    
     print(new_links)
     print(new_links[v])
-    new_links[v].append(len(A.links)-v+1)
-    
+    new_links[v].append(len(A.links)-v)
     print(new_links)
     
     return Tree(new_verts,new_links)
