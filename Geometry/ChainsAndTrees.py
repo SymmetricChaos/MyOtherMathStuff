@@ -94,6 +94,7 @@ class Tree:
             for n in offsets:
                 plot_points([self.verts[pos],self.verts[pos+n]],
                             color=color,**kwargs)
+        scatter_points(self.verts)
                 
     def copy(self):
         return Tree(copy.deepcopy(self.verts),copy.deepcopy(self.links))
