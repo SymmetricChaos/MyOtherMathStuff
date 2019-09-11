@@ -1,4 +1,5 @@
 import copy
+import numpy as np
 from Utils.Drawing import scatter_points, plot_points
 
 # To work as sums of chains
@@ -48,6 +49,19 @@ class Tree:
         """Shift position"""
         self.verts = [[i[0]+x,i[1]+y] for i in self.verts]
     
+    
+    def rotate(self,th=0):
+        """Rotate by full-turns around the root"""
+        
+        xold,yold = self.verts[0]
+
+        self.shift(-xold,-yold)
+        
+        th = np.pi*2*th
+        M = np.array([[np.cos(th),-np.sin(th)],[np.sin(th),np.cos(th)]])
+        self.verts = np.matmul(self.verts,M)
+    
+        self.shift(xold,yold)
 
 # Place root of one tree at some vertex of
 # another tree
