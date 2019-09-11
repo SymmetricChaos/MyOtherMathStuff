@@ -1,4 +1,4 @@
-from ChainsAndTrees import Tree, tree_sum
+from Tree import Tree, tree_sum
 from Utils.Drawing import make_canvas
 
 
@@ -10,5 +10,8 @@ T.draw()
 
 
 make_canvas([-3,3],size=5)
-U = tree_sum(T,T,3)
+U = tree_sum(T,T,2)
 U.draw()
+print(U.verts)
+print()
+print(U.links)
