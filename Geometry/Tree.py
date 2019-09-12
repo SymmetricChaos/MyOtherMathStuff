@@ -8,12 +8,7 @@ class Tree:
     def __init__(self,verts,links=None):
         for i in verts:
             assert len(i) == 2
-        if len(verts) > len(links):
-            raise Exception("Every vertex must have its links specified. If there are none use []")
-        if len(verts) < len(links):
-            raise Exception("Every vertex must have its links specified. If there are none use []")
         self.verts = copy.deepcopy(verts)
-        
         
         # links should be a list with the relative
         # offset that defines the edge. So a value
@@ -24,9 +19,15 @@ class Tree:
         # If links are provided follow them
         # Otherwise interpret as a chain
         if links:
+            if len(verts) > len(links):
+                raise Exception("Every vertex must have its links specified. If there are none use []")
+            if len(verts) < len(links):
+                raise Exception("Every vertex must have its links specified. If there are none use []")
+
             self.links = copy.deepcopy(links)
+            
         else:
-            self.links = [1]*(len(verts)-1)+[]
+            self.links = [ [1] ]*(len(verts)-1)+[]
         
 
     def draw(self,color="black",**kwargs):
@@ -62,6 +63,7 @@ class Tree:
         self.verts = np.matmul(self.verts,M)
     
         self.shift(xold,yold)
+
 
 # Place root of one tree at some vertex of
 # another tree
