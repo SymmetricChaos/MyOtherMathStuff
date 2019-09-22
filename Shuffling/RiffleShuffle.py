@@ -1,9 +1,12 @@
 from numpy.random import binomial, randint
 
-def riffle(D,n):
+def riffle(D):
+    # Cut the deck
     br = binomial(len(D),.5)
     L = D[:br]
     R = D[br:]
+    
+    # Riffle the two sections together
     out = []
     while len(L) > 0 and len(R) > 0:
         a = randint(2)
@@ -14,7 +17,7 @@ def riffle(D,n):
 
     return out + L + R
 
-
-D = [i for i in range(30)]
-
-print(riffle(D,1))
+def multi_riffle(D,n):
+    for i in range(n):
+        D = riffle(D)
+    return D
