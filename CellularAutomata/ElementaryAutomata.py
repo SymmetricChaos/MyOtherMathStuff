@@ -2,11 +2,11 @@ def cell_rule(r):
     """Higher order function to create a 1-dimensional cellular automata"""
     
     assert len(r) == 8
-    R = ("111","110","101","100","011","010","001","000")
+    patterns = ("111","110","101","100","011","010","001","000")
     
     zero = []
     
-    for i,j in zip(r,R):
+    for i,j in zip(r,patterns):
         if i == "0":
             zero.append(j)
 
@@ -19,18 +19,10 @@ def cell_rule(r):
             return "1"
         
     def apply_rule(S):
-        out = "0"
+        out = rule("0"+S[0]+S[1])
         for i in range(len(S)-2):
             out += rule(S[i:i+3])
-        out += rule(S[0]+S[-2]+S[-2])
+        out += rule(S[-2]+S[-1]+"0")
         return out
         
     return apply_rule
-
-
-
-Rule110 = cell_rule("01101110")
-S = "00000000000000000000000000000000000000000000001"
-for i in range(45):
-    print(S.replace("0"," "))
-    S = Rule110(S)
