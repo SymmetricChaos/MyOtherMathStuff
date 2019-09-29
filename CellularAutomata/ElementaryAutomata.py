@@ -1,7 +1,18 @@
-def cell_rule(r):
-    """Higher order function to create a 1-dimensional cellular automata"""
+def cell_rule(n):
+    """Higher order function functions for elementary cellular automata"""
     
-    assert len(r) == 8
+    if n < 0:
+        raise ValueError("Must be non-negative")
+    if n > 255:
+        raise ValueError("Must be less than 256")
+    
+    # Covert the number to the rule
+    r = ["0","0","0","0","0","0","0","0"]
+    for i in range(8):
+        n,rem = divmod(n,2)
+        r[i] = str(rem)
+    r.reverse()
+    
     patterns = ("111","110","101","100","011","010","001","000")
     
     zero = []
@@ -10,8 +21,7 @@ def cell_rule(r):
         if i == "0":
             zero.append(j)
 
-    print(f"Creating rule {r} giving output 0 for:\n{zero}")
-    
+
     def rule(s):
         if s in zero:
             return "0"

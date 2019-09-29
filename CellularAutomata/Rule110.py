@@ -1,7 +1,7 @@
 from ElementaryAutomata import cell_rule
 
 
-Rule_110 = cell_rule("01101110")
+Rule_110 = cell_rule(110)
 
     
 S = "00000000000000000000000000000000000000000000001"
