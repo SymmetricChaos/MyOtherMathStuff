@@ -3,6 +3,7 @@
 # works for ranked voting methods. Its not guaranteed that a Condorcet winner
 # exists and practical methods must deal with this.
 
+from numpy import matrix
 
 class Preferences:
     
@@ -24,25 +25,38 @@ class Preferences:
         return str(self.D)
 
 
-
 def compare_candidates(voters,candidates):
     out = dict()
     l = len(candidates)
+    L = []
     for i in range(l):
-        for j in range(i+1,l):
+        row = []
+        for j in range(l):
+
             wins = 0
             for v in voters:
                 if v.D[candidates[i]] > v.D[candidates[j]]:
                     wins += 1
             out[f"{candidates[i]} vs {candidates[j]}"] = wins
+            row.append(wins)
+        L.append(row)
 
-    print(out)
+    M = matrix(L)
+    print(M)
+
+    for i in out.items():
+        print(i)
+        
+    return out
+
+
+
 
 
 if __name__ == '__main__':
     import random
     
-    candidates = ["Alice","Bob","Carol","Dave","Eve","Frank"]
+    candidates = ["Alice","Bob","Carol","Dave","Eve"]
     
     V = []
     for i in range(5):
