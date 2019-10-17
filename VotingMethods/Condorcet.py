@@ -3,7 +3,7 @@
 # works for ranked voting methods. Its not guaranteed that a Condorcet winner
 # exists and practical methods must deal with this.
 
-from numpy import matrix
+from collections import Counter
 
 class Preferences:
     
@@ -26,29 +26,38 @@ class Preferences:
 
 
 def compare_candidates(voters,candidates):
-    out = dict()
+
     l = len(candidates)
+    
+    hth_winners = []
+    
     for i in range(l):
+        
         for j in range(i+1,l):
+            
+            c1 = candidates[i]
+            c2 = candidates[j]
+            
             wins = 0
             losses = 0
+            
             for v in voters:
-                if v.ranking[candidates[i]] > v.ranking[candidates[j]]:
+                if v.ranking[c1] > v.ranking[c2]:
                     wins += 1
                 else:
                     losses += 1
+                    
             if wins > losses:
-                print(candidates[i],"beats",candidates[j])
+                print(f"{c1:<5}  beats  {c2:<5}  {wins:>2} to {losses}")
+                hth_winners.append(c1)
             if wins < losses:
-                print(candidates[j],"beats",candidates[i])
+                print(f"{c2:<5}  beats  {c1:<5}  {losses:>2} to {wins}")
+                hth_winners.append(c2)
             if wins == losses:
-                print(candidates[i],"ties",candidates[j])
+                print(f"{c1:<5}  ties  {c2:<5}")
                 
-
-    
-    return out
-
-
+    C = Counter(hth_winners)
+    print("\n\n",C.most_common())
 
 
 
@@ -58,12 +67,13 @@ if __name__ == '__main__':
     candidates = ["Alice","Bob","Carol","Dave","Eve"]
     
     V = []
-    for i in range(5):
+    for i in range(30):
     
         ranks = [random.randint(0,5) for i in range(len(candidates))]
         
         V.append( Preferences(candidates,ranks) )
         
-    for i in V:
-        print(i)
+#    for i in V:
+#        print(i)
+        
     compare_candidates(V,candidates)
