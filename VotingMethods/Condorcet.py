@@ -8,15 +8,15 @@ from numpy import matrix
 class Preferences:
     
     def __init__(self,candidates,ranks):
-        self.D = dict()
+        self.ranking = dict()
         for c,r in zip(candidates,ranks):
-            self.D[str(c)] = r
+            self.ranking[str(c)] = r
         self.longest_name = max( [len(i) for i in candidates] )
 
 
     def __str__(self):
         out = ""
-        for p in self.D.items():
+        for p in self.ranking.items():
             out += f"{p[0]:{self.longest_name}}   {p[1]}\n"
         return out
 
@@ -28,25 +28,24 @@ class Preferences:
 def compare_candidates(voters,candidates):
     out = dict()
     l = len(candidates)
-    L = []
     for i in range(l):
-        row = []
-        for j in range(l):
-
+        for j in range(i+1,l):
             wins = 0
+            losses = 0
             for v in voters:
-                if v.D[candidates[i]] > v.D[candidates[j]]:
+                if v.ranking[candidates[i]] > v.ranking[candidates[j]]:
                     wins += 1
-            out[f"{candidates[i]} vs {candidates[j]}"] = wins
-            row.append(wins)
-        L.append(row)
+                else:
+                    losses += 1
+            if wins > losses:
+                print(candidates[i],"beats",candidates[j])
+            if wins < losses:
+                print(candidates[j],"beats",candidates[i])
+            if wins == losses:
+                print(candidates[i],"ties",candidates[j])
+                
 
-    M = matrix(L)
-    print(M)
-
-    for i in out.items():
-        print(i)
-        
+    
     return out
 
 
