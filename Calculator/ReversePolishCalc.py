@@ -35,4 +35,4 @@ def reverse_polish(S):
     return stk
 
 
-reverse_polish("-2 8 3 73 + + + sqrt")
+reverse_polish("2 8 3 73 + + + sqrt")
