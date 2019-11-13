@@ -1,9 +1,10 @@
+# Handle multiple arity
+
 def reverse_polish(S):
     assert type(S) == str
     
     ops = {"+" : lambda x,y: x+y,
-           "-" : lambda x,y: x-y,
-           "*" : lambda x,y: x-y,}
+           "*" : lambda x,y: x*y,}
     
     L = S.split(" ")
 
@@ -22,4 +23,4 @@ def reverse_polish(S):
             print(stk)
 
 
-reverse_polish("2 3 73 + *")
+reverse_polish("-2 8 3 73 + * +")
