@@ -8,11 +8,15 @@ def reverse_polish(S):
     operation = {"+" : lambda x,y: x+y,
                  "*" : lambda x,y: x*y,
                  "sqrt" : lambda x: sqrt(x),
+                 "-" : lambda x,y: y-x,
+                 "/" : lambda x,y: y/x
                 }
     
     arity = {"+" : 2,
              "*" : 2,
              "sqrt" : 1,
+             "-" : 2,
+             "/" : 2
              }
     
     L = S.split(" ")
@@ -36,3 +40,7 @@ def reverse_polish(S):
 
 
 reverse_polish("2 8 3 73 + + + sqrt")
+print()
+reverse_polish("15 3 /")
+print()
+reverse_polish("15 3 -")
