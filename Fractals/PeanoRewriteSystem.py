@@ -1,20 +1,22 @@
-# Need to divide the state into pieces that respect
-# parentheses
+# Need to translate rules into regex
+# Maybe not possible that way?
 
-def rewrite(state,rule,iters=3):
-    yield state
-    for i in range(iters):
-        t = ""
-#        for l in state:
-#            t += rule(l)
-        state = t
-        yield state
-        
-def peano_rule(S):
+import re
+
+def peano_rewrite(state,iters=3):
     """
-    A+0 -> A
-    A + S(B) -> S(A+B)
-    A*0 -> 0
+    A + 0 -> A
+    A + S(B) -> S(A + B)
+    A * 0 -> 0
     A * S(B) -> A + A*B
     """
-    pass
+    yield state
+    for i in range(iters):
+        patterns     = [ " + 0" ]
+        replacements = [ "" ]
+        for pat,rep in zip(patterns,replacements):
+            state = state.replace(pat,rep)
+        yield state
+        
+for i in peano_rewrite("A + 0",2):
+    print(i)
