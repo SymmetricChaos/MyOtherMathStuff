@@ -7,7 +7,7 @@ for i in range(3):
     
     print(f"\n\nRule {rule_number}\n")
     
-    w = 20
+    w = 26
     S = "0"*w + "1" + "0"*w
     for i in range(w):
         print(S.replace("0"," "))
