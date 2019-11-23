@@ -28,18 +28,16 @@ class Voter:
             out += f"{c}: {r}\n"
         out = out[:-1]
         return out
-    
-    def show(self):
-        pprint(self.prefs)
-        return None
 
     def rank(self,candidate):
         return self.prefs[candidate]
     
-#    def favorite(self):
+    def favorite(self):
+        return next(iter(self.prefs.keys()))
 
 
 if __name__ == '__main__':
     V = Voter(["Alice","Bob","Carol","Dave","Eve","Frank"],[1,7,2,3,9,3])
     print(V)
-    
+    print(V.favorite())
+    print(V.rank("Bob"))
