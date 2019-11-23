@@ -46,10 +46,13 @@ def draw_hilbert(n):
     
     xmax = max([i[0] for i in coords])
     xmin = min([i[0] for i in coords])
-    make_canvas([xmin-1,xmax+1],size=4)
+
+    make_canvas([xmin-1,xmax+1],size=6)
     plot_points(coords)
 
 draw_hilbert(2)
 draw_hilbert(3)
 draw_hilbert(4)
 draw_hilbert(5)
+draw_hilbert(6)
+draw_hilbert(7)
