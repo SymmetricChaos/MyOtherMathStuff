@@ -8,11 +8,11 @@ def hilbert_curve_rule(S):
     else:
         return S
 
-for i in LSystem("B",hilbert_curve_rule,3):
+for i in LSystem("B",hilbert_curve_rule,5):
     rules = i
 
 
-coords = [(0,0)]
+coords = []
 
 # Strip out anything unnceesaary for drawing
 rules = rules.replace("A","")
@@ -23,22 +23,15 @@ rules = rules[1:]
 
 print(rules)
 
-pos_stack = []
-ang_stack = []
 turtle.setheading(90)
 turtle.hideturtle()
-#turtle.up()
-#turtle.setpos(0,-300)
-#turtle.down()
 for i in rules:
     if i == "F":
         turtle.forward(10)
-        print(turtle.pos())
+        coords.append(turtle.pos())
     elif i == "-":
         turtle.left(90)
     elif i == "+":
         turtle.right(90)
 
-turtle.up()
-turtle.setpos(0,-300)
 turtle.done()
