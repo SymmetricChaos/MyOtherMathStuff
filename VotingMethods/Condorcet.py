@@ -11,13 +11,13 @@ class Preferences:
         self.ranking = dict()
         for c,r in zip(candidates,ranks):
             self.ranking[str(c)] = r
-        self.longest_name = max( [len(i) for i in candidates] )
+        self.longest = max( [len(i) for i in candidates] )
 
 
     def __str__(self):
         out = ""
         for p in self.ranking.items():
-            out += f"{p[0]:{self.longest_name}}   {p[1]}\n"
+            out += f"{p[0]:{self.longest}}   {p[1]}\n"
         return out
 
 
@@ -54,7 +54,7 @@ def compare_candidates(voters,candidates):
                 print(f"{c2:<5}  beats  {c1:<5}  {losses:>2} to {wins}")
                 hth_winners.append(c2)
             if wins == losses:
-                print(f"{c1:<5}  ties  {c2:<5}")
+                print(f"{c1:<5}  ties   {c2:<5}")
                 
     C = Counter(hth_winners)
     print("\n\n",C.most_common())
@@ -72,8 +72,6 @@ if __name__ == '__main__':
         ranks = [random.randint(0,5) for i in range(len(candidates))]
         
         V.append( Preferences(candidates,ranks) )
-        
-#    for i in V:
-#        print(i)
+
         
     compare_candidates(V,candidates)

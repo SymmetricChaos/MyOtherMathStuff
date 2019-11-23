@@ -38,6 +38,7 @@ def reverse_polish_interactive():
                 r = operation[i](*args)
                 stk.append(r)
         L = stk
+        print("\nCurrent Stack")
         print(L)
 
-reverse_polish_interactive()
+print(reverse_polish_interactive())
