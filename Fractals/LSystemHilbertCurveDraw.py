@@ -11,7 +11,7 @@ def hilbert_curve_rule(S):
         return S
 
 
-def draw_hilbert(n):
+def draw_hilbert(n,**kwargs):
 
     for i in LSystem("B",hilbert_curve_rule,n+2):
         rules = i
@@ -45,9 +45,10 @@ def draw_hilbert(n):
             ang = (ang+1)%4
     
     xmax = max([i[0] for i in coords])
-    make_canvas([-1,xmax+1],size=6)
-    plot_points(coords)
+    make_canvas([-(xmax/20),xmax+(xmax/20)],size=6)
+    plot_points(coords,**kwargs)
+    return coords
 
 if __name__ == '__main__':
-    for i in range(5):
+    for i in range(6):
         draw_hilbert(i)
