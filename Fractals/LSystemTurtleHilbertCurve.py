@@ -12,8 +12,6 @@ for i in LSystem("B",hilbert_curve_rule,5):
     rules = i
 
 
-coords = []
-
 # Strip out anything unnceesaary for drawing
 rules = rules.replace("A","")
 rules = rules.replace("B","")
@@ -28,7 +26,6 @@ turtle.hideturtle()
 for i in rules:
     if i == "F":
         turtle.forward(10)
-        coords.append(turtle.pos())
     elif i == "-":
         turtle.left(90)
     elif i == "+":

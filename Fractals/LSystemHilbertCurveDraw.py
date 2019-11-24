@@ -26,7 +26,7 @@ def draw_hilbert(n,**kwargs):
     while rules[0] == "+" or rules[0] == "-":
         rules = rules[1:]
         
-    ang = (n+2)%2
+    ang = n%2
     for i in rules:
         if i == "F":
             oldx = coords[-1][0] 
