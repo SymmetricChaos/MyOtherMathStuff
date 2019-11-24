@@ -47,7 +47,7 @@ def hilbert_points(n,**kwargs):
     
     return coords
 
-xy = hilbert_points(6)
+xy = hilbert_points(5)
 
 f = fft2(xy)
 print(f)
