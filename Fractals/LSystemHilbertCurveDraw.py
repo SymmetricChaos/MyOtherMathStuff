@@ -13,7 +13,7 @@ def hilbert_curve_rule(S):
 
 def draw_hilbert(n):
 
-    for i in LSystem("B",hilbert_curve_rule,n):
+    for i in LSystem("B",hilbert_curve_rule,n+2):
         rules = i
     
     coords = [(0,0)]
@@ -25,8 +25,8 @@ def draw_hilbert(n):
     rules = rules.replace("+-","")
     while rules[0] == "+" or rules[0] == "-":
         rules = rules[1:]
-        
-    ang = (n+1)%4
+    
+    ang = (n+1)%2
     for i in rules:
         if i == "F":
             oldx = coords[-1][0] 
@@ -45,14 +45,9 @@ def draw_hilbert(n):
             ang = (ang+1)%4
     
     xmax = max([i[0] for i in coords])
-    xmin = min([i[0] for i in coords])
-
-    make_canvas([xmin-1,xmax+1],size=6)
+    make_canvas([-1,xmax+1],size=6)
     plot_points(coords)
 
-draw_hilbert(2)
-draw_hilbert(3)
-draw_hilbert(4)
-draw_hilbert(5)
-draw_hilbert(6)
-draw_hilbert(7)
+if __name__ == '__main__':
+    for i in range(5):
+        draw_hilbert(i)
