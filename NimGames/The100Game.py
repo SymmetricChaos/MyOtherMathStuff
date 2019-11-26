@@ -19,10 +19,10 @@ def the_100_game():
         
         print(f"Total is now {total}")
         if total == 100:
-            print("You win!")
+            print("\nYou win!")
             return 1
         if total > 100:
-            print("Too high, you lose.")
+            print("\nToo high, you lose.")
             return 0
         
         
@@ -30,6 +30,8 @@ def the_100_game():
         nim_move = 12-(total % 11)
         if nim_move == 11:
             nim_move = randint(1,10)
+        if nim_move == 12:
+            nim_move = 1
         
         print("\nNim is thinking.")
         sleep(1)
@@ -41,7 +43,7 @@ def the_100_game():
         
         print(f"Total is now {total}")
         if total == 100:
-            print("Nim wins!")
+            print("\nNim wins!")
             return 0
         
         
