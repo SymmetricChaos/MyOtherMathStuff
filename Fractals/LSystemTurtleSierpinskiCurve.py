@@ -1,6 +1,6 @@
 import turtle
 from LSystem import LSystem
-def hilbert_curve_rule(S):
+def sierpinski_arrowhead_rule(S):
     if S == "A":
         return "BF+AF+B"
     if S == "B":
@@ -8,7 +8,7 @@ def hilbert_curve_rule(S):
     else:
         return S
 
-for i in LSystem("B",hilbert_curve_rule,5):
+for i in LSystem("B",sierpinski_arrowhead_rule,6):
     rules = i
 
 
@@ -25,7 +25,7 @@ turtle.setheading(90)
 turtle.hideturtle()
 for i in rules:
     if i == "F":
-        turtle.forward(10)
+        turtle.forward(5)
     elif i == "-":
         turtle.left(60)
     elif i == "+":
