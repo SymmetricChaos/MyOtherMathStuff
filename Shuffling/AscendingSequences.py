@@ -27,7 +27,7 @@ def ascending_sequences(L):
 
 if __name__ == '__main__':
     from random import sample
-    from RiffleShuffle import multi_riffle
+    from Shuffles import riffle, cut_deck
     
     print("\n\nA truly random sequence produces numerousc short ascending sequences")
     L = sample([i for i in range(20)],20)
@@ -36,18 +36,26 @@ if __name__ == '__main__':
     
     print()
     print("\n\nA single riffle shiffle creates just two ascending sequences")
-    L = multi_riffle([i for i in range(20)],1)
+    L = riffle([i for i in range(20)],1)
     print(L)
     print(ascending_sequences(L))
     
     print()
     print("\n\nRiffling twice is a bit better but clearly not random")
-    L = multi_riffle([i for i in range(20)],2)
+    L = riffle([i for i in range(20)],2)
     print(L)
     print(ascending_sequences(L))
     
     print()
     print("\n\nAfter about 7 shuffles the results appear similar to a truly random arrangement")
-    L = multi_riffle([i for i in range(20)],7)
+    L = riffle([i for i in range(20)],7)
+    print(L)
+    print(ascending_sequences(L))
+    
+    print()
+    print("\n\nRepeatedly cutting the deck can never produce more than two ascending sequences.\nHere is the result of 50 cuts.")
+    L = [i for i in range(20)]
+    for i in range(50):
+        L = cut_deck(L)
     print(L)
     print(ascending_sequences(L))

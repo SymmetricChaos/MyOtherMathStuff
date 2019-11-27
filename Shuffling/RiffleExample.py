@@ -1,4 +1,4 @@
-from RiffleShuffle import multi_riffle
+from Shuffles import riffle
 
 
 rank = "A23456789TJQK"
@@ -10,7 +10,7 @@ for s in suit:
 
 print(D)
 print()
-print(multi_riffle(D,1))
+print(riffle(D,1))
 print()
 
-print(multi_riffle(D,2))
+print(riffle(D,2))
