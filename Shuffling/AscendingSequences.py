@@ -16,17 +16,20 @@ def ascending_sequences(L):
                 T.append(a)
         # Add the sequence that was found to the list of sequences
         S.append(s)
-        # The remainder is renamed to L
+        # The remainder is renamed to L to reuse
         L = T
         
     return S
+
+
+
 
 
 if __name__ == '__main__':
     from random import sample
     from RiffleShuffle import multi_riffle
     
-    print("\n\nA truly random sequence produces numerous ascending sequences")
+    print("\n\nA truly random sequence produces numerousc short ascending sequences")
     L = sample([i for i in range(20)],20)
     print(L)
     print(ascending_sequences(L))
@@ -38,7 +41,13 @@ if __name__ == '__main__':
     print(ascending_sequences(L))
     
     print()
-    print("\n\nRiffling twice is a bit better")
+    print("\n\nRiffling twice is a bit better but clearly not random")
     L = multi_riffle([i for i in range(20)],2)
+    print(L)
+    print(ascending_sequences(L))
+    
+    print()
+    print("\n\nAfter about 7 shuffles the results appear similar to a truly random arrangement")
+    L = multi_riffle([i for i in range(20)],7)
     print(L)
     print(ascending_sequences(L))
