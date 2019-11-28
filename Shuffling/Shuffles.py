@@ -1,4 +1,4 @@
-from numpy.random import binomial, randint
+from numpy.random import binomial, randint, geometric
 
 def _riffle(D):
     # Cut the deck
@@ -32,13 +32,20 @@ def cut_deck(D):
 
 
 
-#def cut_deck(D,n=1):
-#    deck = D.copy()
-#    for i in range(n):
-#        deck = _cut_deck(deck)
-#        print(deck)
-#        print()
-#    return deck
-#
-#
-#print(cut_deck([i for i in range(20)],5))
+def _overhand(D):
+    br = binomial(len(D),.5)
+    L = D[:br]
+    R = D[br:]
+    while len(R) > 0:
+        br = geometric(.1)
+        if br > len(R):
+            L,R = R+L, []
+        L,R = R[:br]+L, R[br:]
+    return L
+
+
+
+def overhand(D,n):
+    for i in range(n):
+        D = _overhand(D)
+    return D
