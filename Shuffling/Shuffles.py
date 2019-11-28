@@ -1,7 +1,7 @@
 from numpy.random import binomial, randint, geometric
 
 def _riffle(D):
-    # Cut the deck
+    # Cut the deck near the middle
     br = binomial(len(D),.5)
     L = D[:br]
     R = D[br:]
@@ -17,8 +17,6 @@ def _riffle(D):
 
     return out + L + R
 
-
-
 def riffle(D,n=1):
     for i in range(n):
         D = _riffle(D)
@@ -26,16 +24,13 @@ def riffle(D,n=1):
 
 
 
-def cut_deck(D):
-    br = binomial(len(D),.5)
-    return D[br:] + D[:br]
-
-
-
 def _overhand(D):
+    # Cut the deck near the middle
     br = binomial(len(D),.5)
     L = D[:br]
     R = D[br:]
+    # Repeatedly drop the top few cards of the right pile
+    # on top of the left pile
     while len(R) > 0:
         br = geometric(.1)
         if br > len(R):
@@ -43,9 +38,39 @@ def _overhand(D):
         L,R = R[:br]+L, R[br:]
     return L
 
-
-
 def overhand(D,n):
     for i in range(n):
         D = _overhand(D)
     return D
+
+
+
+def _faro(D,inshuffle=True):
+    # Cut the deck exactly at the middle
+    br = len(D)//2
+    L = D[:br]
+    R = D[br:]
+    
+    # Riffle the two sections together perfectly
+    out = []
+    if inshuffle:
+        while len(L) > 0 and len(R) > 0:
+            out.append(R.pop(0))
+            out.append(L.pop(0))
+    else:
+        while len(L) > 0 and len(R) > 0:
+            out.append(L.pop(0))
+            out.append(R.pop(0))
+
+    return out + L + R
+
+def faro(D,n=1,inshuffle=True):
+    for i in range(n):
+        D = _faro(D,inshuffle)
+    return D
+
+
+
+def cut_deck(D):
+    br = binomial(len(D),.5)
+    return D[br:] + D[:br]

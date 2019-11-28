@@ -27,53 +27,69 @@ def ascending_sequences(L):
 
 if __name__ == '__main__':
     from random import sample
-    from Shuffles import riffle, cut_deck, overhand
+    from Shuffles import riffle, cut_deck, overhand, faro
     
     D = [i for i in range(52)]
     
-    print("\n\nA truly random sequence produces numerous short ascending sequences")
+    print("A truly random sequence produces numerous short ascending sequences")
     L = sample(D,20)
     print(L)
     print(len(ascending_sequences(L)),"sequences")
+    print("\n\n")
+    
+    
     
     print()
-    print("\n\nA single riffle shiffle creates just two ascending sequences")
+    print("\nA single riffle shiffle creates just two ascending sequences")
     L = riffle(D,1)
     print(L)
     print(len(ascending_sequences(L)),"sequences")
     
     print()
-    print("\n\nRiffling twice is a bit better but clearly not random")
+    print("\nRiffling twice is a bit better but clearly not random")
     L = riffle(D,2)
     print(L)
     print(len(ascending_sequences(L)),"sequences")
     
     print()
-    print("\n\nAfter about 7 shuffles the results appear similar to a truly random arrangement")
+    print("\nAfter about 7 shuffles the results appear similar to a truly random arrangement")
     L = riffle(D,7)
     print(L)
     print(len(ascending_sequences(L)),"sequences")
+    print("\n\n")
+    
+    
     
     print()
-    print("\n\nThe overhand shuffle leaves at least long sequence the first time")
+    print("\nThe overhand shuffle leaves at least one long sequence the first time")
     L = overhand(D,1)
     print(L)
     print(len(ascending_sequences(L)),"sequences")
     
     print()
-    print("\n\nThe second overhand shuffle looks much better")
+    print("\nThe second overhand shuffle looks much better")
     L = overhand(D,2)
     print(L)
     print(len(ascending_sequences(L)),"sequences")
     
     print()
-    print("\n\nAfter numerous overhand shuffles the result is not that much better")
+    print("\nAfter numerous overhand shuffles the result is not that much better")
     L = overhand(D,7)
     print(L)
     print(len(ascending_sequences(L)),"sequences")
+    print("\n\n")
+    
     
     print()
-    print("\n\nRepeatedly cutting the deck can never produce more than two ascending sequences.\nHere is the result of 50 cuts.")
+    print("\nThe faro shuffle, a 'perfect' riffle, is not in fact random at all")
+    L = faro(D,1)
+    print(L)
+    print(len(ascending_sequences(L)),"sequences")
+
+    
+    
+    print()
+    print("\nRepeatedly cutting the deck can never produce more than two ascending sequences.\nHere is the result of 50 cuts.")
     L = [i for i in range(20)]
     for i in range(50):
         L = cut_deck(L)
