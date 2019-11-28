@@ -1,4 +1,5 @@
 from numpy.random import binomial, randint, geometric
+from itertools import cycle
 
 def cut_deck(D):
     """Cut and complete the deck"""
@@ -89,4 +90,25 @@ def fisher_yates(D):
         k = randint(ctr)
         ctr -= 1
         D.append(D.pop(k))
+    return D
+
+
+
+def _mongean(D):
+    L = D.copy()
+    R = []
+    
+    C = cycle([0,1])
+    while len(L) > 0:
+        if next(C) == 0:
+            R = R + [L.pop(0)]
+        else:
+            R = [L.pop(0)] + R
+    
+    return R
+
+def mongean(D,n=1):
+    """Perform n Mongean shuffles"""
+    for i in range(n):
+        D = _mongean(D)
     return D

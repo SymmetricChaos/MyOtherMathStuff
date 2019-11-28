@@ -26,7 +26,7 @@ def ascending_sequences(L):
 
 
 if __name__ == '__main__':
-    from Shuffles import riffle, cut_deck, overhand, faro, fisher_yates
+    from Shuffles import riffle, cut_deck, overhand, faro, fisher_yates, mongean
     
     D = [i for i in range(52)]
     
@@ -38,20 +38,17 @@ if __name__ == '__main__':
     
     
     
-    print()
-    print("\nA single riffle shiffle creates just two ascending sequences")
+    print("\n\nA single riffle shiffle creates just two ascending sequences")
     L = riffle(D,1)
     print(L)
     print(len(ascending_sequences(L)),"sequences")
     
-    print()
-    print("\nRiffling twice is a bit better but clearly not random")
+    print("\n\nRiffling twice is a bit better but clearly not random")
     L = riffle(D,2)
     print(L)
     print(len(ascending_sequences(L)),"sequences")
     
-    print()
-    print("\nAfter about 7 shuffles the results appear similar to a truly random arrangement")
+    print("\n\nAfter about 7 shuffles the results appear similar to a truly random arrangement")
     L = riffle(D,7)
     print(L)
     print(len(ascending_sequences(L)),"sequences")
@@ -59,37 +56,45 @@ if __name__ == '__main__':
     
     
     
-    print()
-    print("\nThe overhand shuffle leaves at least one long sequence the first time")
+    print("\n\nThe overhand shuffle leaves at least one long sequence the first time")
     L = overhand(D,1)
     print(L)
     print(len(ascending_sequences(L)),"sequences")
     
-    print()
-    print("\nThe second overhand shuffle looks much better")
+    print("\n\nThe second overhand shuffle looks much better")
     L = overhand(D,2)
     print(L)
     print(len(ascending_sequences(L)),"sequences")
     
-    print()
-    print("\nAfter numerous overhand shuffles the result is not that much better")
+    print("\n\nAfter numerous overhand shuffles the result is not that much better")
     L = overhand(D,7)
     print(L)
     print(len(ascending_sequences(L)),"sequences")
     print("\n\n")
     
     
-    print()
-    print("\nThe faro shuffle, a 'perfect' riffle, is not in fact random at all")
+    print("\n\nThe faro shuffle, a 'perfect' riffle, is not in fact random at all")
     L = faro(D,1)
     print(L)
     print(len(ascending_sequences(L)),"sequences")
     print("\n\n")
     
     
-    print()
-    print("\nRepeatedly cutting the deck can never produce more than two ascending sequences.\nHere is the result of 50 cuts.")
-    L = [i for i in range(20)]
+    print("\n\nThe Mongean shuffle is another nonrandom sort of shuffle. Unlike the Faro it produces lots of short sequences")
+    L = mongean(D,1)
+    print(L)
+    print(len(ascending_sequences(L)),"sequences")
+    
+    print("\n\nIt only takes a few Mongean shuffles to produce a pattern that looks random")
+    L = mongean(D,3)
+    print(L)
+    print(len(ascending_sequences(L)),"sequences")
+    print("\n\n")
+    
+    
+    
+    print("\n\nRepeatedly cutting the deck can never produce more than two ascending sequences.\nHere is the result of 50 cuts.")
+    L = D.copy()
     for i in range(50):
         L = cut_deck(L)
     print(L)
