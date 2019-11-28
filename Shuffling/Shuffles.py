@@ -1,5 +1,12 @@
 from numpy.random import binomial, randint, geometric
 
+def cut_deck(D):
+    """Cut and complete the deck"""
+    br = binomial(len(D),.5)
+    return D[br:] + D[:br]
+
+
+
 def _riffle(D):
     # Cut the deck near the middle
     br = binomial(len(D),.5)
@@ -18,6 +25,7 @@ def _riffle(D):
     return out + L + R
 
 def riffle(D,n=1):
+    """Perform n riffle shuffles"""
     for i in range(n):
         D = _riffle(D)
     return D
@@ -39,6 +47,7 @@ def _overhand(D):
     return L
 
 def overhand(D,n):
+    """Perform n overhand shuffles"""
     for i in range(n):
         D = _overhand(D)
     return D
@@ -65,12 +74,19 @@ def _faro(D,inshuffle=True):
     return out + L + R
 
 def faro(D,n=1,inshuffle=True):
+    """Perform n Faro shuffles"""
     for i in range(n):
         D = _faro(D,inshuffle)
     return D
 
 
 
-def cut_deck(D):
-    br = binomial(len(D),.5)
-    return D[br:] + D[:br]
+def fisher_yates(D):
+    """Produces an unbiased true shuffle"""
+    D = D.copy()
+    ctr = len(D)
+    for i in range(len(D)):
+        k = randint(ctr)
+        ctr -= 1
+        D.append(D.pop(k))
+    return D

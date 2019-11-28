@@ -26,13 +26,12 @@ def ascending_sequences(L):
 
 
 if __name__ == '__main__':
-    from random import sample
-    from Shuffles import riffle, cut_deck, overhand, faro
+    from Shuffles import riffle, cut_deck, overhand, faro, fisher_yates
     
     D = [i for i in range(52)]
     
     print("A truly random sequence produces numerous short ascending sequences")
-    L = sample(D,20)
+    L = fisher_yates(D)
     print(L)
     print(len(ascending_sequences(L)),"sequences")
     print("\n\n")
@@ -85,7 +84,7 @@ if __name__ == '__main__':
     L = faro(D,1)
     print(L)
     print(len(ascending_sequences(L)),"sequences")
-
+    print("\n\n")
     
     
     print()
