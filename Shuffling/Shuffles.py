@@ -1,4 +1,4 @@
-from numpy.random import binomial, randint, geometric
+from numpy.random import binomial, randint, poisson
 from itertools import cycle
 
 def cut_deck(D):
@@ -38,10 +38,9 @@ def _overhand(D):
     br = binomial(len(D),.5)
     L = D[:br]
     R = D[br:]
-    # Repeatedly drop the top few cards of the right pile
-    # on top of the left pile
+    # Repeatedly drop about five of the cards
     while len(R) > 0:
-        br = geometric(.1)
+        br = poisson(5)
         if br > len(R):
             L,R = R+L, []
         L,R = R[:br]+L, R[br:]
@@ -112,6 +111,7 @@ def mongean(D,n=1):
     for i in range(n):
         D = _mongean(D)
     return D
+
 
 
 def pile_shuffle(D,n):
