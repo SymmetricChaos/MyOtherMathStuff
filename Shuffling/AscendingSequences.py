@@ -26,7 +26,7 @@ def ascending_sequences(L):
 
 
 if __name__ == '__main__':
-    from Shuffles import riffle, cut_deck, overhand, faro, fisher_yates, mongean
+    from Shuffles import riffle, cut_deck, overhand, faro, fisher_yates, mongean, pile_shuffle
     
     D = [i for i in range(52)]
     
@@ -90,6 +90,14 @@ if __name__ == '__main__':
     print(L)
     print(len(ascending_sequences(L)),"sequences")
     print("\n\n")
+    
+    
+    
+    print("\n\nA pile shuffle is generally regarded as a poor quality shuffle but it does effectively break up patterns")
+    L = pile_shuffle(D,5)
+    print(L)
+    print(len(ascending_sequences(L)),"sequences")
+
     
     
     

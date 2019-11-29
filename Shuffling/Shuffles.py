@@ -128,6 +128,3 @@ def pile_shuffle(D,n):
     
     out = fisher_yates(P)
     return sum(out,[])
-
-
-print(pile_shuffle([i for i in range(30)],5))
