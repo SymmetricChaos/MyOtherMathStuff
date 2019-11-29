@@ -112,3 +112,22 @@ def mongean(D,n=1):
     for i in range(n):
         D = _mongean(D)
     return D
+
+
+def pile_shuffle(D,n):
+    P = []
+    for i in range(n):
+        P.append([])
+    
+    cyc = cycle([i for i in range(n)])
+    
+    for pos in cyc:
+        P[pos].append(D.pop(0))
+        if len(D) == 0:
+            break
+    
+    out = fisher_yates(P)
+    return sum(out,[])
+
+
+print(pile_shuffle([i for i in range(30)],5))
