@@ -49,7 +49,7 @@ if __name__ == '__main__':
     print(L)
     card_sequences(L)
     
-    print("\n\nAfter about seven shuffles the results appear similar to a truly random arrangement")
+    print("\n\nAfter seven shuffles the results appear similar to a truly random arrangement, as many as ten may be needed to guarantee a good shuffle")
     L = riffle(D,7)
     print(L)
     card_sequences(L)
@@ -103,7 +103,7 @@ if __name__ == '__main__':
     L = pile_shuffle(D,5)
     print(L)
     card_sequences(L)
-
+    print("\n\n")
     
     
     
