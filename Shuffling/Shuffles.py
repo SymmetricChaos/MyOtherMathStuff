@@ -115,6 +115,7 @@ def mongean(D,n=1):
 
 
 def pile_shuffle(D,n):
+    D = D.copy()
     P = []
     for i in range(n):
         P.append([])
