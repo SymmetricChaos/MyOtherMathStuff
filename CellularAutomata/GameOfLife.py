@@ -1,10 +1,9 @@
 from collections import defaultdict
 from itertools import product
 
-def empty_grid():
+def empty_grid(s):
     grid = defaultdict(int)
     
-    s = 10
     pos = [i for i in product(range(-s//2-1,s//2),range(-s//2-1,s//2))]
     for i in pos:
         grid[i] = 0
@@ -32,9 +31,28 @@ def gen(grid):
             grid[pos] = 1
 
 
-def draw_gen(grid):
+def draw_gen(grid,s):
     
+    for i in range(-s//2-1,s//2):
+        for j in range(-s//2-1,s//2):
+            if grid[(j,i)] == 1:
+                print("#",end="")
+            else:
+                print(".",end="")
+        print()
+    print("\n\n\n")
 
 
+grid = empty_grid(30)
 
-grid = empty_grid()
+grid[(0,0)] = 1
+grid[(0,-1)] = 1
+grid[(0,1)] = 1
+grid[(1,-1)] = 1
+grid[(-1,0)] = 1
+
+draw_gen(grid,30)
+for i in range(6):
+
+    gen(grid)
+    draw_gen(grid,30)
