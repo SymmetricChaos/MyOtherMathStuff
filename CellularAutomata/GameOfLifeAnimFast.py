@@ -40,23 +40,12 @@ def coord_gen(grid):
         if v == 1:
             x.append(k[1])
             y.append(k[0])
-    print(grid)
-    print(x,y)
+
     return x,y          
 
 
-def draw_gen(grid,s):
-    
-    for i in range(-s//2-1,s//2):
-        for j in range(-s//2-1,s//2):
-            if grid[(j,i)] == 1:
-                print(" # ",end="")
-            else:
-                print(" . ",end="")
-        print()
-    print("\n\n\n")
 
-N = 10
+N = 50
 grid = defaultdict(int)
 
 grid[(0,0)] = 1
@@ -65,24 +54,35 @@ grid[(0,1)] = 1
 grid[(1,-1)] = 1
 grid[(-1,0)] = 1
 
-
-
-
+#print(grid)
+#grid = gen(grid)
+#x,y = coord_gen(grid)
+#print(grid)
+#grid = gen(grid)
+#x,y = coord_gen(grid)
+#print(grid)
+#grid = gen(grid)
+#x,y = coord_gen(grid)
+#print(grid)
 
 fig, ax = plt.subplots()
 fig.set_size_inches(6, 6)
 plt.xlim(-N//2-1, N//2)
 plt.ylim(-N//2-1, N//2)
 
-dots, = plt.plot([0], [0], 'ko', markersize=.4)
+dots, = plt.plot([0], [0], 'ko', markersize=1)
 
 def anim_plot(num,grid,*args):
-    print(num,grid,args)
+    print(num)
+    print(grid)
+    print(args)
+    print()
+    
+    grid = gen(grid)
     x,y = coord_gen(grid)
     dots.set_data(x,y)
-    grid = gen(grid)
     return dots
 
-life_anim = animation.FuncAnimation(fig, anim_plot, 10, fargs=(grid),
+life_anim = animation.FuncAnimation(fig, anim_plot, 20, fargs=(grid,0),
                                    interval=100, blit=False)
-#life_anim.save('game_of_life_fast.mp4')
+life_anim.save('game_of_life_fast.mp4')
