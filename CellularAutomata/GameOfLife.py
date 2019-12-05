@@ -27,7 +27,7 @@ def gen(grid):
     for pos,val in counts:
         if val < 2 or val > 3:
             grid[pos] = 0
-        else:
+        elif val == 3:
             grid[pos] = 1
 
 
@@ -52,7 +52,7 @@ grid[(1,-1)] = 1
 grid[(-1,0)] = 1
 
 draw_gen(grid,30)
-for i in range(6):
+for i in range(20):
 
     gen(grid)
     draw_gen(grid,30)
