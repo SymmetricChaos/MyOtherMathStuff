@@ -45,7 +45,7 @@ def coord_gen(grid,s):
     return x,y          
 
 
-N = 500
+N = 600
 grid = empty_grid(N)
 
 grid[(0,0)] = 1
@@ -56,10 +56,11 @@ grid[(-1,0)] = 1
 
 
 fig, ax = plt.subplots()
+fig.set_size_inches(6, 6)
 plt.xlim(-N//2-1, N//2)
 plt.ylim(-N//2-1, N//2)
 
-dots, = plt.plot([0], [0], 'ko')
+dots, = plt.plot([0], [0], 'ko', markersize=.4)
 
 def anim_plot(num,grid,s):
     x,y = coord_gen(grid,s)
@@ -67,6 +68,6 @@ def anim_plot(num,grid,s):
     gen(grid)
     return dots
 
-life_anim = animation.FuncAnimation(fig, anim_plot, 500, fargs=(grid, N),
+life_anim = animation.FuncAnimation(fig, anim_plot, 10, fargs=(grid, N),
                                    interval=100, blit=False)
 life_anim.save('game_of_life.mp4')
