@@ -56,6 +56,6 @@ if __name__ == '__main__':
     print(G.grid)
     
     try_word("apple",55,(0,1),G)
-    try_word("apple",55,(-1,1),G)
+    try_word("apple",66,(-1,1),G)
     
     G.show()
