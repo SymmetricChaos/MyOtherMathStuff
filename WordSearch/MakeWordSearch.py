@@ -94,13 +94,14 @@ def try_options(frame):
 
 def try_word(word,pos,direct,wordgrid):
     
-    gr = wordgrid.copy()
+    gr = wordgrid
+    g = gr.grid.copy()
     p = pos
     
     for l in word:
-        if gr.grid[p] == "_":
-            gr.grid[p] = l
-        elif  gr.grid[p] == l:
+        if g[p] == "_":
+            g[p] = l
+        elif g[p] == l:
             pass
         else:
             return False
@@ -115,12 +116,8 @@ def try_word(word,pos,direct,wordgrid):
             return False
         
         p = wordgrid.pair_to_pos(loc[0],loc[1])
-        
-    wordgrid = gr
-        
 
-    
-#    wordgrid = gr
+    gr.grid = g
     return True
     
 
