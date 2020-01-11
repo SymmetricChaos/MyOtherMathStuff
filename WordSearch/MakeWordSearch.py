@@ -3,10 +3,13 @@ from random import sample
 class WordGrid:
     
     # Define number of rows and columns
-    def __init__(self,rows,cols):
+    def __init__(self,rows,cols,grid=None):
         self.rows = rows
         self.cols = cols
-        self.grid = [" "]*(rows*cols) 
+        if grid:
+            self.grid = grid
+        else:
+            self.grid = ["_"]*(rows*cols) 
     
     def pair_to_pos(self,row,col):
         return row*self.cols + col
@@ -51,11 +54,10 @@ def make_word_search(words,size):
     
     while True:
         frame = stack[-1]
-        word = frame["words"].pop()
-        
-        res = try_word(word,frame)
+        res = try_options(frame)
                 
         if res == True:
+            frame["words"].pop()
             if len(frame["words"]) == 0:
                 return frame["grid"]
             new_frame = {"words" : frame["words"],
@@ -66,42 +68,73 @@ def make_word_search(words,size):
             stack.append(new_frame)
         else:
             stack.pop()
+        
+        if len(stack) == 0:
+            raise Exception("Cannot create this word search")
+
+
+def try_options(frame):
+    w = frame["words"][-1]
+
+    ps = frame["positions"]
+    ds = frame["directions"]
+    gr = frame["grid"]
+    
+    while len(ps) > 0:
+        p = ps.pop()
+        while len(ds) > 0:
+            d = ds.pop()
+            res = try_word(w,p,d,gr)
+            if res == True:
+                return True
+    
+    return False
             
 
 
-
-
-def try_word(word,frame):
-    gr = frame["grid"]
+def try_word(word,pos,direct,wordgrid):
+    
+    gr = wordgrid.copy()
     p = pos
     
-    while len(frame["positions"]) > 0:
-        pos = frame["positions"].pop()
-            
-        while len(frame["directions"]) > 0:
-            direct = frame["directions"].pop()
-                
-    
     for l in word:
-        if gr.grid[p] == " ":
+        if gr.grid[p] == "_":
             gr.grid[p] = l
         elif  gr.grid[p] == l:
             pass
         else:
             return False
+        
         loc = wordgrid.pos_to_pair(p)
-        loc = [loc[0]+direction[0],loc[1]+direction[1]]
+        loc = [loc[0]+direct[0],loc[1]+direct[1]]
+        print(loc)
+        
+        if loc[0] < 0 or loc[1] < 0:
+            return False
+        if loc[0] > gr.rows-1 or loc[1] > gr.cols-1:
+            return False
+        
         p = wordgrid.pair_to_pos(loc[0],loc[1])
+        
+    wordgrid = gr
+        
+
+    
+#    wordgrid = gr
     return True
     
 
 if __name__ == '__main__':
     G = WordGrid(10,10)
-    print(G.grid)
     
     try_word("apple",55,(0,1),G)
     try_word("apple",66,(-1,1),G)
+    try_word("apple",0,(0,1),G)
     
     G.show()
     
-    print(sample([i for i in range(10)],10))
+    print(G.pos_to_pair(0))
+    
+#    
+#    S = make_word_search(["apple","fruit","cherry"],10)
+#    S.show()
