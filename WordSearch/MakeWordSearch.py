@@ -1,3 +1,5 @@
+from random import sample
+
 class WordGrid:
     
     # Define number of rows and columns
@@ -23,25 +25,67 @@ class WordGrid:
             if (n+1) % self.cols == 0:
                 print()
 
-# Directions as increments
-directions = ( (0,1),
-               (1,1),
-               (1,0),
-               (-1,1),
-               (0,-1),
-               (-1,-1),
-               (-1,0),
-               (-1,1) )
+def make_word_search(words,size):
+    
+    # Directions as increments
+    directions = ( (0,1),
+                   (1,1),
+                   (1,0),
+                   (-1,1),
+                   (0,-1),
+                   (-1,-1),
+                   (-1,0),
+                   (-1,1) )
+
+    grid = WordGrid(size,size)
+
+    initial = {"words" : words,
+             "grid" : grid.copy(),
+             "directions" : sample(directions,8),
+             "positions" : sample([i for i in range(size*size)],size*size)
+            }
+    
+    stack = []
+    
+    stack.append(initial)
+    
+    while True:
+        frame = stack[-1]
+        word = frame["words"].pop()
+        
+        res = try_word(word,frame)
+                
+        if res == True:
+            if len(frame["words"]) == 0:
+                return frame["grid"]
+            new_frame = {"words" : frame["words"],
+                         "grid" : grid.copy(),
+                         "directions" : sample(directions,8),
+                         "positions" : sample([i for i in range(size*size)],size*size)
+                         }
+            stack.append(new_frame)
+        else:
+            stack.pop()
+            
 
 
-#def build_word_search
 
-def try_word(word,pos,direction,wordgrid):
+
+def try_word(word,frame):
+    gr = frame["grid"]
     p = pos
+    
+    while len(frame["positions"]) > 0:
+        pos = frame["positions"].pop()
+            
+        while len(frame["directions"]) > 0:
+            direct = frame["directions"].pop()
+                
+    
     for l in word:
-        if wordgrid.grid[p] == " ":
-            wordgrid.grid[p] = l
-        elif  wordgrid.grid[p] == l:
+        if gr.grid[p] == " ":
+            gr.grid[p] = l
+        elif  gr.grid[p] == l:
             pass
         else:
             return False
@@ -59,3 +103,5 @@ if __name__ == '__main__':
     try_word("apple",66,(-1,1),G)
     
     G.show()
+    
+    print(sample([i for i in range(10)],10))
