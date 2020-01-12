@@ -43,10 +43,10 @@ def make_word_search(words,size):
     grid = WordGrid(size,size)
 
     initial = {"words" : words,
-             "grid" : grid.copy(),
-             "directions" : sample(directions,8),
-             "positions" : sample([i for i in range(size*size)],size*size)
-            }
+               "grid" : grid.copy(),
+               "directions" : sample(directions,8),
+               "positions" : sample([i for i in range(size*size)],size*size)
+               }
     
     stack = []
     
@@ -55,14 +55,15 @@ def make_word_search(words,size):
     while True:
         frame = stack[-1]
         res = try_options(frame)
-        print(frame["words"][-1])
         
         if res:
-            frame["grid"].grid = res
             frame["words"].pop()
+            
             if len(frame["words"]) == 0:
                 return frame["grid"]
-            new_frame = {"words" : frame["words"],
+            
+            frame["grid"].grid = res
+            new_frame = {"words" : frame["words"].copy(),
                          "grid" : frame["grid"].copy(),
                          "directions" : sample(directions,8),
                          "positions" : sample([i for i in range(size*size)],size*size)
@@ -73,6 +74,7 @@ def make_word_search(words,size):
         
         if len(stack) == 0:
             raise Exception("Cannot create this word search")
+        
 
 
 def try_options(frame):
@@ -103,7 +105,7 @@ def try_word(word,pos,direct,wordgrid):
         if g[p] == "_":
             g[p] = l
         elif g[p] == l:
-            pass
+            g[p] = l
         else:
             return False
         
@@ -125,5 +127,9 @@ def try_word(word,pos,direct,wordgrid):
 if __name__ == '__main__':
 
     
-    S = make_word_search(["apple","fruit","cherry","banana","lemon","mango","orange","pear","peach"],20)
+    S = make_word_search(["apple","fruit","cherry","banana",
+                          "lemon","mango","orange","pear",
+                          "peach","strawberry","apricot",
+                          "cantalope","clementine","guava",
+                          "kumquat","nectarine"],18)
     S.show()
