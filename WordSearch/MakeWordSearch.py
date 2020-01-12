@@ -3,6 +3,7 @@ from random import sample
 class WordGrid:
     
     # Define number of rows and columns
+    # Also create or accept a grid
     def __init__(self,rows,cols,grid=None):
         self.rows = rows
         self.cols = cols
@@ -11,23 +12,21 @@ class WordGrid:
         else:
             self.grid = ["_"]*(rows*cols) 
     
+    # Convert coordinates to a position
     def pair_to_pos(self,row,col):
         return row*self.cols + col
 
+    # Convert a position to coordinates
     def pos_to_pair(self,pos):
         r = pos//self.cols
         c = pos%self.cols
         return [r,c]
     
+    # Copy the whole object
     def copy(self):
         return WordGrid(self.rows,self.cols,self.grid.copy())
 
-    def show(self):
-        for n,g in enumerate(self.grid):
-            print(g,end = " ")
-            if (n+1) % self.cols == 0:
-                print()
-    
+    # A simple string representation
     def __str__(self):
         S = ""
         for n,g in enumerate(self.grid):
@@ -39,15 +38,17 @@ class WordGrid:
 
 def make_word_search(words,size):
     
+    # Recursively place words into the grid
     G = place_all_words(words,size)
 
-    alpha = sample("abcdefghijklmnopqrstuvwxyz",26)
-    
+    # add random letters to empty spaces
+    alpha = "abcdefghijklmnopqrstuvwxyz"
     for i in range(len(G.grid)):
         if G.grid[i] == "_":
-            G.grid[i] = alpha[i%26]
+            G.grid[i] = sample(alpha,1)[0]
             
     return str(G)
+
 
 def place_all_words(words,size):
     
@@ -61,45 +62,54 @@ def place_all_words(words,size):
                    (-1,0),
                    (-1,1) )
 
+    # Build a square grid
     grid = WordGrid(size,size)
 
+    # First stack frame
     initial = {"words" : words,
                "grid" : grid.copy(),
                "directions" : sample(directions,8),
                "positions" : sample([i for i in range(size*size)],size*size)
                }
+    stack = [initial]
     
-    stack = []
-    
-    stack.append(initial)
     
     while True:
+        
+        # Use the top frame of the stack
         frame = stack[-1]
         res = try_options(frame)
         
+        # If that gives a grid
         if res:
 
             # Accept the new grid and remove the word that was placed
             frame["grid"].grid = res
             frame["words"].pop()
             
+            # If we're now out of words return the grid
             if len(frame["words"]) == 0:
                 return frame["grid"]
             
+            # Otherwise create a new stack frame
+            # Have to make sure everything is copied so we don't overwrite
+            # other frames
             new_frame = {"words" : frame["words"].copy(),
                          "grid" : frame["grid"].copy(),
                          "directions" : sample(directions,8),
                          "positions" : sample([i for i in range(size*size)],size*size)
                          }
             stack.append(new_frame)
+
+        # If it gives back False backtrack
         else:
             print("backtracking")
             stack.pop()
         
+        # If we've backtracked all the way then its not possible
         if len(stack) == 0:
             raise Exception("Cannot create this word search")
         
-
 
 def try_options(frame):
     w = frame["words"][-1]
@@ -108,6 +118,8 @@ def try_options(frame):
     ds = frame["directions"]
     gr = frame["grid"]
     
+    # Eliminate positions one by one since they will not be reused
+    # But we do not eliminate directions, they're reused in each position
     while len(ps) > 0:
         p = ps.pop()
         for d in ds:
@@ -118,34 +130,40 @@ def try_options(frame):
     return False
             
 
-
 def try_word(word,pos,direct,wordgrid):
     
+    # Copy the grid in case the word can't be placed
     g = wordgrid.grid.copy()
-    p = pos
     
     for l in word:
-        if g[p] == "_":
-            g[p] = l
-        elif g[p] == l:
-            g[p] = l
+        # If the space is blank or matches write it
+        # Otherwise fail out
+        if g[pos] == "_":
+            g[pos] = l
+        elif g[pos] == l:
+            pass
         else:
             return False
         
-        loc = wordgrid.pos_to_pair(p)
+        # Step in the direction
+        loc = wordgrid.pos_to_pair(pos)
         loc = [loc[0]+direct[0],loc[1]+direct[1]]
 
-        
+        # Fail out if the position doesn't exist
         if loc[0] < 0 or loc[1] < 0:
             return False
         if loc[0] > wordgrid.rows-1 or loc[1] > wordgrid.cols-1:
             return False
         
-        p = wordgrid.pair_to_pos(loc[0],loc[1])
+        # Convert the coordinates back
+        pos = wordgrid.pair_to_pos(loc[0],loc[1])
 
-    
+    # If nothing went wrong return the grid that was created
     return g
     
+
+
+
 
 if __name__ == '__main__':
 
