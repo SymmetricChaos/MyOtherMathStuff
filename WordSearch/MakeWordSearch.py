@@ -24,11 +24,32 @@ class WordGrid:
 
     def show(self):
         for n,g in enumerate(self.grid):
-            print(g,end = "")
+            print(g,end = " ")
             if (n+1) % self.cols == 0:
                 print()
+    
+    def __str__(self):
+        S = ""
+        for n,g in enumerate(self.grid):
+            S += f"{g} "
+            if (n+1) % self.cols == 0:
+                S += "\n"
+        return S
+
 
 def make_word_search(words,size):
+    
+    G = place_all_words(words,size)
+
+    alpha = sample("abcdefghijklmnopqrstuvwxyz",26)
+    
+    for i in range(len(G.grid)):
+        if G.grid[i] == "_":
+            G.grid[i] = alpha[i%26]
+            
+    return str(G)
+
+def place_all_words(words,size):
     
     # Directions as increments
     directions = ( (0,1),
@@ -57,12 +78,14 @@ def make_word_search(words,size):
         res = try_options(frame)
         
         if res:
+
+            # Accept the new grid and remove the word that was placed
+            frame["grid"].grid = res
             frame["words"].pop()
             
             if len(frame["words"]) == 0:
                 return frame["grid"]
             
-            frame["grid"].grid = res
             new_frame = {"words" : frame["words"].copy(),
                          "grid" : frame["grid"].copy(),
                          "directions" : sample(directions,8),
@@ -70,6 +93,7 @@ def make_word_search(words,size):
                          }
             stack.append(new_frame)
         else:
+            print("backtracking")
             stack.pop()
         
         if len(stack) == 0:
@@ -86,8 +110,7 @@ def try_options(frame):
     
     while len(ps) > 0:
         p = ps.pop()
-        while len(ds) > 0:
-            d = ds.pop()
+        for d in ds:
             res = try_word(w,p,d,gr)
             if res:
                 return res
@@ -126,10 +149,11 @@ def try_word(word,pos,direct,wordgrid):
 
 if __name__ == '__main__':
 
-    
-    S = make_word_search(["apple","fruit","cherry","banana",
-                          "lemon","mango","orange","pear",
-                          "peach","strawberry","apricot",
-                          "cantalope","clementine","guava",
-                          "kumquat","nectarine"],18)
-    S.show()
+    word_list = ["apple","mango","guava","cherry","cantalope",
+                 "lemon","apricot","orange","papaya","prune",
+                 "banana","plantain","peach","pear","persimmon",
+                 "tangerine","melon","plum","nectarine","fig",
+                 "clemintine","currant","lime"]
+                 
+    G = make_word_search(word_list,15)
+    print(G.upper())
