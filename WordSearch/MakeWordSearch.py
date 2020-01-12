@@ -125,5 +125,5 @@ def try_word(word,pos,direct,wordgrid):
 if __name__ == '__main__':
 
     
-    S = make_word_search(["apple","fruit","cherry","banana","lemon"],10)
+    S = make_word_search(["apple","fruit","cherry","banana","lemon","mango","orange","pear","peach"],20)
     S.show()
