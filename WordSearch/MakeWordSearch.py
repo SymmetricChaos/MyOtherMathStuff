@@ -55,13 +55,15 @@ def make_word_search(words,size):
     while True:
         frame = stack[-1]
         res = try_options(frame)
-                
-        if res == True:
+        print(frame["words"][-1])
+        
+        if res:
+            frame["grid"].grid = res
             frame["words"].pop()
             if len(frame["words"]) == 0:
                 return frame["grid"]
             new_frame = {"words" : frame["words"],
-                         "grid" : grid.copy(),
+                         "grid" : frame["grid"].copy(),
                          "directions" : sample(directions,8),
                          "positions" : sample([i for i in range(size*size)],size*size)
                          }
@@ -85,8 +87,8 @@ def try_options(frame):
         while len(ds) > 0:
             d = ds.pop()
             res = try_word(w,p,d,gr)
-            if res == True:
-                return True
+            if res:
+                return res
     
     return False
             
@@ -94,8 +96,7 @@ def try_options(frame):
 
 def try_word(word,pos,direct,wordgrid):
     
-    gr = wordgrid
-    g = gr.grid.copy()
+    g = wordgrid.grid.copy()
     p = pos
     
     for l in word:
@@ -108,30 +109,21 @@ def try_word(word,pos,direct,wordgrid):
         
         loc = wordgrid.pos_to_pair(p)
         loc = [loc[0]+direct[0],loc[1]+direct[1]]
-        print(loc)
+
         
         if loc[0] < 0 or loc[1] < 0:
             return False
-        if loc[0] > gr.rows-1 or loc[1] > gr.cols-1:
+        if loc[0] > wordgrid.rows-1 or loc[1] > wordgrid.cols-1:
             return False
         
         p = wordgrid.pair_to_pos(loc[0],loc[1])
 
-    gr.grid = g
-    return True
+    
+    return g
     
 
 if __name__ == '__main__':
-    G = WordGrid(10,10)
+
     
-    try_word("apple",55,(0,1),G)
-    try_word("apple",66,(-1,1),G)
-    try_word("apple",0,(0,1),G)
-    
-    G.show()
-    
-    print(G.pos_to_pair(0))
-    
-#    
-#    S = make_word_search(["apple","fruit","cherry"],10)
-#    S.show()
+    S = make_word_search(["apple","fruit","cherry","banana","lemon"],10)
+    S.show()
