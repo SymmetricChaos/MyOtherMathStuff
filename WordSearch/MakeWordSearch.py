@@ -240,13 +240,12 @@ def try_word(word,pos,direct,wordgrid):
 
 if __name__ == '__main__':
 
-    word_list = ["apple","mango","guava","cherry","cantalope",
-                 "lemon","apricot","orange","papaya","prune",
-                 "banana","plantain","peach","pear","persimmon",
-                 "tangerine","melon","plum","nectarine",
-                 "clemintine","currant","lime"]
+    word_list = ["azalea","bouquet","buttercup","carnation","daffodil",
+                 "daisy","goldenrod","honeysuckle","jasmine","lavender",
+                 "laurel","magnolia","marigold","narcissus","poinsettia",
+                 "rhododendron","snapdragon","tulip","wisteria","zinnia"]
     
-    n = 17 
+    n = 24 
     G = easy_word_search(word_list,n)
     print(G.upper())
     
