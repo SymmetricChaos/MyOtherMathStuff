@@ -112,9 +112,9 @@ def hard_word_search(words,size):
 
     # Create alphabet from the words so that fake letter frequency is about the
     # same as true letter frequency
-    # Also get all the digraphs from the words so they can be placedin the grid
-    # as well as even better fakes, because the digraphs are in the words this
-    # never makes a search impossible if it would have been possible without it
+    # Also get all the digraphs from the words so they can be placed in the grid
+    # as well as even better fakes, digraphs cannot cause a puzzle to become
+    # impossible
     alpha = ""
     digraphs = []
     for w in words:
@@ -123,6 +123,11 @@ def hard_word_search(words,size):
             digraphs += [w[d:d+2]]
 
     # Recursively place words into the grid
+    # Note that digraphs are placed in front of the word since we remove words
+    # from back to front
+    # This is much faster than placing the digraphs first since digraph
+    # placement will never require backtracking, in the worst case they are just
+    # placed to overlap with the word they come from
     G = place_all_words(digraphs+words,size,directions)
 
     for i in range(len(G.grid)):
@@ -139,6 +144,8 @@ def place_all_words(words,size,directions):
     grid = WordGrid(size,size)
 
     # First stack frame
+    # Have to make sure everything is copied so we don't overwrite
+    # other frames
     initial = {"words" : words.copy(),
                "grid" : grid.copy(),
                "directions" : sample(directions,len(directions)),
@@ -164,8 +171,6 @@ def place_all_words(words,size,directions):
                 return frame["grid"]
             
             # Otherwise create a new stack frame
-            # Have to make sure everything is copied so we don't overwrite
-            # other frames
             new_frame = {"words" : frame["words"].copy(),
                          "grid" : frame["grid"].copy(),
                          "directions" : sample(directions,len(directions)),
@@ -173,9 +178,8 @@ def place_all_words(words,size,directions):
                          }
             stack.append(new_frame)
 
-        # If it gives back False backtrack
+        # If it gives back False then backtrack
         else:
-#            print("backtracking")
             stack.pop()
         
         # If we've backtracked all the way then its not possible
@@ -184,8 +188,8 @@ def place_all_words(words,size,directions):
         
 
 def try_options(frame):
+    # Short names
     w = frame["words"][-1]
-
     ps = frame["positions"]
     ds = frame["directions"]
     gr = frame["grid"]
@@ -244,7 +248,7 @@ if __name__ == '__main__':
                  "laurel","magnolia","marigold","narcissus","poinsettia",
                  "rhododendron","snapdragon","tulip","wisteria","zinnia"]
     
-    n = 25 
+    n = 20 
     G = easy_word_search(word_list,n)
     print(G.upper())
 
