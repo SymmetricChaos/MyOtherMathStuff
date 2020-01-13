@@ -51,18 +51,89 @@ def make_word_search(words,size):
             
     return str(G)
 
-
-def place_all_words(words,size):
+# Words written in readable directions
+# Uniformly random filling
+def easy_word_search(words,size):
     
-    # Directions as increments
+    # Directons as increments
+    directions = ( (0,1),
+                   (1,1),
+                   (1,0) )
+    
+    # Recursively place words into the grid
+    G = place_all_words(words,size,directions)
+
+    # Fill empty spaces
+    alpha = "abcdefghijklmnopqrstuvwxyz"
+    for i in range(len(G.grid)):
+        if G.grid[i] == "_":
+            G.grid[i] = sample(alpha,1)[0]
+            
+    return str(G)
+
+# Words written in every direction
+# Uniformly random filling
+def medium_word_search(words,size):
+    
+    # Directons as increments
     directions = ( (0,1),
                    (1,1),
                    (1,0),
-                   (-1,1),
+                   (1,-1),
                    (0,-1),
                    (-1,-1),
                    (-1,0),
                    (-1,1) )
+
+    # Recursively place words into the grid
+    G = place_all_words(words,size,directions)
+
+    # add random letters to empty spaces
+    alpha = "abcdefghijklmnopqrstuvwxyz"
+    for i in range(len(G.grid)):
+        if G.grid[i] == "_":
+            G.grid[i] = sample(alpha,1)[0]
+            
+    return str(G)
+
+# Words written in every direction
+# Bootstrapping filling
+def hard_word_search(words,size):
+    
+    # Directons as increments
+    directions = ( (0,1),
+                   (1,1),
+                   (1,0),
+                   (1,-1),
+                   (0,-1),
+                   (-1,-1),
+                   (-1,0),
+                   (-1,1) )
+
+    # Create alphabet from the words so that fake letter frequency is about the
+    # same as true letter frequency
+    # Also get all the digraphs from the words so they can be placedin the grid
+    # as well as even better fakes, because the digraphs are in the words this
+    # never makes a search impossible if it would have been possible without it
+    alpha = ""
+    digraphs = []
+    for w in words:
+        alpha += w
+        for d in range(len(w)-1):
+            digraphs += [w[d:d+1]]
+
+    # Recursively place words into the grid
+    G = place_all_words(words+digraphs,size,directions)
+
+    for i in range(len(G.grid)):
+        if G.grid[i] == "_":
+            G.grid[i] = sample(alpha,1)[0]
+            
+    return str(G)
+
+
+def place_all_words(words,size,directions):
+    
 
     # Build a square grid
     grid = WordGrid(size,size)
@@ -70,7 +141,7 @@ def place_all_words(words,size):
     # First stack frame
     initial = {"words" : words,
                "grid" : grid.copy(),
-               "directions" : sample(directions,8),
+               "directions" : sample(directions,len(directions)),
                "positions" : sample([i for i in range(size*size)],size*size)
                }
     stack = [initial]
@@ -98,14 +169,14 @@ def place_all_words(words,size):
             # other frames
             new_frame = {"words" : frame["words"].copy(),
                          "grid" : frame["grid"].copy(),
-                         "directions" : sample(directions,8),
+                         "directions" : sample(directions,len(directions)),
                          "positions" : sample([i for i in range(size*size)],size*size)
                          }
             stack.append(new_frame)
 
         # If it gives back False backtrack
         else:
-            print("backtracking")
+#            print("backtracking")
             stack.pop()
         
         # If we've backtracked all the way then its not possible
@@ -172,8 +243,15 @@ if __name__ == '__main__':
     word_list = ["apple","mango","guava","cherry","cantalope",
                  "lemon","apricot","orange","papaya","prune",
                  "banana","plantain","peach","pear","persimmon",
-                 "tangerine","melon","plum","nectarine","fig",
+                 "tangerine","melon","plum","nectarine",
                  "clemintine","currant","lime"]
-                 
-    G = make_word_search(word_list,15)
+    
+    n = 17 
+    G = easy_word_search(word_list,n)
+    print(G.upper())
+    
+    G = medium_word_search(word_list,n)
+    print(G.upper())
+    
+    G = hard_word_search(word_list,n)
     print(G.upper())
