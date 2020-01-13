@@ -42,7 +42,9 @@ def make_word_search(words,size):
     G = place_all_words(words,size)
 
     # add random letters to empty spaces
-    alpha = "abcdefghijklmnopqrstuvwxyz"
+    alpha = ""
+    for w in words:
+        alpha += w
     for i in range(len(G.grid)):
         if G.grid[i] == "_":
             G.grid[i] = sample(alpha,1)[0]
