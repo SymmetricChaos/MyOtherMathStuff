@@ -120,10 +120,10 @@ def hard_word_search(words,size):
     for w in words:
         alpha += w
         for d in range(len(w)-1):
-            digraphs += [w[d:d+1]]
+            digraphs += [w[d:d+2]]
 
     # Recursively place words into the grid
-    G = place_all_words(words+digraphs,size,directions)
+    G = place_all_words(digraphs+words,size,directions)
 
     for i in range(len(G.grid)):
         if G.grid[i] == "_":
@@ -139,7 +139,7 @@ def place_all_words(words,size,directions):
     grid = WordGrid(size,size)
 
     # First stack frame
-    initial = {"words" : words,
+    initial = {"words" : words.copy(),
                "grid" : grid.copy(),
                "directions" : sample(directions,len(directions)),
                "positions" : sample([i for i in range(size*size)],size*size)
@@ -155,7 +155,6 @@ def place_all_words(words,size,directions):
         
         # If that gives a grid
         if res:
-
             # Accept the new grid and remove the word that was placed
             frame["grid"].grid = res
             frame["words"].pop()
@@ -245,12 +244,12 @@ if __name__ == '__main__':
                  "laurel","magnolia","marigold","narcissus","poinsettia",
                  "rhododendron","snapdragon","tulip","wisteria","zinnia"]
     
-    n = 24 
+    n = 25 
     G = easy_word_search(word_list,n)
     print(G.upper())
-    
+
     G = medium_word_search(word_list,n)
     print(G.upper())
-    
+
     G = hard_word_search(word_list,n)
     print(G.upper())
