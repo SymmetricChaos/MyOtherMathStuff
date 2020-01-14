@@ -36,6 +36,9 @@ class WordGrid:
         return S
 
 
+
+
+
 def make_word_search(words,size):
     
     # Recursively place words into the grid
@@ -50,6 +53,7 @@ def make_word_search(words,size):
             G.grid[i] = sample(alpha,1)[0]
             
     return str(G)
+
 
 # Words written in readable directions
 # Uniformly random filling
@@ -70,6 +74,7 @@ def easy_word_search(words,size):
             G.grid[i] = sample(alpha,1)[0]
             
     return str(G)
+
 
 # Words written in every direction
 # Uniformly random filling
@@ -95,6 +100,7 @@ def medium_word_search(words,size):
             G.grid[i] = sample(alpha,1)[0]
             
     return str(G)
+
 
 # Words written in every direction
 # Bootstrapping filling
@@ -139,7 +145,6 @@ def hard_word_search(words,size):
 
 def place_all_words(words,size,directions):
     
-
     # Build a square grid
     grid = WordGrid(size,size)
 

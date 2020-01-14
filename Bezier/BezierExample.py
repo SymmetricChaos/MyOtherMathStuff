@@ -6,7 +6,7 @@ fig,ax = make_canvas([-2.5,2.5],[-2.5,2.5])
 
 begin = [-2,0]
 end = [2,0]
-control = [[.5,-1],[0,1.5]]
+control = [[.5,-1],[1,2]]
 
 X,Y = bezier(begin,end,control)
 
