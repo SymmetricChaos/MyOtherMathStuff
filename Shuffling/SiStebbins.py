@@ -11,7 +11,8 @@ for i in range(52):
     si_deck.append(rank[pos1]+suit[pos2])
     pos1 = (pos1 + 3) % 13
     pos2 = (pos2 + 1) % 4
-    
+
+print("Traditional Si Stebbins Stack")
 print(si_deck)
 print(len(set(si_deck)))
 
@@ -32,6 +33,7 @@ pos = 0
 for i in range(52):
     si_deck.append(deck[pos])
     pos = (pos + 15) % 52
-    
+
+print("Variant Si Stebbins")
 print(si_deck)
 print(len(set(si_deck)))
