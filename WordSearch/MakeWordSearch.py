@@ -39,25 +39,12 @@ class WordGrid:
 
 
 
-def make_word_search(words,size):
-    
-    # Recursively place words into the grid
-    G = place_all_words(words,size)
-
-    # add random letters to empty spaces
-    alpha = ""
-    for w in words:
-        alpha += w
-    for i in range(len(G.grid)):
-        if G.grid[i] == "_":
-            G.grid[i] = sample(alpha,1)[0]
-            
-    return str(G)
-
-
 # Words written in readable directions
 # Uniformly random filling
 def easy_word_search(words,size):
+    
+    if any([len(w) > size for w in words]):
+        raise Exception(f"Words cannot have more than {size} letters")
     
     # Directons as increments
     directions = ( (0,1),
@@ -79,6 +66,9 @@ def easy_word_search(words,size):
 # Words written in every direction
 # Uniformly random filling
 def medium_word_search(words,size):
+    
+    if any([len(w) > size for w in words]):
+        raise Exception(f"Words cannot have more than {size} letters")
     
     # Directons as increments
     directions = ( (0,1),
@@ -105,6 +95,9 @@ def medium_word_search(words,size):
 # Words written in every direction
 # Bootstrapping filling
 def hard_word_search(words,size):
+    
+    if any([len(w) > size for w in words]):
+        raise Exception(f"Words cannot have more than {size} letters")
     
     # Directons as increments
     directions = ( (0,1),
@@ -243,6 +236,11 @@ def try_word(word,pos,direct,wordgrid):
     return g
     
 
+def child_safe_check(wordgrid):
+    badwords = ["bitch","crap","cunt","damn","fuck","shit","slut","twat",
+                "fag","dick","cock","pussy","piss"]
+
+
 
 
 
@@ -253,7 +251,7 @@ if __name__ == '__main__':
                  "laurel","magnolia","marigold","narcissus","poinsettia",
                  "rhododendron","snapdragon","tulip","wisteria","zinnia"]
     
-    n = 20 
+    n = 20
     G = easy_word_search(word_list,n)
     print(G.upper())
 
