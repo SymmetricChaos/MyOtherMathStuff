@@ -234,11 +234,24 @@ def try_word(word,pos,direct,wordgrid):
 
     # If nothing went wrong return the grid that was created
     return g
-    
+            
 
 def child_safe_check(wordgrid):
     badwords = ["bitch","crap","cunt","damn","fuck","shit","slut","twat",
-                "fag","dick","cock","pussy","piss"]
+                "fag","dick","cock","pussy","piss","kill","rape"]
+    
+    directions = ( (0,1),
+                   (1,1),
+                   (1,0) )
+    
+    frame = {"words" :badwords,
+             "grid" : grid.copy(),
+             "directions" : directions,
+             "positions" : [i for i in range(size*size)])
+            }
+    
+    for w in badwords:
+        try_options(frame)
 
 
 
