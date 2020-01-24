@@ -48,6 +48,16 @@ class WordGrid:
 
 
 
+def name_to_direct(name):
+    S = {"east": (0,1),
+         "south-east": (1,1),
+         "south": (1,0),
+         "south-west": (1,-1),
+         "west": (0,-1),
+         "north-west": (-1,1),
+         "north": (-1,0)}
+    return S[name]
+
 
 # Words written in readable directions
 # Uniformly random filling
@@ -57,9 +67,9 @@ def easy_word_search(words,size):
         raise Exception(f"Words cannot have more than {size} letters")
     
     # Directons as increments
-    directions = ( (0,1),
-                   (1,1),
-                   (1,0) )
+    directions = ( "east",
+                   "south-east",
+                   "south" )
     
     # Recursively place words into the grid
     G = place_all_words(words,size,directions)
@@ -81,14 +91,13 @@ def medium_word_search(words,size):
         raise Exception(f"Words cannot have more than {size} letters")
     
     # Directons as increments
-    directions = ( (0,1),
-                   (1,1),
-                   (1,0),
-                   (1,-1),
-                   (0,-1),
-                   (-1,-1),
-                   (-1,0),
-                   (-1,1) )
+    directions = ( "east",
+                   "south-east",
+                   "south",
+                   "south-west",
+                   "west",
+                   "north-west",
+                   "north" )
 
     # Recursively place words into the grid
     G = place_all_words(words,size,directions)
@@ -110,14 +119,13 @@ def hard_word_search(words,size):
         raise Exception(f"Words cannot have more than {size} letters")
     
     # Directons as increments
-    directions = ( (0,1),
-                   (1,1),
-                   (1,0),
-                   (1,-1),
-                   (0,-1),
-                   (-1,-1),
-                   (-1,0),
-                   (-1,1) )
+    directions = ( "east",
+                   "south-east",
+                   "south",
+                   "south-west",
+                   "west",
+                   "north-west",
+                   "north" )
 
     # Create alphabet from the words so that fake letter frequency is about the
     # same as true letter frequency
@@ -207,7 +215,7 @@ def try_options(frame):
     while len(ps) > 0:
         p = ps.pop()
         for d in ds:
-            res = try_word(w,p,d,gr)
+            res = try_word(w,p,name_to_direct(d),gr)
             if res:
                 return res
     
@@ -244,7 +252,52 @@ def try_word(word,pos,direct,wordgrid):
 
     # If nothing went wrong return the grid that was created
     return g
-            
+
+
+
+def check_all_words(words,wordgrid):
+    directions = ( "east",
+                   "south-east",
+                   "south",
+                   "south-west",
+                   "west",
+                   "north-west",
+                   "north" )
+    for word in words:
+        for pos in range(wordgrid.rows*wordgrid.cols):
+            for direct in directions:
+                res = check_word(word,pos,direct,wordgrid)
+                if res:
+                    yield res
+
+
+def check_word(word,pos,direct,wordgrid):
+    
+    d = name_to_direct(direct)
+    original_pos = wordgrid.pos_to_pair(pos)
+    
+    for l in word:
+        # If the space matches keep going otherwise fail out
+        if wordgrid.grid[pos] == l:
+            pass
+        else:
+            return False
+        
+        # Step in the direction
+        loc = wordgrid.pos_to_pair(pos)
+        loc = [loc[0]+d[0],loc[1]+d[1]]
+
+        # Fail out if the position doesn't exist
+        if loc[0] < 0 or loc[1] < 0:
+            return False
+        if loc[0] > wordgrid.rows-1 or loc[1] > wordgrid.cols-1:
+            return False
+        
+        # Convert the coordinates back
+        pos = wordgrid.pair_to_pos(loc[0],loc[1])
+
+    return (word,original_pos,direct)
+
 
 #def child_safe_check(wordgrid):
 #    badwords = ["bitch","crap","cunt","damn","fuck","shit","slut","twat",
@@ -274,14 +327,18 @@ if __name__ == '__main__':
                  "laurel","magnolia","marigold","narcissus","poinsettia",
                  "rhododendron","snapdragon","tulip","wisteria","zinnia"]
     
-    n = 20
+    n = 15
     G = easy_word_search(word_list,n)
     print(str(G).upper())
-
-    G = medium_word_search(word_list,n)
-    print(str(G).upper())
-
-    G = hard_word_search(word_list,n)
-    print(str(G).upper())
     
-    print(G.as_list())
+    for i in check_all_words(word_list,G):
+        print(i)
+#
+#    G = medium_word_search(word_list,n)
+#    print(str(G).upper())
+#
+#    G = hard_word_search(word_list,n)
+#    print(str(G).upper())
+#    
+
+    
