@@ -34,7 +34,17 @@ class WordGrid:
             if (n+1) % self.cols == 0:
                 S += "\n"
         return S
-
+    
+    def as_list(self):
+        L = []
+        ctr = 0
+        for r in range(self.rows):
+            new_row = []
+            for c in range(self.cols):
+                new_row.append(self.grid[ctr].upper())
+                ctr += 1
+            L.append(new_row)
+        return L
 
 
 
@@ -60,7 +70,7 @@ def easy_word_search(words,size):
         if G.grid[i] == "_":
             G.grid[i] = sample(alpha,1)[0]
             
-    return str(G)
+    return G
 
 
 # Words written in every direction
@@ -89,7 +99,7 @@ def medium_word_search(words,size):
         if G.grid[i] == "_":
             G.grid[i] = sample(alpha,1)[0]
             
-    return str(G)
+    return G
 
 
 # Words written in every direction
@@ -133,7 +143,7 @@ def hard_word_search(words,size):
         if G.grid[i] == "_":
             G.grid[i] = sample(alpha,1)[0]
             
-    return str(G)
+    return G
 
 
 def place_all_words(words,size,directions):
@@ -236,22 +246,22 @@ def try_word(word,pos,direct,wordgrid):
     return g
             
 
-def child_safe_check(wordgrid):
-    badwords = ["bitch","crap","cunt","damn","fuck","shit","slut","twat",
-                "fag","dick","cock","pussy","piss","kill","rape"]
-    
-    directions = ( (0,1),
-                   (1,1),
-                   (1,0) )
-    
-    frame = {"words" :badwords,
-             "grid" : grid.copy(),
-             "directions" : directions,
-             "positions" : [i for i in range(size*size)])
-            }
-    
-    for w in badwords:
-        try_options(frame)
+#def child_safe_check(wordgrid):
+#    badwords = ["bitch","crap","cunt","damn","fuck","shit","slut","twat",
+#                "fag","dick","cock","pussy","piss","kill","rape"]
+#    
+#    directions = ( (0,1),
+#                   (1,1),
+#                   (1,0) )
+#    
+#    frame = {"words" :badwords,
+#             "grid" : grid.copy(),
+#             "directions" : directions,
+#             "positions" : [i for i in range(size*size)])
+#            }
+#    
+#    for w in badwords:
+#        try_options(frame)
 
 
 
@@ -266,10 +276,12 @@ if __name__ == '__main__':
     
     n = 20
     G = easy_word_search(word_list,n)
-    print(G.upper())
+    print(str(G).upper())
 
     G = medium_word_search(word_list,n)
-    print(G.upper())
+    print(str(G).upper())
 
     G = hard_word_search(word_list,n)
-    print(G.upper())
+    print(str(G).upper())
+    
+    print(G.as_list())
