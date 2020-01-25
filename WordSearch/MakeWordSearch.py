@@ -65,6 +65,8 @@ def name_to_direct(name):
 
 
 
+# The various word searches
+    
 # Words written in readable directions
 # Uniformly random filling
 def easy_word_search(words,size):
@@ -137,7 +139,7 @@ def hard_word_search(words,size):
     # same as true letter frequency
     # Also get all the digraphs from the words so they can be placed in the grid
     # as well as even better fakes, digraphs cannot cause a puzzle to become
-    # impossible
+    # impossible because they can be placed over existing words
     alpha = ""
     digraphs = []
     for w in words:
@@ -145,7 +147,7 @@ def hard_word_search(words,size):
         for d in range(len(w)-1):
             digraphs += [w[d:d+2]]
 
-    # Recursively place words into the grid
+    # Recursively place words and digraphs into the grid
     # Note that digraphs are placed in front of the word since we remove words
     # from back to front
     # This is much faster than placing the digraphs first since digraph
@@ -178,7 +180,6 @@ def place_all_words(words,size,directions):
                "positions" : sample([i for i in range(size*size)],size*size)
                }
     stack = [initial]
-    
     
     while True:
         
