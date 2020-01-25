@@ -50,6 +50,7 @@ class WordGrid:
 
 
 
+# Utility function
 def name_to_direct(name):
     S = {"east": (0,1),
          "south-east": (1,1),
@@ -59,6 +60,9 @@ def name_to_direct(name):
          "north-west": (-1,1),
          "north": (-1,0)}
     return S[name]
+
+
+
 
 
 # Words written in readable directions
@@ -156,6 +160,10 @@ def hard_word_search(words,size):
     return G
 
 
+
+
+
+# Internal functions for building the word search
 def place_all_words(words,size,directions):
     
     # Build a square grid
@@ -256,6 +264,10 @@ def try_word(word,pos,direct,wordgrid):
     return g
 
 
+
+
+
+# Solve a word search created with the above
 def check_all_words(words,wordgrid):
     directions = ( "east",
                    "south-east",
@@ -301,6 +313,9 @@ def check_word(word,pos,direct,wordgrid):
     return (word,(orig_loc[0]+1,orig_loc[1]+1),direct)
 
 
+
+
+
 if __name__ == '__main__':
 
     word_list = ["azalea","bouquet","buttercup","carnation","daffodil",
@@ -311,14 +326,12 @@ if __name__ == '__main__':
     n = 15
     G = easy_word_search(word_list,n)
     print(str(G).upper())
-    
 
     G = medium_word_search(word_list,n)
     print(str(G).upper())
 
     G = hard_word_search(word_list,n)
     print(str(G).upper())
-    
 
     for i in check_all_words(word_list,G):
         print(i)
