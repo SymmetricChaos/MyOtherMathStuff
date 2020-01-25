@@ -48,6 +48,8 @@ class WordGrid:
 
 
 
+
+
 def name_to_direct(name):
     S = {"east": (0,1),
          "south-east": (1,1),
@@ -273,7 +275,7 @@ def check_all_words(words,wordgrid):
 def check_word(word,pos,direct,wordgrid):
     
     d = name_to_direct(direct)
-    original_pos = wordgrid.pos_to_pair(pos)
+    orig_loc = wordgrid.pos_to_pair(pos) 
     
     for l in word:
         # If the space matches keep going otherwise fail out
@@ -295,7 +297,8 @@ def check_word(word,pos,direct,wordgrid):
         # Convert the coordinates back
         pos = wordgrid.pair_to_pos(loc[0],loc[1])
 
-    return (word,original_pos,direct)
+    # Th coordinates of orig_loc have one added to make them more readable
+    return (word,(orig_loc[0]+1,orig_loc[1]+1),direct)
 
 
 if __name__ == '__main__':
@@ -309,14 +312,14 @@ if __name__ == '__main__':
     G = easy_word_search(word_list,n)
     print(str(G).upper())
     
+
+    G = medium_word_search(word_list,n)
+    print(str(G).upper())
+
+    G = hard_word_search(word_list,n)
+    print(str(G).upper())
+    
+
     for i in check_all_words(word_list,G):
         print(i)
-#
-#    G = medium_word_search(word_list,n)
-#    print(str(G).upper())
-#
-#    G = hard_word_search(word_list,n)
-#    print(str(G).upper())
-#    
-
     
