@@ -13,14 +13,31 @@ class WordGrid:
             self.grid = ["_"]*(rows*cols) 
     
     # Convert coordinates to a position
-    def pair_to_pos(self,row,col):
+    def coord_to_pos(self,row,col):
         return row*self.cols + col
 
     # Convert a position to coordinates
-    def pos_to_pair(self,pos):
+    def pos_to_coord(self,pos):
         r = pos//self.cols
         c = pos%self.cols
         return [r,c]
+    
+    # Return what is at a given position
+    # If it is out of bounds return # to indicate that    
+    def at_pos(self,pos):
+        if pos > len(grid):
+            return "#"
+        else:
+            return self.grid[pos]
+    
+    # Return what is at a given coordinates
+    # If it is out of bounds return # to indicate that
+    def at_coord(self,row,col):
+        if row > self.rows or col > self.cols:
+            return "#"
+        else:
+            return self.coord_to_pos(row,col)
+    
     
     # Copy the whole object
     def copy(self):
@@ -249,7 +266,7 @@ def try_word(word,pos,direct,wordgrid):
             return False
         
         # Step in the direction
-        loc = wordgrid.pos_to_pair(pos)
+        loc = wordgrid.pos_to_coord(pos)
         loc = [loc[0]+direct[0],loc[1]+direct[1]]
 
         # Fail out if the position doesn't exist
@@ -259,7 +276,7 @@ def try_word(word,pos,direct,wordgrid):
             return False
         
         # Convert the coordinates back
-        pos = wordgrid.pair_to_pos(loc[0],loc[1])
+        pos = wordgrid.coord_to_pos(loc[0],loc[1])
 
     # If nothing went wrong return the grid that was created
     return g
@@ -288,7 +305,7 @@ def check_all_words(words,wordgrid):
 def check_word(word,pos,direct,wordgrid):
     
     d = name_to_direct(direct)
-    orig_loc = wordgrid.pos_to_pair(pos) 
+    orig_loc = wordgrid.pos_to_coord(pos) 
     
     for l in word:
         # If the space matches keep going otherwise fail out
@@ -298,7 +315,7 @@ def check_word(word,pos,direct,wordgrid):
             return False
         
         # Step in the direction
-        loc = wordgrid.pos_to_pair(pos)
+        loc = wordgrid.pos_to_coord(pos)
         loc = [loc[0]+d[0],loc[1]+d[1]]
 
         # Fail out if the position doesn't exist
@@ -308,7 +325,7 @@ def check_word(word,pos,direct,wordgrid):
             return False
         
         # Convert the coordinates back
-        pos = wordgrid.pair_to_pos(loc[0],loc[1])
+        pos = wordgrid.coord_to_pos(loc[0],loc[1])
 
     # Th coordinates of orig_loc have one added to make them more readable
     return (word,(orig_loc[0]+1,orig_loc[1]+1),direct)
