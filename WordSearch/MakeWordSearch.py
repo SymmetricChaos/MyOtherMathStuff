@@ -362,11 +362,14 @@ def grid_to_pdf(G,words):
     data = G.as_list()
     
     # container for the 'Flowable' objects
-    elements = [Table(data),Spacer(1, 30)]
-     
-    t2 = Table(list_to_intervals(words,3),style=[("BOX",(0,0),(-1,-1),2,colors.gray)])
+    elements = []
     
-    elements.append(t2)
+    wordsearch = Table(data,style=[("ALIGN", (0, 0), (-1, -1), "CENTER"),])
+    space = Spacer(1, 30)
+    wordlist = Table(list_to_intervals(words,3),style=[("BOX",(0,0),(-1,-1),2,colors.gray)])
+
+    elements = [wordsearch,space,wordlist]
+
     # write the document to disk
     doc.build(elements)
 
@@ -376,14 +379,14 @@ def grid_to_pdf(G,words):
 
 if __name__ == '__main__':
 
-    word_list = ["azalea","bouquet","buttercup","carnation","daffodil",
+    word_list = ["azalea","buttercup","carnation","daffodil",
                  "daisy","goldenrod","honeysuckle","jasmine","lavender",
                  "laurel","magnolia","marigold","narcissus","poinsettia",
                  "rhododendron","snapdragon","tulip","wisteria","zinnia"]
     
     word_list = [w.upper() for w in word_list]
     
-    n = 20
+    n = 22
     G = easy_word_search(word_list,n)
 
     G = medium_word_search(word_list,n)
