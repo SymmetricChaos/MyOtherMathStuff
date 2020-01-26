@@ -100,7 +100,7 @@ def easy_word_search(words,size):
     G = place_all_words(words,size,directions)
 
     # Fill empty spaces
-    alpha = "abcdefghijklmnopqrstuvwxyz"
+    alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     for i in range(len(G.grid)):
         if G.grid[i] == "_":
             G.grid[i] = sample(alpha,1)[0]
@@ -128,7 +128,7 @@ def medium_word_search(words,size):
     G = place_all_words(words,size,directions)
 
     # add random letters to empty spaces
-    alpha = "abcdefghijklmnopqrstuvwxyz"
+    alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     for i in range(len(G.grid)):
         if G.grid[i] == "_":
             G.grid[i] = sample(alpha,1)[0]
@@ -335,6 +335,7 @@ def check_word(word,pos,direct,wordgrid):
 
 
 # Section to build the PDF
+from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Table, Spacer
 from time import time 
@@ -363,8 +364,8 @@ def grid_to_pdf(G,words):
     # container for the 'Flowable' objects
     elements = [Table(data),Spacer(1, 30)]
      
-    t2 = Table(list_to_intervals(words,5))
-
+    t2 = Table(list_to_intervals(words,3),style=[("BOX",(0,0),(-1,-1),2,colors.gray)])
+    
     elements.append(t2)
     # write the document to disk
     doc.build(elements)
