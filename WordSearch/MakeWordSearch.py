@@ -333,6 +333,29 @@ def check_word(word,pos,direct,wordgrid):
 
 
 
+# Section to build the PDF
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Table
+from time import time 
+
+def grid_to_pdf(G):
+
+    t = time()
+    doc = SimpleDocTemplate(f"WordSearch{t}.pdf", pagesize=letter)
+    # container for the 'Flowable' objects
+    elements = []
+     
+    data= G.as_list()
+    
+    t=Table(data)
+
+    elements.append(t)
+    # write the document to disk
+    doc.build(elements)
+
+
+
+
 
 if __name__ == '__main__':
 
@@ -343,14 +366,14 @@ if __name__ == '__main__':
     
     n = 15
     G = easy_word_search(word_list,n)
-    print(str(G).upper())
 
     G = medium_word_search(word_list,n)
-    print(str(G).upper())
 
     G = hard_word_search(word_list,n)
     print(str(G).upper())
 
     for i in check_all_words(word_list,G):
         print(i)
+        
+    grid_to_pdf(G)
     
