@@ -25,7 +25,7 @@ class WordGrid:
     # Return what is at a given position
     # If it is out of bounds return # to indicate that    
     def at_pos(self,pos):
-        if pos > len(grid):
+        if pos > len(self.grid):
             return "#"
         else:
             return self.grid[pos]
@@ -333,23 +333,39 @@ def check_word(word,pos,direct,wordgrid):
 
 
 
+
 # Section to build the PDF
 from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Table
+from reportlab.platypus import SimpleDocTemplate, Table, Spacer
 from time import time 
 
-def grid_to_pdf(G):
+
+def list_to_intervals(L,n):
+    out = []
+    row = []
+    for pos,val in enumerate(L,1):
+        row.append(val)
+        if pos % n == 0:
+            out.append(row)
+            row = []
+    if len(row) > 0:
+        out.append(row)
+    return out
+
+
+def grid_to_pdf(G,words):
 
     t = time()
     doc = SimpleDocTemplate(f"WordSearch{t}.pdf", pagesize=letter)
-    # container for the 'Flowable' objects
-    elements = []
-     
-    data= G.as_list()
     
-    t=Table(data)
+    data = G.as_list()
+    
+    # container for the 'Flowable' objects
+    elements = [Table(data),Spacer(1, 30)]
+     
+    t2 = Table(list_to_intervals(words,5))
 
-    elements.append(t)
+    elements.append(t2)
     # write the document to disk
     doc.build(elements)
 
@@ -364,7 +380,9 @@ if __name__ == '__main__':
                  "laurel","magnolia","marigold","narcissus","poinsettia",
                  "rhododendron","snapdragon","tulip","wisteria","zinnia"]
     
-    n = 15
+    word_list = [w.upper() for w in word_list]
+    
+    n = 20
     G = easy_word_search(word_list,n)
 
     G = medium_word_search(word_list,n)
@@ -375,5 +393,5 @@ if __name__ == '__main__':
     for i in check_all_words(word_list,G):
         print(i)
         
-    grid_to_pdf(G)
+    grid_to_pdf(G,word_list)
     
