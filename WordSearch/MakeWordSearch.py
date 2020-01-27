@@ -80,97 +80,51 @@ def name_to_direct(name):
 
 
 
-
-
-# The various word searches
-    
-# Words written in readable directions
-# Uniformly random filling
-def easy_word_search(words,size):
+def word_search(words,size,directions=[],filltype="alphabet"):
     
     if any([len(w) > size for w in words]):
         raise Exception(f"Words cannot have more than {size} letters")
     
-    # Directons as increments
-    directions = ( "east",
-                   "south-east",
-                   "south" )
-    
-    # Recursively place words into the grid
-    G = place_all_words(words,size,directions)
+    if directions == []:
+        directions = [ "east",
+                       "south-east",
+                       "south",
+                       "south-west",
+                       "west",
+                       "north-west",
+                       "north" ]
 
-    # Fill empty spaces
-    alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    for i in range(len(G.grid)):
-        if G.grid[i] == "_":
-            G.grid[i] = sample(alpha,1)[0]
-            
-    return G
-
-
-# Words written in every direction
-# Uniformly random filling
-def medium_word_search(words,size):
-    
-    if any([len(w) > size for w in words]):
-        raise Exception(f"Words cannot have more than {size} letters")
-    
-    # Directons as increments
-    directions = ( "east",
-                   "south-east",
-                   "south",
-                   "south-west",
-                   "west",
-                   "north-west",
-                   "north" )
-
-    # Recursively place words into the grid
-    G = place_all_words(words,size,directions)
-
-    # add random letters to empty spaces
-    alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    for i in range(len(G.grid)):
-        if G.grid[i] == "_":
-            G.grid[i] = sample(alpha,1)[0]
-            
-    return G
-
-
-# Words written in every direction
-# Bootstrapping filling
-def hard_word_search(words,size):
-    
-    if any([len(w) > size for w in words]):
-        raise Exception(f"Words cannot have more than {size} letters")
-    
-    # Directons as increments
-    directions = ( "east",
-                   "south-east",
-                   "south",
-                   "south-west",
-                   "west",
-                   "north-west",
-                   "north" )
-
+    # Just use a standard alphabet to fill blank spaces
+    if filltype == "alphabet":
+        alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    # Use the words themselves as the alphabet so that false letters have the
+    # same frequencies as true letters
+    elif filltype == "bootstrap":
+        alpha = ""
+        for w in words:
+            alpha += w
     # Create alphabet from the words so that fake letter frequency is about the
     # same as true letter frequency
     # Also get all the digraphs from the words so they can be placed in the grid
     # as well as even better fakes, digraphs cannot cause a puzzle to become
     # impossible because they can be placed over existing words
-    alpha = ""
-    digraphs = []
-    for w in words:
-        alpha += w
-        for d in range(len(w)-1):
-            digraphs += [w[d:d+2]]
-
-    # Recursively place words and digraphs into the grid
     # Note that digraphs are placed in front of the word since we remove words
-    # from back to front
-    # This is much faster than placing the digraphs first since digraph
+    # from the list back to front
+    # This is much faster than placing the digrams first since digrams
     # placement will never require backtracking, in the worst case they are just
     # placed to overlap with the word they come from
-    G = place_all_words(digraphs+words,size,directions)
+    elif filltype == "digram":
+        alpha = ""
+        digrams = []
+        for w in words:
+            alpha += w
+            for d in range(len(w)-1):
+                digrams += [w[d:d+2]]
+        words = digrams+words
+
+
+    # Recursively place words (and digrams if requested) into the grid
+    G = place_all_words(words,size,directions)
 
     for i in range(len(G.grid)):
         if G.grid[i] == "_":
@@ -386,12 +340,7 @@ if __name__ == '__main__':
     
     word_list = [w.upper() for w in word_list]
     
-    n = 22
-    G = easy_word_search(word_list,n)
-
-    G = medium_word_search(word_list,n)
-
-    G = hard_word_search(word_list,n)
+    G = word_search(word_list,size=22,filltype="digram")
     print(str(G).upper())
 
     for i in check_all_words(word_list,G):
