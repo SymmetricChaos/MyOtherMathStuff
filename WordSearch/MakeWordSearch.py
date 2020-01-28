@@ -67,7 +67,7 @@ class WordGrid:
 
 
 
-# Utility function
+# Utility function for turning friendly named directions into ordered pairs
 def name_to_direct(name):
     S = {"east": (0,1),
          "south-east": (1,1),
@@ -103,8 +103,8 @@ def word_search(words,size,directions=[],filltype="alphabet"):
         alpha = ""
         for w in words:
             alpha += w
-    # Create alphabet from the words so that fake letter frequency is about the
-    # same as true letter frequency
+    # Use the words themselves as the alphabet so that false letters have the
+    # same frequencies as true letters
     # Also get all the digraphs from the words so they can be placed in the grid
     # as well as even better fakes, digraphs cannot cause a puzzle to become
     # impossible because they can be placed over existing words
@@ -126,6 +126,7 @@ def word_search(words,size,directions=[],filltype="alphabet"):
     # Recursively place words (and digrams if requested) into the grid
     G = place_all_words(words,size,directions)
 
+    # Fill in all remaining spaces with the requested alphabet
     for i in range(len(G.grid)):
         if G.grid[i] == "_":
             G.grid[i] = sample(alpha,1)[0]
