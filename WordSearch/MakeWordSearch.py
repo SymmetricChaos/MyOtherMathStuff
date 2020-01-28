@@ -84,6 +84,17 @@ def word_search(words,size,directions=[],filltype="alphabet"):
     
     if any([len(w) > size for w in words]):
         raise Exception(f"Words cannot have more than {size} letters")
+        
+    
+    for pos1,w in enumerate(words):
+        for pos2,check in enumerate(words):
+            if pos1 == pos2:
+                continue
+            if w == check:
+                print("Warning, word repeated")
+                continue
+            if w in check:
+                print(f"Warning! {check} contains {w}") 
     
     if directions == []:
         directions = [ "east",
