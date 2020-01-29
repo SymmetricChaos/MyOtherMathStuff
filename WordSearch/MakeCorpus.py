@@ -19,5 +19,6 @@ with open('Corpus.csv') as csv_file:
 
 print(C)
 print(len(C))
-
-pickle.dump(C, open( "Corpus.p", "wb" ) )
+file = open( "Corpus.p", "wb" )
+pickle.dump(C, file )
+file.close()
