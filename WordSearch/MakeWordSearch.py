@@ -340,7 +340,12 @@ def grid_to_pdf(G,words):
     doc.build(elements)
 
 
-
+def word_search_pdf(words,size,directions=[],filltype="alphabet"):
+    G = word_search(words,size,directions,filltype)
+    
+    grid_to_pdf(G,words)
+    
+    return G
 
 
 if __name__ == '__main__':
@@ -352,11 +357,8 @@ if __name__ == '__main__':
     
     word_list = [w.upper() for w in word_list]
     
-    G = word_search(word_list,size=22,filltype="digram")
+    G = word_search_pdf(word_list,size=22,filltype="digram")
     print(str(G).upper())
 
     for i in check_all_words(word_list,G):
         print(i)
-        
-    grid_to_pdf(G,word_list)
-    
