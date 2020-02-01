@@ -35,19 +35,16 @@ def floyds_algorithm(func,x):
 
     return pos,length,cyc
 
-def iter_func(func,x,n):
-    for i in range(n):
-        x = func(x)
-    return x
-
 
 def f(n):
-    D = {0:6, 1:6, 2:0, 3:1,
+    D = {0:12, 1:6, 2:0, 3:1,
          4:4, 5:3, 6:3, 7:4,
-         8:0}
+         8:0, 9:13, 10:12, 11:4,
+         12:9, 13:14, 14:0}
     return D[n]
 
-for start in range(8):
-    print(f"Starting from {start}")
-    print(floyds_algorithm(f,start))
+for start in range(15):
+    P,L,C = floyds_algorithm(f,start)
+    
+    print(f"{start} --> {C}")
     print()
