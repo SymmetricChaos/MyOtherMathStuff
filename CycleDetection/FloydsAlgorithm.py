@@ -10,28 +10,30 @@ def floyds_algorithm(func,x):
         fast = func(func(fast))
     
     # Find the position where the cycle begins
+    # Reset slow to the starting point and leave
+    # fast inside the cycle
+    # Save this point for later as "start"
     pos = 0
     slow = x
     while fast != slow:
         slow = func(slow)
         fast = func(fast)
         pos += 1
+    start = slow
     
     # Find the length of the shortest cycle
+    # That is we want to get AB rather than ABAB
     length = 1
     fast = f(slow)
     while fast != slow:
         fast = func(fast)
         length += 1
     
-    ex = x
-    for i in range(pos):
-        ex = func(ex)
-    
+    # Get the elements of the cycle
     cyc = []
     for i in range(length):
-        cyc.append(ex)
-        ex = func(ex)
+        cyc.append(start)
+        start = func(start)
 
     return pos,length,cyc
 
@@ -44,7 +46,15 @@ def f(n):
     return D[n]
 
 for start in range(15):
+    
     P,L,C = floyds_algorithm(f,start)
     
     print(f"{start} --> {C}")
+    iters = []
+    for i in range(15):
+        iters.append(start)
+        start = f(start)
+    
+    print(*iters)
+    
     print()
