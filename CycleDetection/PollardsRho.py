@@ -1,5 +1,21 @@
 from math import gcd
 
+def factorize(n):
+    
+    F = []
+    
+    # Quickly check a few small factors
+    for i in [2,3,5,7,11,13,17,19,23,29,
+              31,37,41,43,47,52,59,61,67]:
+        while n%i == 0:
+            F.append(i)
+            n = n//i
+    
+    if n > 361:
+        F += pollard_factorization(n)
+    
+    return sorted(F)
+    
 
 def pollard_factorization(n):
     
@@ -33,4 +49,4 @@ def pollard_factorization_inner(x,y,n):
 
     
     
-print(pollard_factorization(693425321))
+print(factorize(69342538559014215))
