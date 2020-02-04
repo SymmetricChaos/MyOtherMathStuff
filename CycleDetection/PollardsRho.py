@@ -1,5 +1,7 @@
 from math import gcd
 
+# Provides a factorization of the input
+# Doen't guarantee a prime factorization
 def factorize(n):
     
     F = []
@@ -11,7 +13,8 @@ def factorize(n):
             F.append(i)
             n = n//i
     
-    if n > 361:
+    # After doing that try Pollard's Rho algorithm
+    if n > 4489:
         F += pollard_factorization(n)
     
     return sorted(F)
@@ -20,6 +23,7 @@ def factorize(n):
 def pollard_factorization(n):
     
     L = []
+    # Recursively try to factor using Pollard's Rho
     for i in [2,3,5,7,11,13,17,19]:
         
         x = pollard_factorization_inner(i,i,n)
@@ -40,13 +44,17 @@ def pollard_factorization_inner(x,y,n):
         return (x*x+1)%n
     
     while d == 1:
+        print(x,y)
         x = func(x)
         y = func(func(y))
         d = gcd(abs(x-y),n)
-        
+    
+    print("\n\n")
     return d
 
 
     
     
-print(factorize(69342538559014215))
+#print(factorize(69342538559014215))
+    
+print(pollard_factorization_inner(2,2,10403))
