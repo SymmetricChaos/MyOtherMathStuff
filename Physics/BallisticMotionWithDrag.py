@@ -63,10 +63,10 @@ def ballistic_pdf(V0,th,g,m,A,Cd,rho,dt):
     doc = SimpleDocTemplate("BallisticMotion.pdf", pagesize=letter)
 
     elements = []
-    
-    print(datalist)
 
-    tab = Table(list_to_intervals(datalist,1))
+    tab = Table(list_to_intervals(datalist,1),
+                style=[("BOX",(0,0),(-1,-1),2,colors.gray),
+                       ("FONTNAME",(0,0),(-1,-1),"Courier")])
 
     elements.append(tab)
     
