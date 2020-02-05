@@ -27,37 +27,53 @@ def ballistic_motion(V0,th,g,m,A,Cd,rho,dt):
             "A" : A,
             "Cd" : Cd,
             "rho" : rho,
-            "Vt" : Vt,
-            "x" : x,
-            "y" : y}
+            "Vt" : Vt}, x, y
     
     
     
 def ballistic_table(D):
     L = []
-    L.append(f"Initial Speed: {D['V0']}")
-    L.append(f"Angle of Release (Radians): {D['th']}")
-    L.append(f"Gravitation: -{D['g']}m/s^2")
-    L.append(f"Projectile Mass: {D['m']}")
-    L.append(f"Cross Sectional Area: {D['A']}")
-    L.append(f"Drag Coefficient: {D['Cd']}")
-    L.append(f"Air Density: {D['rho']}")
+    L.append(f"Initial Speed:     {D['V0']}")
+    L.append(f"Angle of Release:  {D['th']}")
+    L.append(f"Gravitation:       {-D['g']}m/s^2")
+    L.append(f"Projectile Mass:   {D['m']}")
+    L.append(f"Cross Section:     {D['A']}")
+    L.append(f"Drag Coefficient:  {D['Cd']}")
+    L.append(f"Air Density:       {D['rho']}")
     L.append(f"Terminal Velocity: {round(D['Vt'],3)}")
     return L
 
+
+def list_to_intervals(L,n):
+    out = []
+    row = []
+    for pos,val in enumerate(L,1):
+        row.append(val)
+        if pos % n == 0:
+            out.append(row)
+            row = []
+    if len(row) > 0:
+        out.append(row)
+    return out
+
+
+def ballistic_pdf(V0,th,g,m,A,Cd,rho,dt):
+    data, x, y = ballistic_motion(70,.8,10,20,.7,.2,1.2,1/30)
+    datalist = ballistic_table(data)
+    doc = SimpleDocTemplate("BallisticMotion.pdf", pagesize=letter)
+
+    elements = []
+    
+    print(datalist)
+
+    tab = Table(list_to_intervals(datalist,1))
+
+    elements.append(tab)
+    
+    doc.build(elements)
+
+
 if __name__ == '__main__':
     
-    data = ballistic_motion(70,.8,10,20,.7,.2,1.2,1/30)
-    print(ballistic_table(data))
-    plt.plot(data["x"],data["y"])
+    ballistic_pdf(70,.8,10,20,.7,.2,1.2,1/30)
     
-
-#    doc = SimpleDocTemplate("BallisticMotion.pdf", pagesize=letter)
-#    # container for the 'Flowable' objects
-#    elements = []
-#    data = ballistic_motion(70,.8,10,20,.7,.2,1.2,1/30)
-#    datalist = Table(data,style=[("BOX",(0,0),(-1,-1),2,colors.gray)])
-#
-#    elements.append(t)
-#    # write the document to disk
-#    doc.build(elements)
