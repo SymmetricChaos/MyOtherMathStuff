@@ -20,24 +20,44 @@ def ballistic_motion(V0,th,g,m,A,Cd,rho,dt):
             y[-1] = 0
             break
     
-    print(f"Initial Speed: {V0}")
-    print(f"Angle of Release (Radians): {th}")
-    print(f"Gravitation: -{g}m/s^2")
-    print(f"Projectile Mass: {m}")
-    print(f"Cross Sectional Area: {A}")
-    print(f"Drag Coefficient: {Cd}")
-    print(f"Air Density: {rho}")
-    print(f"Terminal Velocity: {round(Vt,3)}")
-    plt.plot(x,y)
+    return {"V0" : V0,
+            "th" : th,
+            "g" : g,
+            "m" : m,
+            "A" : A,
+            "Cd" : Cd,
+            "rho" : rho,
+            "Vt" : Vt,
+            "x" : x,
+            "y" : y}
+    
+    
+    
+def ballistic_table(D):
+    L = []
+    L.append(f"Initial Speed: {D['V0']}")
+    L.append(f"Angle of Release (Radians): {D['th']}")
+    L.append(f"Gravitation: -{D['g']}m/s^2")
+    L.append(f"Projectile Mass: {D['m']}")
+    L.append(f"Cross Sectional Area: {D['A']}")
+    L.append(f"Drag Coefficient: {D['Cd']}")
+    L.append(f"Air Density: {D['rho']}")
+    L.append(f"Terminal Velocity: {round(D['Vt'],3)}")
+    return L
 
 if __name__ == '__main__':
-
-    doc = SimpleDocTemplate("BallisticMotion.pdf", pagesize=letter)
-    # container for the 'Flowable' objects
-    elements = []
+    
     data = ballistic_motion(70,.8,10,20,.7,.2,1.2,1/30)
-    datalist = Table(data,style=[("BOX",(0,0),(-1,-1),2,colors.gray)])
+    print(ballistic_table(data))
+    plt.plot(data["x"],data["y"])
+    
 
-    elements.append(t)
-    # write the document to disk
-    doc.build(elements)
+#    doc = SimpleDocTemplate("BallisticMotion.pdf", pagesize=letter)
+#    # container for the 'Flowable' objects
+#    elements = []
+#    data = ballistic_motion(70,.8,10,20,.7,.2,1.2,1/30)
+#    datalist = Table(data,style=[("BOX",(0,0),(-1,-1),2,colors.gray)])
+#
+#    elements.append(t)
+#    # write the document to disk
+#    doc.build(elements)
