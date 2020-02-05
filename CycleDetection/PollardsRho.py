@@ -26,7 +26,7 @@ def pollard_factorization(n):
     # Recursively try to factor using Pollard's Rho
     for i in [2,3,5,7,11,13,17,19]:
         
-        x = pollard_factorization_inner(i,i,n)
+        x = pollard_factorization_inner(i,n)
 
         if x != n:
             L += pollard_factorization(x)
@@ -36,8 +36,9 @@ def pollard_factorization(n):
     return [n]
         
 
-def pollard_factorization_inner(x,y,n):
+def pollard_factorization_inner(x,n):
 
+    y = x
     d = 1
     
     def func(x):
@@ -57,4 +58,4 @@ def pollard_factorization_inner(x,y,n):
     
 #print(factorize(69342538559014215))
     
-print(pollard_factorization_inner(2,2,10403))
+print(pollard_factorization_inner(2,10403))
