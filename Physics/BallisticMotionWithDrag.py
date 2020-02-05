@@ -33,14 +33,14 @@ def ballistic_motion(V0,th,g,m,A,Cd,rho,dt):
     
 def ballistic_table(D):
     L = []
-    L.append(f"Initial Speed:     {D['V0']}")
-    L.append(f"Angle of Release:  {D['th']}")
-    L.append(f"Gravitation:       {-D['g']}m/s^2")
-    L.append(f"Projectile Mass:   {D['m']}")
-    L.append(f"Cross Section:     {D['A']}")
+    L.append(f"Initial Speed:     {D['V0']}m/s")
+    L.append(f"Angle of Release:  {round(D['th'],3)}")
+    L.append(f"Gravitation:       {-round(D['g'])}m/s^2")
+    L.append(f"Projectile Mass:   {D['m']}kg")
+    L.append(f"Cross Section:     {D['A']}m^2")
     L.append(f"Drag Coefficient:  {D['Cd']}")
     L.append(f"Air Density:       {D['rho']}")
-    L.append(f"Terminal Velocity: {round(D['Vt'],3)}")
+    L.append(f"Terminal Velocity: {round(D['Vt'],3)}m/s")
     return L
 
 
@@ -64,16 +64,17 @@ def ballistic_pdf(V0,th,g,m,A,Cd,rho,dt):
 
 
     elements = []
-
-    tab = Table(list_to_intervals(datalist,1),
-                style=[("BOX",(0,0),(-1,-1),2,colors.gray),
-                       ("FONTNAME",(0,0),(-1,-1),"Courier")])
-    elements.append(tab)
     
     plt.plot(x,y)
     plt.savefig('BallisticPic.png')
     img = Image('BallisticPic.png')
     elements.append(img)
+
+    tab = Table(list_to_intervals(datalist,1),
+                style=[("BOX",(0,0),(-1,-1),2,colors.gray),
+                       ("FONTNAME",(0,0),(-1,-1),"Courier")])
+    elements.append(tab)
+
     
     doc.build(elements)
 
