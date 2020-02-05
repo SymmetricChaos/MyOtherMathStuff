@@ -1,6 +1,6 @@
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Image
 
 from math import sqrt, sin, cos, exp
 from matplotlib import pyplot as plt
@@ -62,13 +62,18 @@ def ballistic_pdf(V0,th,g,m,A,Cd,rho,dt):
     datalist = ballistic_table(data)
     doc = SimpleDocTemplate("BallisticMotion.pdf", pagesize=letter)
 
+
     elements = []
 
     tab = Table(list_to_intervals(datalist,1),
                 style=[("BOX",(0,0),(-1,-1),2,colors.gray),
                        ("FONTNAME",(0,0),(-1,-1),"Courier")])
-
     elements.append(tab)
+    
+    plt.plot(x,y)
+    plt.savefig('BallisticPic.png')
+    img = Image('BallisticPic.png')
+    elements.append(img)
     
     doc.build(elements)
 
