@@ -1,7 +1,8 @@
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Table, Image
-
+from reportlab.graphics.charts.lineplots import LinePlot
+from reportlab.graphics.shapes import Drawing
 from math import sqrt, sin, cos, exp
 from matplotlib import pyplot as plt
 
@@ -57,6 +58,34 @@ def list_to_intervals(L,n):
     return out
 
 
+def line_plot(x,y):
+    drawing = Drawing(400, 200)
+    
+    data = [(a,b) for a,b in zip(x,y)]
+    
+    lp = LinePlot()
+    lp.y = 40
+    lp.x = 30 
+    lp.width = 400
+    lp.height = 200
+ 
+ 
+    lp.lineLabels.fontSize = 6
+    lp.lineLabels.boxStrokeWidth = 0.5
+    lp.lineLabels.visible = 1
+    lp.lineLabels.boxAnchor = 'c'
+    lp.lineLabels.angle = 0
+    lp.lineLabelNudge = 10
+    lp.joinedLines = 1
+    lp.lines.strokeWidth = 1.5
+ 
+    lp.data = [data]
+    drawing.add(lp)
+     
+     
+    return drawing
+
+
 def ballistic_pdf(V0,th,g,m,A,Cd,rho,dt):
     data, x, y = ballistic_motion(70,.8,10,20,.7,.2,1.2,1/30)
     datalist = ballistic_table(data)
@@ -65,10 +94,8 @@ def ballistic_pdf(V0,th,g,m,A,Cd,rho,dt):
 
     elements = []
     
-    plt.plot(x,y)
-    plt.savefig('BallisticPic.png')
-    img = Image('BallisticPic.png')
-    elements.append(img)
+    draw = line_plot(x,y)
+    elements.append(draw)
 
     tab = Table(list_to_intervals(datalist,1),
                 style=[("BOX",(0,0),(-1,-1),2,colors.gray),
@@ -81,5 +108,5 @@ def ballistic_pdf(V0,th,g,m,A,Cd,rho,dt):
 
 if __name__ == '__main__':
     
-    ballistic_pdf(70,.8,10,20,.7,.2,1.2,1/30)
+    ballistic_pdf(700,.8,10,20,.7,.2,1.2,1/30)
     
