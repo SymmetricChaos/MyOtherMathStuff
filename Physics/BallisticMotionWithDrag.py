@@ -26,6 +26,7 @@ def ballistic_motion(V0,th,y0,g,m,A,Cd,rho,dt):
     
     return {"V0" : V0,
             "th" : th,
+            "y0" : y0,
             "g" : g,
             "m" : m,
             "A" : A,
@@ -35,17 +36,44 @@ def ballistic_motion(V0,th,y0,g,m,A,Cd,rho,dt):
     
     
     
-def ballistic_table(D):
-    L = []
-    L.append(f"Initial Speed:     {D['V0']}m/s")
-    L.append(f"Angle of Release:  {round(D['th'],3)}")
-    L.append(f"Gravitation:       {-round(D['g'])}m/s^2")
-    L.append(f"Projectile Mass:   {D['m']}kg")
-    L.append(f"Cross Section:     {D['A']}m^2")
-    L.append(f"Drag Coefficient:  {D['Cd']}")
-    L.append(f"Air Density:       {D['rho']}")
-    L.append(f"Terminal Velocity: {round(D['Vt'],3)}m/s")
-    return L
+def ballistic_tables(D,x,y):
+    
+    #Initial Conditions
+    A = [[f"Initial Speed:     {D['V0']}m/s"],
+         [f"Angle of Release:  {round(D['th'],3)}"],
+         [f"Initial Height:    {round(D['y0'],3)}m"]]
+    
+    conditions = Table(A,
+            style=[("BOX",(0,0),(-1,-1),2,colors.gray),
+                   ("FONTNAME",(0,0),(-1,-1),"Courier")])
+
+    B = [[f"Projectile Mass:   {D['m']}kg"],
+         [f"Cross Section:     {D['A']}m^2"],
+         [f"Drag Coefficient:  {D['Cd']}"],
+         [f"Terminal Velocity: {round(D['Vt'],3)}m/s"]]
+    
+    # Object properties
+    props = Table(B,
+            style=[("BOX",(0,0),(-1,-1),2,colors.gray),
+                   ("FONTNAME",(0,0),(-1,-1),"Courier")])
+
+    
+    #Environmental conditions
+    C = [[f"Gravitation:       {-round(D['g'])}m/s^2"],
+         [f"Air Density:       {D['rho']}"]]
+    
+    environs = Table(C,
+            style=[("BOX",(0,0),(-1,-1),2,colors.gray),
+                   ("FONTNAME",(0,0),(-1,-1),"Courier")])
+    
+    # Outcomes
+    D = [[f"Final Distance:    {round(x[-1],3)}"]]
+    
+    outcomes = Table(D,
+            style=[("BOX",(0,0),(-1,-1),2,colors.gray),
+                   ("FONTNAME",(0,0),(-1,-1),"Courier")])
+    
+    return conditions, props, environs, outcomes
 
 
 def list_to_intervals(L,n):
@@ -91,7 +119,7 @@ def line_plot(x,y):
 
 def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho,dt):
     data, x, y = ballistic_motion(V0,th,y0,g,m,A,Cd,rho,dt)
-    datalist = ballistic_table(data)
+    datatabs = ballistic_tables(data,x,y)
     doc = SimpleDocTemplate("BallisticMotion.pdf", pagesize=letter)
 
 
@@ -100,16 +128,13 @@ def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho,dt):
     draw = line_plot(x,y)
     elements.append(draw)
 
-    tab = Table(list_to_intervals(datalist,1),
-                style=[("BOX",(0,0),(-1,-1),2,colors.gray),
-                       ("FONTNAME",(0,0),(-1,-1),"Courier")])
-    elements.append(tab)
-
+    for t in datatabs:
+        elements.append(t)
     
     doc.build(elements)
 
 
 if __name__ == '__main__':
     
-    ballistic_pdf(7,.8,10,10,20,.7,.2,1.2,1/30)
+    ballistic_pdf(70,.8,10,10,20,.7,.2,1.2,1/30)
     
