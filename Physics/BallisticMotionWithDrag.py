@@ -6,17 +6,20 @@ from reportlab.graphics.shapes import Drawing
 from math import sqrt, sin, cos, exp
 from matplotlib import pyplot as plt
 
-def ballistic_motion(V0,th,g,m,A,Cd,rho,dt):
+def ballistic_motion(V0,th,y0,g,m,A,Cd,rho,dt):
 
+    if y0 < 0:
+        raise Exception("y0 must be non-negative")
+    
     Vt = sqrt((2*m*g)/(rho*A*Cd))
     t = 0
     
-    x, y = [0], [0]
+    x, y = [0], [y0]
     while True:
         t += dt
         d = (1-exp(-g*t/Vt))
         x.append(((V0*Vt*cos(th))/g)*d)
-        y.append((Vt/g)*(V0*sin(th)+Vt)*d-(Vt*t))
+        y.append(y0+(Vt/g)*(V0*sin(th)+Vt)*d-(Vt*t))
         if y[-1] < 0:
             y[-1] = 0
             break
@@ -86,8 +89,8 @@ def line_plot(x,y):
     return drawing
 
 
-def ballistic_pdf(V0,th,g,m,A,Cd,rho,dt):
-    data, x, y = ballistic_motion(V0,th,g,m,A,Cd,rho,dt)
+def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho,dt):
+    data, x, y = ballistic_motion(V0,th,y0,g,m,A,Cd,rho,dt)
     datalist = ballistic_table(data)
     doc = SimpleDocTemplate("BallisticMotion.pdf", pagesize=letter)
 
@@ -108,5 +111,5 @@ def ballistic_pdf(V0,th,g,m,A,Cd,rho,dt):
 
 if __name__ == '__main__':
     
-    ballistic_pdf(700,.8,10,20,.7,.2,1.2,1/30)
+    ballistic_pdf(7,.8,10,10,20,.7,.2,1.2,1/30)
     
