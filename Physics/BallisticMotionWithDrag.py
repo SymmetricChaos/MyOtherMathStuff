@@ -87,7 +87,7 @@ def line_plot(x,y):
 
 
 def ballistic_pdf(V0,th,g,m,A,Cd,rho,dt):
-    data, x, y = ballistic_motion(70,.8,10,20,.7,.2,1.2,1/30)
+    data, x, y = ballistic_motion(V0,th,g,m,A,Cd,rho,dt)
     datalist = ballistic_table(data)
     doc = SimpleDocTemplate("BallisticMotion.pdf", pagesize=letter)
 
