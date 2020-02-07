@@ -11,6 +11,9 @@ def ballistic_motion(V0,th,y0,g,m,A,Cd,rho,dt):
     if y0 < 0:
         raise Exception("y0 must be non-negative")
     
+    if abs(th) > 1.57:
+        raise Exception("absolute value of th must be less than pi/2")
+    
     Vt = sqrt((2*m*g)/(rho*A*Cd))
     t = 0
     
@@ -53,7 +56,7 @@ def ballistic_tables(D,x,y):
                    ("FONTNAME",(0,0),(-1,-1),"Courier")])
 
     B = [[f"Projectile Mass:   {round(D['m'],3)}kg"],
-         [f"Cross Section:     {round(D['A'],3)}m^2"],
+         [f"Cross Section:     {round(D['A'],3)}m²"],
          [f"Drag Coefficient:  {round(D['Cd'],3)}"],
          [f"Terminal Velocity: {round(D['Vt'],3)}m/s"]]
     
@@ -64,7 +67,7 @@ def ballistic_tables(D,x,y):
 
     
     #Environmental conditions
-    C = [[f"Gravitation:       {-round(D['g'],3)}m/s^2"],
+    C = [[f"Gravitation:       {-round(D['g'],3)}m/s²"],
          [f"Air Density:       {round(D['rho'],3)}"]]
     
     environs = Table(C,
@@ -149,5 +152,5 @@ def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho,dt=1/30):
 
 if __name__ == '__main__':
     
-    ballistic_pdf(90,1,10,10,20,.7,.2,10.2)
+    ballistic_pdf(V0=90,th=1.17,y0=500,g=10,m=20,A=.7,Cd=.2,rho=1.2)
     
