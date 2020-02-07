@@ -15,14 +15,18 @@ def ballistic_motion(V0,th,y0,g,m,A,Cd,rho,dt):
     t = 0
     
     x, y = [0], [y0]
+    tof = 0
     while True:
         t += dt
         d = (1-exp(-g*t/Vt))
         x.append(((V0*Vt*cos(th))/g)*d)
         y.append(y0+(Vt/g)*(V0*sin(th)+Vt)*d-(Vt*t))
+        tof += dt
         if y[-1] < 0:
             y[-1] = 0
             break
+        
+    
     
     return {"V0" : V0,
             "th" : th,
@@ -32,14 +36,15 @@ def ballistic_motion(V0,th,y0,g,m,A,Cd,rho,dt):
             "A" : A,
             "Cd" : Cd,
             "rho" : rho,
-            "Vt" : Vt}, x, y
-    
-    
-    
+            "Vt" : Vt,
+            "dt" : dt,
+            "tof" : tof}, x, y
+
+
 def ballistic_tables(D,x,y):
     
     #Initial Conditions
-    A = [[f"Initial Speed:     {D['V0']}m/s"],
+    A = [[f"Initial Speed:     {round(D['V0'],3)}m/s"],
          [f"Angle of Release:  {round(D['th'],3)}"],
          [f"Initial Height:    {round(D['y0'],3)}m"]]
     
@@ -47,9 +52,9 @@ def ballistic_tables(D,x,y):
             style=[("BOX",(0,0),(-1,-1),2,colors.gray),
                    ("FONTNAME",(0,0),(-1,-1),"Courier")])
 
-    B = [[f"Projectile Mass:   {D['m']}kg"],
-         [f"Cross Section:     {D['A']}m^2"],
-         [f"Drag Coefficient:  {D['Cd']}"],
+    B = [[f"Projectile Mass:   {round(D['m'],3)}kg"],
+         [f"Cross Section:     {round(D['A'],3)}m^2"],
+         [f"Drag Coefficient:  {round(D['Cd'],3)}"],
          [f"Terminal Velocity: {round(D['Vt'],3)}m/s"]]
     
     # Object properties
@@ -59,17 +64,20 @@ def ballistic_tables(D,x,y):
 
     
     #Environmental conditions
-    C = [[f"Gravitation:       {-round(D['g'])}m/s^2"],
-         [f"Air Density:       {D['rho']}"]]
+    C = [[f"Gravitation:       {-round(D['g'],3)}m/s^2"],
+         [f"Air Density:       {round(D['rho'],3)}"]]
     
     environs = Table(C,
             style=[("BOX",(0,0),(-1,-1),2,colors.gray),
                    ("FONTNAME",(0,0),(-1,-1),"Courier")])
     
     # Outcomes
-    D = [[f"Final Distance:    {round(x[-1],3)}"]]
+    d = sqrt(abs(x[-1]-x[-2])**2 + abs(y[-1]-y[-2])**2)
+    outcomes = [[f"Final Distance:    {round(x[-1],3)}"],
+                [f"Final Speed:       {round(d/D['dt'],3)}"],
+                [f"Time of Flight:    {round(D['tof'],3)}"]]
     
-    outcomes = Table(D,
+    outcomes = Table(outcomes,
             style=[("BOX",(0,0),(-1,-1),2,colors.gray),
                    ("FONTNAME",(0,0),(-1,-1),"Courier")])
     
@@ -117,7 +125,7 @@ def line_plot(x,y):
     return drawing
 
 
-def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho,dt):
+def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho,dt=1/30):
     data, x, y = ballistic_motion(V0,th,y0,g,m,A,Cd,rho,dt)
     datatabs = ballistic_tables(data,x,y)
     doc = SimpleDocTemplate("BallisticMotion.pdf", pagesize=letter)
@@ -135,7 +143,10 @@ def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho,dt):
     doc.build(elements)
 
 
+
+
+
 if __name__ == '__main__':
     
-    ballistic_pdf(70,.8,10,10,20,.7,.2,1.2,1/30)
+    ballistic_pdf(90,1,10,10,20,.7,.2,10.2)
     
