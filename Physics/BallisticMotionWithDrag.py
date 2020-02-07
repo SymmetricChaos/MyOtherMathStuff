@@ -1,6 +1,6 @@
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Table, Image
+from reportlab.platypus import SimpleDocTemplate, Table, Image, Spacer
 from reportlab.graphics.charts.lineplots import LinePlot
 from reportlab.graphics.shapes import Drawing
 from math import sqrt, sin, cos, exp
@@ -130,6 +130,7 @@ def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho,dt):
 
     for t in datatabs:
         elements.append(t)
+        elements.append(Spacer(1, 30))
     
     doc.build(elements)
 
