@@ -141,7 +141,8 @@ def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho,dt=1/30):
         elements.append(Spacer(1, 30))
     
     doc.build(elements)
-
+    
+    return data, x, y
 
 
 
