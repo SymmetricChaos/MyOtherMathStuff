@@ -4,7 +4,6 @@ from reportlab.platypus import SimpleDocTemplate, Table, Image, Spacer
 from reportlab.graphics.charts.lineplots import LinePlot
 from reportlab.graphics.shapes import Drawing
 from math import sqrt, sin, cos, exp
-from matplotlib import pyplot as plt
 
 def ballistic_motion(V0,th,y0,g,m,A,Cd,rho,dt):
 
@@ -25,12 +24,19 @@ def ballistic_motion(V0,th,y0,g,m,A,Cd,rho,dt):
         x.append(((V0*Vt*cos(th))/g)*d)
         y.append(y0+(Vt/g)*(V0*sin(th)+Vt)*d-(Vt*t))
         tof += dt
+        # Check if the object hit the ground
         if y[-1] < 0:
-            y[-1] = 0
-            break
+            # If it went through too far, go back one time step and halve the
+            # size of the time step
+            if abs(y[-1]) > .01:
+                t -= dt
+                del y[-1]
+                del x[-1]
+                dt = dt/2
+            # Otherwise we're done
+            else:
+                break
         
-    
-    
     return {"V0" : V0,
             "th" : th,
             "y0" : y0,
@@ -124,7 +130,6 @@ def line_plot(x,y):
     lp.data = [data]
     drawing.add(lp)
      
-     
     return drawing
 
 
@@ -132,7 +137,6 @@ def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho,dt=1/30):
     data, x, y = ballistic_motion(V0,th,y0,g,m,A,Cd,rho,dt)
     datatabs = ballistic_tables(data,x,y)
     doc = SimpleDocTemplate("BallisticMotion.pdf", pagesize=letter)
-
 
     elements = []
     
@@ -150,7 +154,8 @@ def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho,dt=1/30):
 
 
 
+
 if __name__ == '__main__':
     
-    ballistic_pdf(V0=90,th=1.17,y0=500,g=10,m=20,A=.7,Cd=.2,rho=1.2)
+    ballistic_pdf(V0=90,th=1.5,y0=500,g=10,m=20,A=.7,Cd=.2,rho=1.2)
     
