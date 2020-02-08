@@ -154,6 +154,12 @@ def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho,dt=1/30):
     if abs(th) > 90:
         raise Exception("Angle must be between -90 and 90 degrees")
     
+    for var,name in zip([V0,y0,g,m,A,Cd,rho,dt],["V0","y0","g","m","A","Cd","rho","dt"]):
+        if var < 0:
+            raise Exception(f"{name} must be non-negative")
+        
+
+    
     # Convert agle in degrees to radians for internal use
     th = th*0.0174
     
@@ -180,5 +186,5 @@ def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho,dt=1/30):
 
 if __name__ == '__main__':
     
-    ballistic_pdf(V0=190,th=0,y0=500,g=10,m=20,A=.7,Cd=.2,rho=1.2)
+    ballistic_pdf(V0=190,th=0,y0=100,g=10,m=20,A=.7,Cd=.2,rho=1.2)
     
