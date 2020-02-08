@@ -82,9 +82,9 @@ def ballistic_tables(D,x,y):
     
     # Outcomes
     d = sqrt(abs(x[-1]-x[-2])**2 + abs(y[-1]-y[-2])**2)
-    outcomes = [[f"Final Distance:    {round(x[-1],3)}"],
-                [f"Final Speed:       {round(d/D['dt'],3)}"],
-                [f"Time of Flight:    {round(D['tof'],3)}"]]
+    outcomes = [[f"Final Distance:    {round(x[-1],3)}m"],
+                [f"Final Speed:       {round(d/D['dt'],3)}m/s"],
+                [f"Time of Flight:    {round(D['tof'],3)}s"]]
     
     outcomes = Table(outcomes,
             style=[("BOX",(0,0),(-1,-1),2,colors.gray),
@@ -107,15 +107,15 @@ def list_to_intervals(L,n):
 
 
 def line_plot(x,y):
-    drawing = Drawing(400, 200)
+    drawing = Drawing(400, 300)
     
     data = [(a,b) for a,b in zip(x,y)]
     
     lp = LinePlot()
-    lp.y = 40
-    lp.x = 30 
-    lp.width = 400
-    lp.height = 200
+    lp.width = 250
+    lp.height = 250
+    lp.x = 40
+    lp.y = 30
  
  
     lp.lineLabels.fontSize = 6
@@ -126,7 +126,13 @@ def line_plot(x,y):
     lp.lineLabelNudge = 10
     lp.joinedLines = 1
     lp.lines.strokeWidth = 1.5
+    
+    lp.xValueAxis.valueMin = 0
+    lp.xValueAxis.valueMax = max(max(x),max(y))
  
+    lp.yValueAxis.valueMin = 0
+    lp.yValueAxis.valueMax = max(max(x),max(y))
+    
     lp.data = [data]
     drawing.add(lp)
      
@@ -144,8 +150,8 @@ def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho,dt=1/30):
     elements.append(draw)
 
     for t in datatabs:
+        elements.append(Spacer(1, 20))
         elements.append(t)
-        elements.append(Spacer(1, 30))
     
     doc.build(elements)
     
@@ -157,5 +163,5 @@ def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho,dt=1/30):
 
 if __name__ == '__main__':
     
-    ballistic_pdf(V0=90,th=1.5,y0=500,g=10,m=20,A=.7,Cd=.2,rho=1.2)
+    ballistic_pdf(V0=190,th=.2,y0=500,g=10,m=20,A=.7,Cd=.2,rho=1.2)
     
