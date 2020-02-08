@@ -3,7 +3,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Table, Image, Spacer
 from reportlab.graphics.charts.lineplots import LinePlot
 from reportlab.graphics.shapes import Drawing
-from math import sqrt, sin, cos, exp
+from math import sqrt, sin, cos, exp, acos
 
 def ballistic_motion(V0,th,y0,g,m,A,Cd,rho,dt):
 
@@ -54,7 +54,7 @@ def ballistic_tables(D,x,y):
     
     #Initial Conditions
     A = [[f"Initial Speed:     {round(D['V0'],3)}m/s"],
-         [f"Angle of Release:  {round(D['th'],3)}"],
+         [f"Angle of Release:  {round(D['th']* 57.4712,3)}°"],
          [f"Initial Height:    {round(D['y0'],3)}m"]]
     
     conditions = Table(A,
@@ -81,10 +81,21 @@ def ballistic_tables(D,x,y):
                    ("FONTNAME",(0,0),(-1,-1),"Courier")])
     
     # Outcomes
-    d = sqrt(abs(x[-1]-x[-2])**2 + abs(y[-1]-y[-2])**2)
+    a = abs(x[-1]-x[-2])
+    b = abs(y[-1]-y[-2])
+    a2 = a*a
+    b2 = b*b
+    c2 = a2 + b2
+    c = sqrt(c2)
+    
+    # Calculate angle and mulitiply to get degrees
+    ang = acos( (b2+c2-a2) / (2*b*c) ) * 57.4712
+    
     outcomes = [[f"Final Distance:    {round(x[-1],3)}m"],
-                [f"Final Speed:       {round(d/D['dt'],3)}m/s"],
-                [f"Time of Flight:    {round(D['tof'],3)}s"]]
+                [f"Final Speed:       {round(c/D['dt'],3)}m/s"],
+                [f"Time of Flight:    {round(D['tof'],3)}s"],
+                [f"Impact Angle:      {round(ang,3)}°"]
+                ]
     
     outcomes = Table(outcomes,
             style=[("BOX",(0,0),(-1,-1),2,colors.gray),
@@ -140,6 +151,12 @@ def line_plot(x,y):
 
 
 def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho,dt=1/30):
+    if abs(th) > 90:
+        raise Exception("Angle must be between -90 and 90 degrees")
+    
+    # Convert agle in degrees to radians for internal use
+    th = th*0.0174
+    
     data, x, y = ballistic_motion(V0,th,y0,g,m,A,Cd,rho,dt)
     datatabs = ballistic_tables(data,x,y)
     doc = SimpleDocTemplate("BallisticMotion.pdf", pagesize=letter)
@@ -163,5 +180,5 @@ def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho,dt=1/30):
 
 if __name__ == '__main__':
     
-    ballistic_pdf(V0=190,th=.2,y0=500,g=10,m=20,A=.7,Cd=.2,rho=1.2)
+    ballistic_pdf(V0=190,th=45,y0=500,g=10,m=20,A=.7,Cd=.2,rho=1.2)
     
