@@ -123,9 +123,9 @@ def line_plot(x,y):
     data = [(a,b) for a,b in zip(x,y)]
     
     lp = LinePlot()
-    lp.width = 250
-    lp.height = 250
-    lp.x = 40
+    lp.width = 270
+    lp.height = 270
+    lp.x = 30
     lp.y = 30
  
  
@@ -180,5 +180,5 @@ def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho,dt=1/30):
 
 if __name__ == '__main__':
     
-    ballistic_pdf(V0=190,th=45,y0=500,g=10,m=20,A=.7,Cd=.2,rho=1.2)
+    ballistic_pdf(V0=190,th=0,y0=500,g=10,m=20,A=.7,Cd=.2,rho=1.2)
     
