@@ -16,13 +16,14 @@ def ballistic_motion(V0,th,y0,g,m,A,Cd,rho,dt):
     Vt = sqrt((2*m*g)/(rho*A*Cd))
     t = 0
     
-    x, y = [0], [y0]
+    x, y, dtL = [0], [y0], [dt]
     tof = 0
     while True:
         t += dt
         d = (1-exp(-g*t/Vt))
         x.append(((V0*Vt*cos(th))/g)*d)
         y.append(y0+(Vt/g)*(V0*sin(th)+Vt)*d-(Vt*t))
+        dtL.append(dt)
         tof += dt
         # Check if the object hit the ground
         if y[-1] < 0:
@@ -46,11 +47,10 @@ def ballistic_motion(V0,th,y0,g,m,A,Cd,rho,dt):
             "Cd" : Cd,
             "rho" : rho,
             "Vt" : Vt,
-            "dt" : dt,
-            "tof" : tof}, x, y
+            "tof" : tof}, x, y, dtL
 
 
-def ballistic_tables(D,x,y):
+def ballistic_tables(D,x,y,dtL):
     
     #Initial Conditions
     A = [[f"Initial Speed:     {round(D['V0'],3)}m/s"],
@@ -92,7 +92,7 @@ def ballistic_tables(D,x,y):
     ang = acos( (b2+c2-a2) / (2*b*c) ) * 57.4712
     
     outcomes = [[f"Final Distance:    {round(x[-1],3)}m"],
-                [f"Final Speed:       {round(c/D['dt'],3)}m/s"],
+                [f"Final Speed:       {round(c/dtL[-1],3)}m/s"],
                 [f"Time of Flight:    {round(D['tof'],3)}s"],
                 [f"Impact Angle:      {round(ang,3)}°"]
                 ]
@@ -163,8 +163,8 @@ def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho,dt=1/30):
     # Convert agle in degrees to radians for internal use
     th = th*0.0174
     
-    data, x, y = ballistic_motion(V0,th,y0,g,m,A,Cd,rho,dt)
-    datatabs = ballistic_tables(data,x,y)
+    data, x, y, dtL = ballistic_motion(V0,th,y0,g,m,A,Cd,rho,dt)
+    datatabs = ballistic_tables(data,x,y,dtL)
     doc = SimpleDocTemplate("BallisticMotion.pdf", pagesize=letter)
 
     elements = []
@@ -178,7 +178,7 @@ def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho,dt=1/30):
     
     doc.build(elements)
     
-    return data, x, y
+    return data, x, y, dtL
 
 
 
@@ -186,5 +186,5 @@ def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho,dt=1/30):
 
 if __name__ == '__main__':
     
-    ballistic_pdf(V0=190,th=0,y0=100,g=10,m=20,A=.7,Cd=.2,rho=1.2)
+    ballistic_pdf(V0=150,th=10,y0=100,g=10,m=20,A=.7,Cd=.2,rho=1.2)
     
