@@ -1,6 +1,6 @@
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Table, Image, Spacer
+from reportlab.platypus import SimpleDocTemplate, Table, Spacer
 from reportlab.graphics.charts.lineplots import LinePlot
 from reportlab.graphics.shapes import Drawing
 from math import sqrt, sin, cos, exp, acos
@@ -16,7 +16,7 @@ def ballistic_motion(V0,th,y0,g,m,A,Cd,rho,dt):
     Vt = sqrt((2*m*g)/(rho*A*Cd))
     t = 0
     
-    x, y, dtL = [0], [y0], [dt]
+    x, y, dtL = [0], [y0], []
     tof = 0
     while True:
         t += dt
@@ -80,7 +80,7 @@ def ballistic_tables(D,x,y,dtL):
             style=[("BOX",(0,0),(-1,-1),2,colors.gray),
                    ("FONTNAME",(0,0),(-1,-1),"Courier")])
     
-    # Outcomes
+    # Triangle side lengths
     a = abs(x[-1]-x[-2])
     b = abs(y[-1]-y[-2])
     a2 = a*a
@@ -158,9 +158,7 @@ def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho,dt=1/30):
     for var,name in zip([V0,y0,g,m,A,Cd,rho,dt],["V0","y0","g","m","A","Cd","rho","dt"]):
         if var < 0:
             raise Exception(f"{name} must be non-negative")
-        
 
-    
     # Convert agle in degrees to radians for internal use
     th = th*0.0174
     
