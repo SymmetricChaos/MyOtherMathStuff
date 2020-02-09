@@ -92,7 +92,7 @@ def ballistic_tables(D,x,y,dtL):
     ang = acos( (b2+c2-a2) / (2*b*c) ) * 57.4712
     
     outcomes = [[f"Final Distance:    {round(x[-1],3)}m"],
-                [f"Max Height:        {round(max(y),3)}m"]
+                [f"Max Height:        {round(max(y),3)}m"],
                 [f"Final Speed:       {round(c/dtL[-1],3)}m/s"],
                 [f"Time of Flight:    {round(D['tof'],3)}s"],
                 [f"Impact Angle:      {round(ang,3)}°"]
@@ -188,5 +188,6 @@ if __name__ == '__main__':
     ballistic_pdf(V0=200, th=55,
                   y0=50,  g=10,
                   m=20,   A=.7,
-                  Cd=.2,  rho=1.2)
+                  Cd=.2,  rho=1.2,
+                  dt=1/30)
     
