@@ -56,18 +56,18 @@ def ballistic_motion(V0,th,y0,g,m,A,Cd,rho,dt):
 def ballistic_tables(D,x,y,dtL):
     
     #Initial Conditions
-    A = [[f"Initial Speed:     {round(D['V0'],3)}m/s"],
-         [f"Angle of Release:  {round(D['th'],3)}°"],
-         [f"Initial Height:    {round(D['y0'],3)}m"]]
+    A = [[f"Initial Speed:     {round(D['V0'],2)} m/s"],
+         [f"Angle of Release:  {round(D['th'],2)}°"],
+         [f"Initial Height:    {round(D['y0'],2)} m"]]
     
     conditions = Table(A,
             style=[("BOX",(0,0),(-1,-1),2,colors.gray),
                    ("FONTNAME",(0,0),(-1,-1),"Courier")])
 
-    B = [[f"Projectile Mass:   {round(D['m'],3)}kg"],
-         [f"Cross Section:     {round(D['A'],3)}m²"],
-         [f"Drag Coefficient:  {round(D['Cd'],3)}"],
-         [f"Terminal Velocity: {round(D['Vt'],3)}m/s"]]
+    B = [[f"Projectile Mass:   {round(D['m'],2)} kg"],
+         [f"Cross Section:     {round(D['A'],2)} m²"],
+         [f"Drag Coefficient:  {round(D['Cd'],2)}"],
+         [f"Terminal Velocity: {round(D['Vt'],2)} m/s"]]
     
     # Object properties
     props = Table(B,
@@ -76,8 +76,8 @@ def ballistic_tables(D,x,y,dtL):
 
     
     #Environmental conditions
-    C = [[f"Gravitation:       {-round(D['g'],3)}m/s²"],
-         [f"Air Density:       {round(D['rho'],3)}"]]
+    C = [[f"Gravitation:       {-round(D['g'],2)} m/s²"],
+         [f"Air Density:       {round(D['rho'],2)} kg/m³"]]
     
     environs = Table(C,
             style=[("BOX",(0,0),(-1,-1),2,colors.gray),
@@ -92,13 +92,14 @@ def ballistic_tables(D,x,y,dtL):
     c = sqrt(c2)
     
     # Calculate angle and mulitiply to get degrees
+    # Subtract from 90 to get angle relative to ground
     ang = 90-(acos( (b2+c2-a2) / (2*b*c) ) * 57.4712)
     
-    outcomes = [[f"Final Distance:    {round(x[-1],3)}m"],
-                [f"Max Height:        {round(max(y),3)}m"],
-                [f"Final Speed:       {round(c/dtL[-1],3)}m/s"],
-                [f"Time of Flight:    {round(D['tof'],3)}s"],
-                [f"Impact Angle:      {round(ang,3)}°"]
+    outcomes = [[f"Final Distance:    {round(x[-1],2)} m"],
+                [f"Max Height:        {round(max(y),2)} m"],
+                [f"Final Speed:       {round(c/dtL[-1],2)} m/s"],
+                [f"Time of Flight:    {round(D['tof'],2)} s"],
+                [f"Impact Angle:      {round(ang,2)}°"]
                 ]
     
     outcomes = Table(outcomes,
@@ -185,9 +186,9 @@ def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho,dt=1/30):
 
 if __name__ == '__main__':
     
-    ballistic_pdf(V0=200, th=55,
+    ballistic_pdf(V0=100, th=25,
                   y0=50,  g=10,
                   m=20,   A=.7,
-                  Cd=.2,  rho=1.2,
+                  Cd=.2,  rho=1.27,
                   dt=1/30)
     
