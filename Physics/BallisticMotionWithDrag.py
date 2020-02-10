@@ -16,6 +16,9 @@ def ballistic_motion(V0,th,y0,g,m,A,Cd,rho,dt):
     Vt = sqrt((2*m*g)/(rho*A*Cd))
     t = 0
     
+    # Keep track of coordinates and the size of the time steps
+    # We do need to track the size of the time steps because it may change at
+    # the end in order to accurately find the point where the ground is hit
     x, y, dtL = [0], [y0], []
     tof = 0
     while True:
@@ -124,9 +127,9 @@ def line_plot(x,y):
     data = [(a,b) for a,b in zip(x,y)]
     
     lp = LinePlot()
-    lp.width = 270
-    lp.height = 270
-    lp.x = 30
+    lp.width = 300
+    lp.height = 300
+    lp.x = 80
     lp.y = 30
  
  
