@@ -10,11 +10,11 @@ def ballistic_motion(V0,th,y0,g,m,A,Cd,rho,dt):
     if y0 < 0:
         raise Exception("y0 must be non-negative")
     
-    if abs(th) > 1.57:
-        raise Exception("absolute value of th must be less than pi/2")
-    
     Vt = sqrt((2*m*g)/(rho*A*Cd))
     t = 0
+    
+    # Convert agle in degrees to radians
+    thrad = th*0.0174
     
     # Keep track of coordinates and the size of the time steps
     # We do need to track the size of the time steps because it may change at
@@ -24,8 +24,8 @@ def ballistic_motion(V0,th,y0,g,m,A,Cd,rho,dt):
     while True:
         t += dt
         d = (1-exp(-g*t/Vt))
-        x.append(((V0*Vt*cos(th))/g)*d)
-        y.append(y0+(Vt/g)*(V0*sin(th)+Vt)*d-(Vt*t))
+        x.append(((V0*Vt*cos(thrad))/g)*d)
+        y.append(y0+(Vt/g)*(V0*sin(thrad)+Vt)*d-(Vt*t))
         dtL.append(dt)
         tof += dt
         # Check if the object hit the ground
@@ -57,7 +57,7 @@ def ballistic_tables(D,x,y,dtL):
     
     #Initial Conditions
     A = [[f"Initial Speed:     {round(D['V0'],3)}m/s"],
-         [f"Angle of Release:  {round(D['th']* 57.4712,3)}°"],
+         [f"Angle of Release:  {round(D['th'],3)}°"],
          [f"Initial Height:    {round(D['y0'],3)}m"]]
     
     conditions = Table(A,
@@ -92,7 +92,7 @@ def ballistic_tables(D,x,y,dtL):
     c = sqrt(c2)
     
     # Calculate angle and mulitiply to get degrees
-    ang = acos( (b2+c2-a2) / (2*b*c) ) * 57.4712
+    ang = 90-(acos( (b2+c2-a2) / (2*b*c) ) * 57.4712)
     
     outcomes = [[f"Final Distance:    {round(x[-1],3)}m"],
                 [f"Max Height:        {round(max(y),3)}m"],
@@ -132,7 +132,6 @@ def line_plot(x,y):
     lp.x = 80
     lp.y = 30
  
- 
     lp.lineLabels.fontSize = 6
     lp.lineLabels.boxStrokeWidth = 0.5
     lp.lineLabels.visible = 1
@@ -162,8 +161,6 @@ def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho,dt=1/30):
         if var < 0:
             raise Exception(f"{name} must be non-negative")
 
-    # Convert agle in degrees to radians for internal use
-    th = th*0.0174
     
     data, x, y, dtL = ballistic_motion(V0,th,y0,g,m,A,Cd,rho,dt)
     datatabs = ballistic_tables(data,x,y,dtL)
