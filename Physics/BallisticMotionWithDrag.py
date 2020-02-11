@@ -154,7 +154,7 @@ def line_plot(x,y):
     return drawing
 
 
-def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho,dt=1/30):
+def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho,dt=1/30,title="BallisticMotion"):
     if abs(th) > 90:
         raise Exception("Angle must be between -90 and 90 degrees")
     
@@ -165,7 +165,7 @@ def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho,dt=1/30):
     
     data, x, y, dtL = ballistic_motion(V0,th,y0,g,m,A,Cd,rho,dt)
     datatabs = ballistic_tables(data,x,y,dtL)
-    doc = SimpleDocTemplate("BallisticMotion.pdf", pagesize=letter)
+    doc = SimpleDocTemplate(f"{title}.pdf", pagesize=letter)
 
     elements = []
     
@@ -180,7 +180,13 @@ def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho,dt=1/30):
     
     return data, x, y, dtL
 
-
+def ballistic_pdf_multi(V0,th,y0,g,m,A,Cd,rho,dt):
+    
+    ctr = 1
+    for info in zip(V0,th,y0,g,m,A,Cd,rho,dt):
+        ballistic_pdf(*info,title=f"BallisticMotion{ctr}")
+        ctr += 1
+    
 
 
 
@@ -191,4 +197,14 @@ if __name__ == '__main__':
                   m=20,   A=.7,
                   Cd=.2,  rho=1.27,
                   dt=1/30)
+    
+    ballistic_pdf_multi(V0=[100,200], 
+                        th=[25,25],
+                        y0=[50,50],  
+                        g=[10,10],
+                        m=[20,20],   
+                        A=[.7,.7],
+                        Cd=[.2,.2],  
+                        rho=[1.27,1.27],
+                        dt=[1/30,1/30])
     
