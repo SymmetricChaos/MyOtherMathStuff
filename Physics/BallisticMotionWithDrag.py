@@ -5,7 +5,7 @@ from reportlab.graphics.charts.lineplots import LinePlot
 from reportlab.graphics.shapes import Drawing
 from math import sqrt, sin, cos, exp, acos
 
-def ballistic_motion(V0,th,y0,g,m,A,Cd,rho,dt):
+def ballistic_motion(V0,th,y0,m,A,Cd,g,rho,dt):
 
     if y0 < 0:
         raise Exception("y0 must be non-negative")
@@ -154,11 +154,11 @@ def line_plot(x,y):
     return drawing
 
 
-def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho=1.27,dt=1/30,title="BallisticMotion"):
+def ballistic_pdf(V0,th,y0,m,A,Cd,g=9.8,rho=1.27,dt=1/30,title="BallisticMotion"):
     if abs(th) > 90:
         raise Exception("Angle must be between -90 and 90 degrees")
     
-    for var,name in zip([V0,y0,g,m,A,Cd,rho,dt],["V0","y0","g","m","A","Cd","rho","dt"]):
+    for var,name in zip([V0,y0,m,A,Cd,g,rho,dt],["V0","y0","m","A","Cd","g","rho","dt"]):
         if var < 0:
             raise Exception(f"{name} must be non-negative")
 
@@ -181,32 +181,39 @@ def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho=1.27,dt=1/30,title="BallisticMotion"):
     return data, x, y, dtL
 
 
-def ballistic_pdf_multi(V0,th,y0,g,m,A,Cd,rho,dt,title="BallisticMotion"):
+def ballistic_pdf_multi(V0,th,y0,m,A,Cd,g=[9.8],rho=[1.2],dt=[1/30],title="BallisticMotion"):
     
     ctr = 1
-    for info in zip(V0,th,y0,g,m,A,Cd,rho,dt):
+    for info in zip(V0,th,y0,m,A,Cd,g,rho,dt):
         ballistic_pdf(*info,title=f"{title}{ctr}")
         ctr += 1
     
-
+    
+def ballistic_pdf_compare(V0,th,y0,m,A,Cd,g=[9.8],rho=[1.2],dt=[1/30],title="BallisticMotion"):
+    
+    
+    ctr = 1
+    for info in zip(V0,th,y0,m,A,Cd,g,rho,dt):
+        ballistic_motion(*info)
+        ctr += 1
 
 
 
 if __name__ == '__main__':
     
     ballistic_pdf(V0=100, th=25,
-                  y0=50,  g=9.8,
-                  m=20,   A=.7,
-                  Cd=.2,  rho=1.27,
+                  y0=50,  m=20,
+                  A=.7,   Cd=.2,  
+                  g=9.8,  rho=1.27,
                   dt=1/30)
     
     ballistic_pdf_multi(V0=[100,200], 
                         th=[25,25],
                         y0=[50,50],  
-                        g=[9.8,9.8],
                         m=[20,20],   
                         A=[.7,.7],
-                        Cd=[.2,.2],  
+                        Cd=[.2,.2],
+                        g=[9.8,9.8],
                         rho=[1.27,1.27],
                         dt=[1/30,1/30])
     
