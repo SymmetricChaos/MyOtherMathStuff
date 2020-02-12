@@ -163,7 +163,7 @@ def ballistic_pdf(V0,th,y0,m,A,Cd,g=9.8,rho=1.27,dt=1/30,title="BallisticMotion"
             raise Exception(f"{name} must be non-negative")
 
     
-    data, x, y, dtL = ballistic_motion(V0,th,y0,g,m,A,Cd,rho,dt)
+    data, x, y, dtL = ballistic_motion(V0,th,y0,m,A,Cd,g,rho,dt)
     datatabs = ballistic_tables(data,x,y,dtL)
     doc = SimpleDocTemplate(f"{title}.pdf", pagesize=letter)
 
@@ -183,6 +183,27 @@ def ballistic_pdf(V0,th,y0,m,A,Cd,g=9.8,rho=1.27,dt=1/30,title="BallisticMotion"
 
 def ballistic_pdf_multi(V0,th,y0,m,A,Cd,g=[9.8],rho=[1.2],dt=[1/30],title="BallisticMotion"):
     
+    longest = max(len(V0),len(th),len(y0),len(m),len(A),len(Cd),len(g),len(rho),len(dt))
+    
+    if len(V0) == 1:
+        V0 = V0*longest
+    if len(th) == 1:
+        th = th*longest
+    if len(y0) == 1:
+        y0 = y0*longest
+    if len(m) == 1:
+        m = m*longest
+    if len(A) == 1:
+        A = A*longest
+    if len(Cd) == 1:
+        Cd = Cd*longest
+    if len(g) == 1:
+        g = g*longest
+    if len(rho) == 1:
+        rho = rho*longest        
+    if len(dt) == 1:
+        dt = dt*longest 
+        
     ctr = 1
     for info in zip(V0,th,y0,m,A,Cd,g,rho,dt):
         ballistic_pdf(*info,title=f"{title}{ctr}")
@@ -190,7 +211,27 @@ def ballistic_pdf_multi(V0,th,y0,m,A,Cd,g=[9.8],rho=[1.2],dt=[1/30],title="Balli
     
     
 def ballistic_pdf_compare(V0,th,y0,m,A,Cd,g=[9.8],rho=[1.2],dt=[1/30],title="BallisticMotion"):
+        
+    longest = max(len(V0),len(th),len(y0),len(m),len(A),len(Cd),len(g),len(rho),len(dt))
     
+    if len(V0) == 1:
+        V0 = V0*longest
+    if len(th) == 1:
+        th = th*longest
+    if len(y0) == 1:
+        y0 = y0*longest
+    if len(m) == 1:
+        m = m*longest
+    if len(A) == 1:
+        A = A*longest
+    if len(Cd) == 1:
+        Cd = Cd*longest
+    if len(g) == 1:
+        g = g*longest
+    if len(rho) == 1:
+        rho = rho*longest        
+    if len(dt) == 1:
+        dt = dt*longest 
     
     ctr = 1
     for info in zip(V0,th,y0,m,A,Cd,g,rho,dt):
@@ -208,12 +249,9 @@ if __name__ == '__main__':
                   dt=1/30)
     
     ballistic_pdf_multi(V0=[100,200], 
-                        th=[25,25],
-                        y0=[50,50],  
-                        m=[20,20],   
-                        A=[.7,.7],
-                        Cd=[.2,.2],
-                        g=[9.8,9.8],
-                        rho=[1.27,1.27],
-                        dt=[1/30,1/30])
+                        th=[25],
+                        y0=[50],  
+                        m=[20],   
+                        A=[.7],
+                        Cd=[.2])
     
