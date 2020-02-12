@@ -154,7 +154,7 @@ def line_plot(x,y):
     return drawing
 
 
-def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho,dt=1/30,title="BallisticMotion"):
+def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho=1.27,dt=1/30,title="BallisticMotion"):
     if abs(th) > 90:
         raise Exception("Angle must be between -90 and 90 degrees")
     
@@ -180,20 +180,22 @@ def ballistic_pdf(V0,th,y0,g,m,A,Cd,rho,dt=1/30,title="BallisticMotion"):
     
     return data, x, y, dtL
 
-def ballistic_pdf_multi(V0,th,y0,g,m,A,Cd,rho,dt):
+
+def ballistic_pdf_multi(V0,th,y0,g,m,A,Cd,rho,dt,title="BallisticMotion"):
     
     ctr = 1
     for info in zip(V0,th,y0,g,m,A,Cd,rho,dt):
-        ballistic_pdf(*info,title=f"BallisticMotion{ctr}")
+        ballistic_pdf(*info,title=f"{title}{ctr}")
         ctr += 1
     
+
 
 
 
 if __name__ == '__main__':
     
     ballistic_pdf(V0=100, th=25,
-                  y0=50,  g=10,
+                  y0=50,  g=9.8,
                   m=20,   A=.7,
                   Cd=.2,  rho=1.27,
                   dt=1/30)
@@ -201,7 +203,7 @@ if __name__ == '__main__':
     ballistic_pdf_multi(V0=[100,200], 
                         th=[25,25],
                         y0=[50,50],  
-                        g=[10,10],
+                        g=[9.8,9.8],
                         m=[20,20],   
                         A=[.7,.7],
                         Cd=[.2,.2],  
