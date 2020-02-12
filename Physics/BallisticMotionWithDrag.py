@@ -5,10 +5,8 @@ from reportlab.graphics.charts.lineplots import LinePlot
 from reportlab.graphics.shapes import Drawing
 from math import sqrt, sin, cos, exp, acos
 
-def ballistic_motion(V0,th,y0,m,A,Cd,g,rho,dt):
+def ballistic_motion(V0,th,y0,x0,m,A,Cd,g,rho,dt):
 
-    if y0 < 0:
-        raise Exception("y0 must be non-negative")
     
     Vt = sqrt((2*m*g)/(rho*A*Cd))
     t = 0
@@ -19,7 +17,7 @@ def ballistic_motion(V0,th,y0,m,A,Cd,g,rho,dt):
     # Keep track of coordinates and the size of the time steps
     # We do need to track the size of the time steps because it may change at
     # the end in order to accurately find the point where the ground is hit
-    x, y, dtL = [0], [y0], []
+    x, y, dtL = [x0], [y0], []
     tof = 0
     while True:
         t += dt
@@ -150,7 +148,40 @@ def line_plot(x,y):
     
     lp.data = [data]
     drawing.add(lp)
-     
+    
+    return drawing
+
+def line_plot_multi(X,Y):
+    drawing = Drawing(400, 300)
+    
+    data = []
+    for x,y in zip(X,Y):
+        data.append([(a,b) for a,b in zip(x,y)])
+    
+    lp = LinePlot()
+    lp.width = 300
+    lp.height = 300
+    lp.x = 80
+    lp.y = 30
+ 
+    lp.lineLabels.fontSize = 6
+    lp.lineLabels.boxStrokeWidth = 0.5
+    lp.lineLabels.visible = 1
+    lp.lineLabels.boxAnchor = 'c'
+    lp.lineLabels.angle = 0
+    lp.lineLabelNudge = 10
+    lp.joinedLines = 1
+    lp.lines.strokeWidth = 1.5
+    
+    lp.xValueAxis.valueMin = 0
+    lp.xValueAxis.valueMax = max(max(x),max(y))
+ 
+    lp.yValueAxis.valueMin = 0
+    lp.yValueAxis.valueMax = max(max(x),max(y))
+    
+    lp.data = [data]
+    drawing.add(lp)
+    
     return drawing
 
 
@@ -163,7 +194,7 @@ def ballistic_pdf(V0,th,y0,m,A,Cd,g=9.8,rho=1.27,dt=1/30,title="BallisticMotion"
             raise Exception(f"{name} must be non-negative")
 
     
-    data, x, y, dtL = ballistic_motion(V0,th,y0,m,A,Cd,g,rho,dt)
+    data, x, y, dtL = ballistic_motion(V0,th,0,y0,m,A,Cd,g,rho,dt)
     datatabs = ballistic_tables(data,x,y,dtL)
     doc = SimpleDocTemplate(f"{title}.pdf", pagesize=letter)
 
@@ -210,14 +241,16 @@ def ballistic_pdf_multi(V0,th,y0,m,A,Cd,g=[9.8],rho=[1.2],dt=[1/30],title="Balli
         ctr += 1
     
     
-def ballistic_pdf_compare(V0,th,y0,m,A,Cd,g=[9.8],rho=[1.2],dt=[1/30],title="BallisticMotion"):
+def ballistic_pdf_compare(V0,th,x0,y0,m,A,Cd,g=[9.8],rho=[1.2],dt=[1/30],title="BallisticMotionCompare"):
         
-    longest = max(len(V0),len(th),len(y0),len(m),len(A),len(Cd),len(g),len(rho),len(dt))
+    longest = max(len(V0),len(th),len(x0),len(y0),len(m),len(A),len(Cd),len(g),len(rho),len(dt))
     
     if len(V0) == 1:
         V0 = V0*longest
     if len(th) == 1:
         th = th*longest
+    if len(x0) == 1:
+        x0 = x0*longest
     if len(y0) == 1:
         y0 = y0*longest
     if len(m) == 1:
@@ -233,12 +266,17 @@ def ballistic_pdf_compare(V0,th,y0,m,A,Cd,g=[9.8],rho=[1.2],dt=[1/30],title="Bal
     if len(dt) == 1:
         dt = dt*longest 
     
-    ctr = 1
-    for info in zip(V0,th,y0,m,A,Cd,g,rho,dt):
-        ballistic_motion(*info)
-        ctr += 1
+    X, Y = [], []
+    for info in zip(V0,th,x0,y0,m,A,Cd,g,rho,dt):
+        _, x, y, _ = ballistic_motion(*info)
+        X.append(x)
+        Y.append(y)
+    
+    drawing = line_plot_multi(X,Y)
+    
+    doc = SimpleDocTemplate(f"{title}.pdf", pagesize=letter)
 
-
+    doc.build([drawing])
 
 if __name__ == '__main__':
     
@@ -250,6 +288,15 @@ if __name__ == '__main__':
     
     ballistic_pdf_multi(V0=[100,200], 
                         th=[25],
+                        y0=[50],  
+                        m=[20],   
+                        A=[.7],
+                        Cd=[.2])
+    
+    
+    ballistic_pdf_compare(V0=[100,200], 
+                        th=[25],
+                        x0 = [0],
                         y0=[50],  
                         m=[20],   
                         A=[.7],
