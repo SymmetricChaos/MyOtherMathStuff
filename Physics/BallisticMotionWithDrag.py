@@ -41,6 +41,7 @@ def ballistic_motion(V0,th,y0,x0,m,A,Cd,g,rho,dt):
         
     return {"V0" : V0,
             "th" : th,
+            "x0" : x0,
             "y0" : y0,
             "g" : g,
             "m" : m,
@@ -179,7 +180,7 @@ def line_plot_multi(X,Y):
     lp.yValueAxis.valueMin = 0
     lp.yValueAxis.valueMax = max(max(x),max(y))
     
-    lp.data = [data]
+    lp.data = data
     drawing.add(lp)
     
     return drawing
@@ -239,8 +240,8 @@ def ballistic_pdf_multi(V0,th,y0,m,A,Cd,g=[9.8],rho=[1.2],dt=[1/30],title="Balli
     for info in zip(V0,th,y0,m,A,Cd,g,rho,dt):
         ballistic_pdf(*info,title=f"{title}{ctr}")
         ctr += 1
-    
-    
+
+
 def ballistic_pdf_compare(V0,th,x0,y0,m,A,Cd,g=[9.8],rho=[1.2],dt=[1/30],title="BallisticMotionCompare"):
         
     longest = max(len(V0),len(th),len(x0),len(y0),len(m),len(A),len(Cd),len(g),len(rho),len(dt))
@@ -268,6 +269,7 @@ def ballistic_pdf_compare(V0,th,x0,y0,m,A,Cd,g=[9.8],rho=[1.2],dt=[1/30],title="
     
     X, Y = [], []
     for info in zip(V0,th,x0,y0,m,A,Cd,g,rho,dt):
+        print(info)
         _, x, y, _ = ballistic_motion(*info)
         X.append(x)
         Y.append(y)
@@ -278,6 +280,10 @@ def ballistic_pdf_compare(V0,th,x0,y0,m,A,Cd,g=[9.8],rho=[1.2],dt=[1/30],title="
 
     doc.build([drawing])
 
+
+
+
+
 if __name__ == '__main__':
     
     ballistic_pdf(V0=100, th=25,
@@ -285,20 +291,12 @@ if __name__ == '__main__':
                   A=.7,   Cd=.2,  
                   g=9.8,  rho=1.27,
                   dt=1/30)
-    
-    ballistic_pdf_multi(V0=[100,200], 
-                        th=[25],
-                        y0=[50],  
-                        m=[20],   
-                        A=[.7],
-                        Cd=[.2])
-    
-    
+
     ballistic_pdf_compare(V0=[100,200], 
-                        th=[25],
-                        x0 = [0],
-                        y0=[50],  
-                        m=[20],   
-                        A=[.7],
-                        Cd=[.2])
-    
+                          th=[25],
+                          x0=[0,50],
+                          y0=[50],  
+                          m=[20],   
+                          A=[.7],
+                          Cd=[.2],
+                          dt=[1/30])
