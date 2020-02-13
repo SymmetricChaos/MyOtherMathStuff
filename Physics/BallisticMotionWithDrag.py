@@ -7,7 +7,6 @@ from math import sqrt, sin, cos, exp, acos
 
 def ballistic_motion(V0,th,y0,x0,m,A,Cd,g,rho,dt):
 
-    
     Vt = sqrt((2*m*g)/(rho*A*Cd))
     t = 0
     
@@ -22,7 +21,7 @@ def ballistic_motion(V0,th,y0,x0,m,A,Cd,g,rho,dt):
     while True:
         t += dt
         d = (1-exp(-g*t/Vt))
-        x.append(((V0*Vt*cos(thrad))/g)*d)
+        x.append(x0+((V0*Vt*cos(thrad))/g)*d)
         y.append(y0+(Vt/g)*(V0*sin(thrad)+Vt)*d-(Vt*t))
         dtL.append(dt)
         tof += dt
@@ -38,7 +37,7 @@ def ballistic_motion(V0,th,y0,x0,m,A,Cd,g,rho,dt):
             # Otherwise we're done
             else:
                 break
-        
+
     return {"V0" : V0,
             "th" : th,
             "x0" : x0,
@@ -217,6 +216,7 @@ def ballistic_pdf_multi(V0,th,y0,m,A,Cd,g=[9.8],rho=[1.2],dt=[1/30],title="Balli
     
     longest = max(len(V0),len(th),len(y0),len(m),len(A),len(Cd),len(g),len(rho),len(dt))
     
+    x0 = [0]*longest
     if len(V0) == 1:
         V0 = V0*longest
     if len(th) == 1:
@@ -237,7 +237,7 @@ def ballistic_pdf_multi(V0,th,y0,m,A,Cd,g=[9.8],rho=[1.2],dt=[1/30],title="Balli
         dt = dt*longest 
         
     ctr = 1
-    for info in zip(V0,th,y0,m,A,Cd,g,rho,dt):
+    for info in zip(V0,th,x0,y0,m,A,Cd,g,rho,dt):
         ballistic_pdf(*info,title=f"{title}{ctr}")
         ctr += 1
 
@@ -286,17 +286,17 @@ def ballistic_pdf_compare(V0,th,x0,y0,m,A,Cd,g=[9.8],rho=[1.2],dt=[1/30],title="
 
 if __name__ == '__main__':
     
-    ballistic_pdf(V0=100, th=25,
-                  y0=50,  m=20,
-                  A=.7,   Cd=.2,  
-                  g=9.8,  rho=1.27,
-                  dt=1/30)
+    ballistic_pdf(V0=100,  th=25,
+                  y0=50,   m=20,
+                  A=.7,    Cd=.2,  
+                  g=9.8,   rho=1.27,
+                  dt=1/32)
 
-    ballistic_pdf_compare(V0=[100,200], 
-                          th=[25],
-                          x0=[0,50],
-                          y0=[50],  
-                          m=[20],   
-                          A=[.7],
-                          Cd=[.2],
-                          dt=[1/30])
+    ballistic_pdf_compare(V0 = [100,100], 
+                          th = [25],
+                          x0 = [0,50],
+                          y0 = [50],  
+                          m  = [20],   
+                          A  = [.7],
+                          Cd = [.2],
+                          dt = [1/32])
