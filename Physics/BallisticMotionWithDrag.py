@@ -5,7 +5,7 @@ from reportlab.graphics.charts.lineplots import LinePlot
 from reportlab.graphics.shapes import Drawing
 from math import sqrt, sin, cos, exp, acos
 
-def ballistic_motion(V0,th,y0,x0,m,A,Cd,g,rho,dt):
+def ballistic_motion(V0,th,x0,y0,m,A,Cd,g,rho,dt):
 
     Vt = sqrt((2*m*g)/(rho*A*Cd))
     t = 0
@@ -269,7 +269,6 @@ def ballistic_pdf_compare(V0,th,x0,y0,m,A,Cd,g=[9.8],rho=[1.2],dt=[1/30],title="
     
     X, Y = [], []
     for info in zip(V0,th,x0,y0,m,A,Cd,g,rho,dt):
-        print(info)
         _, x, y, _ = ballistic_motion(*info)
         X.append(x)
         Y.append(y)
@@ -295,7 +294,7 @@ if __name__ == '__main__':
     ballistic_pdf_compare(V0 = [100,100], 
                           th = [25],
                           x0 = [0,50],
-                          y0 = [50],  
+                          y0 = [50,0],  
                           m  = [20],   
                           A  = [.7],
                           Cd = [.2],
