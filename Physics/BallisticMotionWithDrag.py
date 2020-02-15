@@ -159,10 +159,10 @@ def line_plot_multi(X,Y):
         data.append([(a,b) for a,b in zip(x,y)])
     
     lp = LinePlot()
-    lp.width = 300
-    lp.height = 300
-    lp.x = 80
-    lp.y = 30
+    lp.width = 400
+    lp.height = 400
+    lp.x = 50
+    lp.y = -100
  
     lp.lineLabels.fontSize = 6
     lp.lineLabels.boxStrokeWidth = 0.5
@@ -291,8 +291,8 @@ if __name__ == '__main__':
                   g=9.8,   rho=1.27,
                   dt=1/32)
 
-    ballistic_pdf_compare(V0 = [100,100,108,126], 
-                          th = [25,35,45,55],
+    ballistic_pdf_compare(V0 = [100,108,126,165], 
+                          th = [35,45,55,65],
                           x0 = [0],
                           y0 = [0],  
                           m  = [20],   
