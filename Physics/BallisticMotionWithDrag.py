@@ -161,7 +161,7 @@ def line_plot_multi(X,Y):
     lp = LinePlot()
     lp.width = 400
     lp.height = 400
-    lp.x = 50
+    lp.x = 20
     lp.y = -100
  
     lp.lineLabels.fontSize = 6
@@ -268,16 +268,27 @@ def ballistic_pdf_compare(V0,th,x0,y0,m,A,Cd,g=[9.8],rho=[1.2],dt=[1/30],title="
         dt = dt*longest 
     
     X, Y = [], []
+    tabs = []
     for info in zip(V0,th,x0,y0,m,A,Cd,g,rho,dt):
-        _, x, y, _ = ballistic_motion(*info)
+        data, x, y, dtL = ballistic_motion(*info)
+        tabs.append(ballistic_tables(data,x,y,dtL))
         X.append(x)
         Y.append(y)
     
     drawing = line_plot_multi(X,Y)
     
+    elements = [drawing]
+    
+    elements.append(Spacer(1, 90))
+    for T in tabs:
+        elements.append(Spacer(1, 40))
+        for t in T:
+            elements.append(Spacer(1, 20))
+            elements.append(t)
+    
     doc = SimpleDocTemplate(f"{title}.pdf", pagesize=letter)
 
-    doc.build([drawing])
+    doc.build(elements)
 
 
 
