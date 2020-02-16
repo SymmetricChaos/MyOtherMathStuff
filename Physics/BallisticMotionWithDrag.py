@@ -285,11 +285,15 @@ def ballistic_pdf_compare(V0,th,x0,y0,m,A,Cd,g=[9.8],rho=[1.2],dt=[1/30],title="
     
     elements = [drawing]
     
+    ctr = 0
     for T in tabs:
-        elements.append(PageBreak())
+        if ctr % 2 == 0:
+            elements.append(PageBreak())
         for t in T:
-            elements.append(Spacer(1, 20))
+            elements.append(Spacer(1, 5))
             elements.append(t)
+        elements.append(Spacer(1, 10))
+        ctr += 1
     
     doc = SimpleDocTemplate(f"{title}.pdf", pagesize=letter)
 
