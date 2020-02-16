@@ -1,6 +1,6 @@
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Table, Spacer
+from reportlab.platypus import SimpleDocTemplate, Table, Spacer, PageBreak
 from reportlab.graphics.charts.lineplots import LinePlot
 from reportlab.graphics.shapes import Drawing
 from math import sqrt, sin, cos, exp, acos
@@ -172,7 +172,7 @@ def line_plot_multi(X,Y):
     lp.lineLabelNudge = 10
     lp.joinedLines = 1
     lp.lines.strokeWidth = 1.5
-    
+
     lp.xValueAxis.valueMin = 0
     lp.xValueAxis.valueMax = max(max(x),max(y))
  
@@ -180,6 +180,12 @@ def line_plot_multi(X,Y):
     lp.yValueAxis.valueMax = max(max(x),max(y))
     
     lp.data = data
+    
+    lp.lines[0].strokeColor = colors.blue
+    lp.lines[1].strokeColor = colors.blue
+    lp.lines[2].strokeColor = colors.blue
+    lp.lines[3].strokeColor = colors.blue
+    
     drawing.add(lp)
     
     return drawing
@@ -279,9 +285,8 @@ def ballistic_pdf_compare(V0,th,x0,y0,m,A,Cd,g=[9.8],rho=[1.2],dt=[1/30],title="
     
     elements = [drawing]
     
-    elements.append(Spacer(1, 90))
     for T in tabs:
-        elements.append(Spacer(1, 40))
+        elements.append(PageBreak())
         for t in T:
             elements.append(Spacer(1, 20))
             elements.append(t)
