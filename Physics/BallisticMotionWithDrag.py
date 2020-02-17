@@ -58,9 +58,9 @@ def ballistic_tables(D,x,y,dtL):
          [f"Angle of Release:  {round(D['th'],2)}°"],
          [f"Initial Height:    {round(D['y0'],2)} m"]]
     
-    conditions = Table(A,
-            style=[("BOX",(0,0),(-1,-1),2,colors.gray),
-                   ("FONTNAME",(0,0),(-1,-1),"Courier")])
+    conditions = Table(A,colWidths=220,
+                     style=[("BOX",(0,0),(-1,-1),2,colors.gray),
+                            ("FONTNAME",(0,0),(-1,-1),"Courier")])
 
     B = [[f"Projectile Mass:   {round(D['m'],2)} kg"],
          [f"Cross Section:     {round(D['A'],2)} m²"],
@@ -68,18 +68,18 @@ def ballistic_tables(D,x,y,dtL):
          [f"Terminal Velocity: {round(D['Vt'],2)} m/s"]]
     
     # Object properties
-    props = Table(B,
-            style=[("BOX",(0,0),(-1,-1),2,colors.gray),
-                   ("FONTNAME",(0,0),(-1,-1),"Courier")])
+    props = Table(B,colWidths=220,
+                     style=[("BOX",(0,0),(-1,-1),2,colors.gray),
+                            ("FONTNAME",(0,0),(-1,-1),"Courier")])
 
     
     #Environmental conditions
     C = [[f"Gravitation:       {-round(D['g'],2)} m/s²"],
          [f"Air Density:       {round(D['rho'],2)} kg/m³"]]
     
-    environs = Table(C,
-            style=[("BOX",(0,0),(-1,-1),2,colors.gray),
-                   ("FONTNAME",(0,0),(-1,-1),"Courier")])
+    environs = Table(C,colWidths=220,
+                     style=[("BOX",(0,0),(-1,-1),2,colors.gray),
+                            ("FONTNAME",(0,0),(-1,-1),"Courier")])
     
     # Triangle side lengths
     a = abs(x[-1]-x[-2])
@@ -100,11 +100,11 @@ def ballistic_tables(D,x,y,dtL):
                 [f"Impact Angle:      {round(ang,2)}°"]
                 ]
     
-    outcomes = Table(outcomes,
-            style=[("BOX",(0,0),(-1,-1),2,colors.gray),
-                   ("FONTNAME",(0,0),(-1,-1),"Courier")])
+    outcomes = Table(outcomes,colWidths=220,
+                     style=[("BOX",(0,0),(-1,-1),2,colors.gray),
+                            ("FONTNAME",(0,0),(-1,-1),"Courier")])
     
-    return conditions, props, environs, outcomes
+    return Table([[conditions], [props], [environs], [outcomes]])
 
 
 def list_to_intervals(L,n):
@@ -151,7 +151,7 @@ def line_plot(x,y):
     
     return drawing
 
-def line_plot_multi(X,Y):
+def line_plot_compare(X,Y):
     drawing = Drawing(400, 300)
     maxW = 0
     maxH = 0
@@ -229,36 +229,6 @@ def ballistic_pdf(V0,th,y0,m,A,Cd,g=9.8,rho=1.27,dt=1/30,title="BallisticMotion"
     return data, x, y, dtL
 
 
-def ballistic_pdf_multi(V0,th,y0,m,A,Cd,g=[9.8],rho=[1.2],dt=[1/30],title="BallisticMotion"):
-    
-    longest = max(len(V0),len(th),len(y0),len(m),len(A),len(Cd),len(g),len(rho),len(dt))
-    
-    x0 = [0]*longest
-    if len(V0) == 1:
-        V0 = V0*longest
-    if len(th) == 1:
-        th = th*longest
-    if len(y0) == 1:
-        y0 = y0*longest
-    if len(m) == 1:
-        m = m*longest
-    if len(A) == 1:
-        A = A*longest
-    if len(Cd) == 1:
-        Cd = Cd*longest
-    if len(g) == 1:
-        g = g*longest
-    if len(rho) == 1:
-        rho = rho*longest        
-    if len(dt) == 1:
-        dt = dt*longest 
-        
-    ctr = 1
-    for info in zip(V0,th,x0,y0,m,A,Cd,g,rho,dt):
-        ballistic_pdf(*info,title=f"{title}{ctr}")
-        ctr += 1
-
-
 def ballistic_pdf_compare(V0,th,x0,y0,m,A,Cd,g=[9.8],rho=[1.2],dt=[1/30],title="BallisticMotionCompare"):
         
     longest = max(len(V0),len(th),len(x0),len(y0),len(m),len(A),len(Cd),len(g),len(rho),len(dt))
@@ -292,18 +262,17 @@ def ballistic_pdf_compare(V0,th,x0,y0,m,A,Cd,g=[9.8],rho=[1.2],dt=[1/30],title="
         X.append(x)
         Y.append(y)
     
-    drawing = line_plot_multi(X,Y)
+    drawing = line_plot_compare(X,Y)
     
     elements = [drawing]
     
     ctr = 0
     for T in tabs:
-        if ctr % 2 == 0:
+        if ctr % 4 == 0:
             elements.append(PageBreak())
-        for t in T:
-            elements.append(Spacer(1, 5))
-            elements.append(t)
-        elements.append(Spacer(1, 10))
+            
+        elements.append(T)
+        elements.append(Spacer(1, 15))
         ctr += 1
     
     doc = SimpleDocTemplate(f"{title}.pdf", pagesize=letter)
@@ -315,12 +284,12 @@ def ballistic_pdf_compare(V0,th,x0,y0,m,A,Cd,g=[9.8],rho=[1.2],dt=[1/30],title="
 
 
 if __name__ == '__main__':
-    
-    ballistic_pdf(V0=100,  th=25,
-                  y0=50,   m=20,
-                  A=.7,    Cd=.2,  
-                  g=9.8,   rho=1.27,
-                  dt=1/32)
+#    
+#    ballistic_pdf(V0=100,  th=25,
+#                  y0=50,   m=20,
+#                  A=.7,    Cd=.2,  
+#                  g=9.8,   rho=1.27,
+#                  dt=1/32)
 
     ballistic_pdf_compare(V0 = [100,108,126,165,200,150], 
                           th = [35,45,55,65,35,80],
