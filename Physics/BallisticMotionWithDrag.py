@@ -265,15 +265,23 @@ def ballistic_pdf_compare(V0,th,x0,y0,m,A,Cd,g=[9.8],rho=[1.2],dt=[1/30],title="
     drawing = line_plot_compare(X,Y)
     
     elements = [drawing]
+    elements.append(PageBreak())
     
     ctr = 0
+    temp = [[],[]]
+    
     for T in tabs:
-        if ctr % 4 == 0:
+        if ctr % 4 == 0 and ctr > 0:
+            elements.append(Table(temp))
             elements.append(PageBreak())
-            
-        elements.append(T)
-        elements.append(Spacer(1, 15))
+            temp = [[],[]]
+        
+        temp[ctr%2].append(T)
+        
         ctr += 1
+        
+    elements.append(Table(temp))
+    elements.append(PageBreak())
     
     doc = SimpleDocTemplate(f"{title}.pdf", pagesize=letter)
 
