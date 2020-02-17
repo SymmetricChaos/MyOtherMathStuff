@@ -181,11 +181,19 @@ def line_plot_multi(X,Y):
     
     lp.data = data
     
-    lp.lines[0].strokeColor = colors.blue
-    lp.lines[1].strokeColor = colors.blue
-    lp.lines[2].strokeColor = colors.blue
-    lp.lines[3].strokeColor = colors.blue
-    
+    cls = [colors.Color(0,0,0),
+           colors.Color(0.898,0.621,0),
+           colors.Color(0.335,0.703,0.91),
+           colors.Color(0,0.617,0.449),
+           colors.Color(0.937,0.89,0.257),
+           colors.Color(0,0.445,0.695),
+           colors.Color(0.832,0.367,0),
+           colors.Color(0.796,0.472,0.652),
+           ]
+    for i in range(len(data)):
+        
+        lp.lines[i].strokeColor = cls[i%8]
+
     drawing.add(lp)
     
     return drawing
