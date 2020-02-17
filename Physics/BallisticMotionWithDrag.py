@@ -151,6 +151,7 @@ def line_plot(x,y):
     
     return drawing
 
+
 def line_plot_compare(X,Y):
     drawing = Drawing(400, 300)
     maxW = 0
@@ -184,14 +185,14 @@ def line_plot_compare(X,Y):
     
     lp.data = data
     
-    cls = [colors.Color(0,0,0),
-           colors.Color(0.898,0.621,0),
-           colors.Color(0.335,0.703,0.91),
-           colors.Color(0,0.617,0.449),
-           colors.Color(0.937,0.89,0.257),
-           colors.Color(0,0.445,0.695),
-           colors.Color(0.832,0.367,0),
-           colors.Color(0.796,0.472,0.652),
+    cls = [colors.Color(0,0,0),             #Black
+           colors.Color(0.898,0.621,0),     #Orange
+           colors.Color(0.335,0.703,0.91),  #Sky Blue
+           colors.Color(0,0.617,0.449),     #Bluish Green
+           colors.Color(0.937,0.89,0.257),  #Yellow
+           colors.Color(0,0.445,0.695),     #Blue
+           colors.Color(0.832,0.367,0),     #Vermillion
+           colors.Color(0.796,0.472,0.652), #Reddish Purple
            ]
     
     for i in range(len(data)):
