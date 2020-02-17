@@ -54,30 +54,30 @@ def ballistic_motion(V0,th,x0,y0,m,A,Cd,g,rho,dt):
 def ballistic_tables(D,x,y,dtL):
     
     #Initial Conditions
-    A = [[f"Initial Speed:     {round(D['V0'],2)} m/s"],
+    conditions = [[f"Initial Speed:     {round(D['V0'],2)} m/s"],
          [f"Angle of Release:  {round(D['th'],2)}°"],
          [f"Initial Height:    {round(D['y0'],2)} m"]]
     
-    conditions = Table(A,colWidths=220,
+    conditions_tab = Table(conditions,colWidths=210,
                      style=[("BOX",(0,0),(-1,-1),2,colors.gray),
                             ("FONTNAME",(0,0),(-1,-1),"Courier")])
 
-    B = [[f"Projectile Mass:   {round(D['m'],2)} kg"],
+    props = [[f"Projectile Mass:   {round(D['m'],2)} kg"],
          [f"Cross Section:     {round(D['A'],2)} m²"],
          [f"Drag Coefficient:  {round(D['Cd'],2)}"],
          [f"Terminal Velocity: {round(D['Vt'],2)} m/s"]]
     
     # Object properties
-    props = Table(B,colWidths=220,
+    props_tab = Table(props,colWidths=210,
                      style=[("BOX",(0,0),(-1,-1),2,colors.gray),
                             ("FONTNAME",(0,0),(-1,-1),"Courier")])
 
     
     #Environmental conditions
-    C = [[f"Gravitation:       {-round(D['g'],2)} m/s²"],
+    environs = [[f"Gravitation:       {-round(D['g'],2)} m/s²"],
          [f"Air Density:       {round(D['rho'],2)} kg/m³"]]
     
-    environs = Table(C,colWidths=220,
+    environs_tab = Table(environs,colWidths=210,
                      style=[("BOX",(0,0),(-1,-1),2,colors.gray),
                             ("FONTNAME",(0,0),(-1,-1),"Courier")])
     
@@ -100,11 +100,11 @@ def ballistic_tables(D,x,y,dtL):
                 [f"Impact Angle:      {round(ang,2)}°"]
                 ]
     
-    outcomes = Table(outcomes,colWidths=220,
+    outcomes_tab = Table(outcomes,colWidths=210,
                      style=[("BOX",(0,0),(-1,-1),2,colors.gray),
                             ("FONTNAME",(0,0),(-1,-1),"Courier")])
     
-    return Table([[conditions], [props], [environs], [outcomes]])
+    return Table([[conditions_tab], [props_tab], [environs_tab], [outcomes_tab]])
 
 
 def list_to_intervals(L,n):
