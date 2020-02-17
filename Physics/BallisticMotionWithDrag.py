@@ -153,10 +153,13 @@ def line_plot(x,y):
 
 def line_plot_multi(X,Y):
     drawing = Drawing(400, 300)
-    
+    maxW = 0
+    maxH = 0
     data = []
     for x,y in zip(X,Y):
         data.append([(a,b) for a,b in zip(x,y)])
+        maxW = max(maxW,max(x))
+        maxH = max(maxH,max(y))
     
     lp = LinePlot()
     lp.width = 400
@@ -174,10 +177,10 @@ def line_plot_multi(X,Y):
     lp.lines.strokeWidth = 1.5
 
     lp.xValueAxis.valueMin = 0
-    lp.xValueAxis.valueMax = max(max(x),max(y))
+    lp.xValueAxis.valueMax = max(maxW,maxH)
  
     lp.yValueAxis.valueMin = 0
-    lp.yValueAxis.valueMax = max(max(x),max(y))
+    lp.yValueAxis.valueMax = max(maxW,maxH)
     
     lp.data = data
     
@@ -190,8 +193,8 @@ def line_plot_multi(X,Y):
            colors.Color(0.832,0.367,0),
            colors.Color(0.796,0.472,0.652),
            ]
+    
     for i in range(len(data)):
-        
         lp.lines[i].strokeColor = cls[i%8]
 
     drawing.add(lp)
@@ -319,8 +322,8 @@ if __name__ == '__main__':
                   g=9.8,   rho=1.27,
                   dt=1/32)
 
-    ballistic_pdf_compare(V0 = [100,108,126,165], 
-                          th = [35,45,55,65],
+    ballistic_pdf_compare(V0 = [100,108,126,165,200,150], 
+                          th = [35,45,55,65,35,80],
                           x0 = [0],
                           y0 = [0],  
                           m  = [20],   
