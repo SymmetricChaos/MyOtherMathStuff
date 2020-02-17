@@ -256,11 +256,15 @@ def ballistic_pdf_compare(V0,th,x0,y0,m,A,Cd,g=[9.8],rho=[1.2],dt=[1/30],title="
     
     X, Y = [], []
     tabs = []
+    all_data = []
+    all_dtL = []
     for info in zip(V0,th,x0,y0,m,A,Cd,g,rho,dt):
         data, x, y, dtL = ballistic_motion(*info)
         tabs.append(ballistic_tables(data,x,y,dtL))
         X.append(x)
         Y.append(y)
+        all_data.append(data)
+        all_dtL.append(dtL)
     
     drawing = line_plot_compare(X,Y)
     
@@ -268,24 +272,30 @@ def ballistic_pdf_compare(V0,th,x0,y0,m,A,Cd,g=[9.8],rho=[1.2],dt=[1/30],title="
     elements.append(PageBreak())
     
     ctr = 0
-    temp = [[],[]]
+    temp = []
     
     for T in tabs:
-        if ctr % 4 == 0 and ctr > 0:
-            elements.append(Table(temp))
-            elements.append(PageBreak())
-            temp = [[],[]]
         
-        temp[ctr%2].append(T)
+        if ctr % 2 == 0 and ctr > 0:
+            elements.append(Table([temp]))
+            elements.append(Spacer(1, 15))
+            temp = []
+
+        if ctr % 4 == 0 and ctr > 0:
+            elements.append(PageBreak())
+            
+        temp.append(T)
         
         ctr += 1
         
-    elements.append(Table(temp))
+    elements.append(Table([temp]))
     elements.append(PageBreak())
     
     doc = SimpleDocTemplate(f"{title}.pdf", pagesize=letter)
 
     doc.build(elements)
+
+    return all_data, X, Y, all_dtL
 
 
 
