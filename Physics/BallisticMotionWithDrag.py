@@ -168,13 +168,6 @@ def line_plot_compare(X,Y):
     lp.x = 20
     lp.y = -100
  
-    lp.lineLabels.fontSize = 6
-    lp.lineLabels.boxStrokeWidth = 0.5
-    lp.lineLabels.visible = 1
-    lp.lineLabels.boxAnchor = 'c'
-    lp.lineLabels.angle = 0
-    lp.lineLabelNudge = 10
-    lp.joinedLines = 1
     lp.lines.strokeWidth = 1.5
 
     lp.xValueAxis.valueMin = 0
@@ -310,8 +303,8 @@ if __name__ == '__main__':
 #                  g=9.8,   rho=1.27,
 #                  dt=1/32)
 
-    ballistic_pdf_compare(V0 = [100,108,126,165,200,150], 
-                          th = [35,45,55,65,35,80],
+    ballistic_pdf_compare(V0 = [100,108,126,165], 
+                          th = [35,45,55,65],
                           x0 = [0],
                           y0 = [0],  
                           m  = [20],   
