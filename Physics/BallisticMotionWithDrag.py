@@ -186,7 +186,7 @@ def line_plot_compare(X,Y):
            colors.HexColor("#0072B2"),  #Blue
            colors.HexColor("#D55E00"),  #Vermillion
            colors.HexColor("#CC79A7")   #Reddish Purple
-           ]
+          ]
     
     for i in range(len(data)):
         lp.lines[i].strokeColor = cls[i%8]
@@ -281,9 +281,10 @@ def ballistic_pdf_compare(V0,th,x0,y0,m,A,Cd,g=[9.8],rho=[1.2],dt=[1/30],title="
         temp.append(T)
         
         ctr += 1
-        
-    elements.append(Table([temp]))
-    elements.append(PageBreak())
+    
+    if len(temp) > 0:
+        elements.append(Table([temp]))
+        elements.append(PageBreak())
     
     doc = SimpleDocTemplate(f"{title}.pdf", pagesize=letter)
 
@@ -296,7 +297,7 @@ def ballistic_pdf_compare(V0,th,x0,y0,m,A,Cd,g=[9.8],rho=[1.2],dt=[1/30],title="
 
 
 if __name__ == '__main__':
-#    
+
 #    ballistic_pdf(V0=100,  th=25,
 #                  y0=50,   m=20,
 #                  A=.7,    Cd=.2,  
