@@ -177,15 +177,15 @@ def line_plot_compare(X,Y):
     lp.yValueAxis.valueMax = max(maxW,maxH)
     
     lp.data = data
-    
-    cls = [colors.Color(0,0,0),             #Black
-           colors.Color(0.898,0.621,0),     #Orange
-           colors.Color(0.335,0.703,0.91),  #Sky Blue
-           colors.Color(0,0.617,0.449),     #Bluish Green
-           colors.Color(0.937,0.89,0.257),  #Yellow
-           colors.Color(0,0.445,0.695),     #Blue
-           colors.Color(0.832,0.367,0),     #Vermillion
-           colors.Color(0.796,0.472,0.652), #Reddish Purple
+
+    cls = [colors.HexColor("#000000"),  #Black
+           colors.HexColor("#E69F00"),  #Orange
+           colors.HexColor("#56B4E9"),  #Sky Blue
+           colors.HexColor("#009E73"),  #Bluish Green
+           colors.HexColor("#F0E442"),  #Yellow
+           colors.HexColor("#0072B2"),  #Blue
+           colors.HexColor("#D55E00"),  #Vermillion
+           colors.HexColor("#CC79A7")   #Reddish Purple
            ]
     
     for i in range(len(data)):
