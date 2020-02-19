@@ -55,17 +55,19 @@ def ballistic_tables(D,x,y,dtL):
     
     #Initial Conditions
     conditions = [[f"Initial Speed:     {round(D['V0'],2)} m/s"],
-         [f"Angle of Release:  {round(D['th'],2)}°"],
-         [f"Initial Height:    {round(D['y0'],2)} m"]]
+                  [f"Angle of Release:  {round(D['th'],2)}°"],
+                  [f"Initial Height:    {round(D['y0'],2)} m"]
+                 ]
     
     conditions_tab = Table(conditions,colWidths=210,
                      style=[("BOX",(0,0),(-1,-1),2,colors.gray),
                             ("FONTNAME",(0,0),(-1,-1),"Courier")])
 
     props = [[f"Projectile Mass:   {round(D['m'],2)} kg"],
-         [f"Cross Section:     {round(D['A'],2)} m²"],
-         [f"Drag Coefficient:  {round(D['Cd'],2)}"],
-         [f"Terminal Velocity: {round(D['Vt'],2)} m/s"]]
+             [f"Cross Section:     {round(D['A'],2)} m²"],
+             [f"Drag Coefficient:  {round(D['Cd'],2)}"],
+             [f"Terminal Velocity: {round(D['Vt'],2)} m/s"]
+            ]
     
     # Object properties
     props_tab = Table(props,colWidths=210,
@@ -75,7 +77,8 @@ def ballistic_tables(D,x,y,dtL):
     
     #Environmental conditions
     environs = [[f"Gravitation:       {-round(D['g'],2)} m/s²"],
-         [f"Air Density:       {round(D['rho'],2)} kg/m³"]]
+                [f"Air Density:       {round(D['rho'],2)} kg/m³"]
+               ]
     
     environs_tab = Table(environs,colWidths=210,
                      style=[("BOX",(0,0),(-1,-1),2,colors.gray),
@@ -98,7 +101,7 @@ def ballistic_tables(D,x,y,dtL):
                 [f"Final Speed:       {round(c/dtL[-1],2)} m/s"],
                 [f"Time of Flight:    {round(D['tof'],2)} s"],
                 [f"Impact Angle:      {round(ang,2)}°"]
-                ]
+               ]
     
     outcomes_tab = Table(outcomes,colWidths=210,
                      style=[("BOX",(0,0),(-1,-1),2,colors.gray),
