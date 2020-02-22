@@ -36,3 +36,33 @@ def polar_to_cart(angle: float, scalar: float):
     change_y = math.cos(radians)
     change_x = math.sin(radians)
     return change_x * scalar, change_y * scalar
+
+
+def calculate_angle(start: tuple, end: tuple):
+    """
+    Calculate angle in direction from 'start' to the 'end' point in degrees.
+    :param start: tuple -- start point coordinates (x, y)
+    :param end: tuple -- end point coordinates (x, y)
+    :return: float -- degrees in range 0-360.
+    """
+    radians = -math.atan2(end[0] - start[0], end[1] - start[1])
+    return math.degrees(radians) % 360
+
+
+def quadrant(coordinates: tuple, center: tuple):
+    """
+    Check in which quadrant coordinates lie counted from upper-left to
+    bottom-left (clockwise). Quadrants are placed by setting center point
+    coordinate.
+    :param coordinates: tuple -- coordinates of a point in format (x, y)
+    :param center: tuple -- coordinates of center point of polygon
+    :return: str -- name of quadrant ('UL', "UR', 'LL', "LR')
+    """
+    angle = calculate_angle(center, coordinates)
+    if angle =< 90:
+        return "LL"
+    if angle =< 180:
+        return "UL"
+    if angle =< 270:
+        return "UR"
+    return "LR"
