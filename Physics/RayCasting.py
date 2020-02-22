@@ -1,21 +1,25 @@
-#from Drawing import make_canvas, connect
-from math import atan, atan2
+# https://github.com/akapkotel/light_raycasting/blob/master/geometry.py
 
-# Ray casting is a simple way to represent fields of view with obstructions
-
-# To do this we find which verticies of the walls are visible from a given
-# position. Then the space can be divided into triangles and everything within
-# those triangles is visible.
-
-# First we sort all the vertices by relative angle. This is called the sweepline.
-
-def sort_verts(pos,verts):
-    angs = []
-    for v in verts:
-        angs.append(atan2(v[1],v[0]))
-
-    return [x for _,x in sorted(zip(angs,verts))]
-    
-print(sort_verts( (0,0),[ (-1,1), (1,1), (-1,-1), (1,-1)]))
+import math
 
 
+def distance(coord_a: tuple or list, coord_b: tuple or list):
+    """
+    Calculate distance between two ponits in 2D space.
+    :param coord_a: tuple -- (x, y) coords of first point
+    :param coord_b: tuple -- (x, y) coords of second p
+    :return: float -- 2-dimensional distance between points
+    """
+    return math.hypot(coord_b[0] - coord_a[0], coord_b[1] - coord_a[1])
+
+
+def close_enough(coord_a: tuple, coord_b: tuple, distance: float):
+    """
+    Calculate distance between two segment in 2D space and find if distance
+    is less than minimum distance.
+    :param coord_a: tuple -- (x, y) coords of first point
+    :param coord_b: tuple -- (x, y) coords of second point
+    :param distance_: float -- minimal distance to check against
+    :return: bool -- if distance is less than
+    """
+    return distance(coord_a, coord_b) <= distance
