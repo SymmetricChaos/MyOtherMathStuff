@@ -11,7 +11,7 @@ def rose(n,d,c=0,m=2):
     
     th = np.linspace(0,m*np.pi,1000)
     
-    r = np.cos(n/d*th)+c
+    r = np.cos(n/d*th)+c#+np.sin(th*10)/20
     
     x,y = polar_to_cart(r,th)
 
@@ -29,4 +29,4 @@ def rose(n,d,c=0,m=2):
 
 
 if __name__ == '__main__':
-    x,y = rose(5,6,0,12)
+    x,y = rose(5,6,1.5,12)
