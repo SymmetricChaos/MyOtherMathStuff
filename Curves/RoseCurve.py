@@ -24,7 +24,10 @@ def rose(n,d=1,c=0,k=1000,draw=True):
         plt.axes().set_aspect("equal","datalim")
         plt.axis("off")
         plt.plot(x,y)
-        plt.title(f"Rose(k={n}/{d}, c={c})",fontsize=25)
+        if d == 1:
+            plt.title(f"Rose(k={n}, c={c})",fontsize=25)
+        else:
+            plt.title(f"Rose(k={n}/{d}, c={c})",fontsize=25)
         
     return x,y
 
@@ -48,7 +51,10 @@ def maurer_rose(n,d=1,c=0,m=361,deg=10,draw=True):
         plt.axis("off")
         plt.plot(x,y)
         plt.plot(xr,yr)
-        plt.title(f"MaurerRose(k={n}/{d},m={m},d={deg})",fontsize=25)
+        if d == 1:
+            plt.title(f"Rose(k={n}, c={c}, m={m}, deg={deg})",fontsize=25)
+        else:
+            plt.title(f"Rose(k={n}/{d}, c={c}, m={m}, deg={deg})",fontsize=25)
         
     return x,y
 
@@ -56,4 +62,4 @@ def maurer_rose(n,d=1,c=0,m=361,deg=10,draw=True):
 
 if __name__ == '__main__':
     x,y = rose(4,7,1)
-    maurer_rose(6,d=5,c=1,m=1061,deg=71)
+    maurer_rose(2,d=1,c=.2,m=1061,deg=29)
