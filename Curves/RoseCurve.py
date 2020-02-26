@@ -61,5 +61,5 @@ def maurer_rose(n,d=1,c=0,m=361,deg=10,draw=True):
 
 
 if __name__ == '__main__':
-    x,y = rose(4,7,1)
-    maurer_rose(2,d=1,c=.2,m=1061,deg=29)
+    x,y = rose(2,1,.3)
+    maurer_rose(2,d=1,c=.3,m=361,deg=26)
