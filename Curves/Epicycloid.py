@@ -7,8 +7,8 @@ def epicycloid(k=1,draw=True):
     x = (k+1)*np.cos(th) - np.cos((k+1)*th)
     y = (k+1)*np.sin(th) - np.sin((k+1)*th)
     
-    x_circ = np.cos(th)
-    y_circ = np.sin(th) 
+    x_circ = np.cos(th)*k
+    y_circ = np.sin(th)*k
     
     if draw == True:
         fig = plt.figure()
@@ -22,4 +22,4 @@ def epicycloid(k=1,draw=True):
     return x,y
 
 
-x,y = epicycloid(k=1)
+x,y = epicycloid(k=1/2)
