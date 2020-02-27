@@ -20,4 +20,3 @@ def cycloid(r=1,draw=True):
 
 
 x,y = cycloid()
-print(x)
