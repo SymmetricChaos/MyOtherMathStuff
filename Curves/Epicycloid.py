@@ -1,8 +1,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-def epicycloid(k=1,draw=True):
-    th = np.linspace(0,4*np.pi,1000)
+def epicycloid(n,d,draw=True):
+    th = np.linspace(0,12*n*np.pi,1000)
+    
+    k = n/d
     
     x = (k+1)*np.cos(th) - np.cos((k+1)*th)
     y = (k+1)*np.sin(th) - np.sin((k+1)*th)
@@ -17,9 +19,10 @@ def epicycloid(k=1,draw=True):
         plt.axis("off")
         plt.plot(x,y)
         plt.plot(x_circ,y_circ)
-        plt.title(f"Epicycloid(k={k})",fontsize=25)
+        plt.title(f"Epicycloid(k={n}/{d})",fontsize=25)
 
     return x,y
 
 
-x,y = epicycloid(k=1/2)
+x,y = epicycloid(3,1)
+x,y = epicycloid(2,3)
