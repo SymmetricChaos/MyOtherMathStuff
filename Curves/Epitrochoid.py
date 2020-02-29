@@ -10,7 +10,7 @@ def epitrochoid(incirc,outcirc,d=0,draw=True):
     s = r+R
     
 
-    th = np.linspace(0,r*R*np.pi,1000)
+    th = np.linspace(0,(s*r)*np.pi,1000)
     
     x = s*np.cos(th) - d*np.cos(s/r*th)
     y = s*np.sin(th) - d*np.sin(s/r*th)

@@ -9,7 +9,7 @@ def epicycloid(incirc,outcirc,draw=True):
     R, r = R//g, r//g
     s = r+R
     
-    th = np.linspace(0,R*r*np.pi,1000)
+    th = np.linspace(0,(s*r)*np.pi,1000)
     
     x = s*np.cos(th) - r*np.cos(s/r*th)
     y = s*np.sin(th) - r*np.sin(s/r*th)
