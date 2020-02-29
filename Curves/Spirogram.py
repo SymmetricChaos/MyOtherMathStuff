@@ -2,20 +2,20 @@ import matplotlib.pyplot as plt
 import numpy as np
 from GCD import gcd
 
-def spirogram(incirc,outcirc,d=0,hypo=False,draw=True,n=2000):
+def trochoid(incirc,outcirc,d=0,hypo=False,draw=True,n=2000):
     
     R, r = incirc, outcirc
     g = gcd(R,r)
     R, r = R//g, r//g
-    s = r+R
-    
 
-    th = np.linspace(0,(s*r)*np.pi,n)
+    th = np.linspace(0,((r+R)*r)*np.pi,n)
     
     if hypo == False:
+        s = r+R
         x = s*np.cos(th) - d*np.cos(s/r*th)
         y = s*np.sin(th) - d*np.sin(s/r*th)
     else:
+        s = R-r
         x = s*np.cos(th) + d*np.cos(s/r*th)
         y = s*np.sin(th) - d*np.sin(s/r*th)
         
@@ -31,7 +31,7 @@ def spirogram(incirc,outcirc,d=0,hypo=False,draw=True,n=2000):
     else:
         x_circ2 = (np.cos(th)*r)+R-r
         y_circ2 = np.sin(th)*r
-        start_point = s+d
+        start_point = R-r+d
         center_point = R-r
         
     
@@ -40,20 +40,21 @@ def spirogram(incirc,outcirc,d=0,hypo=False,draw=True,n=2000):
         fig.set_size_inches(10,10)
         plt.axes().set_aspect("equal","datalim")
         plt.axis("off")
-        plt.plot(x_circ1,y_circ1,color="black")
-        plt.plot(x_circ2,y_circ2,color="black")
-        plt.scatter(start_point,0,color="black")
+        
+        if hypo == False:
+            plt.title(f"Epitrochoid(R={R},r={r},d={d})",fontsize=25,zorder=0)
+        else:
+            plt.title(f"Hypotrochoid(R={R},r={r},d={d})",fontsize=25,zorder=0)
+        
+        plt.plot(x_circ1,y_circ1,color="black",zorder=10)
+        plt.plot(x_circ2,y_circ2,color="black",zorder=10)
+        plt.scatter(start_point,0,color="black",zorder=10)
         plt.plot([start_point,center_point],[0,0],color="black")
         plt.plot(x,y,color="CornflowerBlue")
-        if hypo == False:
-            plt.title(f"Epitrochoid(R={R},r={r},d={d})",fontsize=25)
-        else:
-            plt.title(f"Hypotrochoid(R={R},r={r},d={d})",fontsize=25)
+
 
     return x,y
 
 
-x,y = spirogram(4,3,2)
-x,y = spirogram(4,3,2,hypo=True)
-
-print(x[0])
+x,y = trochoid(4,3,2)
+x,y = trochoid(5,2,6,hypo=True)
