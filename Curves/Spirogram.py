@@ -63,8 +63,8 @@ def trochoid(incirc,outcirc,d=0,hypo=False,draw=True,n=2000):
 
     return x,y
 
-
-x,y = trochoid(4,5,7)
-x,y = trochoid(3,4,2)
-x,y = trochoid(5,2,6,hypo=True)
-x,y = trochoid(5,2,1,hypo=True)
+if __name__ == '__main__':
+    x,y = trochoid(4,5,7)
+    x,y = trochoid(3,4,2)
+    x,y = trochoid(5,2,6,hypo=True)
+    x,y = trochoid(5,2,1,hypo=True)
