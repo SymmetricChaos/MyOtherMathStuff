@@ -27,7 +27,7 @@ def normal_intercepts(x,y):
     return -(m*x-y)
 
 
-def evolute(x,y,mul=1.5,alpha=.1):
+def evolute(x,y,mul=1.5,color="blue",alpha=.1):
 
     fig = plt.figure()
     fig.set_size_inches(12,12)
@@ -39,26 +39,27 @@ def evolute(x,y,mul=1.5,alpha=.1):
         
     m = normal_slopes(x,y)
     b = normal_intercepts(x,y)
+    ctr = 0
     for M,B,X,Y in zip(m,b,x,y):
 
+        ctr += 1
         if abs(M) >= 1000:
             continue
         
         x2 = min(x)*mul
         y2 = x2*M+B
+        x3 = max(x)*mul
+        y3 = x3*M+B
         
-        plt.plot([X,x2],[Y,y2],color="blue",alpha=.1)
-        
-        x2 = max(x)*mul
-        y2 = x2*M+B
-        
-        plt.plot([X,x2],[Y,y2],color="blue",alpha=.1)
+        plt.plot([X,x2],[Y,y2],color=color,alpha=alpha)
+        plt.plot([X,x3],[Y,y3],color=color,alpha=alpha)
+
 
     return m,b
 
 
 if __name__ == '__main__':
     
-    x,y = trochoid(5,2,1,hypo=False,n=2001)
-    evolute(x,y,alpha=.01)
+    x,y = trochoid(5,2,1,hypo=False,n=2501)
+    evolute(x,y,color="salmon",alpha=.05)
     
