@@ -6,7 +6,7 @@ def trochoid(incirc,outcirc,d=0,hypo=False,draw=True,n=2000):
     
     R, r = incirc, outcirc
     g = gcd(R,r)
-    R, r = R//g, r//g
+    R, r, d = R//g, r//g, d/g
 
     th = np.linspace(0,((r+R)*r)*np.pi,n)
     
@@ -42,19 +42,22 @@ def trochoid(incirc,outcirc,d=0,hypo=False,draw=True,n=2000):
         plt.axis("off")
         
         if hypo == False:
-            plt.title(f"Epitrochoid(R={R},r={r},d={d})",fontsize=25,zorder=0)
+            plt.title(f"Epitrochoid(R={R},r={r},d={d})",fontsize=25)
         else:
-            plt.title(f"Hypotrochoid(R={R},r={r},d={d})",fontsize=25,zorder=0)
+            plt.title(f"Hypotrochoid(R={R},r={r},d={d})",fontsize=25)
         
-        plt.plot(x_circ1,y_circ1,color="black",zorder=10)
-        plt.plot(x_circ2,y_circ2,color="black",zorder=10)
+        plt.plot(x,y,color="CornflowerBlue",linewidth=2)
+        plt.plot(x_circ1,y_circ1,color="black",zorder=10,linewidth=3)
+        plt.plot(x_circ2,y_circ2,color="black",zorder=10,linewidth=3)
         plt.scatter(start_point,0,color="black",zorder=10)
-        plt.plot([start_point,center_point],[0,0],color="black")
-        plt.plot(x,y,color="CornflowerBlue")
+        plt.plot([start_point,center_point],[0,0],color="black",linewidth=3)
+
 
 
     return x,y
 
 
-x,y = trochoid(4,3,2)
+x,y = trochoid(4,5,8)
+x,y = trochoid(3,4,2)
 x,y = trochoid(5,2,6,hypo=True)
+x,y = trochoid(5,2,1,hypo=True)
