@@ -60,6 +60,11 @@ def evolute(x,y,mul=1.5,color="blue",alpha=.1):
 
 if __name__ == '__main__':
     
-    x,y = trochoid(5,2,1,hypo=False,n=2501)
-    evolute(x,y,color="salmon",alpha=.05)
+#    x,y = trochoid(5,2,1,hypo=False,n=2501)
+#    evolute(x,y,color="salmon",alpha=.05)
     
+    
+    x = np.linspace(-1,1,500)
+    y = x**2
+    evolute(x,y,color="salmon",alpha=.1)
+    plt.plot(x,y)
