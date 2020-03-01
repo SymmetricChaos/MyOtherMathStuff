@@ -27,18 +27,16 @@ def normal_intercepts(x,y):
     return -(m*x-y)
 
 
-def evolute(x,y,alpha=.1):
+def evolute(x,y,mul=1.5,alpha=.1):
 
     fig = plt.figure()
     fig.set_size_inches(12,12)
-    plt.axes().set_aspect("equal")
-    plt.xlim(min(x)*1.5,max(x)*1.5)
-    plt.ylim(min(y)*1.5,max(y)*1.5)
-    plt.axis("off")
+
+    ax = plt.axes(xlim=(min(x)*mul,max(x)*mul), ylim=(min(y)*mul,max(y)*mul))
+    ax.axis('off')
+    ax.set_xticks([])
+    ax.set_yticks([])
         
-
-#    plt.plot(x,y,color="black",linewidth=1)
-
     m = normal_slopes(x,y)
     b = normal_intercepts(x,y)
     for M,B,X,Y in zip(m,b,x,y):
@@ -46,20 +44,21 @@ def evolute(x,y,alpha=.1):
         if abs(M) >= 1000:
             continue
         
-        x2 = min(x)*1.5
+        x2 = min(x)*mul
         y2 = x2*M+B
         
         plt.plot([X,x2],[Y,y2],color="blue",alpha=.1)
         
-        x2 = max(x)*1.5
+        x2 = max(x)*mul
         y2 = x2*M+B
         
         plt.plot([X,x2],[Y,y2],color="blue",alpha=.1)
 
+    return m,b
 
 
 if __name__ == '__main__':
     
-    x,y = trochoid(5,2,1,hypo=True,draw=False,n=2001)
-    evolute(x,y)
+    x,y = trochoid(5,2,1,hypo=False,n=2001)
+    evolute(x,y,alpha=.01)
     
