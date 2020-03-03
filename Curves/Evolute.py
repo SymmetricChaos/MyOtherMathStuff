@@ -1,14 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from Spirogram import trochoid
+from SimpleCurves import ellipse
 
-
-def ellipse(a,b,n=1001):
-    th = np.linspace(0,2*np.pi,n)
-    x = a*np.sin(th)
-    y = b*np.cos(th)
-    
-    return x,y
 
 
 # Vectorized calculations
@@ -60,11 +54,11 @@ def evolute(x,y,size=5,color="blue",alpha=.1):
 
 if __name__ == '__main__':
     
-#    x,y = trochoid(5,2,1,hypo=False,n=2501)
-    x,y = ellipse(1,1.5,n=1001)
+    x,y = trochoid(4,1,2,hypo=True,n=3001,draw=False)
+#    x,y = ellipse(1,2,n=1001)
     
-#    x = np.linspace(-1,1,1000)
-#    y = x**
+#    x = np.linspace(-2,2,1001)
+#    y = x**2
 
-    evolute(x,y,size=2,color="salmon",alpha=.1)
-    plt.plot(x,y)
+    evolute(x,y,size=8,color="salmon",alpha=.03)
+#    plt.plot(x,y)
