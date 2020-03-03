@@ -1,9 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-
-def polar_to_cart(r,th):
-    return r*np.cos(th), r*np.sin(th)
-
+from SimpleCurves import polar_to_cart
 
 def rose(n,d=1,c=0,k=1000,draw=True):
     
