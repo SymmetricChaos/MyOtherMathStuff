@@ -23,6 +23,16 @@ def parabola(lo=-1,hi=1,n=1001):
     return x,y
 
 
+def hyperbola(a,b,lo=-1,hi=1,n=1001):
+    x = np.linspace(lo,hi,n)
+    b2 = b*b
+    a2 = a*a
+    x2 = x*x
+    y = np.sqrt(-b2*(a2-x2))/a
+    
+    return x,y
+
+
 def conic(e,n=1001):
     
     # Circle
@@ -30,14 +40,24 @@ def conic(e,n=1001):
         return circle(1,n=n)
     # Ellipse
     elif e < 1:
-        return ellipse()
+        a = 1
+        b = np.sqrt(1-e*e)
+        return ellipse(a,b,n=n)
     # Parabola
     elif e ==1:
         return parabola(n=n)
     # Hyperbola
-    else:
+#    else:
+#        return hyperbola()
         
 
 
 def polar_to_cart(r,th):
     return r*np.cos(th), r*np.sin(th)
+
+if __name__ == '__main__':
+    
+    import matplotlib.pyplot as plt
+    
+    x,y = conic(0)
+    plt.plot(x,y)
