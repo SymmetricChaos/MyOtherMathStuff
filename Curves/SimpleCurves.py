@@ -16,5 +16,28 @@ def circle(r,n=1001):
     return x,y
 
 
+def parabola(lo=-1,hi=1,n=1001):
+    x = np.linspace(lo,hi,n)
+    y = x*x
+    
+    return x,y
+
+
+def conic(e,n=1001):
+    
+    # Circle
+    if e == 0:
+        return circle(1,n=n)
+    # Ellipse
+    elif e < 1:
+        return ellipse()
+    # Parabola
+    elif e ==1:
+        return parabola(n=n)
+    # Hyperbola
+    else:
+        
+
+
 def polar_to_cart(r,th):
     return r*np.cos(th), r*np.sin(th)
