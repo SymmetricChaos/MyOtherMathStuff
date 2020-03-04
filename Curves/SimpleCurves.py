@@ -52,6 +52,8 @@ def conic(e,n=1001):
         
 
 
+
+
 def polar_to_cart(r,th):
     return r*np.cos(th), r*np.sin(th)
 
@@ -59,5 +61,10 @@ if __name__ == '__main__':
     
     import matplotlib.pyplot as plt
     
-    x,y = conic(0)
+    x,y = conic(1)
+    
+    
+    fig = plt.figure()
+    fig.set_size_inches(8,8)
+    ax = plt.axes(xlim=(-1.1,1.1), ylim=(-1.1,1.1))
     plt.plot(x,y)
