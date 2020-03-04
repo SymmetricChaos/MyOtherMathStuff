@@ -29,17 +29,16 @@ def tangents(x,y,size=5,color="blue",alpha=.1):
     b = tangent_intercepts(x,y)
 
     for M,B,X,Y in zip(m,b,x,y):
-
-#        if abs(M) >= 1000:
-#            continue
+        
+        if np.isclose(M,0):
+            continue
         
         x2 = -size
         y2 = x2*M+B
         x3 = size
         y3 = x3*M+B
         
-        plt.plot([X,x2],[Y,y2],color=color,alpha=alpha)
-        plt.plot([X,x3],[Y,y3],color=color,alpha=alpha)
+        plt.plot([x2,x3],[y2,y3],color=color,alpha=alpha)
 
 
     return m,b
@@ -47,7 +46,10 @@ def tangents(x,y,size=5,color="blue",alpha=.1):
 
 if __name__ == "__main__":
     from Spirogram import trochoid
+    from SimpleCurves import ellipse
+    
+#    x,y = trochoid(3,5,4,hypo=True,n=501)
+    x,y = ellipse(1,2,101)
 
-    x,y = trochoid(4,5,7,2001)
-
-    tangents(x,y,size=10)
+    tangents(x,y,size=6,alpha=.1)
+    plt.plot(x,y)

@@ -44,9 +44,8 @@ def evolute(x,y,size=5,color="blue",alpha=.1):
         y2 = x2*M+B
         x3 = size
         y3 = x3*M+B
-        
-        plt.plot([X,x2],[Y,y2],color=color,alpha=alpha)
-        plt.plot([X,x3],[Y,y3],color=color,alpha=alpha)
+
+        plt.plot([x2,x3],[y2,y3],color=color,alpha=alpha)
 
 
     return m,b
