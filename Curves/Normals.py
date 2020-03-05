@@ -1,7 +1,5 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from Spirogram import trochoid
-from SimpleCurves import ellipse
 
 
 
@@ -21,7 +19,7 @@ def normal_intercepts(x,y):
     return -(m*x-y)
 
 
-def evolute(x,y,size=5,color="blue",alpha=.1):
+def normals(x,y,size=5,color="blue",alpha=.1):
 
     fig = plt.figure()
     fig.set_size_inches(12,12)
@@ -52,12 +50,11 @@ def evolute(x,y,size=5,color="blue",alpha=.1):
 
 
 if __name__ == '__main__':
-    
-    x,y = trochoid(4,1,2,hypo=True,n=3001,draw=False)
-#    x,y = ellipse(1,2,n=1001)
-    
-#    x = np.linspace(-2,2,1001)
-#    y = x**2
+    from Spirogram import trochoid
+    from SimpleCurves import ellipse
 
-    evolute(x,y,size=8,color="salmon",alpha=.03)
+    x,y = trochoid(4,1,2,hypo=True,n=3001,draw=False)
+    x,y = ellipse(1,2,n=1001)
+    
+    normals(x,y,size=8,color="salmon",alpha=.03)
 #    plt.plot(x,y)
