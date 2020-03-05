@@ -25,24 +25,24 @@ def tangents(x,y,size=5,color="blue",alpha=.1,draw=True):
     ax.set_xticks([])
     ax.set_yticks([])
         
-    m = tangent_slopes(x,y)
-    b = tangent_intercepts(x,y)
+    M = tangent_slopes(x,y)
+    B = tangent_intercepts(x,y)
 
     if draw == True:
-        for M,B,X,Y in zip(m,b,x,y):
+        for m,b in zip(M,B):
             
-            if np.isclose(M,0):
+            if np.isclose(m,0):
                 continue
             
             x2 = -size
-            y2 = x2*M+B
+            y2 = x2*m+b
             x3 = size
-            y3 = x3*M+B
+            y3 = x3*m+b
             
             plt.plot([x2,x3],[y2,y3],color=color,alpha=alpha)
     
 
-    return m,b
+    return M,B
 
 
 if __name__ == "__main__":
