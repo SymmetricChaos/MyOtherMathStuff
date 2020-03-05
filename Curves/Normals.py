@@ -53,8 +53,10 @@ if __name__ == '__main__':
     from Spirogram import trochoid
     from SimpleCurves import ellipse
 
-    x,y = trochoid(4,1,2,hypo=True,n=3001,draw=False)
-    x,y = ellipse(1,2,n=1001)
-    
+    x,y = trochoid(4,1,2,hypo=True,n=2001,draw=False)
     normals(x,y,size=8,color="salmon",alpha=.03)
-#    plt.plot(x,y)
+    plt.plot(x,y)
+    
+    x,y = ellipse(1,2,n=1001)
+    normals(x,y,size=4,color="salmon",alpha=.03)
+    plt.plot(x,y)

@@ -47,9 +47,11 @@ def tangents(x,y,size=5,color="blue",alpha=.1):
 if __name__ == "__main__":
     from Spirogram import trochoid
     from SimpleCurves import ellipse
-    
-#    x,y = trochoid(3,5,4,hypo=True,n=501)
-    x,y = ellipse(1,2,101)
 
-    tangents(x,y,size=6,alpha=.1)
+    x,y = trochoid(4,1,2,hypo=True,n=2001,draw=False)
+    tangents(x,y,size=8,color="salmon",alpha=.03)
+    plt.plot(x,y)
+    
+    x,y = ellipse(1,2,n=1001)
+    tangents(x,y,size=4,color="salmon",alpha=.03)
     plt.plot(x,y)
