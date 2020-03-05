@@ -15,7 +15,7 @@ def tangent_intercepts(x,y):
     return -(m*x-y)
 
 
-def tangents(x,y,size=5,color="blue",alpha=.1):
+def tangents(x,y,size=5,color="blue",alpha=.1,draw=True):
 
     fig = plt.figure()
     fig.set_size_inches(12,12)
@@ -28,18 +28,19 @@ def tangents(x,y,size=5,color="blue",alpha=.1):
     m = tangent_slopes(x,y)
     b = tangent_intercepts(x,y)
 
-    for M,B,X,Y in zip(m,b,x,y):
-        
-        if np.isclose(M,0):
-            continue
-        
-        x2 = -size
-        y2 = x2*M+B
-        x3 = size
-        y3 = x3*M+B
-        
-        plt.plot([x2,x3],[y2,y3],color=color,alpha=alpha)
-
+    if draw == True:
+        for M,B,X,Y in zip(m,b,x,y):
+            
+            if np.isclose(M,0):
+                continue
+            
+            x2 = -size
+            y2 = x2*M+B
+            x3 = size
+            y3 = x3*M+B
+            
+            plt.plot([x2,x3],[y2,y3],color=color,alpha=alpha)
+    
 
     return m,b
 
@@ -47,11 +48,16 @@ def tangents(x,y,size=5,color="blue",alpha=.1):
 if __name__ == "__main__":
     from Spirogram import trochoid
     from SimpleCurves import ellipse
+    from Spirals import fermat_spiral
 
     x,y = trochoid(4,1,2,hypo=True,n=2001,draw=False)
     tangents(x,y,size=8,color="salmon",alpha=.03)
-    plt.plot(x,y)
+#    plt.plot(x,y)
     
     x,y = ellipse(1,2,n=1001)
     tangents(x,y,size=4,color="salmon",alpha=.03)
-    plt.plot(x,y)
+#    plt.plot(x,y)
+    
+    x1,y2,x2,y2 = fermat_spiral(turns=3,draw=False)
+    tangents(x,y,size=4,color="salmon",alpha=.1)
+#    plt.plot(x,y)
