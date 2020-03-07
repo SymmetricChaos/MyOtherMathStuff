@@ -22,41 +22,44 @@ def archimedian_spiral(a=1,turns=1,bounded=False,draw=True,n=1001):
     x,y = polar_to_cart(r,th)
     
     if draw == True:
-        draw_spiral(x,y,f"Archimedian Spiral with {turns} turns")
+        if bounded:
+            draw_spiral(x,y,f"Bounded Archimedian Spiral with {turns} turns")
+        else:
+            draw_spiral(x,y,f"Archimedian Spiral with {turns} turns")
         
     return x,y
 
 
 def hyperbolic_spiral(a=1,turns=1,draw=True,n=1001):
-    th = np.linspace(0,2*turns*np.pi,n)
+    th = np.linspace(.1,2*turns*np.pi,n)
     
     r = a/th
     
     x,y = polar_to_cart(r,th)
+    
+    print(x[0],y[0])
+    print(x[-1],y[-1])
     
     if draw == True:
         draw_spiral(x,y,f"Hyperbolic Spiral with {turns} turns")
     return x,y
 
 
-def fermat_spiral(a=1,turns=1,draw=True,n=1001):
+def fermat_spiral(a=1,k=.5,turns=1,draw=True,n=1001):
     th = np.linspace(0,2*turns*np.pi,n)
     
-    r = a*th**.5
+    r = a*th**k
     
     x,y = polar_to_cart(r,th)
     
+    x = np.append(np.flip(x),-x)
+    y = np.append(np.flip(y),-y)
+    
     if draw == True:
-        fig = plt.figure()
-        fig.set_size_inches(10,10)
-        plt.axes().set_aspect("equal","datalim")
-        plt.axis("off")
-        plt.title(f"Fermat Spiral with {turns} turns",size=20)
-        plt.plot(x,y,color="CornflowerBlue",linewidth=2)
-        plt.plot(-x,-y,color="CornflowerBlue",linewidth=2)
+        draw_spiral(x,y,f"Fermat Spiral with {turns} turns")
 
     
-    return x,y,-x,-y
+    return x,y
 
 
 def logarithmic_spiral(a=1,e=np.e,k=1,turns=1,bounded=False,draw=True,n=1001):
@@ -80,8 +83,8 @@ def logarithmic_spiral(a=1,e=np.e,k=1,turns=1,bounded=False,draw=True,n=1001):
 
 if __name__ == '__main__':
     
-    x,y = archimedian_spiral(a=.1,turns=5)
-    x,y = archimedian_spiral(a=.1,turns=5,bounded=True)
-    x,y = hyperbolic_spiral(turns=10,n=5001)
-    x1,y2,x2,y2 = fermat_spiral(5,turns=3)
-    x,y = logarithmic_spiral(e=1.2,turns=5)
+#    x,y = archimedian_spiral(a=.1,turns=5)
+#    x,y = archimedian_spiral(a=.1,turns=5,bounded=True)
+#    x,y = hyperbolic_spiral(.1,turns=10,n=5001)
+    x,y = fermat_spiral(1,k=.5,turns=10,n=1001)
+#    x,y = logarithmic_spiral(e=1.2,turns=5)
