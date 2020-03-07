@@ -11,10 +11,13 @@ def draw_spiral(x,y):
     plt.plot(x,y,color="CornflowerBlue",linewidth=2)
 
 
-def archimedian_spiral(a=1,turns=1,draw=True,n=1001):
+def archimedian_spiral(a=1,turns=1,bounded=False,draw=True,n=1001):
     th = np.linspace(0,2*turns*np.pi,n)
     
-    r = a*th
+    if bounded:
+        r = np.arctan(a*th)
+    else:
+        r = a*th
     
     x,y = polar_to_cart(r,th)
     
@@ -22,6 +25,8 @@ def archimedian_spiral(a=1,turns=1,draw=True,n=1001):
         draw_spiral(x,y)
         
     return x,y
+
+
 
 
 def hyperbolic_spiral(a=1,turns=1,draw=True,n=1001):
@@ -56,11 +61,14 @@ def fermat_spiral(a=1,turns=1,draw=True,n=1001):
     return x,y,-x,-y
 
 
-def logarithmic_spiral(a=1,e=np.e,k=1,turns=1,draw=True,n=1001):
+def logarithmic_spiral(a=1,e=np.e,k=1,turns=1,bounded=False,draw=True,n=1001):
     th = np.linspace(0,2*turns*np.pi,n)
     
-    r = a*e**(k*th)
-    
+    if bounded:
+        r = np.arctan(a*e**(k*th))
+    else:
+        r = a*e**(k*th)
+        
     x,y = polar_to_cart(r,th)
     
     if draw == True:
@@ -74,7 +82,7 @@ def logarithmic_spiral(a=1,e=np.e,k=1,turns=1,draw=True,n=1001):
 
 if __name__ == '__main__':
     
-    x,y = archimedian_spiral(turns=3)
-#    x,y = hyperbolic_spiral(turns=2,n=101)
-    x1,y2,x2,y2 = fermat_spiral(5,turns=3)
-    x,y = logarithmic_spiral(e=1.2,turns=3)
+    x,y = archimedian_spiral(a=.1,turns=5)
+    x,y = hyperbolic_spiral(turns=200,n=5001)
+    x1,y2,x2,y2 = fermat_spiral(5,turns=5)
+    x,y = logarithmic_spiral(e=1.2,turns=5)
