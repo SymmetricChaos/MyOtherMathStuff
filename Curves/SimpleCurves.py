@@ -49,7 +49,11 @@ def conic(e,n=1001):
     # Hyperbola
 #    else:
 #        return hyperbola()
-        
+
+def catenary(lo=-1,hi=1,n=1001):
+    x = np.linspace(lo,hi,n)
+    y = np.cosh(x)
+    return x,y
 
 
 
@@ -61,10 +65,9 @@ if __name__ == '__main__':
     
     import matplotlib.pyplot as plt
     
-    x,y = conic(1)
+    x1,y1 = catenary()
+    x2,y2 = parabola()
+    plt.axes().set_aspect("equal","datalim")
+    plt.plot(x1,y1-1)
+    plt.plot(x2,y2)
     
-    
-    fig = plt.figure()
-    fig.set_size_inches(8,8)
-    ax = plt.axes(xlim=(-1.1,1.1), ylim=(-1.1,1.1))
-    plt.plot(x,y)

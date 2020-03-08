@@ -94,5 +94,5 @@ if __name__ == '__main__':
     logarithmic_spiral(e=1.3,turns=3)
     logarithmic_spiral(e=1.3,turns=3,both_branches=True)
     fermat_spiral(1,k=.5,turns=3,n=1001)
-#    x,y = hyperbolic_spiral(.1,turns=10,n=5001)
+#   hyperbolic_spiral(.1,turns=10,n=5001)
 
