@@ -91,8 +91,8 @@ if __name__ == '__main__':
     
     archimedian_spiral(a=.1,turns=5)
     archimedian_spiral(a=.1,turns=5,both_branches=True)
-    logarithmic_spiral(e=1.2,turns=5)
-    logarithmic_spiral(e=1.2,turns=5,both_branches=True)
-#    x,y = archimedian_spiral(a=.1,turns=5,bounded=True)
+    logarithmic_spiral(e=1.3,turns=3)
+    logarithmic_spiral(e=1.3,turns=3,both_branches=True)
+    fermat_spiral(1,k=.5,turns=3,n=1001)
 #    x,y = hyperbolic_spiral(.1,turns=10,n=5001)
-#    x,y = fermat_spiral(1,k=.5,turns=10,n=1001)
+
