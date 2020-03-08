@@ -16,9 +16,9 @@ def circle(r,n=1001):
     return x,y
 
 
-def parabola(lo=-1,hi=1,n=1001):
+def parabola(a=1,lo=-1,hi=1,n=1001):
     x = np.linspace(lo,hi,n)
-    y = x*x
+    y = x*x*a
     
     return x,y
 
@@ -66,7 +66,7 @@ if __name__ == '__main__':
     import matplotlib.pyplot as plt
     
     x1,y1 = catenary()
-    x2,y2 = parabola()
+    x2,y2 = parabola(a=.5)
     plt.axes().set_aspect("equal","datalim")
     plt.plot(x1,y1-1)
     plt.plot(x2,y2)
