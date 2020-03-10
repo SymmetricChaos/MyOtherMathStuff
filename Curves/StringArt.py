@@ -10,9 +10,8 @@ def interpolation(A,B,p):
 def string_bezier2(P1=[0,1],P2=[1,0],n=15,size=5):
     
     t = np.linspace(0,1,n)
-    L0 = interpolation(P1,[0,0],t)
-    L1 = interpolation([0,0],P2,t)
-    X,Y = interpolation(L0,L1,t)
+    X0,Y0 = interpolation(P1,[0,0],t)
+    X1,Y1 = interpolation([0,0],P2,t)
     
     
     ax = plt.axes()
@@ -21,9 +20,7 @@ def string_bezier2(P1=[0,1],P2=[1,0],n=15,size=5):
     ax.set_xticks([])
     ax.set_yticks([])
     
-    for i in range(n):
-        plt.plot([L0[0][i],L0[1][i]],
-                 [L1[0][i],L1[1][i]])
-#    plt.plot(X,Y,color="black")
+    for x0,y0,x1,y1 in zip(X0,Y0,X1,Y1):
+        plt.plot([x0,x1],[y0,y1])
 
-string_bezier2(n=25)
+string_bezier2([1,1],n=20)
