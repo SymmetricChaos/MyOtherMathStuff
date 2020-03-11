@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
+from scipy.spatial import ConvexHull
+ 
 def interpolation(A,B,p):
     """The point that is some exactly p percent of the way between A and B"""
     x = A[0]*(1-p) + B[0]*p
@@ -27,13 +28,16 @@ def bezier(control_points,N=50):
         L = P.copy()
 
 
-def bezier_example(control_points,N=50):
+def bezier_example(points,N=50):
+    
+    points = np.array(points)
 
-    xs = [p[0] for p in control_points]
-    ys = [p[1] for p in control_points]
+    xs = [p[0] for p in points]
+    ys = [p[1] for p in points]
     
-    X,Y = bezier(control_points)
+    X,Y = bezier(points)
     
+    # Plot the curve, the points, and annotations
     fig = plt.figure()
     fig.set_size_inches(8,8)
     ax = plt.axes()
@@ -44,8 +48,15 @@ def bezier_example(control_points,N=50):
     
     plt.plot(X,Y)
     plt.scatter(xs,ys)
-    for num,pos in enumerate(control_points):    
+    plt.title(f"Bezier Curve with {len(points)} Control Points",size=20)
+    for num,pos in enumerate(points):    
         plt.annotate(f"{num}: {pos}",[pos[0],pos[1]+.1])
+
+
+    # Show convex hull property
+    hull = ConvexHull(points)
+    for simplex in hull.simplices:
+         plt.plot(points[simplex, 0], points[simplex, 1], 'lightgray',zorder=-1)
 
 
 
@@ -57,5 +68,7 @@ if __name__ == '__main__':
     bezier_example([ (-2,0), 
                      (1,-2),
                      (1.5,-1),
-                     (-2,2), 
+                     (-1,2), 
                      (1,0) ])
+    
+    
