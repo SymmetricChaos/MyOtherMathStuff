@@ -27,20 +27,15 @@ def bezier(control_points,N=50):
         L = P.copy()
 
 
+def bezier_example(control_points,N=50):
 
-
-
-if __name__ == '__main__':
+    xs = [p[0] for p in control_points]
+    ys = [p[1] for p in control_points]
     
-
-    points = [[-2,0],[1,-2],[0,2],[1,0]]
-    xs = [p[0] for p in points]
-    ys = [p[1] for p in points]
-    
-    X,Y = bezier(points)
+    X,Y = bezier(control_points)
     
     fig = plt.figure()
-    fig.set_size_inches(7,7)
+    fig.set_size_inches(8,8)
     ax = plt.axes()
     ax.set_aspect("equal","datalim")
     ax.axis('off')
@@ -49,5 +44,18 @@ if __name__ == '__main__':
     
     plt.plot(X,Y)
     plt.scatter(xs,ys)
-    for num,pos in enumerate(points):    
+    for num,pos in enumerate(control_points):    
         plt.annotate(f"{num}: {pos}",[pos[0],pos[1]+.1])
+
+
+
+
+
+if __name__ == '__main__':
+    
+
+    bezier_example([ (-2,0), 
+                     (1,-2),
+                     (1.5,-1),
+                     (-2,2), 
+                     (1,0) ])
