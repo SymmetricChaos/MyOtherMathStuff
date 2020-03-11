@@ -11,7 +11,7 @@ def interpolation(A,B,p):
 def bezier(control_points,N=50):
     """
     Bezier curves of any complexity are possible
-    They interpolate between several lines or, equivalently, between several Bezier curves
+    They interpolate between several Bezier curves, starting from lines
     Points are provided in sequence
     """
     L = control_points.copy()
@@ -25,10 +25,11 @@ def bezier(control_points,N=50):
             P.append(interp)
 
         L = P.copy()
-        
-    
-    
-        
+
+
+
+
+
 if __name__ == '__main__':
     
 
