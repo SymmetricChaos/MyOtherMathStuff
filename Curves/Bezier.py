@@ -33,7 +33,7 @@ def bezier(control_points,N=50):
 if __name__ == '__main__':
     
 
-    points = [[-2,0],[.5,-2],[1,2],[2,0]]
+    points = [[-2,0],[1,-2],[0,2],[1,0]]
     xs = [p[0] for p in points]
     ys = [p[1] for p in points]
     
