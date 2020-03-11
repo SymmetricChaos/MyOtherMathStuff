@@ -14,8 +14,11 @@ def string_bezier2(P1=[0,1],P2=[1,0],n=15,size=5,colormap="plasma"):
     X0,Y0 = interpolation(P1,[0,0],t)
     X1,Y1 = interpolation([0,0],P2,t)
 
+    #Higher order function to create a color function from the named colormap
     color_func = plt.get_cmap(colormap)
 
+    fig = plt.figure()
+    fig.set_size_inches(7,7)
     ax = plt.axes()
     ax.set_aspect("equal","datalim")
     ax.axis('off')
