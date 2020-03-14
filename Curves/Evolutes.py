@@ -23,4 +23,9 @@ def ellipse_evolute(a,b,n=1001,draw=True):
     
 if __name__ == '__main__':
     
-    ellipse_evolute(1,2)
+    a,b = 2,1
+    ellipse_evolute(a,b)
+    th = np.linspace(0,2*np.pi,101)
+    x,y = a*np.sin(th), b*np.cos(th)
+    
+    plt.plot(x,y)
