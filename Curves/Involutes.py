@@ -56,20 +56,3 @@ if __name__ == '__main__':
     plt.plot(x1,y1)
     plt.plot(x2,y2)
     plt.plot(x3,y3)
-
-
-
-    fig = plt.figure()
-    fig.set_size_inches(7,7)
-    ax = plt.axes()
-    ax.set_aspect("equal","datalim")
-    x1,y1 = ellipse_involute(t=0,a=1,b=3,turns=1,draw=False)
-    x2,y2 = ellipse_involute(t=2,a=1,b=3,turns=1,draw=False)
-    x3,y3 = ellipse_involute(t=4,a=1,b=3,turns=1,draw=False)
-    
-    th = np.linspace(0,2*np.pi,101)
-    x,y = np.sin(th), 3*np.cos(th)
-    plt.plot(x,y)
-    plt.plot(x1,y1)
-    plt.plot(x2,y2)
-    plt.plot(x3,y3)
