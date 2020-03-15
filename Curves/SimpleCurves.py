@@ -50,6 +50,7 @@ def conic(e,n=1001):
 #    else:
 #        return hyperbola()
 
+
 def catenary(lo=-1,hi=1,n=1001):
     x = np.linspace(lo,hi,n)
     y = np.cosh(x)
