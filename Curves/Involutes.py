@@ -39,7 +39,8 @@ def ellipse_involute(t=0,a=1,b=1,turns=1,n=1001,draw=True):
         
     return x,y
 
-
+# Just another cycloid like this
+# Need to generalize
 def cycloid_involute(t=0,turns=1,n=1001,draw=True):
     
     th = np.linspace(t,2*turns*np.pi+t,n)
