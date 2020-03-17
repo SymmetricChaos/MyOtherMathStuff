@@ -1,6 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from Normals import normals
+from Envelope import envelope
 
+# In general the evolute is the envelope of the normals
+def evolute(x,y):
+    m,b = normals(x,y,draw=False)
+    x,y = envelope(m,b)
+    
 
 def ellipse_evolute(a,b,n=1001,draw=True):
 
@@ -20,6 +27,9 @@ def ellipse_evolute(a,b,n=1001,draw=True):
         plt.plot(x,y)
         
     return x,y
+
+
+    
     
 if __name__ == '__main__':
     
