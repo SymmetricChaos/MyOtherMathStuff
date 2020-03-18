@@ -4,9 +4,10 @@ from Normals import normals
 from Envelope import envelope
 
 # In general the evolute is the envelope of the normals
-def evolute(x,y):
+def evolute(x,y,draw=True):
     m,b = normals(x,y,draw=False)
-    x,y = envelope(m,b)
+    x,y = envelope(m,b,draw=draw)
+    return x,y
     
 
 def ellipse_evolute(a,b,n=1001,draw=True):
