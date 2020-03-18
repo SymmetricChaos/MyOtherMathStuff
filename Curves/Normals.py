@@ -12,6 +12,7 @@ def normal_slopes(x,y):
     
     return -(x-xsh)/(y-ysh)
 
+
 # y-intercept of the normal at a point
 def normal_intercepts(x,y):
     m = normal_slopes(x,y)
@@ -19,10 +20,10 @@ def normal_intercepts(x,y):
 
 
 def normals(x,y,size=5,color="blue",alpha=.1,draw=True):
-        
+
     m = normal_slopes(x,y)
     b = normal_intercepts(x,y)
-    
+
     if draw == True:
         
         fig = plt.figure()
@@ -47,7 +48,6 @@ def normals(x,y,size=5,color="blue",alpha=.1,draw=True):
     
             plt.plot([x2,x3],[y2,y3],color=color,alpha=alpha)
 
-
     return m,b
 
 
@@ -58,7 +58,7 @@ if __name__ == '__main__':
     from Spirogram import trochoid
     from SimpleCurves import ellipse
 
-    x,y = trochoid(4,1,2,hypo=True,n=2001,draw=False)
+    x,y = trochoid(4,1,2,hypo=True,n=4001,draw=False)
     normals(x,y,size=8,color="salmon",alpha=.03)
     plt.plot(x,y)
     
