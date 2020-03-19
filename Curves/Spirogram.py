@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from GCD import gcd
 
+
 def trochoid(incirc,outcirc,d=0,hypo=False,draw=True,n=2001):
     
     # Rename incirc and outcirc
@@ -37,7 +38,8 @@ def trochoid(incirc,outcirc,d=0,hypo=False,draw=True,n=2001):
 
     return x,y
 
-def trochoid_explanation(incirc,outcirc,d=0,hypo=False,draw=True,n=2001):
+
+def trochoid_explanation(incirc,outcirc,d=0,hypo=False,size=10,draw=True,n=2001):
     
     # Rename incirc and outcirc
     R, r = incirc, outcirc
@@ -69,7 +71,7 @@ def trochoid_explanation(incirc,outcirc,d=0,hypo=False,draw=True,n=2001):
     # Draw everything
     if draw == True:
         fig = plt.figure()
-        fig.set_size_inches(10,10)
+        fig.set_size_inches(size,size)
         plt.axes().set_aspect("equal","datalim")
         plt.axis("off")
         
@@ -84,7 +86,11 @@ def trochoid_explanation(incirc,outcirc,d=0,hypo=False,draw=True,n=2001):
         plt.scatter(start_point,0,color="black",zorder=10)
         plt.plot([start_point,center_point],[0,0],color="black",linewidth=3)
         
-        
+    return x,y,x_circ1,y_circ1,x_circ2,y_circ2
+
+
+
+
 
 if __name__ == '__main__':
     trochoid_explanation(4,5,7)
