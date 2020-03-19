@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-def mbline(M,B,xlim=[-5,5],color="CornflowerBlue",alpha=1):
+def mbline(M,B,xlim=[-5,5],**kwargs):
     
     
     for m,b in zip(M,B):
@@ -11,4 +11,4 @@ def mbline(M,B,xlim=[-5,5],color="CornflowerBlue",alpha=1):
         x1 = xlim[1]
         y1 = m*x1+b
 
-        plt.plot([x0,x1],[y0,y1],color=color,alpha=alpha)
+        plt.plot([x0,x1],[y0,y1],**kwargs)
