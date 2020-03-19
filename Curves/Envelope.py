@@ -40,6 +40,7 @@ if __name__ == '__main__':
     m,b = normals(x,y,draw=False)
     x1,y1 = envelope(m,b,draw=False)
     
-    plt.plot(x,y)
-    plt.plot(x1,y1)
-    mbline(m,b,[-4,4],alpha=.1)
+    plt.plot(x,y,color='black')
+    plt.plot(x1,y1,color='gray')
+    mbline(m,b,[-5,5],alpha=.1)
+    mbline(m[70:72],b[70:72],[-5,5],color='red')
