@@ -36,11 +36,11 @@ if __name__ == '__main__':
     ax.set_xticks([])
     ax.set_yticks([])
 
-    x,y = ellipse(2,1,n=201)
+    x,y = ellipse(2,1,n=1001)
     m,b = normals(x,y,draw=False)
     x1,y1 = envelope(m,b,draw=False)
     
     plt.plot(x,y,color='black',zorder=5,linewidth=.5)
-    plt.plot(x1,y1,color='black',zorder=5,linewidth=.5)
-    mbline(m,b,[-5,5],alpha=.1,color='cornflowerblue')
-    mbline(m[70:72],b[70:72],[-5,5],color='red',linewidth=.5)
+    plt.plot(x1,y1,color='black',zorder=5,linewidth=.75)
+    mbline(m,b,[-5,5],alpha=.05,color='cornflowerblue')
+    mbline([m[320],m[325]],[b[320],b[325]],[-5,5],color='red',linewidth=.5,zorder=10)
