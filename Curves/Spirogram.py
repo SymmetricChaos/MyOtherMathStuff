@@ -12,10 +12,10 @@ def trochoid(incirc,outcirc,d=0,hypo=False,draw=True,n=2001):
     # We need the reduced values of R and r in order to determine how many times
     # we wind around the central circle
     g = gcd(R,r)
-    R, r, d = R//g, r//g, d/g
+    Rg, rg = R//g, r//g
 
     # Angles for the roulette
-    th = np.linspace(0,((r+R)*r)*np.pi,n)
+    th = np.linspace(0,((rg+Rg)*r)*np.pi,n)
     
     # Calculate the roulette for either an epitrochoid or a hypotrochoid
     if hypo == False:
@@ -82,9 +82,9 @@ def trochoid_explanation(incirc,outcirc,d=0,hypo=False,size=10,draw=True,n=2001)
         
         plt.plot(x,y,color="CornflowerBlue",linewidth=2)
         plt.plot(x_circ1,y_circ1,color="black",zorder=10,linewidth=3)
-        plt.plot(x_circ2,y_circ2,color="black",zorder=10,linewidth=3)
-        plt.scatter(start_point,0,color="black",zorder=10)
-        plt.plot([start_point,center_point],[0,0],color="black",linewidth=3)
+        plt.plot(x_circ2,y_circ2,color="gray",zorder=10,linewidth=3)
+        plt.scatter(start_point,0,color="gray",zorder=10)
+        plt.plot([start_point,center_point],[0,0],color="gray",linewidth=3)
         
     return x,y,x_circ1,y_circ1,x_circ2,y_circ2
 
@@ -93,7 +93,7 @@ def trochoid_explanation(incirc,outcirc,d=0,hypo=False,size=10,draw=True,n=2001)
 
 
 if __name__ == '__main__':
-    trochoid_explanation(4,5,7)
-    trochoid_explanation(3,4,2)
-    trochoid_explanation(5,2,6,hypo=True)
-    trochoid_explanation(5,2,1,hypo=True)
+#    trochoid_explanation(4,5,7)
+    trochoid_explanation(3,4,3)
+#    trochoid_explanation(5,2,6,hypo=True)
+    trochoid_explanation(10,4,1,hypo=True)
