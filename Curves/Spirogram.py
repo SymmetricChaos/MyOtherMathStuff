@@ -3,10 +3,10 @@ import numpy as np
 from GCD import gcd
 
 
-def trochoid(incirc,outcirc,d=0,hypo=False,draw=True,n=2001):
+def trochoid(fixed_circ,move_circ,d=0,hypo=False,draw=True,n=2001):
     
     # Rename incirc and outcirc
-    R, r = incirc, outcirc
+    R, r = fixed_circ, move_circ
     
     # Find gcd and reuce everything by it
     # We need the reduced values of R and r in order to determine how many times
@@ -39,17 +39,17 @@ def trochoid(incirc,outcirc,d=0,hypo=False,draw=True,n=2001):
     return x,y
 
 
-def trochoid_explanation(incirc,outcirc,d=0,hypo=False,size=10,draw=True,n=2001):
+def trochoid_explanation(fixed_circ,move_circ,d=0,hypo=False,size=10,draw=True,n=2001):
     
     # Rename incirc and outcirc
-    R, r = incirc, outcirc
+    R, r = fixed_circ, move_circ
     
     x,y = trochoid(R,r,d,hypo,False,n)
     
     # Points of the inner circle
     th = np.linspace(0,2*np.pi,1001)
-    x_circ1 = np.cos(th)*R
-    y_circ1 = np.sin(th)*R
+    x_fixed = np.cos(th)*R
+    y_fixed = np.sin(th)*R
     
     if hypo == False:
         s = R+r
@@ -58,13 +58,13 @@ def trochoid_explanation(incirc,outcirc,d=0,hypo=False,size=10,draw=True,n=2001)
     
     # Points of the outer circle position for either an epitrochoid or a hypotrochoid
     if hypo == False:
-        x_circ2 = (np.cos(th)*r)+s
-        y_circ2 = np.sin(th)*r
+        x_move = (np.cos(th)*r)+s
+        y_move = np.sin(th)*r
         start_point = s-d
         center_point = s
     else:
-        x_circ2 = (np.cos(th)*r)+s
-        y_circ2 = np.sin(th)*r
+        x_move = (np.cos(th)*r)+s
+        y_move = np.sin(th)*r
         start_point = s+d
         center_point = s
         
@@ -81,12 +81,12 @@ def trochoid_explanation(incirc,outcirc,d=0,hypo=False,size=10,draw=True,n=2001)
             plt.title(f"Hypotrochoid(R={R},r={r},d={d})",fontsize=25)
         
         plt.plot(x,y,color="CornflowerBlue",linewidth=2)
-        plt.plot(x_circ1,y_circ1,color="black",zorder=10,linewidth=3)
-        plt.plot(x_circ2,y_circ2,color="gray",zorder=10,linewidth=3)
+        plt.plot(x_fixed,y_fixed,color="black",zorder=10,linewidth=3)
+        plt.plot(x_move,y_move,color="gray",zorder=10,linewidth=3)
         plt.scatter(start_point,0,color="gray",zorder=10)
         plt.plot([start_point,center_point],[0,0],color="gray",linewidth=3)
         
-    return x,y,x_circ1,y_circ1,x_circ2,y_circ2
+    return x,y,x_fixed,y_fixed,x_move,y_move
 
 
 
