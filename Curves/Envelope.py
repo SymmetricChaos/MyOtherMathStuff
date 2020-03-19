@@ -31,7 +31,7 @@ if __name__ == '__main__':
     
     fig = plt.figure()
     fig.set_size_inches(12,12)
-    ax = plt.axes(xlim=(-5,5), ylim=(-5,5))
+    ax = plt.axes(xlim=(-3.5,3.5), ylim=(-3.5,3.5))
     ax.axis('off')
     ax.set_xticks([])
     ax.set_yticks([])
@@ -40,7 +40,7 @@ if __name__ == '__main__':
     m,b = normals(x,y,draw=False)
     x1,y1 = envelope(m,b,draw=False)
     
-    plt.plot(x,y,color='black')
-    plt.plot(x1,y1,color='gray')
-    mbline(m,b,[-5,5],alpha=.1,color='green')
+    plt.plot(x,y,color='black',zorder=5,linewidth=.5)
+    plt.plot(x1,y1,color='black',zorder=5,linewidth=.5)
+    mbline(m,b,[-5,5],alpha=.1,color='cornflowerblue')
     mbline(m[70:72],b[70:72],[-5,5],color='red',linewidth=.5)
