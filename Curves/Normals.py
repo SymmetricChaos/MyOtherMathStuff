@@ -34,10 +34,8 @@ def normals(x,y,size=5,color="blue",alpha=.1,draw=True):
         ax.set_xticks([])
         ax.set_yticks([])
         
-        ctr = 0
-        for M,B,X,Y in zip(m,b,x,y):
+        for M,B in zip(m,b):
     
-            ctr += 1
             if abs(M) >= 1000:
                 continue
             
@@ -58,8 +56,8 @@ if __name__ == '__main__':
     from Spirogram import trochoid
     from SimpleCurves import ellipse
 
-    x,y = trochoid(4,1,2,hypo=True,n=4001,draw=False)
-    normals(x,y,size=8,color="salmon",alpha=.03)
+    x,y = trochoid(4,1,2,hypo=True,n=2001,draw=False)
+    normals(x,y,size=8,color="salmon",alpha=.01)
     plt.plot(x,y)
     
     x,y = ellipse(1,2,n=1001)

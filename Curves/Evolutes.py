@@ -18,7 +18,7 @@ def ellipse_evolute(a,b,n=1001,color="blue",alpha=1,draw=True):
     x = (a*a-b*b)/a*np.cos(th)**3
     y = (b*b-a*a)/b*np.sin(th)**3
     
-    if draw:
+    if draw == True:
         fig = plt.figure()
         fig.set_size_inches(7,7)
         ax = plt.axes()
@@ -37,14 +37,12 @@ def ellipse_evolute(a,b,n=1001,color="blue",alpha=1,draw=True):
     
 if __name__ == '__main__':
     
-    a,b = 2,1
-    ellipse_evolute(a,b)
     
-    th = np.linspace(0,2*np.pi,101)
-    x,y = a*np.sin(th), b*np.cos(th)
+    x1,y1 = ellipse(2,1,n=501)
+    x2,y2 = evolute(x1,y1,draw=False)
     
-    plt.plot(x,y)
+    m,b = normals(x1,y1,color="salmon",alpha=.05)
     
+    plt.plot(x1,y1)
+    plt.plot(x2,y2,color="black")
     
-    x,y = ellipse(2,1)
-    evolute(x,y)
