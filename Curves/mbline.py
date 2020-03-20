@@ -26,13 +26,20 @@ def mbline(M,B,xlim=[-5,5],ylim=[-5,5],**kwargs):
         if y0 < y_lo:
             x0 = calc_x(m,y_lo,b)
             y0 = y_lo
+        elif y0 > y_hi:
+            x0 = calc_x(m,y_hi,b)
+            y0 = y_hi
+            
         
         x1 = x_hi
         y1 = calc_y(m,x_hi,b)
-        
         if y1 > y_hi:
             x1 = calc_x(m,y_hi,b)
             y1 = y_hi
+        elif y1 < y_lo:
+            x1 = calc_x(m,y_lo,b)
+            y1 = y_lo
+
 
         plt.plot([x0,x1],[y0,y1],**kwargs)
 
@@ -46,5 +53,5 @@ if __name__ == '__main__':
     ax.set_xticks([])
     ax.set_yticks([])
     
-    mbline([-.6,1,1.2],[1,1,1])
+    mbline([-.9,1,1.2],[1,1,1])
     plt.plot([-5,-5,5,5,-5],[-5,5,5,-5,-5])
