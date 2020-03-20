@@ -30,7 +30,7 @@ if __name__ == '__main__':
     from SimpleCurves import ellipse
     
     fig = plt.figure()
-    fig.set_size_inches(12,12)
+    fig.set_size_inches(16,16)
     ax = plt.axes(xlim=(-3.5,3.5), ylim=(-3.5,3.5))
     ax.axis('off')
     ax.set_xticks([])
@@ -43,4 +43,4 @@ if __name__ == '__main__':
     plt.plot(x,y,color='black',zorder=5,linewidth=.5)
     plt.plot(x1,y1,color='black',zorder=5,linewidth=.75)
     mbline(m,b,[-5,5],alpha=.05,color='cornflowerblue')
-    mbline([m[320],m[325]],[b[320],b[325]],[-5,5],color='red',linewidth=.5,zorder=10)
+    mbline([m[320],m[322]],[b[320],b[322]],[-5,5],color='red',linewidth=.5,zorder=10)
