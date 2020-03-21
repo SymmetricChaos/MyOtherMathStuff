@@ -18,7 +18,7 @@ def envelope(slopes,intercepts,draw=True):
         ax.set_xticks([])
         ax.set_yticks([])
         
-    plt.plot(x,y)
+        plt.plot(x,y)
     return x,y
 
 
@@ -31,7 +31,7 @@ if __name__ == '__main__':
     
     fig = plt.figure()
     fig.set_size_inches(16,16)
-    ax = plt.axes(xlim=(-3.5,3.5), ylim=(-3.5,3.5))
+    ax = plt.axes(xlim=(-6,6), ylim=(-6,6))
     ax.axis('off')
     ax.set_xticks([])
     ax.set_yticks([])
@@ -42,5 +42,6 @@ if __name__ == '__main__':
     
     plt.plot(x,y,color='black',zorder=5,linewidth=.5)
     plt.plot(x1,y1,color='black',zorder=5,linewidth=.75)
-    mbline(m,b,[-5,5],alpha=.05,color='cornflowerblue')
+    mbline(m,b,xlim=[-5,5],ylim=[-5,5],alpha=.05,color='cornflowerblue')
     mbline([m[320],m[322]],[b[320],b[322]],[-5,5],color='red',linewidth=.5,zorder=10)
+    plt.plot([-5,-5,5,5,-5],[-5,5,5,-5,-5])

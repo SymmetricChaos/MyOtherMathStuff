@@ -37,12 +37,11 @@ def ellipse_evolute(a,b,n=1001,color="blue",alpha=1,draw=True):
     
 if __name__ == '__main__':
     
-    
     x1,y1 = ellipse(2,1,n=501)
     x2,y2 = evolute(x1,y1,draw=False)
     
     m,b = normals(x1,y1,color="salmon",alpha=.05)
     
     plt.plot(x1,y1)
-    plt.plot(x2,y2,color="black")
+    plt.plot(x2,y2,color="black",linewidth=.5)
     
