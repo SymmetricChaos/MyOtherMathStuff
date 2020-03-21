@@ -1,15 +1,14 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from mbline import mbline
 
 
 # Vectorized calculations
 
 # Slope of the normal at a point
 def normal_slopes(x,y):
-    
     xsh = np.roll(x,1)
     ysh = np.roll(y,1)
-    
     return -(x-xsh)/(y-ysh)
 
 
@@ -34,17 +33,7 @@ def normals(x,y,size=5,color="blue",alpha=.1,draw=True):
         ax.set_xticks([])
         ax.set_yticks([])
         
-        for M,B in zip(m,b):
-    
-            if abs(M) >= 1000:
-                continue
-            
-            x2 = -size
-            y2 = x2*M+B
-            x3 = size
-            y3 = x3*M+B
-    
-            plt.plot([x2,x3],[y2,y3],color=color,alpha=alpha)
+        mbline(m,b,xlim=[-size,size],ylim=[-size,size],color=color,alpha=alpha)
 
     return m,b
 
@@ -57,7 +46,7 @@ if __name__ == '__main__':
     from SimpleCurves import ellipse
 
     x,y = trochoid(4,1,2,hypo=True,n=2001,draw=False)
-    normals(x,y,size=8,color="salmon",alpha=.01)
+    normals(x,y,size=7,color="salmon",alpha=.01)
     plt.plot(x,y)
     
     x,y = ellipse(1,2,n=1001)
