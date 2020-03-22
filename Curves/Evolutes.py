@@ -45,3 +45,19 @@ if __name__ == '__main__':
     plt.plot(x1,y1)
     plt.plot(x2,y2,color="black",linewidth=.5)
     
+    
+    fig = plt.figure()
+    fig.set_size_inches(7,7)
+    ax = plt.axes()
+    ax.set_aspect("equal","datalim")
+    ax.axis('off')
+    ax.set_xticks([])
+    ax.set_yticks([])
+    
+    x1,y1 = ellipse(2,1,n=3001)
+    x2,y2 = evolute(x1,y1,draw=False)
+    x3,y3 = evolute(x2,y2,draw=False)
+    
+    plt.plot(x1,y1,color="black",linewidth=.5)
+    plt.plot(x2,y2,color="black",linewidth=.5)
+    plt.plot(x3,y3,color="black",linewidth=.5)
