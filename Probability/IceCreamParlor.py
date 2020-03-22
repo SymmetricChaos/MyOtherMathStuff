@@ -2,13 +2,13 @@ import random
 import numpy as np
 import matplotlib.pyplot as plt 
 
-def ice_cream_parlor():
+def ice_cream_parlor(rate=1,bucket=20,flavors=10):
     
-    rate = 1
-    bucket_size = 20
-    flavors = 10
+    # rate is minutes between customers
+    # bucket is orders until bucket is empty
+    # flavors is number of flavor options
     
-    flavors_list = [bucket_size]*flavors
+    flavors_list = [bucket]*flavors
     
     ctr = 0
     while True:
@@ -21,9 +21,9 @@ def ice_cream_parlor():
     return ctr
     
 L = []
-for i in range(8000):
+for i in range(10000):
     L.append(ice_cream_parlor())
     
 
-plt.hist(L,bins=10)
-print(np.median(L))
+plt.hist(L,bins=np.linspace(0,200,20))
+print(np.median(L)/60)
