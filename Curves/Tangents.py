@@ -17,19 +17,19 @@ def tangent_intercepts(x,y):
 
 
 def tangents(x,y,size=5,color="blue",alpha=.1,draw=True):
-
-    fig = plt.figure()
-    fig.set_size_inches(12,12)
-
-    ax = plt.axes(xlim=(-size,size), ylim=(-size,size))
-    ax.axis('off')
-    ax.set_xticks([])
-    ax.set_yticks([])
         
     M = tangent_slopes(x,y)
     B = tangent_intercepts(x,y)
 
     if draw == True:
+        fig = plt.figure()
+        fig.set_size_inches(12,12)
+    
+        ax = plt.axes(xlim=(-size,size), ylim=(-size,size))
+        ax.axis('off')
+        ax.set_xticks([])
+        ax.set_yticks([])
+        
         mbline(M,B,xlim=(-size,size),ylim=(-size,size),color=color,alpha=alpha)
         
     return M,B
