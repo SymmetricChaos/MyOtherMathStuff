@@ -16,15 +16,15 @@ def circle(r,n=1001):
     return x,y
 
 
-def parabola(a=1,lo=-1,hi=1,n=1001):
-    x = np.linspace(lo,hi,n)
+def parabola(a=1,xlim=[-1,1],n=1001):
+    x = np.linspace(xlim[0],xlim[1],n)
     y = x*x*a
     
     return x,y
 
 
-def hyperbola(a,b,lo=-1,hi=1,n=1001):
-    x = np.linspace(lo,hi,n)
+def hyperbola(a,b,xlim=[-1,1],n=1001):
+    x = np.linspace(xlim[0],xlim[1],n)
     b2 = b*b
     a2 = a*a
     x2 = x*x
