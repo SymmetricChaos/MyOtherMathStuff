@@ -5,7 +5,7 @@ from mbline import mbline
 from Spirogram import trochoid
 from Normals import normals
 from Tangents import tangents
-from SimpleCurves import ellipse
+from SimpleCurves import circle, ellipse, parabola
 from Bezier import bezier
 
 def double_ellipse():
@@ -60,9 +60,27 @@ def bezier_example():
          plt.plot(points[simplex, 0], points[simplex, 1], 'lightgray',zorder=-1)
 
 
+def conics_example():
 
+    circ_x, circ_y = circle(1,101)
+    a,b = 2,2.5
+    elli_x, elli_y = ellipse(a,b,101)
+    elli_y = elli_y+np.sqrt(b**2-a**2)
+    
+    fig = plt.figure()
+    fig.set_size_inches(12,12)
+    ax = plt.axes()
+    ax.set_aspect("equal","datalim")
+    ax.axis('off')
+    ax.set_xticks([])
+    ax.set_yticks([])
+    
+    plt.scatter(0,0,color='black')
+    plt.plot(circ_x,circ_y)
+    plt.plot(elli_x,elli_y)
     
 
 if __name__ == "__main__":
 #    double_ellipse()
-    bezier_example()
+#    bezier_example()
+    conics_example()
