@@ -62,14 +62,22 @@ def bezier_example():
 
 def conics_example():
 
+    # Its a circle
     circ_x, circ_y = circle(1,101)
+    
+    # Make an ellipse and shift it to put the focus at (0,0)
     a,b = 2,2.5
     elli_x, elli_y = ellipse(a,b,101)
     elli_y = elli_y+np.sqrt(b**2-a**2)
     
+    # Make a parabola and shift it to put the focus at (0,0)
+    a = 12
+    para_x, para_y = parabola(lo=-4,hi=4)
+    para_y = para_y-(1/4*a)
+    
     fig = plt.figure()
     fig.set_size_inches(12,12)
-    ax = plt.axes()
+    ax = plt.axes(xlim=(-4,4), ylim=(-2,6))
     ax.set_aspect("equal","datalim")
     ax.axis('off')
     ax.set_xticks([])
@@ -78,6 +86,7 @@ def conics_example():
     plt.scatter(0,0,color='black')
     plt.plot(circ_x,circ_y)
     plt.plot(elli_x,elli_y)
+    plt.plot(para_x,para_y)
     
 
 if __name__ == "__main__":
