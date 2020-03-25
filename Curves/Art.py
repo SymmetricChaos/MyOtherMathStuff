@@ -5,7 +5,7 @@ from mbline import mbline
 from Spirogram import trochoid
 from Normals import normals
 from Tangents import tangents
-from SimpleCurves import circle, ellipse, parabola
+from SimpleCurves import circle, ellipse, parabola, hyperbola
 from Bezier import bezier
 
 def double_ellipse():
@@ -71,9 +71,14 @@ def conics_example():
     elli_y = elli_y+np.sqrt(b**2-a**2)
     
     # Make a parabola and shift it to put the focus at (0,0)
-    a = 12
-    para_x, para_y = parabola(lo=-4,hi=4)
+    a = 4
+    para_x, para_y = parabola(a,xlim=[-4,4])
     para_y = para_y-(1/4*a)
+    
+    # Make a parabola and shift it to put the focus at (0,0)
+    a,b = 2,2.25
+    hypr_x,hypr_y = hyperbola(a,b,ylim=[-4,4])
+    hypr_y = hypr_y - np.sqrt(b*b+a*a)
     
     fig = plt.figure()
     fig.set_size_inches(12,12)
@@ -87,6 +92,7 @@ def conics_example():
     plt.plot(circ_x,circ_y)
     plt.plot(elli_x,elli_y)
     plt.plot(para_x,para_y)
+    plt.plot(hypr_x,hypr_y)
     
 
 if __name__ == "__main__":

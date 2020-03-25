@@ -23,14 +23,12 @@ def parabola(a=1,xlim=[-1,1],n=1001):
     return x,y
 
 
-def hyperbola(a,b,xlim=[-1,1],n=1001):
-    x = np.linspace(xlim[0],xlim[1],n)
-    b2 = b*b
-    a2 = a*a
-    x2 = x*x
-    y = np.sqrt(-b2*(a2-x2))/a
-    
-    return x,y
+# This one is a little weird
+def hyperbola(a,b,ylim=[-1,1],n=1001):
+    y = np.linspace(ylim[0],ylim[1],n)
+    x = a*np.sqrt(b*b+y*y)/b
+
+    return y,x
 
 
 def conic(e,n=1001):
