@@ -71,13 +71,13 @@ def conics_example():
     elli_y = elli_y+np.sqrt(b**2-a**2)
     
     # Make a parabola and shift it to put the focus at (0,0)
-    a = 4
+    a = .25
     para_x, para_y = parabola(a,xlim=[-4,4])
-    para_y = para_y-(1/4*a)
+    para_y = para_y-(1/(4*a))
     
-    # Make a parabola and shift it to put the focus at (0,0)
+    # Make a hyperbola and shift it to put the focus at (0,0)
     a,b = 2,2.25
-    hypr_x,hypr_y = hyperbola(a,b,ylim=[-4,4])
+    hypr_x,hypr_y = hyperbola(a,b,xlim=[-4,4])
     hypr_y = hypr_y - np.sqrt(b*b+a*a)
     
     fig = plt.figure()

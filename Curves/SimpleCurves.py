@@ -23,30 +23,31 @@ def parabola(a=1,xlim=[-1,1],n=1001):
     return x,y
 
 
-# This one is a little weird
-def hyperbola(a,b,ylim=[-1,1],n=1001):
-    y = np.linspace(ylim[0],ylim[1],n)
-    x = a*np.sqrt(b*b+y*y)/b
+# The positive part of the conjugate parabola
+# Needs work for a better interface
+def hyperbola(a,b,xlim=[-1,1],n=1001):
+    x = np.linspace(xlim[0],xlim[1],n)
+    y = a*np.sqrt(b*b+x*x)/b
 
-    return y,x
+    return x,y
 
 
-def conic(e,n=1001):
+def conic(e,s=1,n=1001):
     
     # Circle
     if e == 0:
-        return circle(1,n=n)
+        return circle(s,n=n)
     # Ellipse
     elif e < 1:
-        a = 1
-        b = np.sqrt(1-e*e)
+        a = s
+        b = s*np.sqrt(1-e*e)
         return ellipse(a,b,n=n)
     # Parabola
     elif e ==1:
-        return parabola(n=n)
+        return parabola(s,n=n)
     # Hyperbola
-#    else:
-#        return hyperbola()
+    else:
+        return hyperbola()
 
 
 def catenary(lo=-1,hi=1,n=1001):
