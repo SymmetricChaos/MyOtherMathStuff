@@ -52,9 +52,19 @@ def hyperbola(a,b,xlim=[-1,1],n=1001):
 
     return x,y
 
-#def hyperbola(e,s,xlim=[-1,1],n=1001):
+
+#def hyperbola_ecc(e,s,xlim=[-1,1],n=1001):
+#    if e < 0:
+#        raise Exception("Not a valid conic section")
+#    if e == 0:
+#        return Exception("This eccentricity produces a circle")
+#    if e < 1:
+#        return Exception("This eccentricity produces a ellipse")
+#    if e == 1:
+#        return parabola(s,xlim=xlim,n=n)
+#        
 #    a = s
-#    b = 
+#    b = s*
 #    x = np.linspace(xlim[0],xlim[1],n)
 #    y = a*np.sqrt(b*b+x*x)/b
 #
@@ -79,7 +89,7 @@ if __name__ == '__main__':
     import matplotlib.pyplot as plt
     
     x1,y1 = catenary()
-    x2,y2 = parabola(a=.5)
+    x2,y2 = parabola(a=.7)
     plt.axes().set_aspect("equal","datalim")
     plt.plot(x1,y1-1)
     plt.plot(x2,y2)
