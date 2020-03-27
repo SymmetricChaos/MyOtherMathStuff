@@ -94,36 +94,10 @@ def conics_example():
     plt.plot(hypr_x,hypr_y)
     
 
-def spirograms():
+def mixed_spirograms():
     
-    # Epitrochoid
-    fig = plt.figure()
-    fig.set_size_inches(16,16)
-    ctr = 1
-    
-    for R in range(5,9):
-        for r in range(1,5):
-            
-            ax = plt.subplot(4,4,ctr)
-            ax.axis('off')
-            x,y = trochoid(R,r,3,draw=False)
-            plt.plot(x,y,color="cornflowerblue")
-            ctr += 1
-    
-    # Hypotrochoids
-    fig = plt.figure()
-    fig.set_size_inches(16,16)
-    ctr = 1
-    
-    for R in range(5,9):
-        for r in range(1,5):
-            ax = plt.subplot(4,4,ctr)
-            ax.axis('off')
-            x,y = trochoid(R,r,3,draw=False,hypo=True)
-            plt.plot(x,y,color="cornflowerblue")
-            ctr += 1
 
-    # Together
+    # Epitrochoids plotted along with their corresponding hypotrochoids
     fig = plt.figure()
     fig.set_size_inches(16,16)
     ctr = 1
@@ -132,6 +106,7 @@ def spirograms():
         for r in range(1,5):
             ax = plt.subplot(4,4,ctr)
             ax.axis('off')
+            ax.set_aspect("equal","datalim")
             x,y = trochoid(R,r,3,draw=False,hypo=True)
             plt.plot(x,y,color="cornflowerblue")
             x,y = trochoid(R,r,3,draw=False)
@@ -144,4 +119,4 @@ if __name__ == "__main__":
 #    double_ellipse()
 #    bezier_example()
 #    conics_example()
-    spirograms()
+    mixed_spirograms()
