@@ -97,19 +97,32 @@ def conics_example():
 def spirograms():
     
     fig = plt.figure()
-    fig.set_size_inches(14,14)
+    fig.set_size_inches(16,16)
 
-    ctr = 331
+    ctr = 1
     
-    for R in range(5,8):
-        for r in range(1,4):
+    for R in range(5,9):
+        for r in range(1,5):
             
-            ax = plt.subplot(ctr)
+            ax = plt.subplot(4,4,ctr)
             ax.axis('off')
-            x,y = trochoid(R,r,2,draw=False)
+            x,y = trochoid(R,r,3,draw=False)
             plt.plot(x,y)
             ctr += 1
     
+    fig = plt.figure()
+    fig.set_size_inches(16,16)
+
+    ctr = 1
+    
+    for R in range(5,9):
+        for r in range(1,5):
+            ax = plt.subplot(4,4,ctr)
+            ax.axis('off')
+            x,y = trochoid(R,r,3,draw=False,hypo=True)
+            plt.plot(x,y)
+            ctr += 1
+
 
 
 
