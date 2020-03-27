@@ -97,44 +97,20 @@ def conics_example():
 def spirograms():
     
     fig = plt.figure()
-    fig.set_size_inches(12,12)
+    fig.set_size_inches(14,14)
 
+    ctr = 331
     
-    plt.subplot(331)
-    x,y = trochoid(5,1,2,draw=False)
-    plt.plot(x,y)
+    for R in range(5,8):
+        for r in range(1,4):
+            
+            ax = plt.subplot(ctr)
+            ax.axis('off')
+            x,y = trochoid(R,r,2,draw=False)
+            plt.plot(x,y)
+            ctr += 1
     
-    plt.subplot(332)
-    x,y = trochoid(5,2,2,draw=False)
-    plt.plot(x,y)
-    
-    plt.subplot(333)
-    x,y = trochoid(5,3,2,draw=False)
-    plt.plot(x,y)
-    
-    plt.subplot(334)
-    x,y = trochoid(6,1,2,draw=False)
-    plt.plot(x,y)
-    
-    plt.subplot(335)
-    x,y = trochoid(6,2,2,draw=False)
-    plt.plot(x,y)
-    
-    plt.subplot(336)
-    x,y = trochoid(6,3,2,draw=False)
-    plt.plot(x,y)
-    
-    plt.subplot(337)
-    x,y = trochoid(7,1,2,draw=False)
-    plt.plot(x,y)
-    
-    plt.subplot(338)
-    x,y = trochoid(7,2,2,draw=False)
-    plt.plot(x,y)
-    
-    plt.subplot(339)
-    x,y = trochoid(7,3,2,draw=False)
-    plt.plot(x,y)
+
 
 
 if __name__ == "__main__":
