@@ -53,7 +53,6 @@ def bezier_example():
     for num,pos in enumerate(points):    
         plt.annotate(f"{num+1}: ({pos[0]},{pos[1]})",[pos[0],pos[1]+.1],size=14)
 
-
     # Show convex hull property
     hull = ConvexHull(points)
     for simplex in hull.simplices:
@@ -95,7 +94,51 @@ def conics_example():
     plt.plot(hypr_x,hypr_y)
     
 
+def spirograms():
+    
+    fig = plt.figure()
+    fig.set_size_inches(12,12)
+
+    
+    plt.subplot(331)
+    x,y = trochoid(5,1,2,draw=False)
+    plt.plot(x,y)
+    
+    plt.subplot(332)
+    x,y = trochoid(5,2,2,draw=False)
+    plt.plot(x,y)
+    
+    plt.subplot(333)
+    x,y = trochoid(5,3,2,draw=False)
+    plt.plot(x,y)
+    
+    plt.subplot(334)
+    x,y = trochoid(6,1,2,draw=False)
+    plt.plot(x,y)
+    
+    plt.subplot(335)
+    x,y = trochoid(6,2,2,draw=False)
+    plt.plot(x,y)
+    
+    plt.subplot(336)
+    x,y = trochoid(6,3,2,draw=False)
+    plt.plot(x,y)
+    
+    plt.subplot(337)
+    x,y = trochoid(7,1,2,draw=False)
+    plt.plot(x,y)
+    
+    plt.subplot(338)
+    x,y = trochoid(7,2,2,draw=False)
+    plt.plot(x,y)
+    
+    plt.subplot(339)
+    x,y = trochoid(7,3,2,draw=False)
+    plt.plot(x,y)
+
+
 if __name__ == "__main__":
 #    double_ellipse()
 #    bezier_example()
-    conics_example()
+#    conics_example()
+    spirograms()
