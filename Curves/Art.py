@@ -96,9 +96,9 @@ def conics_example():
 
 def spirograms():
     
+    # Epitrochoid
     fig = plt.figure()
     fig.set_size_inches(16,16)
-
     ctr = 1
     
     for R in range(5,9):
@@ -107,12 +107,12 @@ def spirograms():
             ax = plt.subplot(4,4,ctr)
             ax.axis('off')
             x,y = trochoid(R,r,3,draw=False)
-            plt.plot(x,y)
+            plt.plot(x,y,color="cornflowerblue")
             ctr += 1
     
+    # Hypotrochoids
     fig = plt.figure()
     fig.set_size_inches(16,16)
-
     ctr = 1
     
     for R in range(5,9):
@@ -120,9 +120,23 @@ def spirograms():
             ax = plt.subplot(4,4,ctr)
             ax.axis('off')
             x,y = trochoid(R,r,3,draw=False,hypo=True)
-            plt.plot(x,y)
+            plt.plot(x,y,color="cornflowerblue")
             ctr += 1
 
+    # Together
+    fig = plt.figure()
+    fig.set_size_inches(16,16)
+    ctr = 1
+    
+    for R in range(5,9):
+        for r in range(1,5):
+            ax = plt.subplot(4,4,ctr)
+            ax.axis('off')
+            x,y = trochoid(R,r,3,draw=False,hypo=True)
+            plt.plot(x,y,color="cornflowerblue")
+            x,y = trochoid(R,r,3,draw=False)
+            plt.plot(x,y,color="cornflowerblue")
+            ctr += 1
 
 
 
