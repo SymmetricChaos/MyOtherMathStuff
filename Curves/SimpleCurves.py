@@ -53,22 +53,23 @@ def hyperbola(a,b,xlim=[-1,1],n=1001):
     return x,y
 
 
-#def hyperbola_ecc(e,s,xlim=[-1,1],n=1001):
-#    if e < 0:
-#        raise Exception("Not a valid conic section")
-#    if e == 0:
-#        return Exception("This eccentricity produces a circle")
-#    if e < 1:
-#        return Exception("This eccentricity produces a ellipse")
-#    if e == 1:
-#        return parabola(s,xlim=xlim,n=n)
-#        
-#    a = s
-#    b = s*
-#    x = np.linspace(xlim[0],xlim[1],n)
-#    y = a*np.sqrt(b*b+x*x)/b
-#
-#    return x,y
+def hyperbola_ecc(e,s,xlim=[-1,1],n=1001):
+
+    if e < 0:
+        raise Exception("Not a valid conic section")
+    if e == 0:
+        return Exception("This eccentricity produces a circle")
+    if e < 1:
+        return Exception("This eccentricity produces a ellipse")
+    if e == 1:
+        return parabola(s,xlim=xlim,n=n)
+        
+    a = s
+    b = s/np.sqrt(e*e-1)
+    x = np.linspace(xlim[0],xlim[1],n)
+    y = a*np.sqrt(b*b+x*x)/b
+
+    return x,y
 
 
 def catenary(lo=-1,hi=1,n=1001):
