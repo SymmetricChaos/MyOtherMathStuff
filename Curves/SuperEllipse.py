@@ -3,18 +3,6 @@ import numpy as np
 
 # https://web.archive.org/web/20171208231427/http://ftp.lyx.de/Lectures/SuperformulaU.pdf
 
-def superellipse(m = 0, n1 = 1, n2 = 1, n3 = 1, r = 1, turns = 1, n = 1001):
-    
-    th = np.linspace(0,2*turns*np.pi,n)
-    
-    aux1 = np.absolute(np.cos((m*th)/4)/r)**n2
-    aux2 = np.absolute(np.sin((m*th)/4)/r)**n3
-    raux = (aux1+aux2)**(-1/n1)
-    x = raux*np.cos(th)
-    y = raux*np.sin(th)
-    
-    return x,y
-
 
 def superformula(a=1, b=1, m1=0, m2=0, n1=1, n2=1, n3=1, turns = 1, n = 1001):
     
