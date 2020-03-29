@@ -7,6 +7,7 @@ from Normals import normals
 from Tangents import tangents
 from SimpleCurves import circle, ellipse, parabola, hyperbola
 from Bezier import bezier
+from SuperEllipse import superellipse
 
 def double_ellipse():
     x,y = ellipse(1,2,501)
@@ -114,9 +115,25 @@ def mixed_spirograms():
             ctr += 1
 
 
+def egg():
+    
+    x,y = superellipse(7,5,4,draw=False,n=2001)
+    m,b = normals(x,y,draw=False)
+
+    fig = plt.figure()
+    fig.set_size_inches(12,12)
+    ax = plt.axes(xlim=[-8,8],ylim=[-8,8])
+    ax.set_aspect("equal","datalim")
+    ax.axis('off')
+    ax.set_xticks([])
+    ax.set_yticks([])
+    
+    plt.plot(x,y)
+    mbline(m,b,color="gold",alpha=.03,xlim=[-8,8],ylim=[-8,8])
 
 if __name__ == "__main__":
 #    double_ellipse()
 #    bezier_example()
 #    conics_example()
-    mixed_spirograms()
+#    mixed_spirograms()
+    egg()
