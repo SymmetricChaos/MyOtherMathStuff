@@ -97,7 +97,6 @@ def conics_example():
 
 def mixed_spirograms():
     
-
     # Epitrochoids plotted along with their corresponding hypotrochoids
     fig = plt.figure()
     fig.set_size_inches(16,16)
@@ -117,12 +116,13 @@ def mixed_spirograms():
 
 def yolk():
     
-    x,y = superellipse(7,5,4,draw=False,n=2001)
+    x,y = superellipse(7,5,4,draw=False,n=1001)
     m,b = normals(x,y,draw=False)
 
     fig = plt.figure()
     fig.set_size_inches(12,12)
     ax = plt.axes(xlim=[-8,8],ylim=[-8,8])
+    ax.patch.set_facecolor('black')
     ax.set_aspect("equal","datalim")
     ax.axis('off')
     ax.set_xticks([])
