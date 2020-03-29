@@ -115,7 +115,7 @@ def mixed_spirograms():
             ctr += 1
 
 
-def egg():
+def yolk():
     
     x,y = superellipse(7,5,4,draw=False,n=2001)
     m,b = normals(x,y,draw=False)
@@ -128,7 +128,7 @@ def egg():
     ax.set_xticks([])
     ax.set_yticks([])
     
-    plt.plot(x,y)
+    plt.plot(x,y,color='white',zorder=10,linewidth=10)
     mbline(m,b,color="gold",alpha=.03,xlim=[-8,8],ylim=[-8,8])
 
 if __name__ == "__main__":
@@ -136,4 +136,4 @@ if __name__ == "__main__":
 #    bezier_example()
 #    conics_example()
 #    mixed_spirograms()
-    egg()
+    yolk()
