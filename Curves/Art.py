@@ -116,12 +116,12 @@ def mixed_spirograms():
 
 def yolk():
     
-    x,y = superellipse(7,5,4,draw=False,n=1001)
+    x,y = superellipse(6,4,4,draw=False,n=4001)
     m,b = normals(x,y,draw=False)
 
     fig = plt.figure()
-    fig.set_size_inches(12,12)
-    ax = plt.axes(xlim=[-8,8],ylim=[-8,8])
+    fig.set_size_inches(12,8)
+    ax = plt.axes(xlim=[-7,7],ylim=[-5,5])
     ax.patch.set_facecolor('black')
     ax.set_aspect("equal","datalim")
     ax.axis('off')
@@ -129,8 +129,9 @@ def yolk():
     ax.set_yticks([])
     
     plt.plot(x,y,color='white',zorder=10,linewidth=10)
-    mbline(m,b,color="gold",alpha=.03,xlim=[-8,8],ylim=[-8,8])
-
+    mbline(m,b,color="yellow",alpha=.02,xlim=[-9,9],ylim=[-5,5])
+    ax.patch.set_facecolor('black')
+    
 if __name__ == "__main__":
 #    double_ellipse()
 #    bezier_example()
