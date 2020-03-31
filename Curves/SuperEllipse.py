@@ -71,4 +71,5 @@ if __name__ == '__main__':
 #    x,y = superformula(a=1,b=1,n2=1,n3=1,n1=2,m1=8,m2=3,turns=2,n=4001)
 #    x,y = superformula(m1=2,m2=2,n1=.5,n2=.5,n3=.5)
     x,y = superellipse(7,5,3)
-    x,y = superellipse()
+    x,y = superellipse(7,5,.5,6)
+#    x,y = superellipse()
