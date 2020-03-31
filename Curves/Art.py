@@ -122,7 +122,6 @@ def yolk():
     fig = plt.figure()
     fig.set_size_inches(12,8)
     ax = plt.axes(xlim=[-7,7],ylim=[-5,5])
-    ax.patch.set_facecolor('black')
     ax.set_aspect("equal","datalim")
     ax.axis('off')
     ax.set_xticks([])
