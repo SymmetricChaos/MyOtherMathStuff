@@ -31,6 +31,16 @@ def fourier_circles(radii,speeds,phases,time,n=1001,draw=True):
     
     return X,Y
 
+
+def fourier_circles_approxiation(x,y,num_circles,draw=True):
+    
+    R = 
+    S = 
+    P = 
+    return fourier_circles(R,S,P,draw=draw)
+
+
+
 if __name__ == '__main__':
     
     R = [(n*2)-1 for n in range(15,0,-1)]
@@ -41,13 +51,3 @@ if __name__ == '__main__':
     print(R)
     print(S)
     print(P)
-    
-    fig = plt.figure()
-    fig.set_size_inches(12,12)
-    ax = plt.axes()
-    ax.set_aspect("equal","datalim")
-    ax.axis('off')
-    ax.set_xticks([])
-    ax.set_yticks([])
-    
-    plt.plot(np.linspace(0,1,2001),y/max(y))
