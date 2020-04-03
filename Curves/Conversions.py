@@ -22,11 +22,12 @@ if __name__ == '__main__':
     y = [5,4,3,2,1]
     P = [(1,5),(2,4),(3,3),(4,2),(5,1)]
     C = [1+5j,2+4j,+3+3j,4+2j,5+1j]
+
+    print("As two lists       ",x,y)
+    print("As a list of points",P)
+    print("As complex numbers ",C)
     
-    print(x,y)
-    print(P)
-    print(C)
-    
+    print("\nConfirm each conversion works")
     print(xy_to_complex(x,y) == C)
     print(xy_to_point(x,y) == P)
     print(point_to_complex(P) == C)
