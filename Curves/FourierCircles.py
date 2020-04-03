@@ -1,13 +1,13 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-def fourier_circles(radii,speeds,phases,time,n=1001,draw=True):
+def fourier_circles(radii,speeds,phases,time=1,n=1001,draw=True):
     
-    time = np.linspace(0,time*2*np.pi,n)
+    t_vals = np.linspace(0,time*2*np.pi,n)
     
     X,Y = [],[]
     
-    for t in time:
+    for t in t_vals:
         x = 0
         y = 0
         for R,S,P in zip(radii,speeds,phases):
@@ -32,14 +32,23 @@ def fourier_circles(radii,speeds,phases,time,n=1001,draw=True):
     return X,Y
 
 
-def fourier_circles_approxiation(x,y,num_circles,draw=True):
-    
-    R = 
-    S = 
-    P = 
-    return fourier_circles(R,S,P,draw=draw)
-
-
+#def fourier_circles_approxiation(func,num_circles,time=1,n=1001,draw=True):
+#    
+#    t_vals = np.linspace(0,time*2*np.pi,n)
+#    v = np.array([func(t) for t in t_vals])
+#    
+#    def calc_coef(n,v):
+#        cn = v*np.exp(-1j*2*n*np.pi*time/max(time))
+#        return sum(cn)/len(cn)
+#    
+#
+#    coefs = [calc_coef(N,v) for N in range(1,num_circles+1)]
+#    
+#    R = np.absolute(coefs)
+#    S = np.array(range(1,num_circles+1))
+#    P = np.angle(coefs)
+#    
+#    fourier_circles(R,S,P,time,n,draw=draw)
 
 if __name__ == '__main__':
     
@@ -47,7 +56,3 @@ if __name__ == '__main__':
     S = [(n*2)-1 for n in range(1,16,1)]
     P = [0]*15
     x,y = fourier_circles(R,S,P,1,n=2001)
-    
-    print(R)
-    print(S)
-    print(P)
