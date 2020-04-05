@@ -29,4 +29,4 @@ def regular_polygon(sides,r=1,n=1001,draw=True):
 
 if __name__ == '__main__':
     
-    x,y = regular_polygon(11,n=301)
+    x,y = regular_polygon(5,n=151)

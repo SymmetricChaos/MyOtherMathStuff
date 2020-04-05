@@ -32,6 +32,7 @@ def linked_circles(radii,speeds,phases,time=1,n=1001,draw=True):
     return X,Y
 
 
+# Doesn't work at all really
 def fourier_approxiation(C,num_circles,time=1,draw=True):
 
     t_vals = np.linspace(0,2*np.pi,len(C))
@@ -58,16 +59,23 @@ def fourier_approxiation(C,num_circles,time=1,draw=True):
 
 if __name__ == '__main__':
     
-    from Conversions import xy_to_complex
-    from ParametricPolygon import regular_polygon
+#    from Conversions import xy_to_complex
+#    from ParametricPolygon import regular_polygon
     
-    R = [(n*2)-1 for n in range(15,0,-1)]
-    S = [(n*2)-1 for n in range(1,16,1)]
-    P = [0]*15
+    num_cos = 5
+    R = [n*2-1 for n in range(num_cos,0,-1)]
+    S = [(n+1)*2-1 for n in range(0,num_cos,1)]
+    P = [0]*num_cos
     x,y = linked_circles(R,S,P,1,n=2001)
     
-    x,y = regular_polygon(7,draw=False,n=1001)
-    C = xy_to_complex(x,y)
-
+    num_cos = 4
+    R = [(n*2)-1 for n in range(num_cos,0,-1)]
+    S = [(n*2)-1 for n in range(0,num_cos,1)]
+    P = [0]*num_cos
+    x,y = linked_circles(R,S,P,1,n=2001)
     
-    fourier_approxiation(C,10,time=1)
+    num_cos = 6
+    R = [5**n for n in range(0,num_cos,1)]
+    S = [6**n for n in range(num_cos,0,-1)]
+    P = [0]*num_cos
+    x,y = linked_circles(R,S,P,.5,n=4001)
