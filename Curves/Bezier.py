@@ -33,11 +33,3 @@ def bezier(control_points,N=50):
 
 if __name__ == '__main__':
     
-
-    bezier_example([ (-2,0), 
-                     (1,-2),
-                     (1.5,-1),
-                     (-1,2), 
-                     (1,0) ])
-    
-    
