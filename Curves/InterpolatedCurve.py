@@ -71,6 +71,30 @@ def lagrange_interpolation(X,Y):
     return polynomial_func
 
 
+# Interpolation using newton polynomials
+def newton_interpolation(X,Y):
+    
+    final = [0]
+    
+    for x,y in zip(X,Y):
+        out = [y]
+        for m in X:
+            if m != x:
+                P = [-m/(x-m),1/(x-m)]
+                out = poly_mult(out,P)
+        final = poly_add(out,final)
+
+    
+    # Probably a more efficient way to do this
+    def polynomial_func(a):
+        c = 0
+        for pwr,co in enumerate(final):
+            c = c + co*(a**pwr)
+        return c
+        
+    return polynomial_func
+
+
 
 
 
@@ -85,10 +109,15 @@ if __name__ == '__main__':
     
     x = np.linspace(X[0]-1,X[-1]+1,1001)
     y = [P(i) for i in x]
-    
+        
     fig = plt.figure()
-    fig.set_size_inches(6,6)
-    ax = plt.axes(xlim=[0,7],ylim=[0,7])
+    fig.set_size_inches(12,12)
+    ax = plt.axes()
+    ax.set_aspect("equal","datalim")
+    ax.axis('off')
+    ax.set_xticks([])
+    ax.set_yticks([])
+        
         
     plt.scatter(X,Y)
     plt.plot(x,y)
