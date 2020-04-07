@@ -1,5 +1,5 @@
 # Treat lists as polynomial coefficients and multiplies them
-def poly_mult(P, Q):
+def poly_mult(P,Q):
     
     out = [0]*(len(P)+len(Q))
     
@@ -8,11 +8,41 @@ def poly_mult(P, Q):
             out[i+j] += P[i]*Q[j]
             out[i+j] = out[i+j]
 
-    
-    while out[-1] == 0 and len(out) > 1:
-        if len(out) == 1:
+    poly_normalize(out)
+
+    return out
+
+
+def poly_normalize(P):
+    """Remove trailing zeroes"""
+    while P[-1] == 0 and len(P) > 1:
+        if len(P) == 1:
             break
-        out.pop()
+        P.pop()
+
+
+def poly_pad(P,n):
+    """Add trailing zeroes"""
+    out = P.copy()
+    while len(out) < n:
+        out.append(0)
+    return out
+	
+
+def poly_add(P, Q):
+    """Take list of polynomial coefficients and add them"""
+        
+    pad = max(len(P),len(Q))
+    
+    P = poly_pad(P,pad)
+    Q = poly_pad(Q,pad)
+    
+    out = []
+    
+    for x,y in zip(P,Q):
+        out.append( x+y )
+
+    poly_normalize(out)
 
     return out
 
@@ -20,23 +50,22 @@ def poly_mult(P, Q):
 # Interpolation using lagrange polynomials
 def lagrange_interpolation(X,Y):
     
-    final = []
+    final = [0]
     
     for x,y in zip(X,Y):
         out = [y]
         for m in X:
             if m != x:
-                d = [1/(x-m)]
-                P = [-m,1]
-                out = poly_mult(out,poly_mult(P,d))
-        final += out
+                P = [-m/(x-m),1/(x-m)]
+                out = poly_mult(out,P)
+        final = poly_add(out,final)
+
     
     # Probably a more efficient way to do this
-    def polynomial_func(x):
-        
+    def polynomial_func(a):
         c = 0
         for pwr,co in enumerate(final):
-            c = c + co*(x**pwr)
+            c = c + co*(a**pwr)
         return c
         
     return polynomial_func
@@ -50,16 +79,19 @@ if __name__ == '__main__':
     import numpy as np
     import matplotlib.pyplot as plt
     
-    X = [1,3,4]
-    Y = [1,2,1.5]
+    # Interpolating polynomial should be 6x^2 - 11x + 6 which is the list [6,11,6]
+    X = [1,2,3]
+    Y = [1,4,6]
     P = lagrange_interpolation(X,Y)
+    
     
     x = np.linspace(X[0]-1,X[-1]+1,1001)
     y = [P(i) for i in x]
     
+    
     fig = plt.figure()
     fig.set_size_inches(6,6)
-    ax = plt.axes(xlim=[-2,5],ylim=[-3,3])
+    ax = plt.axes(xlim=[-1,28],ylim=[-1,28])
         
     plt.scatter(X,Y)
     plt.plot(x,y)
