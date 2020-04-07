@@ -79,19 +79,16 @@ if __name__ == '__main__':
     import numpy as np
     import matplotlib.pyplot as plt
     
-    # Interpolating polynomial should be 6x^2 - 11x + 6 which is the list [6,11,6]
     X = [1,2,3]
     Y = [1,4,6]
     P = lagrange_interpolation(X,Y)
     
-    
     x = np.linspace(X[0]-1,X[-1]+1,1001)
     y = [P(i) for i in x]
     
-    
     fig = plt.figure()
     fig.set_size_inches(6,6)
-    ax = plt.axes(xlim=[-1,28],ylim=[-1,28])
+    ax = plt.axes(xlim=[0,7],ylim=[0,7])
         
     plt.scatter(X,Y)
     plt.plot(x,y)
