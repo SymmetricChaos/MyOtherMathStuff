@@ -13,6 +13,7 @@ def bezier(control_points,N=50):
     Bezier curves of any complexity are possible
     They interpolate between several Bezier curves, starting from lines
     Points are provided in sequence
+    The first and last point are the start and end of the curve
     """
     L = control_points.copy()
     while True:
@@ -27,9 +28,37 @@ def bezier(control_points,N=50):
         L = P.copy()
 
 
+def bezier_multi(curves,N=50):
+    """
+    Create points for multiple bezier curves
+    """
+    
+    X = []
+    Y = []
+    for control in curves:
+        x,y = bezier(control,N)
+        X += list(x)
+        Y += list(y)
+    
+    return X,Y
 
 
 
 
 if __name__ == '__main__':
+    x,y = bezier_multi([[(0,1),(1,1),(1,0)],
+                        [(1,0),(1,-1),(0,-1)],
+                        [(0,-1),(-1,-1),(-1,0)],
+                        [(-1,0),(-1,1),(0,1)]
+                        ],
+                       N=50)
     
+    fig = plt.figure()
+    fig.set_size_inches(12,12)
+    ax = plt.axes()
+    ax.set_aspect("equal","datalim")
+    ax.axis('off')
+    ax.set_xticks([])
+    ax.set_yticks([])
+    
+    plt.plot(x,y)
