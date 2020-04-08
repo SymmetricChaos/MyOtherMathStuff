@@ -8,7 +8,7 @@ def interpolation(A,B,p):
     return [x,y]
 
 
-def bezier(control_points,N=50):
+def bezier(control_points,N=101):
     """
     Bezier curves of any complexity are possible
     They interpolate between several Bezier curves, starting from lines
@@ -28,9 +28,10 @@ def bezier(control_points,N=50):
         L = P.copy()
 
 
-def bezier_multi(curves,N=50):
+def bezier_multi(curves,N=101):
     """
-    Create points for multiple bezier curves
+    Create points for multiple bezier curves, does not enforce a spline
+    If any start or end points match the point will be doubled
     """
     
     X = []
@@ -43,15 +44,36 @@ def bezier_multi(curves,N=50):
     return X,Y
 
 
+def bezier_spline(curves,N=101):
+    """
+    Enforces a continuous spline but not smoothness
+    Does not double start or end points of the component curves
+    """
+    
+    for A,B in zip(curves[:-1],curves[1:]):
+        if A[-1] != B[0]:
+            raise Exception("A spline must be continuous")
+    
+    X = []
+    Y = []
+    for control in curves:
+        x,y = bezier(control,N)
+        X += list(x)[:-1]
+        Y += list(y)[:-1]
+    
+    return X,Y
+
+
+
 
 
 if __name__ == '__main__':
-    x,y = bezier_multi([[(0,1),(1,1),(1,0)],
+    x,y = bezier_spline([[(0,1),(1,1),(1,0)],
                         [(1,0),(1,-1),(0,-1)],
                         [(0,-1),(-1,-1),(-1,0)],
                         [(-1,0),(-1,1),(0,1)]
                         ],
-                       N=50)
+                       N=1001)
     
     fig = plt.figure()
     fig.set_size_inches(12,12)
