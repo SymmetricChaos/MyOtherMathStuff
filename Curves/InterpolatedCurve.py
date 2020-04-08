@@ -71,31 +71,7 @@ def lagrange_interpolation(X,Y):
     return polynomial_func
 
 
-# Interpolation using newton polynomials
-def newton_interpolation(X,Y):
-    
-    final = [0]
-    
-    for x,y in zip(X,Y):
-        out = [y]
-        for m in X:
-            if m != x:
-                P = [-m/(x-m),1/(x-m)]
-                out = poly_mult(out,P)
-        final = poly_add(out,final)
-
-    
-    # Probably a more efficient way to do this
-    def polynomial_func(a):
-        c = 0
-        for pwr,co in enumerate(final):
-            c = c + co*(a**pwr)
-        return c
-        
-    return polynomial_func
-
-
-
+# FIND OUT IF NEWTON POLYNOMIALS ARE DIFFERENT
 
 
 if __name__ == '__main__':
@@ -117,7 +93,6 @@ if __name__ == '__main__':
     ax.axis('off')
     ax.set_xticks([])
     ax.set_yticks([])
-        
         
     plt.scatter(X,Y)
     plt.plot(x,y)
