@@ -225,8 +225,10 @@ if __name__ == '__main__':
 #                        ],
 #                       N=1001)
     
-    
-    x,y = bezier_spline_smooth([[0,0],[1,1],[2,0]])
+    P = [[0,0],
+         [1,1],
+         [2,0]]
+    x,y = bezier_spline_smooth(P)
     
     fig = plt.figure()
     fig.set_size_inches(12,12)
@@ -237,4 +239,4 @@ if __name__ == '__main__':
     ax.set_yticks([])
     
     plt.plot(x,y)
-    plt.scatter([0,1,2],[0,1,0])
+    plt.scatter([i[0] for i in P],[i[1] for i in P])
