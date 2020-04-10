@@ -64,15 +64,6 @@ def bezier_spline(control_points,N=101):
     return X,Y
 
 
-#	/*solves Ax=b with the Thomas algorithm (from Wikipedia)*/
-#	for (i = 1; i < n; i++)
-#	{
-#		m = a[i]/b[i-1];
-#		b[i] = b[i] - m * c[i - 1];
-#		r[i] = r[i] - m*r[i-1];
-#	}
-
-
 def thomas_algorithm(a,b,c,r,n):
     """
     Take lists a,b,c,r and integer n
@@ -84,6 +75,7 @@ def thomas_algorithm(a,b,c,r,n):
         r[i] = r[i] - m*r[i-1]
 
 
+# Translation of algorithm from https://www.particleincell.com/2012/bezier-splines/
 def bezier_spline_smooth(knots,N=101):
     """
     Enforces a smooth continuous spline
@@ -114,13 +106,13 @@ def bezier_spline_smooth(knots,N=101):
         a.append(1)
         b.append(4)
         c.append(1)
-        r.append(4 * knots[i] + 2 * knots[i+1])
+        r.append(4*knots[i] + 2*knots[i+1])
     
     # Final segment
     a.append(2)
     b.append(7)
     c.append(0)
-    r.append(8 * knots[-2] + knots[-1])
+    r.append(8*knots[-2] + knots[-1])
     
     # Mutate according to thomas algorithm to solve matrix
     thomas_algorithm(a,b,c,r,n)
@@ -135,13 +127,8 @@ def bezier_spline_smooth(knots,N=101):
     # Second control point of each segment    
     for i in range(0,n-1):
         p2[i] = 2*knots[i+1]-p1[i+1]
-        
     p2[n-1] = (knots[n]+p1[n-1])/2
-    
-    print(p1)
-    print()
-    print(p2)
-    
+        
     control_points = []
     
     for k1,p1,p2,k2 in zip(knots[:-1],p1,p2,knots[1:]):
@@ -155,65 +142,9 @@ def bezier_spline_smooth(knots,N=101):
         X += list(x)[:-1]
         Y += list(y)[:-1]
     
-    return X,Y
+    return X,Y,control_points
        
-#     /*computes control points given knots K, this is the brain of the operation*/
-#function computeControlPoints(K)
-#{
-#	p1=new Array();
-#	p2=new Array();
-#	n = K.length-1;
-#	
-#	/*rhs vector*/
-#	a=new Array();
-#	b=new Array();
-#	c=new Array();
-#	r=new Array();
-#	
-#	/*left most segment*/
-#	a[0]=0;
-#	b[0]=2;
-#	c[0]=1;
-#	r[0] = K[0]+2*K[1];
-#	
-#	/*internal segments*/
-#	for (i = 1; i < n - 1; i++)
-#	{
-#		a[i]=1;
-#		b[i]=4;
-#		c[i]=1;
-#		r[i] = 4 * K[i] + 2 * K[i+1];
-#	}
-#			
-#	/*right segment*/
-#	a[n-1]=2;
-#	b[n-1]=7;
-#	c[n-1]=0;
-#	r[n-1] = 8*K[n-1]+K[n];
-#	
-#	/*solves Ax=b with the Thomas algorithm (from Wikipedia)*/
-#	for (i = 1; i < n; i++)
-#	{
-#		m = a[i]/b[i-1];
-#		b[i] = b[i] - m * c[i - 1];
-#		r[i] = r[i] - m*r[i-1];
-#	}
-# 
-#	p1[n-1] = r[n-1]/b[n-1];
-#	for (i = n - 2; i >= 0; --i)
-#		p1[i] = (r[i] - c[i] * p1[i+1]) / b[i];
-#		
-#	/*we have p1, now compute p2*/
-#	for (i=0;i<n-1;i++)
-#		p2[i]=2*K[i+1]-p1[i+1];
-#	
-#	p2[n-1]=0.5*(K[n]+p1[n-1]);
-#	
-#	return {p1:p1, p2:p2};
-#}
-   
-        
-    
+
 
 
 
@@ -228,7 +159,7 @@ if __name__ == '__main__':
     P = [[0,0],
          [1,1],
          [2,0]]
-    x,y = bezier_spline_smooth(P)
+    x,y,C = bezier_spline_smooth(P)
     
     fig = plt.figure()
     fig.set_size_inches(12,12)
@@ -240,3 +171,5 @@ if __name__ == '__main__':
     
     plt.plot(x,y)
     plt.scatter([i[0] for i in P],[i[1] for i in P])
+    for c in C:
+        print(c)
