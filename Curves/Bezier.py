@@ -117,12 +117,16 @@ def bezier_spline_smooth(knots,N=101):
     # Mutate according to thomas algorithm to solve matrix
     thomas_algorithm(a,b,c,r,n)
     
+
     # First control point of each segment
     p1 = [0]*n
     p2 = [0]*n
     p1[n-1] = r[n-1]/b[n-1]
     for i in range(n-2,-1,-1):
         p1[i] = (r[i] - c[i] * p1[i+1])/b[i]
+    
+    print(n)
+    print(len(p1))
     
     # Second control point of each segment    
     for i in range(0,n-1):
@@ -165,11 +169,12 @@ if __name__ == '__main__':
     fig.set_size_inches(12,12)
     ax = plt.axes()
     ax.set_aspect("equal","datalim")
-    ax.axis('off')
-    ax.set_xticks([])
-    ax.set_yticks([])
+#    ax.axis('off')
+#    ax.set_xticks([])
+#    ax.set_yticks([])
     
     plt.plot(x,y)
     plt.scatter([i[0] for i in P],[i[1] for i in P])
     for c in C:
         print(c)
+        plt.scatter([i[0] for i in c],[i[1] for i in c])
