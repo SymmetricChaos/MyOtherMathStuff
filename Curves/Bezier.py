@@ -28,7 +28,7 @@ def bezier(control_points,N=101):
         L = P.copy()
 
 
-def bezier_multi(curves,N=101):
+def bezier_multi(control_points,N=101):
     """
     Create points for multiple bezier curves, does not enforce a spline
     If any start or end points match the point will be doubled
@@ -36,23 +36,130 @@ def bezier_multi(curves,N=101):
     
     X = []
     Y = []
-    for control in curves:
-        x,y = bezier(control,N)
+    for points in control_points:
+        x,y = bezier(points,N)
         X += list(x)
         Y += list(y)
     
     return X,Y
 
 
-def bezier_spline(curves,N=101):
+def bezier_spline(control_points,N=101):
     """
     Enforces a continuous spline but not smoothness
     Does not double start or end points of the component curves
     """
     
-    for A,B in zip(curves[:-1],curves[1:]):
+    for A,B in zip(control_points[:-1],control_points[1:]):
         if A[-1] != B[0]:
             raise Exception("A spline must be continuous")
+    
+    X = []
+    Y = []
+    for points in control_points:
+        x,y = bezier(points,N)
+        X += list(x)[:-1]
+        Y += list(y)[:-1]
+    
+    return X,Y
+
+
+#	/*solves Ax=b with the Thomas algorithm (from Wikipedia)*/
+#	for (i = 1; i < n; i++)
+#	{
+#		m = a[i]/b[i-1];
+#		b[i] = b[i] - m * c[i - 1];
+#		r[i] = r[i] - m*r[i-1];
+#	}
+
+def thomas_algorithm(a,b,c,r,n):
+    """
+    Take lists a,b,c,r and integer n
+    Mutates b and r
+    """
+    for i in range(1,n):
+        m = a[i]/b[i-1]
+        b[i] = b[i] - m * c[i-1]
+        r[i] = r[i] - m*r[i-1]
+
+def bezier_spline_smooth(knots,N=101):
+    """
+    Enforces a smooth continuous spline
+    Component curves are cubic
+    Knots rather than control points are used
+    The spline passes through each knot
+    """
+    
+    for i in knots:
+        if len(i) != 2:
+            raise Exception("Each knot must be an (x,y) pair")
+
+    p1,p2 = [],[]
+    n = len(knots)-1
+    
+    a,b,c,r = [],[],[],[]
+    
+    a = [0]
+    b = [2]
+    c = [1]
+    r = []
+       
+#     /*computes control points given knots K, this is the brain of the operation*/
+#function computeControlPoints(K)
+#{
+#	p1=new Array();
+#	p2=new Array();
+#	n = K.length-1;
+#	
+#	/*rhs vector*/
+#	a=new Array();
+#	b=new Array();
+#	c=new Array();
+#	r=new Array();
+#	
+#	/*left most segment*/
+#	a[0]=0;
+#	b[0]=2;
+#	c[0]=1;
+#	r[0] = K[0]+2*K[1];
+#	
+#	/*internal segments*/
+#	for (i = 1; i < n - 1; i++)
+#	{
+#		a[i]=1;
+#		b[i]=4;
+#		c[i]=1;
+#		r[i] = 4 * K[i] + 2 * K[i+1];
+#	}
+#			
+#	/*right segment*/
+#	a[n-1]=2;
+#	b[n-1]=7;
+#	c[n-1]=0;
+#	r[n-1] = 8*K[n-1]+K[n];
+#	
+#	/*solves Ax=b with the Thomas algorithm (from Wikipedia)*/
+#	for (i = 1; i < n; i++)
+#	{
+#		m = a[i]/b[i-1];
+#		b[i] = b[i] - m * c[i - 1];
+#		r[i] = r[i] - m*r[i-1];
+#	}
+# 
+#	p1[n-1] = r[n-1]/b[n-1];
+#	for (i = n - 2; i >= 0; --i)
+#		p1[i] = (r[i] - c[i] * p1[i+1]) / b[i];
+#		
+#	/*we have p1, now compute p2*/
+#	for (i=0;i<n-1;i++)
+#		p2[i]=2*K[i+1]-p1[i+1];
+#	
+#	p2[n-1]=0.5*(K[n]+p1[n-1]);
+#	
+#	return {p1:p1, p2:p2};
+#}
+   
+        
     
     X = []
     Y = []
@@ -62,8 +169,6 @@ def bezier_spline(curves,N=101):
         Y += list(y)[:-1]
     
     return X,Y
-
-
 
 
 
