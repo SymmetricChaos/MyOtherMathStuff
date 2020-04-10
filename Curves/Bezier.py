@@ -72,6 +72,7 @@ def bezier_spline(control_points,N=101):
 #		r[i] = r[i] - m*r[i-1];
 #	}
 
+
 def thomas_algorithm(a,b,c,r,n):
     """
     Take lists a,b,c,r and integer n
@@ -81,6 +82,7 @@ def thomas_algorithm(a,b,c,r,n):
         m = a[i]/b[i-1]
         b[i] = b[i] - m * c[i-1]
         r[i] = r[i] - m*r[i-1]
+
 
 def bezier_spline_smooth(knots,N=101):
     """
@@ -93,16 +95,58 @@ def bezier_spline_smooth(knots,N=101):
     for i in knots:
         if len(i) != 2:
             raise Exception("Each knot must be an (x,y) pair")
+    
+    # We need knots to add as vectors which numpy arrays will do
+    knots = [np.array(k) for k in knots]
+
 
     p1,p2 = [],[]
     n = len(knots)-1
     
     a,b,c,r = [],[],[],[]
     
+    # First segment
     a = [0]
     b = [2]
     c = [1]
-    r = []
+    r = [knots[0]+2*knots[1]]
+    
+    # Internal segments
+    for i in range(1,n):
+        a.append(1)
+        b.append(4)
+        c.append(1)
+        r.append(4 * knots[i] + 2 * knots[i+1])
+    
+    # Final segment
+    a.append(2)
+    b.append(7)
+    c.append(0)
+    r.append(8 * knots[-2] + knots[-1])
+    
+    # Mutate according to thomas algorithm to solve matrix
+    thomas_algorithm(a,b,c,r,n)
+    
+    # First control point of each segment
+    p1 = [0]*n
+    p1[n-1] = r[n-1]/b[n-1]
+    for i in range(n-2,0,-1):
+        p1[i] = (r[i] - c[i] * p1[i+1])/b[i]
+    
+    # Second control point of each segment    
+    for i in range(0,n):
+        p2[i] = 2*knots[i+1]-p1[i+1]
+        
+    p2[n-1] = (knots[n]+p1[n-1])/2
+    
+    print(p1,p2)
+    
+    
+#	for (i=0;i<n-1;i++)
+#		p2[i]=2*K[i+1]-p1[i+1];
+#	
+#	p2[n-1]=0.5*(K[n]+p1[n-1]);
+    
        
 #     /*computes control points given knots K, this is the brain of the operation*/
 #function computeControlPoints(K)
@@ -161,14 +205,6 @@ def bezier_spline_smooth(knots,N=101):
    
         
     
-    X = []
-    Y = []
-    for control in curves:
-        x,y = bezier(control,N)
-        X += list(x)[:-1]
-        Y += list(y)[:-1]
-    
-    return X,Y
 
 
 
@@ -189,3 +225,6 @@ if __name__ == '__main__':
     ax.set_yticks([])
     
     plt.plot(x,y)
+    
+    
+    bezier_spline_smooth([[0,0],[1,1],[2,0]])
