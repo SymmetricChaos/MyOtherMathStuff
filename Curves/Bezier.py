@@ -116,7 +116,6 @@ def bezier_spline_smooth(knots,N=101):
     
     # Mutate according to thomas algorithm to solve matrix
     thomas_algorithm(a,b,c,r,n-1)
-    
 
     # First control point of each segment
     p1 = [0]*n
@@ -134,7 +133,6 @@ def bezier_spline_smooth(knots,N=101):
     
     for k1,p1,p2,k2 in zip(knots[:-1],p1,p2,knots[1:]):
         control_points.append([k1,p1,p2,k2])
-    
     
     X = []
     Y = []
