@@ -91,7 +91,7 @@ def bezier_spline_smooth(knots,N=101):
     # We need knots to add as vectors which numpy arrays will do
     knots = [np.array(k) for k in knots]
 
-    n = len(knots)-1
+    n = len(knots)
     
     a,b,c,r = [],[],[],[]
     
@@ -102,7 +102,7 @@ def bezier_spline_smooth(knots,N=101):
     r = [knots[0]+2*knots[1]]
     
     # Internal segments
-    for i in range(1,n-1):
+    for i in range(1,n-2):
         a.append(1)
         b.append(4)
         c.append(1)
@@ -115,23 +115,20 @@ def bezier_spline_smooth(knots,N=101):
     r.append(8*knots[-2] + knots[-1])
     
     # Mutate according to thomas algorithm to solve matrix
-    thomas_algorithm(a,b,c,r,n)
+    thomas_algorithm(a,b,c,r,n-1)
     
 
     # First control point of each segment
     p1 = [0]*n
     p2 = [0]*n
-    p1[n-1] = r[n-1]/b[n-1]
-    for i in range(n-2,-1,-1):
+    p1[n-2] = r[n-2]/b[n-2]
+    for i in range(n-3,-1,-1):
         p1[i] = (r[i] - c[i] * p1[i+1])/b[i]
     
-    print(n)
-    print(len(p1))
-    
     # Second control point of each segment    
-    for i in range(0,n-1):
+    for i in range(0,n-2):
         p2[i] = 2*knots[i+1]-p1[i+1]
-    p2[n-1] = (knots[n]+p1[n-1])/2
+    p2[n-2] = (knots[n-1]+p1[n-2])/2
         
     control_points = []
     
