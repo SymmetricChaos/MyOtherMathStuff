@@ -71,7 +71,7 @@ def thomas_algorithm(a,b,c,r,n):
     """
     for i in range(1,n):
         m = a[i]/b[i-1]
-        b[i] = b[i] - m * c[i-1]
+        b[i] = b[i] - m*c[i-1]
         r[i] = r[i] - m*r[i-1]
 
 
@@ -102,7 +102,7 @@ def bezier_spline_smooth(knots,N=101):
     r = [knots[0]+2*knots[1]]
     
     # Internal segments
-    for i in range(1,n):
+    for i in range(1,n-1):
         a.append(1)
         b.append(4)
         c.append(1)
@@ -162,7 +162,9 @@ if __name__ == '__main__':
     
     P = [[0,0],
          [1,1],
-         [2,0]]
+         [2,0],
+         [1,-1],
+         [.5,0]]
     x,y,C = bezier_spline_smooth(P)
     
     fig = plt.figure()
@@ -174,7 +176,7 @@ if __name__ == '__main__':
 #    ax.set_yticks([])
     
     plt.plot(x,y)
-    plt.scatter([i[0] for i in P],[i[1] for i in P])
     for c in C:
-        print(c)
         plt.scatter([i[0] for i in c],[i[1] for i in c])
+    
+    plt.scatter([i[0] for i in P],[i[1] for i in P],80,color='black',zorder=10)
