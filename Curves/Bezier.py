@@ -171,9 +171,9 @@ if __name__ == '__main__':
     fig.set_size_inches(12,12)
     ax = plt.axes()
     ax.set_aspect("equal","datalim")
-#    ax.axis('off')
-#    ax.set_xticks([])
-#    ax.set_yticks([])
+    ax.axis('off')
+    ax.set_xticks([])
+    ax.set_yticks([])
     
     plt.plot(x,y)
     for c in C:
