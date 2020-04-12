@@ -78,10 +78,8 @@ def thomas_algorithm(a,b,c,r,n):
 # Translation of algorithm from https://www.particleincell.com/2012/bezier-splines/
 def bezier_spline_smooth(knots,N=101):
     """
-    Enforces a smooth continuous spline
-    Component curves are cubic
-    Knots rather than control points are used
-    The spline passes through each knot
+    Enforces a continuous cubic spline through given knots
+    Control points are computed automatically rather than specified
     """
     
     for i in knots:
@@ -132,7 +130,7 @@ def bezier_spline_smooth(knots,N=101):
     control_points = []
     
     for k1,p1,p2,k2 in zip(knots[:-1],p1,p2,knots[1:]):
-        control_points.append([k1,p1,p2,k2])
+        control_points.append([tuple(k1),tuple(p1),tuple(p2),tuple(k2)])
     
     X = []
     Y = []
@@ -173,5 +171,8 @@ if __name__ == '__main__':
     plt.plot(x,y)
     for c in C:
         plt.scatter([i[0] for i in c],[i[1] for i in c])
+        for p in c:
+            print(f"({round(p[0],2)}, {round(p[1],2)})   ",end="")
+        print()
     
     plt.scatter([i[0] for i in P],[i[1] for i in P],80,color='black',zorder=10)
