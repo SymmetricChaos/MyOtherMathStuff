@@ -8,6 +8,8 @@ from Tangents import tangents
 from SimpleCurves import circle, ellipse, parabola, hyperbola
 from Bezier import bezier
 from SuperEllipse import superellipse
+from Drawing import make_blank_canvas, draw_curve, draw_closed_curve, draw_dots
+
 
 def double_ellipse():
     x,y = ellipse(1,2,501)

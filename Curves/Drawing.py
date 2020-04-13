@@ -21,6 +21,46 @@ def make_blank_canvas(xrange=None,yrange=None,size=[12,12]):
     return fig,ax
 
 
+def calc_y(m,x,b):
+    return m*x+b
+
+def calc_x(m,y,b):
+    return (y-b)/m
+    
+def mbline(M,B,xlim=[-5,5],ylim=[-5,5],**kwargs):
+    
+    x_lo = xlim[0]
+    y_lo = ylim[0]
+    
+    x_hi = xlim[1]
+    y_hi = ylim[1]
+    
+    for m,b in zip(M,B):
+        
+        x0 = x_lo
+        y0 = calc_y(m,x_lo,b)
+        
+        if y0 < y_lo:
+            x0 = calc_x(m,y_lo,b)
+            y0 = y_lo
+        elif y0 > y_hi:
+            x0 = calc_x(m,y_hi,b)
+            y0 = y_hi
+                
+        x1 = x_hi
+        y1 = calc_y(m,x_hi,b)
+        if y1 > y_hi:
+            x1 = calc_x(m,y_hi,b)
+            y1 = y_hi
+        elif y1 < y_lo:
+            x1 = calc_x(m,y_lo,b)
+            y1 = y_lo
+
+        plt.plot([x0,x1],[y0,y1],**kwargs)
+    
+    return [[x0,y0],[x1,y1]]
+
+
 def draw_curve(x,y=None,**kwargs):
     if not y:
         plt.plot([i[0] for i in x],[i[1] for i in x],**kwargs)
