@@ -80,6 +80,7 @@ def bezier_spline_smooth(knots,N=101):
     """
     Enforces a continuous cubic spline through given knots
     Control points are computed automatically rather than specified
+    Constrained to become linear at each end
     """
     
     for i in knots:
@@ -140,19 +141,31 @@ def bezier_spline_smooth(knots,N=101):
         Y += list(y)[:-1]
     
     return X,Y,control_points
-       
 
 
-
-
-if __name__ == '__main__':
-#    x,y = bezier_spline([[(0,1),(1,1),(1,0)],
-#                        [(1,0),(1,-1),(0,-1)],
-#                        [(0,-1),(-1,-1),(-1,0)],
-#                        [(-1,0),(-1,1),(0,1)]
-#                        ],
-#                       N=1001)
+def bezier_spline_example():
+    """
+    Approximation of a circle using quadratic bezier curves
+    """
+    x,y = bezier_spline([[(0,1),(1,1),(1,0)],
+                        [(1,0),(1,-1),(0,-1)],
+                        [(0,-1),(-1,-1),(-1,0)],
+                        [(-1,0),(-1,1),(0,1)]
+                        ],
+                       N=101)
     
+    fig = plt.figure()
+    fig.set_size_inches(12,12)
+    ax = plt.axes()
+    ax.set_aspect("equal","datalim")
+    ax.axis('off')
+    ax.set_xticks([])
+    ax.set_yticks([])
+    
+    plt.plot(x+[x[0]],y+[y[0]])
+    
+
+def bezier_spline_smooth_example():
     P = [[0,0],
          [1,1],
          [2,0],
@@ -176,3 +189,14 @@ if __name__ == '__main__':
         print()
     
     plt.scatter([i[0] for i in P],[i[1] for i in P],80,color='black',zorder=10)
+
+       
+
+
+
+
+if __name__ == '__main__':
+
+    bezier_spline_example()
+    bezier_spline_smooth_example()
+    
