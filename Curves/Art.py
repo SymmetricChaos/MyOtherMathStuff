@@ -71,13 +71,7 @@ def conics_example():
     hypr_x,hypr_y = hyperbola(a,b,xlim=[-4,4])
     hypr_y = hypr_y - np.sqrt(b*b+a*a)
     
-    fig = plt.figure()
-    fig.set_size_inches(12,12)
-    ax = plt.axes(xlim=(-4,4), ylim=(-2,6))
-    ax.set_aspect("equal","datalim")
-    ax.axis('off')
-    ax.set_xticks([])
-    ax.set_yticks([])
+    fig, ax = make_blank_canvas(xrange=(-4,4),yrange=(-2,6),size=(14,14))
     
     plt.scatter(0,0,color='black')
     draw_closed_curve_xy(circ_x,circ_y)
@@ -89,8 +83,9 @@ def conics_example():
 def mixed_spirograms():
     
     # Epitrochoids plotted along with their corresponding hypotrochoids
-    fig = plt.figure()
-    fig.set_size_inches(16,16)
+
+    fig, ax = make_blank_canvas(size=(16,16))
+    
     ctr = 1
     
     for R in range(5,9):
@@ -99,32 +94,27 @@ def mixed_spirograms():
             ax.axis('off')
             ax.set_aspect("equal","datalim")
             x,y = trochoid(R,r,3,draw=False,hypo=True)
-            plt.plot(x,y,color="cornflowerblue")
+            draw_curve_xy(x,y,color="cornflowerblue")
             x,y = trochoid(R,r,3,draw=False)
-            plt.plot(x,y,color="cornflowerblue")
+            draw_curve_xy(x,y,color="cornflowerblue")
             ctr += 1
 
 
 def yolk():
     
-    x,y = superellipse(6,4,4,draw=False,n=4001)
+    x,y = superellipse(6,4,4,draw=False,n=1001)
     m,b = normals(x,y,draw=False)
 
-    fig = plt.figure()
-    fig.set_size_inches(12,8)
-    ax = plt.axes(xlim=[-7,7],ylim=[-5,5])
-    ax.set_aspect("equal","datalim")
-    ax.axis('off')
-    ax.set_xticks([])
-    ax.set_yticks([])
+    fig, ax = make_blank_canvas([-7,7],[-5,5],size=(12,8))
     
+    ax.patch.set_facecolor('black')
     plt.plot(x,y,color='white',zorder=10,linewidth=10)
     mbline(m,b,color="yellow",alpha=.02,xlim=[-9,9],ylim=[-5,5])
-    ax.patch.set_facecolor('black')
+
     
 if __name__ == "__main__":
 #    double_ellipse()
 #    bezier_example()
-    conics_example()
+#    conics_example()
 #    mixed_spirograms()
-#    yolk()
+    yolk()

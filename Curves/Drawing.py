@@ -86,6 +86,7 @@ def draw_curve_complex(C,**kwargs):
 #   a list of (x,y) points
 #   a list of complex numbers
 def draw_closed_curve_xy(x,y,**kwargs):
+    # Convert to list because an np.array doesn't play nice
     X = list(x) + [x[0]]
     Y = list(y) + [y[0]]
     plt.plot(X,Y,**kwargs)
