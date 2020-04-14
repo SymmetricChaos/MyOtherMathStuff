@@ -75,7 +75,8 @@ def lagrange_interpolation(X,Y):
 
 # FIND OUT IF NEWTON POLYNOMIALS ARE DIFFERENT
 #def newton_interpolation(X,Y):
-    
+
+
 # Simple moving average of equally spaced data
 def simple_moving_average(Y,width=1):
     
@@ -106,6 +107,11 @@ def simple_moving_median(Y,width=1):
         m_av.append(np.median(y[i:N+i]))
     
     return m_av
+
+
+
+
+
 
 
 if __name__ == '__main__':
