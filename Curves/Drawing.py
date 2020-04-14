@@ -64,6 +64,7 @@ def mbline(M,B,xlim=[-5,5],ylim=[-5,5],**kwargs):
     
     return [[x0,y0],[x1,y1]]
 
+
 # Draw a curve from:
 #   seperate lists of x and y coordinates
 #   a list of (x,y) points
@@ -71,11 +72,9 @@ def mbline(M,B,xlim=[-5,5],ylim=[-5,5],**kwargs):
 def draw_curve_xy(x,y,**kwargs):
     plt.plot(x,y,**kwargs)
 
-
 def draw_curve_points(P,**kwargs):
     x,y = points_to_xy(P)
     plt.plot(x,y,**kwargs)
-
 
 def draw_curve_complex(C,**kwargs):
     x,y = complex_to_xy(C)
@@ -86,24 +85,18 @@ def draw_curve_complex(C,**kwargs):
 #   seperate lists of x and y coordinates
 #   a list of (x,y) points
 #   a list of complex numbers
-def draw_closed_curve_xy(x,y=None,**kwargs):
-    x += [x[0]]
-    y += [y[0]]
-    plt.plot(x,y,**kwargs)
-    
+def draw_closed_curve_xy(x,y,**kwargs):
+    X = list(x) + [x[0]]
+    Y = list(y) + [y[0]]
+    plt.plot(X,Y,**kwargs)
     
 def draw_closed_curve_points(P,**kwargs):
     x,y = points_to_xy(P)
-    x += [x[0]]
-    y += [y[0]]
-    plt.plot(x,y,**kwargs)
-    
+    draw_closed_curve_xy(x,y,**kwargs)
     
 def draw_closed_curve_complex(P,**kwargs):
     x,y = complex_to_xy(P)
-    x += [x[0]]
-    y += [y[0]]
-    plt.plot(x,y,**kwargs)
+    draw_closed_curve_xy(x,y,**kwargs)
     
 
 # Draw scatterplot from:
@@ -113,11 +106,9 @@ def draw_closed_curve_complex(P,**kwargs):
 def draw_dots_xy(x,y,**kwargs):
     plt.scatter(x,y,**kwargs)
 
-
 def draw_dots_points(P,**kwargs):
     x,y = points_to_xy(P)
     plt.scatter(x,y,**kwargs)
-
 
 def draw_dots_complex(C,**kwargs):
     x,y = complex_to_xy(C)
