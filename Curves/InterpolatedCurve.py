@@ -1,3 +1,5 @@
+import numpy as np
+
 # Treat lists as polynomial coefficients and multiplies them
 def poly_mult(P,Q):
     
@@ -72,11 +74,42 @@ def lagrange_interpolation(X,Y):
 
 
 # FIND OUT IF NEWTON POLYNOMIALS ARE DIFFERENT
+#def newton_interpolation(X,Y):
+    
+# Simple moving average of equally spaced data
+def simple_moving_average(Y,width=1):
+    
+    # Number of values considered at each step
+    N = 2*width+1
+    
+    # Padded version of Y
+    y = Y[:]
+    y = [y[0]]*width + y + [y[-1]]*width
+
+    m_av = []
+    for i in range(len(Y)):
+        m_av.append(sum(y[i:N+i])/N)
+    
+    return m_av
+
+def simple_moving_median(Y,width=1):
+    
+    # Number of values considered at each step
+    N = 2*width+1
+    
+    # Padded version of Y
+    y = Y[:]
+    y = [y[0]]*width + y + [y[-1]]*width
+
+    m_av = []
+    for i in range(len(Y)):
+        m_av.append(np.median(y[i:N+i]))
+    
+    return m_av
 
 
 if __name__ == '__main__':
     
-    import numpy as np
     import matplotlib.pyplot as plt
     
     X = [1,2,3]
@@ -96,3 +129,20 @@ if __name__ == '__main__':
         
     plt.scatter(X,Y)
     plt.plot(x,y)
+    
+    
+    Y = [1,2,3,6,9,12,15,10,14,13,12,10,5,2,1]
+    av1 = simple_moving_average(Y,2)
+    av2 = simple_moving_median(Y,2)
+    
+    fig = plt.figure()
+    fig.set_size_inches(12,12)
+    ax = plt.axes()
+    ax.set_aspect("equal","datalim")
+    ax.axis('off')
+    ax.set_xticks([])
+    ax.set_yticks([])
+        
+    plt.scatter([i for i in range(len(Y))],Y)
+    plt.plot([i for i in range(len(Y))],av1)
+    plt.plot([i for i in range(len(Y))],av2)
