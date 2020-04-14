@@ -1,13 +1,13 @@
 def xy_to_complex(x,y):
     return [a+b*1j for a,b in zip(x,y)]
 
-def xy_to_point(x,y):
+def xy_to_points(x,y):
     return [(a,b) for a,b in zip(x,y)]
 
-def point_to_complex(P):
+def points_to_complex(P):
     return [a+b*1j for a,b in P]
 
-def point_to_xy(P):
+def points_to_xy(P):
     return [p[0] for p in P], [p[1] for p in P]
 
 def complex_to_xy(C):
@@ -29,8 +29,8 @@ if __name__ == '__main__':
     
     print("\nConfirm each conversion works")
     print(xy_to_complex(x,y) == C)
-    print(xy_to_point(x,y) == P)
-    print(point_to_complex(P) == C)
-    print(point_to_xy(P) == (x,y))
+    print(xy_to_points(x,y) == P)
+    print(points_to_complex(P) == C)
+    print(points_to_xy(P) == (x,y))
     print(complex_to_xy(C) == (x,y))
     print(complex_to_point(C) == P)

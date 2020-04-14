@@ -1,7 +1,5 @@
 import matplotlib.pyplot as plt
 
-# y = mx+b
-# x = (y-b)/m
 
 def calc_y(m,x,b):
     return m*x+b

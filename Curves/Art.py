@@ -8,7 +8,7 @@ from Tangents import tangents
 from SimpleCurves import circle, ellipse, parabola, hyperbola
 from Bezier import bezier
 from SuperEllipse import superellipse
-from Drawing import make_blank_canvas, draw_curve, draw_closed_curve, draw_dots
+from Drawing import make_blank_canvas, draw_curve_xy, draw_closed_curve_xy, draw_dots_xy
 
 
 def double_ellipse():
@@ -16,12 +16,7 @@ def double_ellipse():
     m1,b1 = normals(x,y,draw=False)
     m2,b2 = tangents(x,y,draw=False)
     
-    fig = plt.figure()
-    fig.set_size_inches(14,14)
-    ax = plt.axes(xlim=(-4.5,4.5), ylim=(-4.5,4.5))
-    ax.axis('off')
-    ax.set_xticks([])
-    ax.set_yticks([])
+    fig, ax = make_blank_canvas(xrange=(-4.5,4.5),yrange=(-4.5,4.5),size=(14,14))
     
     mbline(m1,b1,alpha=.05,color='red')
     mbline(m2[1:],b2[1:],alpha=.05,color='red')
@@ -42,16 +37,10 @@ def bezier_example():
     X,Y = bezier(points)
     
     # Plot the curve, the points, and annotations
-    fig = plt.figure()
-    fig.set_size_inches(12,12)
-    ax = plt.axes()
-    ax.set_aspect("equal","datalim")
-    ax.axis('off')
-    ax.set_xticks([])
-    ax.set_yticks([])
+    fig, ax = make_blank_canvas(size=(12,12))
     
-    plt.plot(X,Y)
-    plt.scatter(xs,ys)
+    draw_curve_xy(X,Y)
+    draw_dots_xy(xs,ys)
     plt.title(f"Bezier Curve with {len(points)} Control Points\nBounding Property of Convex Hull Shown\n",size=20)
     for num,pos in enumerate(points):    
         plt.annotate(f"{num+1}: ({pos[0]},{pos[1]})",[pos[0],pos[1]+.1],size=14)
@@ -91,10 +80,10 @@ def conics_example():
     ax.set_yticks([])
     
     plt.scatter(0,0,color='black')
-    plt.plot(circ_x,circ_y)
-    plt.plot(elli_x,elli_y)
-    plt.plot(para_x,para_y)
-    plt.plot(hypr_x,hypr_y)
+    draw_closed_curve_xy(circ_x,circ_y)
+    draw_closed_curve_xy(elli_x,elli_y)
+    draw_curve_xy(para_x,para_y)
+    draw_curve_xy(hypr_x,hypr_y)
     
 
 def mixed_spirograms():
@@ -136,6 +125,6 @@ def yolk():
 if __name__ == "__main__":
 #    double_ellipse()
 #    bezier_example()
-#    conics_example()
+    conics_example()
 #    mixed_spirograms()
-    yolk()
+#    yolk()

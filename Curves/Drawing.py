@@ -1,5 +1,9 @@
 import matplotlib.pyplot as plt
-import numpy as np
+from Conversions import complex_to_xy, points_to_xy
+
+
+
+
 
 def make_blank_canvas(xrange=None,yrange=None,size=[12,12]):
     fig = plt.figure()
@@ -20,14 +24,14 @@ def make_blank_canvas(xrange=None,yrange=None,size=[12,12]):
     
     return fig,ax
 
-
-def calc_y(m,x,b):
-    return m*x+b
-
-def calc_x(m,y,b):
-    return (y-b)/m
     
 def mbline(M,B,xlim=[-5,5],ylim=[-5,5],**kwargs):
+    
+    def calc_y(m,x,b):
+        return m*x+b
+
+    def calc_x(m,y,b):
+        return (y-b)/m
     
     x_lo = xlim[0]
     y_lo = ylim[0]
@@ -60,29 +64,64 @@ def mbline(M,B,xlim=[-5,5],ylim=[-5,5],**kwargs):
     
     return [[x0,y0],[x1,y1]]
 
+# Draw a curve from:
+#   seperate lists of x and y coordinates
+#   a list of (x,y) points
+#   a list of complex numbers
+def draw_curve_xy(x,y,**kwargs):
+    plt.plot(x,y,**kwargs)
 
-def draw_curve(x,y=None,**kwargs):
-    if not y:
-        plt.plot([i[0] for i in x],[i[1] for i in x],**kwargs)
-    else:
-        plt.plot(x,y,**kwargs)
+
+def draw_curve_points(P,**kwargs):
+    x,y = points_to_xy(P)
+    plt.plot(x,y,**kwargs)
+
+
+def draw_curve_complex(C,**kwargs):
+    x,y = complex_to_xy(C)
+    plt.plot(x,y,**kwargs)
+    
+
+# Draw a curve that attaches the start to the end from:
+#   seperate lists of x and y coordinates
+#   a list of (x,y) points
+#   a list of complex numbers
+def draw_closed_curve_xy(x,y=None,**kwargs):
+    x += [x[0]]
+    y += [y[0]]
+    plt.plot(x,y,**kwargs)
     
     
-def draw_closed_curve(x,y=None,**kwargs):
-    if not y:
-        x += [x[0]]
-        plt.plot([i[0] for i in x],[i[1] for i in x],**kwargs)
-    else:
-        x += [x[0]]
-        y += [y[0]]
-        plt.plot(x,y,**kwargs)
+def draw_closed_curve_points(P,**kwargs):
+    x,y = points_to_xy(P)
+    x += [x[0]]
+    y += [y[0]]
+    plt.plot(x,y,**kwargs)
     
     
-def draw_dots(x,y=None,**kwargs):
-    if not y:
-        plt.scatter([i[0] for i in x],[i[1] for i in x],**kwargs)
-    else:
-        plt.scatter(x,y,**kwargs)
+def draw_closed_curve_complex(P,**kwargs):
+    x,y = complex_to_xy(P)
+    x += [x[0]]
+    y += [y[0]]
+    plt.plot(x,y,**kwargs)
+    
+
+# Draw scatterplot from:
+#   seperate lists of x and y coordinates
+#   a list of (x,y) points
+#   a list of complex numbers
+def draw_dots_xy(x,y,**kwargs):
+    plt.scatter(x,y,**kwargs)
+
+
+def draw_dots_points(P,**kwargs):
+    x,y = points_to_xy(P)
+    plt.scatter(x,y,**kwargs)
+
+
+def draw_dots_complex(C,**kwargs):
+    x,y = complex_to_xy(C)
+    plt.scatter(x,y,**kwargs)
 
 
 
@@ -91,7 +130,7 @@ def draw_dots(x,y=None,**kwargs):
 if __name__ == '__main__':
     
     make_blank_canvas([-5,5],[-5,5])
-    draw_curve([1,2,3],[0,1,0])
+    draw_curve_xy([1,2,3],[0,1,0])
     
     make_blank_canvas([-5,5],[-5,5])
-    draw_closed_curve([1,2,3],[0,1,0])
+    draw_closed_curve_xy([1,2,3],[0,1,0])
