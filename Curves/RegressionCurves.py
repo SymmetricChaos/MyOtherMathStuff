@@ -17,19 +17,24 @@ def poly(x,coefs):
 
 #http://polynomialregression.drque.net/math.html
 # Find a polynomial that fits some dataset using least squares
+# Returns coefficients in ascending order
 def polynomial_regression(X,Y,degree=2):
     
-    degree = degree+1
+    N = degree+1
     
-    M = np.matrix( [[0]*degree]*degree )
-    T = np.matrix( [[0]*degree] )
+    M = np.matrix( [[0]*N]*N )
+    T = np.matrix( [[0]*N] )
     
-    # Each antidiagonal is a sum of power
-    # There's definitely a more efficient way to do this but we run out of
-    # precision from long ints before it becomes an issue
-    for i in range(degree):
-        for j in range(degree):
-            M[i,j] = sum([x**(i+j) for x in X])
+    # Each antidiagonal of M is a sum of powers of the x values
+    # There is a precision loss issue with numpy matricies when the degree is high
+    D = dict()
+    for i in range(2*N):
+        S = sum([x**i for x in X])
+        D[i] = S
+        
+    for i in range(N):
+        for j in range(N):
+            M[i,j] = D[i+j]
         T[0,i] = sum([y*x**i for x,y in zip(X,Y)])
     
     out = M.I*T.T
