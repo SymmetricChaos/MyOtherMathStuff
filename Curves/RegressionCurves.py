@@ -76,11 +76,11 @@ if __name__ == '__main__':
     x3,y3 = local_regression(x1,y1,width=1,n=40,degree=1)
     
     make_blank_canvas()
-    draw_dots_xy(x1,y1)
+    draw_dots_xy(x1,y1,s=5)
     draw_curve_xy(x2,y2)
     plt.title("Polynomial Regression Curve")
     
     make_blank_canvas()
-    draw_dots_xy(x1,y1)
+    draw_dots_xy(x1,y1,s=5)
     draw_curve_xy(x3,y3)
     plt.title("Local Linear Regression Curve")
