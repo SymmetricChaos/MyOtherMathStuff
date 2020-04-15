@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from Conversions import xy_to_points, points_to_xy
+from Drawing import make_blank_canvas, draw_curve_xy, draw_dots_xy
 
 # Difference between prediction f(x) and observed value y at x
 def residual(x,y,f):
@@ -64,15 +65,22 @@ def local_regression(X,Y,width,n,degree=1):
 
 
 
+
+
 if __name__ == '__main__':
     
-    x = np.linspace(-1,7,100)
-    y1 = np.cos(x)+np.random.normal(0,.3,100)
-    c = polynomial_regression(x,y1,4)
-    y2 = poly(x,c)
-    x2,y3 = local_regression(x,y1,.5,30,1)
+    x1 = x2 = np.linspace(-1,7,100)
+    y1 = np.cos(x1)+np.random.normal(0,.3,100)
+    c = polynomial_regression(x1,y1,4)
+    y2 = poly(x1,c)
+    x3,y3 = local_regression(x1,y1,width=1,n=40,degree=1)
     
-    plt.title([round(i,3) for i in c])
-    plt.scatter(x,y1)
-    plt.plot(x,y2)
-    plt.plot(x2,y3)
+    make_blank_canvas()
+    draw_dots_xy(x1,y1)
+    draw_curve_xy(x2,y2)
+    plt.title("Polynomial Regression Curve")
+    
+    make_blank_canvas()
+    draw_dots_xy(x1,y1)
+    draw_curve_xy(x3,y3)
+    plt.title("Local Linear Regression Curve")
