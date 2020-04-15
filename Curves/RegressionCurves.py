@@ -51,5 +51,6 @@ if __name__ == '__main__':
     c = polynomial_regression(x,y1,4)
     y2 = poly(x,c)
     
+    plt.title([round(i,3) for i in c])
     plt.scatter(x,y1)
     plt.plot(x,y2)
