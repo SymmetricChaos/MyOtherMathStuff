@@ -113,7 +113,6 @@ def simple_moving_median(Y,width=1):
 
 
 
-
 if __name__ == '__main__':
     
     import matplotlib.pyplot as plt
