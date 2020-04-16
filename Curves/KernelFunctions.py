@@ -13,7 +13,7 @@ def tricubic_kernel(u):
     return 70/81*(1-abs(u)**3)**3
 
 
-def parametric_kernel(u,a,b):
+def parametric_kernel(U,a,b):
     assert a > 0 and a < 4
     assert b > 0 and b < 4
     
@@ -23,11 +23,22 @@ def parametric_kernel(u,a,b):
     
     C = D[(a,b)]
     
-    if abs(u) > 1:
-        return 0
-    
-    return C*(1-abs(u)**a)**b
+    def func(u):
+        if abs(u) > 1:
+            return 0
+        return C*(1-abs(u)**a)**b
 
+    return [func(u) for u in U]
+
+
+def parametric_kernel_unnormalized(U,a,b):
+    
+    def func(u):
+        if abs(u) > 1:
+            return 0
+        return (1-abs(u)**a)**b
+
+    return [func(u) for u in U]
 
 
 if __name__ == '__main__':
@@ -38,6 +49,6 @@ if __name__ == '__main__':
 
     
     for a,b in zip([1,1,1,2,2,2,3,3,3],[1,2,3,1,2,3,1,2,3]):
-        y = [parametric_kernel(i,a,b) for i in x]
+        y = parametric_kernel(x,a,b)
         
         plt.plot(x,y)
