@@ -52,10 +52,12 @@ def local_regression(X,Y,width,n,degree=1):
     out = []
     
     def inrange(x,c,w):
-        return x>c-w and x<c+w
+        return x>=c-w and x<=c+w
     
     for cen in C:
         xy = [p for p in P if inrange(p[0],cen,width)]
+        if xy == []:
+            raise Exception(f"Width is too narrow at x={cen}")
         x,y = points_to_xy(xy)
         coef = polynomial_regression(x,y,degree=degree)
         
@@ -69,12 +71,12 @@ def local_regression(X,Y,width,n,degree=1):
 
 if __name__ == '__main__':
     
-    x1 = x2 = np.linspace(-1,7,100)
+    x1 = x2 = np.linspace(-1,6,200)
     y0 = np.cos(x1)
-    y1 = np.cos(x1)+np.random.normal(0,.3,100)
+    y1 = np.cos(x1)+np.random.normal(0,.3,200)
     c = polynomial_regression(x1,y1,4)
     y2 = poly(x1,c)
-    x3,y3 = local_regression(x1,y1,width=1,n=40,degree=1)
+    x3,y3 = local_regression(x1,y1,width=.5,n=200,degree=1)
     
     make_blank_canvas()
     draw_dots_xy(x1,y1,s=5)
