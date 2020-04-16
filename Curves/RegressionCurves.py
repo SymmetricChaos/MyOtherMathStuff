@@ -70,6 +70,7 @@ def local_regression(X,Y,width,n,degree=1):
 if __name__ == '__main__':
     
     x1 = x2 = np.linspace(-1,7,100)
+    y0 = np.cos(x1)
     y1 = np.cos(x1)+np.random.normal(0,.3,100)
     c = polynomial_regression(x1,y1,4)
     y2 = poly(x1,c)
@@ -78,9 +79,11 @@ if __name__ == '__main__':
     make_blank_canvas()
     draw_dots_xy(x1,y1,s=5)
     draw_curve_xy(x2,y2)
+    draw_curve_xy(x1,y0)
     plt.title("Polynomial Regression Curve")
     
     make_blank_canvas()
     draw_dots_xy(x1,y1,s=5)
     draw_curve_xy(x3,y3)
+    draw_curve_xy(x1,y0)
     plt.title("Local Linear Regression Curve")
