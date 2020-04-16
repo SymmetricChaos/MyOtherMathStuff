@@ -93,6 +93,7 @@ def simple_moving_average(Y,width=1):
     
     return m_av
 
+
 def simple_moving_median(Y,width=1):
     
     # Number of values considered at each step
@@ -107,7 +108,6 @@ def simple_moving_median(Y,width=1):
         m_av.append(np.median(y[i:N+i]))
     
     return m_av
-
 
 
 
