@@ -13,6 +13,7 @@ def tricubic_kernel(u):
     return 70/81*(1-abs(u)**3)**3
 
 
+# Precomputed constants to normalize integral to 1
 def parametric_kernel(U,a,b):
     assert a > 0 and a < 4
     assert b > 0 and b < 4
@@ -30,15 +31,6 @@ def parametric_kernel(U,a,b):
 
     return [func(u) for u in U]
 
-
-def parametric_kernel_unnormalized(U,a,b):
-    
-    def func(u):
-        if abs(u) > 1:
-            return 0
-        return (1-abs(u)**a)**b
-
-    return [func(u) for u in U]
 
 
 if __name__ == '__main__':

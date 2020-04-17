@@ -71,12 +71,12 @@ def local_regression(X,Y,width,n,degree=1):
 
 if __name__ == '__main__':
     
-    x1 = x2 = np.linspace(-1,6,200)
+    x1 = x2 = np.linspace(-1,6,300)
     y0 = np.cos(x1)
-    y1 = np.cos(x1)+np.random.normal(0,.3,200)
+    y1 = np.cos(x1)+np.random.normal(0,.3,300)
     c = polynomial_regression(x1,y1,4)
     y2 = poly(x1,c)
-    x3,y3 = local_regression(x1,y1,width=.5,n=200,degree=1)
+    x3,y3 = local_regression(x1,y1,width=.5,n=100,degree=1)
     
     make_blank_canvas()
     draw_dots_xy(x1,y1,s=5)
