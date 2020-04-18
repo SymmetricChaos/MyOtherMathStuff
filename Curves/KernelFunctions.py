@@ -14,7 +14,7 @@ def tricubic_kernel(u):
 
 
 # Precomputed constants to normalize integral to 1
-def parametric_kernel(U,a,b):
+def parametric_kernel(a,b):
     assert a > 0 and a < 4
     assert b > 0 and b < 4
     
@@ -29,7 +29,7 @@ def parametric_kernel(U,a,b):
             return 0
         return C*(1-abs(u)**a)**b
 
-    return [func(u) for u in U]
+    return func
 
 
 
@@ -41,6 +41,7 @@ if __name__ == '__main__':
 
     
     for a,b in zip([1,1,1,2,2,2,3,3,3],[1,2,3,1,2,3,1,2,3]):
-        y = parametric_kernel(x,a,b)
+        f = parametric_kernel(a,b)
+        y = [f(i) for i in x]
         
         plt.plot(x,y)
