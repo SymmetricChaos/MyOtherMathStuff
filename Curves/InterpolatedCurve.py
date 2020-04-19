@@ -1,4 +1,6 @@
 import numpy as np
+from Conversions import xy_to_points, points_to_xy
+from Drawing import make_blank_canvas, draw_curve_xy, draw_dots_xy
 
 # Treat lists as polynomial coefficients and multiplies them
 def poly_mult(P,Q):
@@ -116,6 +118,8 @@ def simple_moving_median(Y,width=1):
 if __name__ == '__main__':
     
     import matplotlib.pyplot as plt
+
+    
     
     X = [1,2,3]
     Y = [1,4,6]
@@ -124,30 +128,20 @@ if __name__ == '__main__':
     x = np.linspace(X[0]-1,X[-1]+1,1001)
     y = [P(i) for i in x]
         
-    fig = plt.figure()
-    fig.set_size_inches(12,12)
-    ax = plt.axes()
-    ax.set_aspect("equal","datalim")
-    ax.axis('off')
-    ax.set_xticks([])
-    ax.set_yticks([])
-        
+    make_blank_canvas()
     plt.scatter(X,Y)
     plt.plot(x,y)
     
     
-    Y = [1,2,3,6,9,12,15,10,14,13,12,10,5,2,1]
-    av1 = simple_moving_average(Y,2)
-    av2 = simple_moving_median(Y,2)
+    x1 = np.linspace(0,7,200)
+    y1 = list(np.cos(x1)+np.random.normal(0,.3,200))
     
-    fig = plt.figure()
-    fig.set_size_inches(12,12)
-    ax = plt.axes()
-    ax.set_aspect("equal","datalim")
-    ax.axis('off')
-    ax.set_xticks([])
-    ax.set_yticks([])
-        
-    plt.scatter([i for i in range(len(Y))],Y)
-    plt.plot([i for i in range(len(Y))],av1)
-    plt.plot([i for i in range(len(Y))],av2)
+    av1 = simple_moving_average(y1,7)
+    av2 = simple_moving_median(y1,7)
+    
+    
+    
+    make_blank_canvas()
+    plt.scatter(x1,y1)
+    plt.plot(x1,av1)
+    plt.plot(x1,av2)
