@@ -82,7 +82,7 @@ if __name__ == '__main__':
     draw_dots_xy(x1,y1,s=5)
     draw_curve_xy(x2,y2)
     draw_curve_xy(x1,y0)
-    plt.title("Polynomial Regression Curve")
+    plt.title("4th Degree Polynomial Regression Curve")
     
     make_blank_canvas()
     draw_dots_xy(x1,y1,s=5)
