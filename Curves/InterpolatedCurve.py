@@ -1,7 +1,5 @@
 import numpy as np
-from Conversions import xy_to_points, points_to_xy
-from Drawing import make_blank_canvas, draw_curve_xy, draw_dots_xy
-from KernelFunctions import triangular_kernel
+from Drawing import make_blank_canvas
 
 # Treat lists as polynomial coefficients and multiplies them
 def poly_mult(P,Q):
@@ -80,68 +78,6 @@ def lagrange_interpolation(X,Y):
 #def newton_interpolation(X,Y):
 
 
-# Simple moving average of equally spaced data
-def simple_moving_average(X,Y,width=1):
-    
-    # Number of values considered at each step
-    N = 2*width+1
-    
-    # Padded version of Y
-    y = Y[:]
-    y = [y[0]]*width + y + [y[-1]]*width
-
-    m_av = []
-    for i in range(len(Y)):
-        m_av.append(sum(y[i:N+i])/N)
-    
-    return m_av
-
-
-def weighted_mean(X,W):
-
-    s = sum([x*w for x,w in zip(X,W)])
-    n = sum(W)
-    
-    return s/n
-        
-    
-def weighted_moving_average(X,Y,width=1):
-    
-    # Number of values considered at each step
-    N = 2*width+1
-    
-    # Padded version of Y
-    y = Y[:]
-    y = [y[0]]*width + y + [y[-1]]*width
-    
-    # Triangular weights based on position in the window
-    W = [i for i in range(1,width)] + [i for i in range(width,0,-1)]
-    
-
-    m_av = []
-    for i in range(len(Y)):
-        m_av.append(weighted_mean(y[i:N+i],W))
-    
-    print(m_av)
-    
-    return m_av
-
-
-def simple_moving_median(X,Y,width=1):
-    
-    # Number of values considered at each step
-    N = 2*width+1
-    
-    # Padded version of Y
-    y = Y[:]
-    y = [y[0]]*width + y + [y[-1]]*width
-
-    m_av = []
-    for i in range(len(Y)):
-        m_av.append(np.median(y[i:N+i]))
-    
-    return m_av
-
 
 
 
@@ -149,8 +85,6 @@ def simple_moving_median(X,Y,width=1):
 if __name__ == '__main__':
     
     import matplotlib.pyplot as plt
-
-    
     
     X = [1,2,3]
     Y = [1,4,6]
@@ -164,21 +98,3 @@ if __name__ == '__main__':
     plt.plot(x,y)
     
     
-    x1 = np.linspace(0,7,200)
-    y1 = list(np.cos(x1)+np.random.normal(0,.3,200))
-    
-    av1 = simple_moving_average(x1,y1,10)
-    av2 = weighted_moving_average(x1,y1,10)
-    av3 = simple_moving_median(x1,y1,10)
-    
-    make_blank_canvas()
-    plt.scatter(x1,y1,color="lightgray")
-    plt.plot(x1,av1)
-    
-    make_blank_canvas()
-    plt.scatter(x1,y1,color="lightgray")
-    plt.plot(x1,av2)
-    
-    make_blank_canvas()
-    plt.scatter(x1,y1,color="lightgray")
-    plt.plot(x1,av3)
