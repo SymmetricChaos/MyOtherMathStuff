@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from Conversions import xy_to_points, points_to_xy
 from Drawing import make_blank_canvas, draw_curve_xy, draw_dots_xy
 
+
 # Difference between prediction f(x) and observed value y at x
 def residual(x,y,f):
     return y - f(x)
