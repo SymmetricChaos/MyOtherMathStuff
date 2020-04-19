@@ -78,14 +78,14 @@ if __name__ == '__main__':
     y2 = poly(x1,c)
     x3,y3 = local_regression(x1,y1,width=.5,n=100,degree=1)
     
-    make_blank_canvas()
+    make_blank_canvas(xrange=(-2,7),yrange=(-2,2),size=(12.5,6))
     draw_dots_xy(x1,y1,s=5)
     draw_curve_xy(x2,y2)
     draw_curve_xy(x1,y0)
-    plt.title("4th Degree Polynomial Regression Curve")
+    plt.title("4th Degree Polynomial Regression Curve",size=20)
     
-    make_blank_canvas()
+    make_blank_canvas(xrange=(-2,7),yrange=(-2,2),size=(12.5,6))
     draw_dots_xy(x1,y1,s=5)
     draw_curve_xy(x3,y3)
     draw_curve_xy(x1,y0)
-    plt.title("Local Linear Regression Curve")
+    plt.title("Local Linear Regression Curve",size=20)
