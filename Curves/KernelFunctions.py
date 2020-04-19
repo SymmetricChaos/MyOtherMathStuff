@@ -46,12 +46,8 @@ def parametric_weights(a,b):
 
 
 if __name__ == '__main__':
-    x = np.linspace(-1.2,1.2,101)
-#    y1 = [triangular_kernel(i) for i in x]
-#    y2 = [tricubic_kernel(i) for i in x]
-#    
+    x = np.linspace(-1.2,1.2,101)    
 
-    
     for a,b in zip([1,1,1,2,2,2,3,3,3],[1,2,3,1,2,3,1,2,3]):
         f = parametric_kernel(a,b)
         
