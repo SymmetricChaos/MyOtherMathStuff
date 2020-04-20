@@ -24,6 +24,27 @@ def make_blank_canvas(xrange=None,yrange=None,size=[12,12]):
     
     return fig,ax
 
+
+def make_blank_subplot(a,b,p,xrange=None,yrange=None):
+    
+    ax = plt.subplot(a,b,p)
+    
+    # If no coordinate range is given fit everything into a square
+    if not xrange and not yrange:
+        ax.set_aspect("equal","datalim")
+    # If only xrange is given fit a square
+    elif not yrange:
+        ax.axes(xlim=xrange,ylim=xrange)
+    # If both are given fix the rectangle
+    else:
+        ax.axes(xlim=xrange,ylim=yrange)
+    
+    ax.axis('off')
+    ax.set_xticks([])
+    ax.set_yticks([])
+    
+    return ax
+
     
 def mbline(M,B,xlim=[-5,5],ylim=[-5,5],**kwargs):
     
@@ -125,4 +146,10 @@ if __name__ == '__main__':
     draw_curve_xy([1,2,3],[0,1,0])
     
     make_blank_canvas([-5,5],[-5,5])
+    draw_closed_curve_xy([1,2,3],[0,1,0])
+    
+    fig,ax = make_blank_canvas()
+    make_blank_subplot(2,2,1)
+    draw_closed_curve_xy([1,2,3],[0,1,0])
+    make_blank_subplot(2,2,4)
     draw_closed_curve_xy([1,2,3],[0,1,0])
