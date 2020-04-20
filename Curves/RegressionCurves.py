@@ -45,7 +45,7 @@ def polynomial_regression(X,Y,degree=2):
     
 
 # Basically works but a bit unstable
-def local_regression(X,Y,width,n,degree=1):
+def simple_local_regression(X,Y,width,n,degree=1):
     
     C = np.linspace(min(X),max(X),n)
     P = xy_to_points(X,Y)
@@ -77,7 +77,7 @@ if __name__ == '__main__':
     y1 = np.cos(x1)+np.random.normal(0,.3,300)
     c = polynomial_regression(x1,y1,4)
     y2 = poly(x1,c)
-    x3,y3 = local_regression(x1,y1,width=.5,n=100,degree=1)
+    x3,y3 = simple_local_regression(x1,y1,width=.5,n=100,degree=1)
     
     make_blank_canvas(xrange=(-2,7),yrange=(-2,2),size=(12.5,6))
     draw_dots_xy(x1,y1,s=5)
@@ -89,4 +89,4 @@ if __name__ == '__main__':
     draw_dots_xy(x1,y1,s=5)
     draw_curve_xy(x3,y3)
     draw_curve_xy(x1,y0)
-    plt.title("Local Linear Regression Curve",size=20)
+    plt.title("Simple Local Linear Regression Curve",size=20)

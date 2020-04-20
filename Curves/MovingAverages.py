@@ -78,7 +78,7 @@ if __name__ == '__main__':
     av2 = weighted_moving_average(x1,y1,10)
     av3 = simple_moving_median(x1,y1,10)
     
-    make_blank_canvas(size=(14,14))
+    make_blank_canvas(size=(16,16))
     
     ax = plt.subplot(2,2,1)
     ax.axis('off')
