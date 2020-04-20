@@ -2,8 +2,10 @@ import numpy as np
 from Drawing import make_blank_canvas
 from KernelFunctions import triangular_kernel
 
-# Simple moving average of equally spaced data
-def simple_moving_average(X,Y,width=1):
+# Moving averages for equally spaced data like time-series
+
+
+def simple_moving_average(Y,width=1):
     
     # Number of values considered at each step
     N = 2*width+1
@@ -27,7 +29,7 @@ def weighted_mean(X,W):
     return s/n
         
     
-def weighted_moving_average(X,Y,width=1,weights=[]):
+def weighted_moving_average(Y,width=1,weights=[]):
     
     # Number of values considered at each step
     N = 2*width+1
@@ -49,7 +51,7 @@ def weighted_moving_average(X,Y,width=1,weights=[]):
     return m_av
 
 
-def simple_moving_median(X,Y,width=1):
+def simple_moving_median(Y,width=1):
     
     # Number of values considered at each step
     N = 2*width+1
@@ -74,9 +76,9 @@ if __name__ == '__main__':
     x1 = np.linspace(0,7,200)
     y1 = list(np.cos(x1)+np.random.normal(0,.3,200))
     
-    av1 = simple_moving_average(x1,y1,10)
-    av2 = weighted_moving_average(x1,y1,10)
-    av3 = simple_moving_median(x1,y1,10)
+    av1 = simple_moving_average(y1,10)
+    av2 = weighted_moving_average(y1,10)
+    av3 = simple_moving_median(y1,10)
     
     make_blank_canvas(size=(16,16))
     
