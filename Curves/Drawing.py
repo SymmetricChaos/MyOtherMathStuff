@@ -151,5 +151,5 @@ if __name__ == '__main__':
     fig,ax = make_blank_canvas()
     make_blank_subplot(2,2,1)
     draw_closed_curve_xy([1,2,3],[0,1,0])
-    make_blank_subplot(2,2,4)
+    make_blank_subplot(2,2,4,[-5,5],[-5,5])
     draw_closed_curve_xy([1,2,3],[0,1,0])
