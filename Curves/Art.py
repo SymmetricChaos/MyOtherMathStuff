@@ -97,16 +97,16 @@ def mixed_spirograms():
             ctr += 1
 
 
-# Need to have a black background
 def yolk():
     
-    x,y = superellipse(6,4,4,draw=False,n=1001)
+    x,y = superellipse(6,4,4,draw=False,n=2001)
     m,b = normals(x,y,draw=False)
 
     fig, ax = make_blank_canvas([-7,7],[-5,5],size=(12,8))
     
-    draw_closed_curve_xy(x,y,color='white',zorder=10,linewidth=10)
-    mbline(m,b,color="yellow",alpha=.02,xlim=[-9,9],ylim=[-5,5])
+    draw_closed_curve_xy(x,y,color='white',zorder=10,linewidth=9)
+    mbline(m,b,color="yellow",alpha=.03,xlim=[-7,7],ylim=[-5,5])
+    
     R = Rectangle((-7,-5),14,10,fc='black')
     ax.add_patch(R)
     
