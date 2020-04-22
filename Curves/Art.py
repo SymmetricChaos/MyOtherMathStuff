@@ -1,15 +1,14 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.spatial import ConvexHull
-from mbline import mbline
 from Spirogram import trochoid
 from Normals import normals
 from Tangents import tangents
 from SimpleCurves import circle, ellipse, parabola, hyperbola
 from Bezier import bezier
 from SuperEllipse import superellipse
-from Drawing import make_blank_canvas, draw_curve_xy, draw_dots_xy, draw_closed_curve_xy, make_blank_subplot
-
+from Drawing import make_blank_canvas, draw_curve_xy, draw_dots_xy, draw_closed_curve_xy, make_blank_subplot, mbline
+from matplotlib.patches import Rectangle
 
 def double_ellipse():
     x,y = ellipse(1,2,501)
@@ -73,7 +72,7 @@ def conics_example():
     
     fig, ax = make_blank_canvas(xrange=(-4,4),yrange=(-2,6),size=(14,14))
     
-    plt.scatter(0,0,color='black')
+    draw_dots_xy(0,0,color='black')
     draw_closed_curve_xy(circ_x,circ_y)
     draw_closed_curve_xy(elli_x,elli_y)
     draw_curve_xy(para_x,para_y)
@@ -98,6 +97,7 @@ def mixed_spirograms():
             ctr += 1
 
 
+# Need to have a black background
 def yolk():
     
     x,y = superellipse(6,4,4,draw=False,n=1001)
@@ -105,14 +105,18 @@ def yolk():
 
     fig, ax = make_blank_canvas([-7,7],[-5,5],size=(12,8))
     
-    ax.patch.set_facecolor('black')
-    plt.plot(x,y,color='white',zorder=10,linewidth=10)
+    draw_closed_curve_xy(x,y,color='white',zorder=10,linewidth=10)
     mbline(m,b,color="yellow",alpha=.02,xlim=[-9,9],ylim=[-5,5])
-
+    R = Rectangle((-7,-5),14,10,fc='black')
+    ax.add_patch(R)
     
+
+
+
+
 if __name__ == "__main__":
 #    double_ellipse()
 #    bezier_example()
 #    conics_example()
-    mixed_spirograms()
-#    yolk()
+#    mixed_spirograms()
+    yolk()
