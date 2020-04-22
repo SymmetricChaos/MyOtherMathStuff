@@ -8,7 +8,7 @@ from Tangents import tangents
 from SimpleCurves import circle, ellipse, parabola, hyperbola
 from Bezier import bezier
 from SuperEllipse import superellipse
-from Drawing import make_blank_canvas, draw_curve_xy, draw_dots_xy, draw_closed_curve_xy
+from Drawing import make_blank_canvas, draw_curve_xy, draw_dots_xy, draw_closed_curve_xy, make_blank_subplot
 
 
 def double_ellipse():
@@ -90,9 +90,7 @@ def mixed_spirograms():
     
     for R in range(5,9):
         for r in range(1,5):
-            ax = plt.subplot(4,4,ctr)
-            ax.axis('off')
-            ax.set_aspect("equal","datalim")
+            make_blank_subplot(4,4,ctr,box=False)
             x,y = trochoid(R,r,3,draw=False,hypo=True)
             draw_curve_xy(x,y,color="cornflowerblue")
             x,y = trochoid(R,r,3,draw=False)
@@ -116,5 +114,5 @@ if __name__ == "__main__":
 #    double_ellipse()
 #    bezier_example()
 #    conics_example()
-#    mixed_spirograms()
-    yolk()
+    mixed_spirograms()
+#    yolk()
