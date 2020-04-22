@@ -25,7 +25,7 @@ def make_blank_canvas(xrange=None,yrange=None,size=[12,12]):
     return fig,ax
 
 
-def make_blank_subplot(a,b,p,xrange=None,yrange=None):
+def make_blank_subplot(a,b,p,xrange=None,yrange=None,box=True):
     
     ax = plt.subplot(a,b,p)
     
@@ -41,7 +41,9 @@ def make_blank_subplot(a,b,p,xrange=None,yrange=None):
         ax.set_xlim(xrange)
         ax.set_ylim(yrange)
     
-    ax.axis('off')
+    if box == False:
+        ax.axis('off')
+        
     ax.set_xticks([])
     ax.set_yticks([])
     
@@ -150,8 +152,14 @@ if __name__ == '__main__':
     make_blank_canvas([-5,5],[-5,5])
     draw_closed_curve_xy([1,2,3],[0,1,0])
     
+    
     fig,ax = make_blank_canvas()
+    
     make_blank_subplot(2,2,1)
     draw_closed_curve_xy([1,2,3],[0,1,0])
-    make_blank_subplot(2,2,4,[-5,5],[-5,5])
+    
+    make_blank_subplot(3,3,3,[-2,2])
+    draw_closed_curve_xy([1,2,3],[0,1,0])
+    
+    make_blank_subplot(2,2,4,[-3,3],[-5,5])
     draw_closed_curve_xy([1,2,3],[0,1,0])
