@@ -34,10 +34,12 @@ def make_blank_subplot(a,b,p,xrange=None,yrange=None):
         ax.set_aspect("equal","datalim")
     # If only xrange is given fit a square
     elif not yrange:
-        ax.axes(xlim=xrange,ylim=xrange)
+        ax.set_xlim(xrange)
+        ax.set_ylim(xrange)
     # If both are given fix the rectangle
     else:
-        ax.axes(xlim=xrange,ylim=yrange)
+        ax.set_xlim(xrange)
+        ax.set_ylim(yrange)
     
     ax.axis('off')
     ax.set_xticks([])
