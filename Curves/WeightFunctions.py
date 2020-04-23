@@ -28,14 +28,15 @@ def triangular_weights(U):
 # Rebuild to make functions based on triangular_weight above
 # Creates a functions from a paramatric family of weight functions based on the
 # triangular. They give differing amounts of peakedness.
-#def parametric_weights(a=1,b=1):
-#    
-#    def func(u):
-#        if abs(u) > 1:
-#            return 0
-#        return (1-abs(u)**a)**b
-#
-#    return func
+def parametric_weights(a=1,b=1):
+    
+    def func(U):
+        out = [(1-abs(u)**a)**b if abs(u) <= 1 else 0 for u in U]
+        S = sum(out)
+        
+        return [val/S for val in out]
+
+    return func
 
 
 #def exponential_weights(u):
@@ -46,11 +47,11 @@ def triangular_weights(U):
 
 
 if __name__ == '__main__':
-    x = np.linspace(-1.2,1.2,101)    
+    x = np.linspace(-1.4,1.4,101)    
 
-#    for a,b in zip([1,1,1,2,2,2,3,3,3],[1,2,3,1,2,3,1,2,3]):
-#        f = parametric_weights(a,b)
-#        
-#        plt.plot(x,[f(i) for i in x])
+    for a,b in zip([1,1,1,2,2,2,3,3,3],[1,2,3,1,2,3,1,2,3]):
+        f = parametric_weights(a,b)
+        
+        plt.plot(x,f(x),color="gray",alpha=.5)
         
     print(triangular_weights(x))
