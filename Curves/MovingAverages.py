@@ -1,5 +1,5 @@
 import numpy as np
-from Drawing import make_blank_canvas
+from Drawing import make_blank_canvas, make_blank_subplot
 from KernelFunctions import triangular_kernel
 
 # Moving averages for equally spaced data like time-series
@@ -73,7 +73,7 @@ if __name__ == '__main__':
     
     import matplotlib.pyplot as plt
     
-    x1 = np.linspace(0,7,200)
+    x1 = np.linspace(2,7,200)
     y1 = list(np.cos(x1)+np.random.normal(0,.3,200))
     
     av1 = simple_moving_average(y1,10)
@@ -82,26 +82,17 @@ if __name__ == '__main__':
     
     make_blank_canvas(size=(16,16))
     
-    ax = plt.subplot(2,2,1)
-    ax.axis('off')
-    ax.set_xticks([])
-    ax.set_yticks([])
+    make_blank_subplot(2,2,1)
     plt.scatter(x1,y1,color="lightgray")
     plt.plot(x1,av1)
-    plt.title("Simple Moving Average",size=16)
+    plt.title("Simple Moving Average (width 10)",size=16)
     
-    ax = plt.subplot(2,2,2)
-    ax.axis('off')
-    ax.set_xticks([])
-    ax.set_yticks([])
+    make_blank_subplot(2,2,2)
     plt.scatter(x1,y1,color="lightgray")
     plt.plot(x1,av2)
-    plt.title("Triangular Weighted Moving Average",size=16)
+    plt.title("Triangular Weighted Moving Average (width 10)",size=16)
 
-    ax = plt.subplot(2,2,3)
-    ax.axis('off')
-    ax.set_xticks([])
-    ax.set_yticks([])
+    make_blank_subplot(2,2,3)
     plt.scatter(x1,y1,color="lightgray")
     plt.plot(x1,av3)
-    plt.title("Moving Median",size=16)
+    plt.title("Moving Median (width 10)",size=16)
