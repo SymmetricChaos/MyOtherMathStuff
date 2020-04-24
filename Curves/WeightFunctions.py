@@ -47,11 +47,17 @@ def parametric_weights(a=1,b=1):
 
 
 if __name__ == '__main__':
-    x = np.linspace(-1.4,1.4,101)    
-
+    
+    from Drawing import make_blank_canvas, make_blank_subplot
+    
+    make_blank_canvas()
+    
+    x = np.linspace(-1.2,1.2,101)    
+    ctr = 1
     for a,b in zip([1,1,1,2,2,2,3,3,3],[1,2,3,1,2,3,1,2,3]):
+        make_blank_subplot(3,3,ctr)
         f = parametric_weights(a,b)
         
-        plt.plot(x,f(x),color="gray",alpha=.5)
-        
-    print(triangular_weights(x))
+        plt.plot(x,[y*30 for y in f(x)],color="gray",alpha=.5)
+        plt.title(f"(1-|u|^{a})^{b}")
+        ctr += 1
