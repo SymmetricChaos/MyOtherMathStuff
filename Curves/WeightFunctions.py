@@ -59,5 +59,13 @@ if __name__ == '__main__':
         f = parametric_weights(a,b)
         
         plt.plot(x,[y*30 for y in f(x)],color="gray",alpha=.5)
-        plt.title(f"(1-|u|^{a})^{b}")
+        if a == 1:
+            a_sym = ""
+        else:
+            a_sym = "^"+str(a)
+        if b == 1:
+            b_sym = ""
+        else:
+            b_sym = "^"+str(b)
+        plt.title(f"$(1-|u|{a_sym}){b_sym}$")
         ctr += 1
