@@ -1,6 +1,7 @@
 import numpy as np
 from Drawing import make_blank_canvas, make_blank_subplot
 from KernelFunctions import triangular_kernel
+from WeightFunctions import triangular_weights, exponential_weights
 
 # Moving averages for equally spaced data like time-series
 
@@ -32,7 +33,7 @@ def weighted_mean(X,W):
 def weighted_moving_average(Y,width=1,weights=[]):
     
     # Number of values considered at each step
-    N = 2*width+1
+    N = (2*width)+1
     
     # Padded version of Y
     y = Y[:]
@@ -76,24 +77,31 @@ if __name__ == '__main__':
     x1 = np.linspace(2,7,200)
     y1 = list(np.cos(x1)+np.random.normal(0,.3,200))
     
+    w = exponential_weights(np.linspace(-1,1,22))
+    
     av1 = simple_moving_average(y1,10)
     av2 = weighted_moving_average(y1,10)
     av3 = simple_moving_median(y1,10)
-    av4 = weighted_moving_average(y1,10,weights)
+    av4 = weighted_moving_average(y1,10,w)
     
     make_blank_canvas(size=(16,16))
     
     make_blank_subplot(2,2,1)
     plt.scatter(x1,y1,color="lightgray")
-    plt.plot(x1,av1)
+    plt.plot(x1,av1,linewidth=3)
     plt.title("Simple Moving Average (width 10)",size=16)
     
-    make_blank_subplot(2,2,2)
-    plt.scatter(x1,y1,color="lightgray")
-    plt.plot(x1,av2)
-    plt.title("Triangular Weighted Moving Average (width 10)",size=16)
-
     make_blank_subplot(2,2,3)
     plt.scatter(x1,y1,color="lightgray")
-    plt.plot(x1,av3)
+    plt.plot(x1,av2,linewidth=3)
+    plt.title("Triangular Weighted Moving Average (width 10)",size=16)
+
+    make_blank_subplot(2,2,2)
+    plt.scatter(x1,y1,color="lightgray")
+    plt.plot(x1,av3,linewidth=3)
     plt.title("Moving Median (width 10)",size=16)
+    
+    make_blank_subplot(2,2,4)
+    plt.scatter(x1,y1,color="lightgray")
+    plt.plot(x1,av4,linewidth=3)
+    plt.title("Exponential Weighted Moving Average (width 10)",size=16)
