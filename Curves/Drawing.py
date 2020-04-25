@@ -86,6 +86,14 @@ def mbline(M,B,xlim=[-5,5],ylim=[-5,5],**kwargs):
     return [[x0,y0],[x1,y1]]
 
 
+def vertical_line(xpos=0,ylim=[-5,5],**kwargs):
+    plt.plot([xpos,xpos],ylim,**kwargs)
+    
+    
+def horizontal_line(ypos=0,xlim=[-5,5],**kwargs):
+    plt.plot(xlim,[ypos,ypos],**kwargs)
+
+
 # Draw a curve from:
 #   seperate lists of x and y coordinates
 #   a list of (x,y) points

@@ -42,6 +42,7 @@ def parametric_weights(a=1,b=1):
 
     return func
 
+
 # Common special case of parametric weights
 def triangular_weights(U):
     
@@ -58,30 +59,34 @@ def triangular_weights(U):
 
 if __name__ == '__main__':
     
-    from Drawing import make_blank_canvas, make_blank_subplot
+    from Drawing import make_blank_canvas, make_blank_subplot, horizontal_line, draw_curve_xy
     
     make_blank_canvas()
     
     x = np.linspace(-1.2,1.2,51)    
-    ctr = 1
-    for a,b in zip([1,1,1,2,2,2,3,3,3],[1,2,3,1,2,3,1,2,3]):
-        make_blank_subplot(3,3,ctr)
-        f = parametric_weights(a,b)
-        
-        plt.plot(x,[y for y in f(x)],color="gray",alpha=.5)
-        if a == 1:
-            a_sym = ""
-        else:
-            a_sym = "^"+str(a)
-        if b == 1:
-            b_sym = ""
-        else:
-            b_sym = "^"+str(b)
-        plt.title(f"$(1-|u|{a_sym}){b_sym}$")
-        ctr += 1
-
-    y = exponential_weights(x,4)
+    y1 = triangular_weights(x)
+    epanechnikov = parametric_weights(2,1)
+    y2 = epanechnikov(x)
+    tricube = parametric_weights(3,3)
+    y3 = tricube(x)
+    y4 = exponential_weights(x)
     
-    make_blank_canvas()
-    plt.plot(x,y)
+    Y = [y1,y2,y3,y4]
+    
+    t1 = "Triangular   $1-|x|$"
+    t2 = "Epanechnikov   $1-|x|^2$"
+    t3 = "Tricube   $(1-|x|^3)^3$"
+    t4 = "Exponential   $e^{-|x|}$"
+    
+    T = [t1,t2,t3,t4]
+    
+    ctr = 1
+    for y,t in zip(Y,T):
+        ax = make_blank_subplot(3,3,ctr)
+        
+        draw_curve_xy(x,y,color="lightgray")
+        horizontal_line(0,[-1.2,1.2],color="black",linewidth=.5)
+        plt.title(t)
+        
+        ctr += 1
     
