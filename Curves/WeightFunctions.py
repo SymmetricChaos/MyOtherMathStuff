@@ -55,8 +55,6 @@ def triangular_weights(U):
 
 
 
-
-
 if __name__ == '__main__':
     
     from Drawing import make_blank_canvas, make_blank_subplot, horizontal_line, draw_curve_xy
@@ -82,11 +80,11 @@ if __name__ == '__main__':
     
     ctr = 1
     for y,t in zip(Y,T):
-        ax = make_blank_subplot(3,3,ctr)
+        ax = make_blank_subplot(2,2,ctr)
         
         draw_curve_xy(x,y,color="lightgray")
         horizontal_line(0,[-1.2,1.2],color="black",linewidth=.5)
-        plt.title(t)
+        plt.title(t,size=15)
         
         ctr += 1
     
