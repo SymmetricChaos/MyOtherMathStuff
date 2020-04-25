@@ -20,7 +20,7 @@ def center_and_squish(L,c=None,m=None):
 
 
 # Goes to zero very quickly but covers the whole real line
-def exponential_weights(U,e=2):
+def exponential_weights(U,e=np.e):
     
     out = [e**-abs(u) for u in U]
     out = [max(val,0) for val in out]

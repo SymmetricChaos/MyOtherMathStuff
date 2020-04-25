@@ -79,6 +79,7 @@ if __name__ == '__main__':
     av1 = simple_moving_average(y1,10)
     av2 = weighted_moving_average(y1,10)
     av3 = simple_moving_median(y1,10)
+    av4 = weighted_moving_average(y1,10,weights)
     
     make_blank_canvas(size=(16,16))
     
