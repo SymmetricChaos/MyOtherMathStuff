@@ -8,24 +8,32 @@ from WeightFunctions import triangular_weights, exponential_weights
 import numpy as np
 
 
-x1 = list(np.linspace(2,7,200))
-y1 = list(np.cos(x1)+np.random.normal(0,.3,200))
+x1 = list(np.linspace(0,7,300))
+y1 = list(np.cos(x1)+np.random.normal(0,.4,300))
 
 
 app = dash.Dash()
 
-app.layout = html.Div(children=[
-    html.Div(children='''
-        Type of Average:
-    '''),
-    dcc.Input(id='input', value='', type='text'),
-    html.Div(id='output-graph'),
+
+app.layout = html.Div([
+    dcc.Dropdown(
+        id='dropdown',
+        options=[
+            {'label': 'simple', 'value': 'simple'},
+            {'label':  'triangular', 'value': 'triangular'},
+            {'label': 'exponential', 'value': 'exponential'}
+        ],
+        value='simple'
+    ),
+    html.Div(id='dd-output-container')
 ])
 
 
+
+
 @app.callback(
-    Output(component_id='output-graph', component_property='children'),
-    [Input(component_id='input', component_property='value')]
+    Output(component_id='dd-output-container', component_property='children'),
+    [Input(component_id='dropdown', component_property='value')]
 )
 def update_value(input_data):
     U = np.linspace(-1,1,22)
