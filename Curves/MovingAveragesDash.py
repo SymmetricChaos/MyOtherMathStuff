@@ -36,13 +36,13 @@ app.layout = html.Div([
     [Input(component_id='dropdown', component_property='value')]
 )
 def update_value(input_data):
-    U = np.linspace(-1,1,22)
+    U = np.linspace(-1,1,14)
     t_weights = triangular_weights(U)
     e_weights = exponential_weights(U)
     
-    Y = {"simple": simple_moving_average(y1,10),
-         "triangular": weighted_moving_average(y1,10,t_weights),
-         "exponential": weighted_moving_average(y1,10,e_weights)
+    Y = {"simple": simple_moving_average(y1,6),
+         "triangular": weighted_moving_average(y1,6,t_weights),
+         "exponential": weighted_moving_average(y1,6,e_weights)
         }
     
     return dcc.Graph(
@@ -50,10 +50,10 @@ def update_value(input_data):
         figure={
             'data': [
                 {'x': x1, 'y': y1, 'type': 'line', 'name': "data"},
-                {'x': x1, 'y': Y[str(input_data)], 'type': 'line', 'name': input_data},
+                {'x': x1, 'y': Y[str(input_data)], 'type': 'line', 'name': "model"},
             ],
             'layout': {
-                'title': input_data
+                'title': f"{input_data} moving average"
             }
         }
     )
