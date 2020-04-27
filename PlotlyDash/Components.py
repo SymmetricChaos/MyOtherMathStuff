@@ -11,9 +11,9 @@ app.layout = html.Div([
     html.Label('Dropdown'),
     dcc.Dropdown(
         options=[
-            {'label': 'New York City', 'value': 'NYC'},
-            {'label': u'Montréal', 'value': 'MTL'},
-            {'label': 'San Francisco', 'value': 'SF'}
+            {'label': 'Dwarfs', 'value': 'NYC'},
+            {'label':  'Wood Elves', 'value': 'MTL'},
+            {'label': 'Empire', 'value': 'SF'}
         ],
         value='MTL'
     ),
@@ -62,4 +62,4 @@ app.layout = html.Div([
 ], style={'columnCount': 2})
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=False)
