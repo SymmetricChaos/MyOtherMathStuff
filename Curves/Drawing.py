@@ -144,35 +144,43 @@ def horizontal_line(ypos=0,xlim=[],ax=None,**kwargs):
 #   seperate lists of x and y coordinates
 #   a list of (x,y) points
 #   a list of complex numbers
-def draw_curve_xy(x,y,**kwargs):
-    plt.plot(x,y,**kwargs)
+def draw_curve_xy(x,y,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
+    line = lines.Line2D(x,y, axes=ax,**kwargs)
+    ax.add_line(line)
 
-def draw_curve_points(P,**kwargs):
+def draw_curve_points(P,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
     x,y = points_to_xy(P)
-    plt.plot(x,y,**kwargs)
+    line = lines.Line2D(x,y, axes=ax,**kwargs)
+    ax.add_line(line)
 
-def draw_curve_complex(C,**kwargs):
+def draw_curve_complex(C,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
     x,y = complex_to_xy(C)
-    plt.plot(x,y,**kwargs)
-    
+    line = lines.Line2D(x,y, axes=ax,**kwargs)
+    ax.add_line(line)
 
-# Draw a curve that attaches the start to the end from:
-#   seperate lists of x and y coordinates
-#   a list of (x,y) points
-#   a list of complex numbers
-def draw_closed_curve_xy(x,y,**kwargs):
+# Draw a curve that attaches the start to the end. Same options
+def draw_closed_curve_xy(x,y,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
     # Convert to list because an np.array doesn't play nice
     X = list(x) + [x[0]]
     Y = list(y) + [y[0]]
-    plt.plot(X,Y,**kwargs)
+    line = lines.Line2D(X,Y, axes=ax,**kwargs)
+    ax.add_line(line)
     
-def draw_closed_curve_points(P,**kwargs):
+def draw_closed_curve_points(P,ax=None,**kwargs):
     x,y = points_to_xy(P)
-    draw_closed_curve_xy(x,y,**kwargs)
+    draw_closed_curve_xy(x,y,ax,**kwargs)
     
-def draw_closed_curve_complex(P,**kwargs):
+def draw_closed_curve_complex(P,ax=None,**kwargs):
     x,y = complex_to_xy(P)
-    draw_closed_curve_xy(x,y,**kwargs)
+    draw_closed_curve_xy(x,y,ax,**kwargs)
     
 
 # Draw scatterplot from:
@@ -202,10 +210,9 @@ if __name__ == '__main__':
     
     make_blank_canvas([-5,5],[-5,5])
     draw_curve_xy([1,2,3],[1,2,1])
-    draw_closed_curve_xy([1,2,3],[0,1,0])
-    horizontal_line(0)
+    draw_closed_curve_xy([1,2,3],[0,1,0],color="green")
+    horizontal_line(-2)
     vertical_line(1,color='brown')
-    
     
     # Subplots example
     make_blank_canvas()
