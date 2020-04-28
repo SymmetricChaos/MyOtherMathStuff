@@ -50,8 +50,10 @@ def make_blank_subplot(a,b,p,xrange=None,yrange=None,box=True):
 def calc_y(m,x,b):
     return m*x+b
 
+
 def calc_x(m,y,b):
     return (y-b)/m
+
 
 def mbline(m,b,xlim=[],ylim=[],ax=None,**kwargs):
     
@@ -94,6 +96,7 @@ def mbline(m,b,xlim=[],ylim=[],ax=None,**kwargs):
     
     return [[x0,y0],[x1,y1]]
 
+
 def mblines(M,B,xlim=[],ylim=[],ax=None,**kwargs):
     
     if ax == None:
@@ -105,47 +108,36 @@ def mblines(M,B,xlim=[],ylim=[],ax=None,**kwargs):
     if ylim == []:
         ylim = ax.get_ylim()
     
-
-    
-    x_lo = xlim[0]
-    y_lo = ylim[0]
-    
-    x_hi = xlim[1]
-    y_hi = ylim[1]
-    
+    out = []
     for m,b in zip(M,B):
-        
-        x0 = x_lo
-        y0 = calc_y(m,x_lo,b)
-        
-        if y0 < y_lo:
-            x0 = calc_x(m,y_lo,b)
-            y0 = y_lo
-        elif y0 > y_hi:
-            x0 = calc_x(m,y_hi,b)
-            y0 = y_hi
-                
-        x1 = x_hi
-        y1 = calc_y(m,x_hi,b)
-        if y1 > y_hi:
-            x1 = calc_x(m,y_hi,b)
-            y1 = y_hi
-        elif y1 < y_lo:
-            x1 = calc_x(m,y_lo,b)
-            y1 = y_lo
-            
-        line = lines.Line2D([x0,x1], [y0,y1], axes=ax,**kwargs)
-        ax.add_line(line)
+        l = mbline(m,b,xlim,ylim,ax,**kwargs)
+        out.append(l)
     
-    return [[x0,y0],[x1,y1]]
+    return out
 
 
-def vertical_line(xpos=0,ylim=[-5,5],**kwargs):
-    plt.plot([xpos,xpos],ylim,**kwargs)
+def vertical_line(xpos=0,ylim=[],ax=None,**kwargs):
+    
+    if ax == None:
+        ax = plt.gca()
+        
+    if ylim == []:
+        ylim = ax.get_ylim()
+        
+    line = lines.Line2D([xpos,xpos],ylim, axes=ax,**kwargs)
+    ax.add_line(line)
     
     
-def horizontal_line(ypos=0,xlim=[-5,5],**kwargs):
-    plt.plot(xlim,[ypos,ypos],**kwargs)
+def horizontal_line(ypos=0,xlim=[],ax=None,**kwargs):
+    
+    if ax == None:
+        ax = plt.gca()
+        
+    if xlim == []:
+        xlim = ax.get_xlim()
+    
+    line = lines.Line2D(xlim,[ypos,ypos], axes=ax,**kwargs)
+    ax.add_line(line)
 
 
 # Draw a curve from:
@@ -199,10 +191,11 @@ def draw_dots_complex(C,**kwargs):
     plt.scatter(x,y,**kwargs)
 
 
-#def connect(A,B,**kwargs):
-#    ax = plt.gca()
-#    line = lines.Line2D([A[0],B[0]], [A[1],B[1]], axes=ax,**kwargs)
-#    ax.add_line(line)
+def connect(A,B,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
+    line = lines.Line2D([A[0],B[0]], [A[1],B[1]], axes=ax,**kwargs)
+    ax.add_line(line)
 
 
 if __name__ == '__main__':
@@ -210,8 +203,11 @@ if __name__ == '__main__':
     make_blank_canvas([-5,5],[-5,5])
     draw_curve_xy([1,2,3],[1,2,1])
     draw_closed_curve_xy([1,2,3],[0,1,0])
+    horizontal_line(0)
+    vertical_line(1,color='brown')
     
     
+    # Subplots example
     make_blank_canvas()
     
     # Make and use a subplot
@@ -224,10 +220,17 @@ if __name__ == '__main__':
     # Create an mbline on the most recently created axes
     mbline(1,1)
     
+    # Plots can be created out of order
     sp3 = make_blank_subplot(2,2,4,[-3,3],[-5,5])
     draw_closed_curve_xy([1,2,3],[0,1,0])
     
     sp4 = make_blank_subplot(4,4,7,[-3,3])
     draw_closed_curve_xy([1,2,3],[0,1,0])
     
-    mbline(1,0,ax=sp1)
+    # Add lines to a previous axis
+    mblines([1,2,3,4,5],[0,0,0,0,0],ax=sp3)
+    
+    # mbline takes ylim and xlim from axes so it might get cut off
+    mbline(1,-.4,ax=sp1)
+    # mbline can be manually corrected
+    mbline(1,-.6,ylim=[-2,2],ax=sp1,color='red')
