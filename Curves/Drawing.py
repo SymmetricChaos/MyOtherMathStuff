@@ -2,19 +2,19 @@ import matplotlib.pyplot as plt
 import matplotlib.lines as lines
 from Conversions import complex_to_xy, points_to_xy
 
-def make_blank_canvas(xrange=None,yrange=None,size=[12,12]):
+def make_blank_canvas(xlim=None,ylim=None,size=[12,12]):
     fig = plt.figure()
     fig.set_size_inches(size[0],size[1])
     # If no coordinate range is given fit everything into a square
-    if not xrange and not yrange:
+    if not xlim and not ylim:
         ax = plt.axes()
         ax.set_aspect("equal","datalim")
     # If only xrange is given fit a square
-    elif not yrange:
-        ax = plt.axes(xlim=xrange,ylim=xrange)
+    elif not ylim:
+        ax = plt.axes(xlim=xlim,ylim=xlim)
     # If both are given fix the rectangle
     else:
-        ax = plt.axes(xlim=xrange,ylim=yrange)
+        ax = plt.axes(xlim=xlim,ylim=ylim)
     ax.axis('off')
     ax.set_xticks([])
     ax.set_yticks([])
@@ -22,21 +22,20 @@ def make_blank_canvas(xrange=None,yrange=None,size=[12,12]):
     return fig,ax
 
 
-def make_blank_subplot(a,b,p,xrange=None,yrange=None,box=True):
-    
+def make_blank_subplot(a,b,p,xlim=None,ylim=None,box=True):
     ax = plt.subplot(a,b,p)
     
     # If no coordinate range is given fit everything into a square
-    if not xrange and not yrange:
+    if not xlim and not ylim:
         ax.set_aspect("equal","datalim")
     # If only xrange is given fit a square
-    elif not yrange:
-        ax.set_xlim(xrange)
-        ax.set_ylim(xrange)
+    elif not ylim:
+        ax.set_xlim(xlim)
+        ax.set_ylim(xlim)
     # If both are given fix the rectangle
     else:
-        ax.set_xlim(xrange)
-        ax.set_ylim(yrange)
+        ax.set_xlim(xlim)
+        ax.set_ylim(ylim)
     
     if box == False:
         ax.axis('off')
@@ -56,7 +55,6 @@ def calc_x(m,y,b):
 
 
 def mbline(m,b,xlim=[],ylim=[],ax=None,**kwargs):
-    
     if ax == None:
         ax = plt.gca()
     
@@ -98,7 +96,6 @@ def mbline(m,b,xlim=[],ylim=[],ax=None,**kwargs):
 
 
 def mblines(M,B,xlim=[],ylim=[],ax=None,**kwargs):
-    
     if ax == None:
         ax = plt.gca()
     
@@ -117,7 +114,6 @@ def mblines(M,B,xlim=[],ylim=[],ax=None,**kwargs):
 
 
 def vertical_line(xpos=0,ylim=[],ax=None,**kwargs):
-    
     if ax == None:
         ax = plt.gca()
         
@@ -129,7 +125,6 @@ def vertical_line(xpos=0,ylim=[],ax=None,**kwargs):
     
     
 def horizontal_line(ypos=0,xlim=[],ax=None,**kwargs):
-    
     if ax == None:
         ax = plt.gca()
         
@@ -163,6 +158,7 @@ def draw_curve_complex(C,ax=None,**kwargs):
     x,y = complex_to_xy(C)
     line = lines.Line2D(x,y, axes=ax,**kwargs)
     ax.add_line(line)
+
 
 # Draw a curve that attaches the start to the end. Same options
 def draw_closed_curve_xy(x,y,ax=None,**kwargs):
@@ -204,6 +200,9 @@ def connect(A,B,ax=None,**kwargs):
         ax = plt.gca()
     line = lines.Line2D([A[0],B[0]], [A[1],B[1]], axes=ax,**kwargs)
     ax.add_line(line)
+
+
+
 
 
 if __name__ == '__main__':
