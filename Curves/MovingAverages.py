@@ -1,6 +1,5 @@
 import numpy as np
 from Drawing import make_blank_canvas, make_blank_subplot
-from KernelFunctions import triangular_kernel
 from WeightFunctions import triangular_weights, exponential_weights
 
 # Moving averages for equally spaced data like time-series
@@ -40,8 +39,8 @@ def weighted_moving_average(Y,width=1,weights=[]):
     y = [y[0]]*width + y + [y[-1]]*width
     
     if not weights:
-        weights = [triangular_kernel(u) for u in np.linspace(-1,1,N)]
-    elif len(weights) == N:
+        weights = [triangular_weights(u) for u in np.linspace(-1,1,N)]
+    elif len(weights) != N:
         raise Exception("Invalid weights")
         
     
@@ -77,31 +76,24 @@ if __name__ == '__main__':
     x1 = np.linspace(2,7,200)
     y1 = list(np.cos(x1)+np.random.normal(0,.3,200))
     
-    w = exponential_weights(np.linspace(-1,1,22))
-    
-    av1 = simple_moving_average(y1,10)
-    av2 = weighted_moving_average(y1,10)
-    av3 = simple_moving_median(y1,10)
-    av4 = weighted_moving_average(y1,10,w)
+    w = exponential_weights(np.linspace(-1,1,21))
+
+    width = 10
+    av1 = simple_moving_average(y1,width)
+    av2 = simple_moving_median(y1,width)
+    av3 = weighted_moving_average(y1,width)
+    av4 = weighted_moving_average(y1,width,w)
     
     make_blank_canvas(size=(16,16))
     
-    make_blank_subplot(2,2,1)
-    plt.scatter(x1,y1,color="lightgray")
-    plt.plot(x1,av1,linewidth=3)
-    plt.title("Simple Moving Average (width 10)",size=16)
+    for vals,title,ctr in zip([av1,av2,av3,av4],
+                          [f"Simple Moving Average (width {width})",
+                           f"Moving Median (width {width})",
+                           f"Triangular Weighted Moving Average (width {width})",
+                           f"Exponential Weighted Moving Average (width {width})"],
+                          [1,2,3,4]):
     
-    make_blank_subplot(2,2,3)
-    plt.scatter(x1,y1,color="lightgray")
-    plt.plot(x1,av2,linewidth=3)
-    plt.title("Triangular Weighted Moving Average (width 10)",size=16)
-
-    make_blank_subplot(2,2,2)
-    plt.scatter(x1,y1,color="lightgray")
-    plt.plot(x1,av3,linewidth=3)
-    plt.title("Moving Median (width 10)",size=16)
-    
-    make_blank_subplot(2,2,4)
-    plt.scatter(x1,y1,color="lightgray")
-    plt.plot(x1,av4,linewidth=3)
-    plt.title("Exponential Weighted Moving Average (width 10)",size=16)
+        make_blank_subplot(2,2,ctr)
+        plt.scatter(x1,y1,color="lightgray")
+        plt.plot(x1,vals,linewidth=3)
+        plt.title(title,size=16)

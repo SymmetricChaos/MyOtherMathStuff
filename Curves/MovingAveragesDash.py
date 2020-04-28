@@ -41,7 +41,7 @@ app.layout = html.Div([
 )
 def update_value(input_data):
     
-    U = np.linspace(-1,1,14)
+    U = np.linspace(-1,1,13)
     t_weights = triangular_weights(U)
     e_weights = exponential_weights(U)
     
