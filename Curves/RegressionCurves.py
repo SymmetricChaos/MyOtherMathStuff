@@ -53,9 +53,7 @@ def bagged_regression(X,Y,degree=1,runs=20):
         y_sub = [Y[r] for r in R]
         yield polynomial_regression(x_sub,y_sub,degree)
         
-        
-
-
+    
 # Basically works but a bit unstable
 def simple_local_regression(X,Y,width,n,degree=1):
     
@@ -91,21 +89,25 @@ if __name__ == '__main__':
     y2 = poly(x1,c)
     x3,y3 = simple_local_regression(x1,y1,width=.5,n=100,degree=1)
     
+    
     make_blank_canvas(xlim=(-2,7),ylim=(-2,2),size=(12.5,6))
     draw_dots_xy(x1,y1,s=5)
     draw_curve_xy(x2,y2)
     draw_curve_xy(x1,y0,color='red')
     plt.title("4th Degree Polynomial Regression Curve",size=20)
     
-    make_blank_canvas(xlim=(-2,7),ylim=(-2,2),size=(12.5,6))
-    draw_dots_xy(x1,y1,s=5)
-    draw_curve_xy(x3,y3)
-    draw_curve_xy(x1,y0,color='red')
-    plt.title("Simple Local Linear Regression Curve",size=20)
     
     make_blank_canvas(xlim=(-2,7),ylim=(-2,2),size=(12.5,6))
     draw_dots_xy(x1,y1,s=5)
     for P in bagged_regression(x1,y1,4,runs=50):
         draw_curve_xy(x1,poly(x1,P),alpha=.2)
     draw_curve_xy(x1,y0,color='red')
-    plt.title("Bagged 4th Degree Polynomial Regression Curve",size=20)
+    plt.title("4th Degree Polynomial Regression Curves on Random Subsets",size=20)
+
+
+    make_blank_canvas(xlim=(-2,7),ylim=(-2,2),size=(12.5,6))
+    draw_dots_xy(x1,y1,s=5)
+    draw_curve_xy(x3,y3)
+    draw_curve_xy(x1,y0,color='red')
+    plt.title("Simple Local Linear Regression Curve",size=20)
+    
