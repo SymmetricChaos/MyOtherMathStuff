@@ -47,7 +47,7 @@ def weighted_moving_average(Y,radius=1,weights=[]):
     return m_av
 
 
-def simple_moving_median(Y,radius=1):
+def moving_median(Y,radius=1):
     # Number of values considered at each step
     N = 2*radius+1
     
@@ -76,7 +76,7 @@ if __name__ == '__main__':
 
     radius = 7
     av1 = simple_moving_average(y1,radius)
-    av2 = simple_moving_median(y1,radius)
+    av2 = moving_median(y1,radius)
     av3 = weighted_moving_average(y1,radius)
     av4 = weighted_moving_average(y1,radius,w)
     
