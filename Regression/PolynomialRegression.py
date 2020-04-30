@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 #from Conversions import xy_to_points, points_to_xy
-from Drawing import make_blank_canvas, draw_curve_xy, draw_dots_xy
+from Drawing import make_blank_canvas, make_blank_subplot, draw_curve_xy, draw_dots_xy
 
 
 # Difference between prediction f(x) and observed value y at x
@@ -28,7 +28,8 @@ def polynomial_regression(X,Y,degree=2):
     T = np.matrix( [[0]*N] )
     
     # Each antidiagonal of M is a sum of powers of the x values
-    # There is a precision loss issue with numpy matricies when the degree is high
+    # There is a precision issue with numpy matricies when the degree is high
+    # since the values of the sums get too high to write as 64 bit floats
     D = dict()
     for i in range(2*N):
         S = sum([x**i for x in X])
@@ -39,6 +40,7 @@ def polynomial_regression(X,Y,degree=2):
             M[i,j] = D[i+j]
         T[0,i] = sum([y*x**i for x,y in zip(X,Y)])
     
+    # Solve the system of linear equations
     out = M.I*T.T
     
     return [float(i[0]) for i in out]
@@ -65,24 +67,28 @@ if __name__ == '__main__':
     x1 = x2 = np.linspace(-1,6,300)
     y0 = np.cos(x1)
     y1 = np.cos(x1)+np.random.normal(0,.3,300)
-    c = polynomial_regression(x1,y1,4)
-    y2 = poly(x1,c)
-    x3,y3 = simple_local_regression(x1,y1,width=.5,n=100,degree=1)
+
     
+    make_blank_canvas(size=[15,15])
     
-    make_blank_canvas(xlim=(-2,7),ylim=(-2,2),size=(12.5,6))
-    draw_dots_xy(x1,y1,s=5)
-    draw_curve_xy(x2,y2)
-    draw_curve_xy(x1,y0,color='red')
-    plt.title("4th Degree Polynomial Regression Curve",size=20)
-    
+    for deg in range(1,5):
+        
+        c = polynomial_regression(x1,y1,deg)
+        y2 = poly(x1,c)
+        
+        make_blank_subplot(2,2,deg,xlim=(-2,7),ylim=(-2,2))
+        draw_dots_xy(x1,y1,s=5)
+        draw_curve_xy(x2,y2)
+        draw_curve_xy(x1,y0,color='red')
+        plt.title(f"{deg}th Degree Polynomial Regression",size=20)
+        
     
     make_blank_canvas(xlim=(-2,7),ylim=(-2,2),size=(12.5,6))
     draw_dots_xy(x1,y1,s=5)
     for P in bagged_regression(x1,y1,4,runs=50):
         draw_curve_xy(x1,poly(x1,P),alpha=.2)
     draw_curve_xy(x1,y0,color='red')
-    plt.title("4th Degree Polynomial Regression Curves on Random Subsets",size=20)
+    plt.title("4th Degree Polynomial Regressions on Random Subsets",size=20)
 
 
     
