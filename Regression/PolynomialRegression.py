@@ -22,6 +22,12 @@ def poly(x,coefs):
 # Returns coefficients in ascending order
 def polynomial_regression(X,Y,degree=2):
     
+    if len(X) != len(Y):
+        raise Exception("Length of X and Y must match")
+    
+    if len(X) <= degree:
+        raise Exception("Must have strictly more points than the degree of the polynomial fitted")
+    
     N = degree+1
     
     M = np.matrix( [[0]*N]*N )
@@ -59,9 +65,6 @@ def bagged_regression(X,Y,degree=1,runs=20):
 
 
 
-
-
-
 if __name__ == '__main__':
     
     x1 = x2 = np.linspace(-1,6,300)
@@ -71,20 +74,20 @@ if __name__ == '__main__':
     
     make_blank_canvas(size=[15,15])
     
-    for deg in range(1,5):
+    for deg in [1,2,3,4]:
         
         c = polynomial_regression(x1,y1,deg)
         y2 = poly(x1,c)
         
         make_blank_subplot(2,2,deg,xlim=(-2,7),ylim=(-2,2))
-        draw_dots_xy(x1,y1,s=5)
+        draw_dots_xy(x1,y1,s=5,color="lightgrey")
         draw_curve_xy(x2,y2)
         draw_curve_xy(x1,y0,color='red')
-        plt.title(f"{deg}th Degree Polynomial Regression",size=20)
+        plt.title(f"Degree {deg} Polynomial Regression",size=20)
         
     
     make_blank_canvas(xlim=(-2,7),ylim=(-2,2),size=(12.5,6))
-    draw_dots_xy(x1,y1,s=5)
+    draw_dots_xy(x1,y1,s=5,color="lightgrey")
     for P in bagged_regression(x1,y1,4,runs=50):
         draw_curve_xy(x1,poly(x1,P),alpha=.2)
     draw_curve_xy(x1,y0,color='red')
