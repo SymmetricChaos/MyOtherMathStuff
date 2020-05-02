@@ -78,12 +78,15 @@ if __name__ == '__main__':
     
     from PolynomialRegression import linear_least_squares
     
-    x = np.linspace(0,12,100)
-    y = x+np.random.normal(0,.5,100)
+    n_points = 100
+    n_corrupted = 40
+    x = np.linspace(0,12,n_points)
+    y = x+np.random.normal(0,.5,n_points)
     
     # Corrupt the data with meaningless datapoints
-    x = np.append(x,np.random.uniform(0,12,50))
-    y = np.append(y,np.random.uniform(0,12,50))
+    for i in range(n_corrupted):
+        r = int(np.random.randint(0,n_points))
+        y[r] = np.random.uniform(0,12,1)
     
     m1,b1 = theil_sen_estimator(x,y)
     m2,b2 = repeated_medians(x,y)
@@ -95,5 +98,5 @@ if __name__ == '__main__':
         draw_dots_xy(x,y,color='lightgrey',zorder=0)
         mbline(m,b,color='red',zorder=2)
         print(f"{T}\nm = {m:.3}\nb = {b:.3}\n")
-        mbline(1,0,color='gray',linewidth=4,zorder=1)
+        mbline(1,0,color='gray',linewidth=3,zorder=1)
         plt.title(T,size=20)
