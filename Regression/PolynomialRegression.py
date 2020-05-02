@@ -15,7 +15,30 @@ def poly(x,coefs):
     for p,c in enumerate(coefs):
         out += c*x**p
     return out
+
+
+def linear_least_squares(X,Y):
     
+    if len(X) != len(Y):
+        raise Exception("Length of X and Y must match")
+    
+    M = np.matrix( [[0,0],[0,0]] )
+    T = np.matrix( [[0,0]] )
+    
+    D = dict()
+    for i in range(4):
+        S = sum([x**i for x in X])
+        D[i] = S
+    
+    for i in range(2):
+        for j in range(2):
+            M[i,j] = D[i+j]
+        T[0,i] = sum([y*x**i for x,y in zip(X,Y)])
+    
+    
+    out = M.I*T.T
+    
+    return float(out[1][0]),float(out[0][0])
 
 #http://polynomialregression.drque.net/math.html
 # Find a polynomial that fits some dataset using least squares

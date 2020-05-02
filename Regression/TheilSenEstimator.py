@@ -76,7 +76,7 @@ def repeated_medians(X,Y):
 
 if __name__ == '__main__':
     
-    from PolynomialRegression import polynomial_regression
+    from PolynomialRegression import linear_least_squares
     
     x = np.linspace(0,12,100)
     y = x+np.random.normal(0,.5,100)
@@ -87,13 +87,13 @@ if __name__ == '__main__':
     
     m1,b1 = theil_sen_estimator(x,y)
     m2,b2 = repeated_medians(x,y)
-    b3,m3 = polynomial_regression(x,y,1)
+    m3,b3 = linear_least_squares(x,y)
     
     make_blank_canvas()
     for m,b,pos,T in zip([m1,m2,m3],[b1,b2,b3],[1,2,3],["Theil-Sen","Repeated Medians","Least Squares"]):
         make_blank_subplot(2,2,pos)
-        draw_dots_xy(x,y,color='lightgrey')
-        mbline(m,b)
+        draw_dots_xy(x,y,color='lightgrey',zorder=0)
+        mbline(m,b,color='red',zorder=2)
         print(f"{T}\nm = {m:.3}\nb = {b:.3}\n")
-        mbline(1,0,color='gray',linewidth=4)
+        mbline(1,0,color='gray',linewidth=4,zorder=1)
         plt.title(T,size=20)
