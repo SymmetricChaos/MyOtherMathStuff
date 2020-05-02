@@ -79,7 +79,11 @@ if __name__ == '__main__':
     from PolynomialRegression import polynomial_regression
     
     x = np.linspace(0,12,100)
-    y = x+np.random.normal(0,.35,100)*x-np.random.exponential(.15,100)*x
+    y = x+np.random.normal(0,.5,100)
+    
+    # Corrupt the data with meaningless datapoints
+    x = np.append(x,np.random.uniform(0,12,50))
+    y = np.append(y,np.random.uniform(0,12,50))
     
     m1,b1 = theil_sen_estimator(x,y)
     m2,b2 = repeated_medians(x,y)
