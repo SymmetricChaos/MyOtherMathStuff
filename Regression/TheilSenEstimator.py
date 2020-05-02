@@ -72,12 +72,14 @@ def repeated_medians(X,Y):
 
 
 
+
+
 if __name__ == '__main__':
     
     from PolynomialRegression import polynomial_regression
     
-    x = np.linspace(0,10,100)
-    y = x+np.random.normal(0,.35,100)*x-np.random.exponential(.2,100)*x
+    x = np.linspace(0,12,100)
+    y = x+np.random.normal(0,.35,100)*x-np.random.exponential(.15,100)*x
     
     m1,b1 = theil_sen_estimator(x,y)
     m2,b2 = repeated_medians(x,y)
@@ -88,5 +90,6 @@ if __name__ == '__main__':
         make_blank_subplot(2,2,pos)
         draw_dots_xy(x,y,color='lightgrey')
         mbline(m,b)
+        print(f"{T}\nm = {m:.3}\nb = {b:.3}\n")
         mbline(1,0,color='gray',linewidth=4)
         plt.title(T,size=20)
