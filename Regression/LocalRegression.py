@@ -28,6 +28,8 @@ def simple_local_regression(X,Y,width,n,degree=1):
 
 
 
+
+
 if __name__ == '__main__':
     x_data = x_base = np.linspace(-1,6,300)
     y_base = np.cos(x_data)
