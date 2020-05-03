@@ -4,9 +4,7 @@ import matplotlib.pyplot as plt
 from Drawing import make_blank_canvas, make_blank_subplot, draw_curve_xy, draw_dots_xy
 
 
-# Difference between prediction f(x) and observed value y at x
-def residual(x,y,f):
-    return y - f(x)
+
 
 
 # Quick function to evaluate a polynomial function
