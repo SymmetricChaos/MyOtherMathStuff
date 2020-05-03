@@ -51,6 +51,10 @@ def draw_Bspline(X,i,k,t):
     
     plt.plot(x,y)
 
+
+
+
+
 if __name__ == '__main__':
     
     

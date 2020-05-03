@@ -15,6 +15,8 @@ def poly(x,coefs):
     return out
 
 
+# Convenience function that returns the coefficients of a OLS linear regression
+# in the order "slope" then "intercept"
 def linear_least_squares(X,Y):
     
     if len(X) != len(Y):
@@ -37,6 +39,7 @@ def linear_least_squares(X,Y):
     out = M.I*T.T
     
     return float(out[1][0]),float(out[0][0])
+
 
 #http://polynomialregression.drque.net/math.html
 # Find a polynomial that fits some dataset using least squares

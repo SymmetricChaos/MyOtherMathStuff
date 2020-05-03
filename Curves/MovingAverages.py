@@ -39,7 +39,6 @@ def weighted_moving_average(Y,radius=1,weights=[]):
     elif len(weights) != N:
         raise Exception("Invalid weights")
         
-    
     m_av = []
     for i in range(len(Y)):
         m_av.append(weighted_mean(y[i:N+i],weights))
