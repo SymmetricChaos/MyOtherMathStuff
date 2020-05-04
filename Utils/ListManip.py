@@ -70,5 +70,6 @@ def list_to_infix(L,operator="+"):
     S = f" {operator} ".join(str(elem) for elem in L)
     return S
 
+
 def chunk_size(L,n):
     return [L[i * n:(i + 1) * n] for i in range((len(L) + n - 1) // n )]
