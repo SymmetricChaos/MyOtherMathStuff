@@ -8,7 +8,7 @@ def median(L):
     if parity == 1:
         return L[half_range]
     else:
-        return (L[half_range]+L[half_range+1])/2
+        return (L[half_range-1]+L[half_range])/2
     
 
 #def weighted_median(L,w):
@@ -34,8 +34,8 @@ def mean(L):
 
 if __name__ == '__main__':
     
-    A = [1,2,3,4,5]
-    B = [1,2,3,4]
+    A = [1,1,3,4,5]
+    B = [1,2,3,6]
     
     print(median(A))
     print(median(B))
