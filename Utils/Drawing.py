@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib.lines as lines
-from PointConversions import complex_to_xy, points_to_xy
+from Utils.PointTypes import complex_to_xy, points_to_xy
 
 def make_blank_canvas(xlim=None,ylim=None,size=[12,12]):
     fig = plt.figure()
