@@ -1,4 +1,5 @@
 #import numpy as np
+from Utils.Math import sort_by_nth
 
 def median(L):
     L = sorted(L)
@@ -12,7 +13,19 @@ def median(L):
     
 
 def weighted_median(L,W):
-    L = sorted(L)
+    LW = [(l,w) for l,w in zip(L,W)]
+    LW = sort_by_nth(LW,0)
+    
+    s = sum(W)
+    
+    t = 0
+    ctr = 0
+    while t <= s/2:
+        t += LW[ctr][1]
+        ctr += 1
+    
+    return LW[ctr-1][0]
+    
 
 
 def mean(L):
@@ -46,3 +59,5 @@ if __name__ == '__main__':
     
     print(mean(A))
     print(mean(B))
+    
+    print(weighted_median(A,[1,2,3,4,5]))
