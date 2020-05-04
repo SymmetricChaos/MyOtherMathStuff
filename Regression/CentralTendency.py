@@ -1,4 +1,4 @@
-import numpy as np
+#import numpy as np
 
 def median(L):
     L = sorted(L)
@@ -11,7 +11,8 @@ def median(L):
         return (L[half_range-1]+L[half_range])/2
     
 
-#def weighted_median(L,w):
+def weighted_median(L,W):
+    L = sorted(L)
 
 
 def mean(L):
@@ -21,9 +22,12 @@ def mean(L):
 # Arithmetic mean with quartiles beyond t and 1-t removed
 #def truncated_mean(L,t=.05):
 
-
     
-#def weighted_mean(L,w):
+def weighted_mean(L,W=[]):
+    if W == []:
+        W = [1]*len(L)
+    T = [l*w for l,w in zip(L,W)]
+    return sum(T)/sum(W)
 
 
 #def geometric_mean(L):
@@ -39,3 +43,6 @@ if __name__ == '__main__':
     
     print(median(A))
     print(median(B))
+    
+    print(mean(A))
+    print(mean(B))
