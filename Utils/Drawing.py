@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import matplotlib.lines as lines
 from Utils.PointTypes import complex_to_xy, points_to_xy
 
-def make_blank_canvas(xlim=None,ylim=None,size=[12,12]):
+def make_blank_canvas(xlim=None,ylim=None,size=[12,12],box=False):
     fig = plt.figure()
     fig.set_size_inches(size[0],size[1])
     # If no coordinate range is given fit everything into a square
@@ -12,10 +12,13 @@ def make_blank_canvas(xlim=None,ylim=None,size=[12,12]):
     # If only xrange is given fit a square
     elif not ylim:
         ax = plt.axes(xlim=xlim,ylim=xlim)
-    # If both are given fix the rectangle
+    # If both are given fit the rectangle
     else:
         ax = plt.axes(xlim=xlim,ylim=ylim)
-    ax.axis('off')
+        
+    if box == False:
+        ax.axis('off')
+        
     ax.set_xticks([])
     ax.set_yticks([])
     

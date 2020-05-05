@@ -1,5 +1,5 @@
 #import numpy as np
-from Utils.Math import sort_by_nth
+from Utils.Math import sort_by_nth, prod
 
 def median(L):
     L = sorted(L)
@@ -12,6 +12,10 @@ def median(L):
         return (L[half_range-1]+L[half_range])/2
     
 
+# Crude weighted median
+# Weighted median should be equivalent of having extra entries corresponding to
+# the weights
+# Should return the lower median on an even set
 def weighted_median(L,W):
     LW = [(l,w) for l,w in zip(L,W)]
     LW = sort_by_nth(LW,0)
@@ -26,7 +30,6 @@ def weighted_median(L,W):
     
     return LW[ctr-1][0]
     
-
 
 def mean(L):
     return sum(L)/len(L)
@@ -43,21 +46,31 @@ def weighted_mean(L,W=[]):
     return sum(T)/sum(W)
 
 
-#def geometric_mean(L):
-
+def geometric_mean(L):
+    P = prod(L)
+    return P**(1/len(L))
 
 #def harmonic_mean(L):
 
 
+
+
+
 if __name__ == '__main__':
     
-    A = [1,1,3,4,5]
-    B = [1,2,3,6]
+    # Make some graphics showing different measures
     
-    print(median(A))
-    print(median(B))
+    from Utils.Drawing import make_blank_canvas, draw_dots_xy, connect
+    import numpy as np
     
-    print(mean(A))
-    print(mean(B))
+    make_blank_canvas([-1,1],box=True)
+    plt.title("The Arithmetic Mean is the Point of Balance",size=25)
     
-    print(weighted_median(A,[1,2,3,4,5]))
+    n = 20
+    X = np.random.uniform(-.8,.8,n//2)
+    X = np.append(X,np.random.uniform(-.2,.8,n//2))
+    Y = [0]*n
+    
+    draw_dots_xy(X,Y)
+    connect([-.8,-.01],[.8,-.01],color="black")
+    draw_dots_xy([mean(X)],[-.035],color="red",marker="^",s=200)
