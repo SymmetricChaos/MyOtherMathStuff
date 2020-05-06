@@ -61,7 +61,7 @@ if __name__ == '__main__':
     
     # Make some graphics showing different measures
     
-    from Utils.Drawing import make_blank_canvas, draw_dots_xy, connect
+    from Utils.Drawing import make_blank_canvas, draw_dots_xy, connect, draw_circles
     import numpy as np
     
     def simple_mean_example():
@@ -86,12 +86,14 @@ if __name__ == '__main__':
         X = np.random.uniform(-.8,.8,n//2)
         X = np.append(X,np.random.uniform(-.2,.8,n//2))
         Y = [0]*n
-        W = (np.random.exponential(70,n)+5)*10
+        W = np.random.exponential(5,n)+1
+        Sz = np.sqrt(W)/85
         
         # Using weight for sizes of dots IS correct, the underlying MLP rules
         # scale the area of the dot not the radius
-        draw_dots_xy(X,Y,s=W)
-        connect([-.8,-.01],[.8,-.01],color="black")
+        C = draw_circles(X,Sz,Sz)
+        C.set_alpha(.5)
+        connect([-.8,0],[.8,0],color="black")
         draw_dots_xy([weighted_mean(X,W)],[-.035],color="red",marker="^",s=200)
         
     simple_mean_example()

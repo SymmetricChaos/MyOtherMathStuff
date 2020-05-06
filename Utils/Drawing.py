@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import matplotlib.collections as collections
 import matplotlib.lines as lines
 from Utils.PointTypes import complex_to_xy, points_to_xy
 
@@ -198,17 +199,39 @@ def draw_dots_complex(C,**kwargs):
     plt.scatter(x,y,**kwargs)
 
 
+# Connect points A and B
 def connect(A,B,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
     line = lines.Line2D([A[0],B[0]], [A[1],B[1]], axes=ax,**kwargs)
     ax.add_line(line)
+    
+
+# Creates circles with more control than draw_dots
+def draw_circles(X,Y,R,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
+        
+    circles = [plt.Circle((x,y), radius=r) for x,y,r in zip(X,Y,R)]
+    C = collections.PatchCollection(circles)
+    ax.add_collection(C)
+    return C
+
+
+def draw_circle(X,Y,R,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
+    circle = plt.Circle((X,Y), radius=R, **kwargs)
+    ax.add_patch(circle)
+    return circle
 
 
 
 
 
 if __name__ == '__main__':
+    
+    
     
     make_blank_canvas([-5,5],[-5,5])
     draw_curve_xy([1,2,3],[1,2,1])
@@ -236,6 +259,8 @@ if __name__ == '__main__':
     sp4 = make_blank_subplot(4,4,7,[-3,3])
     draw_closed_curve_xy([1,2,3],[0,1,0])
     
+    print(sp4.get_window_extent())
+    
     # Add lines to a previous axis
     mblines([1,2,3,4,5],[0,0,0,0,0],ax=sp3)
     
@@ -243,3 +268,6 @@ if __name__ == '__main__':
     mbline(1,-.4,ax=sp1)
     # mbline can be manually corrected
     mbline(1,-.6,ylim=[-2,2],ax=sp1,color='red')
+    
+    draw_circles([0,1,2],[0,0,0],[.5,.3,1],sp2)
+    draw_circle(.5,.8,.2,sp1,ec='black',linewidth=3)
