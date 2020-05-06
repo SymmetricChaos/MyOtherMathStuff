@@ -40,7 +40,7 @@ def mean(L):
 
     
 def weighted_mean(L,W=[]):
-    if W == []:
+    if len(W) == 0:
         W = [1]*len(L)
     T = [l*w for l,w in zip(L,W)]
     return sum(T)/sum(W)
@@ -49,6 +49,7 @@ def weighted_mean(L,W=[]):
 def geometric_mean(L):
     P = prod(L)
     return P**(1/len(L))
+
 
 #def harmonic_mean(L):
 
@@ -63,14 +64,35 @@ if __name__ == '__main__':
     from Utils.Drawing import make_blank_canvas, draw_dots_xy, connect
     import numpy as np
     
-    make_blank_canvas([-1,1],box=True)
-    plt.title("The Arithmetic Mean is the Point of Balance",size=25)
-    
-    n = 20
-    X = np.random.uniform(-.8,.8,n//2)
-    X = np.append(X,np.random.uniform(-.2,.8,n//2))
-    Y = [0]*n
-    
-    draw_dots_xy(X,Y)
-    connect([-.8,-.01],[.8,-.01],color="black")
-    draw_dots_xy([mean(X)],[-.035],color="red",marker="^",s=200)
+    def simple_mean_example():
+        make_blank_canvas([-1,1],box=True)
+        plt.title("The Arithmetic Mean is the Point of Balance",size=25)
+        
+        n = 20
+        X = np.random.uniform(-.8,.8,n//2)
+        X = np.append(X,np.random.uniform(-.2,.8,n//2))
+        Y = [0]*n
+        
+        draw_dots_xy(X,Y)
+        connect([-.8,-.01],[.8,-.01],color="black")
+        draw_dots_xy([mean(X)],[-.035],color="red",marker="^",s=200)
+        
+        
+    def weighted_mean_example():
+        make_blank_canvas([-1,1],box=True)
+        plt.title("The Weighted Mean is the Point of Balance",size=25)
+        
+        n = 20
+        X = np.random.uniform(-.8,.8,n//2)
+        X = np.append(X,np.random.uniform(-.2,.8,n//2))
+        Y = [0]*n
+        W = (np.random.exponential(70,n)+5)*10
+        
+        # Using weight for sizes of dots IS correct, the underlying MLP rules
+        # scale the area of the dot not the radius
+        draw_dots_xy(X,Y,s=W)
+        connect([-.8,-.01],[.8,-.01],color="black")
+        draw_dots_xy([weighted_mean(X,W)],[-.035],color="red",marker="^",s=200)
+        
+    simple_mean_example()
+    weighted_mean_example()
