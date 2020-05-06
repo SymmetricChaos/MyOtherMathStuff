@@ -207,17 +207,23 @@ def connect(A,B,ax=None,**kwargs):
     ax.add_line(line)
     
 
-# Creates circles with more control than draw_dots
-def draw_circles(X,Y,R,ax=None,**kwargs):
+# Creates circles with more control than draw_dots, created a PatchCollection
+# Can use setters to change all elements of the collection at once
+# Accepts single **kwargs for args other than X,Y,and R, these are reused for
+# all of the circles
+# KWARGS IS BUGGED
+def draw_circles(X,Y,R,ax=None, **kwargs):
     if ax == None:
         ax = plt.gca()
         
-    circles = [plt.Circle((x,y), radius=r) for x,y,r in zip(X,Y,R)]
+    circles = [plt.Circle((x,y), radius=r, **kwargs) for x,y,r in zip(X,Y,R)]
     C = collections.PatchCollection(circles)
     ax.add_collection(C)
     return C
 
 
+# Convenient function for a single circle, can be used for finer control of
+# lots of different circles
 def draw_circle(X,Y,R,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
@@ -230,7 +236,6 @@ def draw_circle(X,Y,R,ax=None,**kwargs):
 
 
 if __name__ == '__main__':
-    
     
     
     make_blank_canvas([-5,5],[-5,5])
@@ -259,8 +264,6 @@ if __name__ == '__main__':
     sp4 = make_blank_subplot(4,4,7,[-3,3])
     draw_closed_curve_xy([1,2,3],[0,1,0])
     
-    print(sp4.get_window_extent())
-    
     # Add lines to a previous axis
     mblines([1,2,3,4,5],[0,0,0,0,0],ax=sp3)
     
@@ -269,5 +272,5 @@ if __name__ == '__main__':
     # mbline can be manually corrected
     mbline(1,-.6,ylim=[-2,2],ax=sp1,color='red')
     
-    draw_circles([0,1,2],[0,0,0],[.5,.3,1],sp2)
+    draw_circles([0,1,2],[0,0,0],[.5,.3,1],sp2,fc='green')
     draw_circle(.5,.8,.2,sp1,ec='black',linewidth=3)

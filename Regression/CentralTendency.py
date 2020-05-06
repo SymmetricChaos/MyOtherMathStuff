@@ -65,17 +65,17 @@ if __name__ == '__main__':
     import numpy as np
     
     def simple_mean_example():
-        make_blank_canvas([-1,1],box=True)
+        make_blank_canvas([-10,10],box=True)
         plt.title("The Arithmetic Mean is the Point of Balance",size=25)
         
         n = 20
-        X = np.random.uniform(-.8,.8,n//2)
-        X = np.append(X,np.random.uniform(-.2,.8,n//2))
+        X = np.random.uniform(-8,8,n//2)
+        X = np.append(X,np.random.uniform(-2,8,n//2))
         Y = [0]*n
         
-        draw_dots_xy(X,Y)
-        connect([-.8,-.01],[.8,-.01],color="black")
-        draw_dots_xy([mean(X)],[-.035],color="red",marker="^",s=200)
+        draw_circles(X,[.2]*n,[.2]*n)
+        connect([-8,-.01],[8,-.01],color="black")
+        draw_dots_xy([mean(X)],[-.2],color="red",marker="^",s=200)
         
         
     def weighted_mean_example():
@@ -85,7 +85,6 @@ if __name__ == '__main__':
         n = 20
         X = np.random.uniform(-.8,.8,n//2)
         X = np.append(X,np.random.uniform(-.2,.8,n//2))
-        Y = [0]*n
         W = np.random.exponential(5,n)+1
         Sz = np.sqrt(W)/85
         
