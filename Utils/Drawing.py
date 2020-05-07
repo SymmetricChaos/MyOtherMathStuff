@@ -26,7 +26,6 @@ def make_blank_canvas(xlim=None,ylim=None,size=[12,12],box=False):
     return fig,ax
 
 
-
 def make_blank_subplot(a,b,p,xlim=None,ylim=None,box=True):
     ax = plt.subplot(a,b,p)
     
@@ -51,14 +50,14 @@ def make_blank_subplot(a,b,p,xlim=None,ylim=None,box=True):
     return ax
 
 
+# Convenience function for solving mbline equations
 def calc_y(m,x,b):
     return m*x+b
-
 
 def calc_x(m,y,b):
     return (y-b)/m
 
-
+# Draw an infinite slope-intercept line
 def mbline(m,b,xlim=[],ylim=[],ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
@@ -99,43 +98,35 @@ def mbline(m,b,xlim=[],ylim=[],ax=None,**kwargs):
     
     return [[x0,y0],[x1,y1]]
 
-
+# Draw multiple slope-intercept lines
 def mblines(M,B,xlim=[],ylim=[],ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
-    
     if xlim == []:
         xlim = ax.get_xlim()
-        
     if ylim == []:
         ylim = ax.get_ylim()
-    
     out = []
     for m,b in zip(M,B):
         l = mbline(m,b,xlim,ylim,ax,**kwargs)
         out.append(l)
-    
     return out
 
 
+# Vertical and horizontal lines
 def vertical_line(xpos=0,ylim=[],ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
-        
     if ylim == []:
         ylim = ax.get_ylim()
-        
     line = lines.Line2D([xpos,xpos],ylim, axes=ax,**kwargs)
     ax.add_line(line)
-    
     
 def horizontal_line(ypos=0,xlim=[],ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
-        
     if xlim == []:
         xlim = ax.get_xlim()
-    
     line = lines.Line2D(xlim,[ypos,ypos], axes=ax,**kwargs)
     ax.add_line(line)
 
@@ -182,12 +173,9 @@ def draw_closed_curve_points(P,ax=None,**kwargs):
 def draw_closed_curve_complex(P,ax=None,**kwargs):
     x,y = complex_to_xy(P)
     draw_closed_curve_xy(x,y,ax,**kwargs)
-    
 
-# Draw scatterplot from:
-#   seperate lists of x and y coordinates
-#   a list of (x,y) points
-#   a list of complex numbers
+
+# Draw scatterplot from
 def draw_dots_xy(x,y,**kwargs):
     plt.scatter(x,y,**kwargs)
 
@@ -200,25 +188,26 @@ def draw_dots_complex(C,**kwargs):
     plt.scatter(x,y,**kwargs)
 
 
-# Connect points A and B
+# Connect points A and B, complex version provided, xy version doesn't make much sense
 def connect(A,B,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
     line = lines.Line2D([A[0],B[0]], [A[1],B[1]], axes=ax,**kwargs)
     ax.add_line(line)
-    
+
 def connect_complex(A,B,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
     line = lines.Line2D([A.real,B.real], [A.imag,B.imag], axes=ax,**kwargs)
     ax.add_line(line)
-    
-    
+
+
+# Convenience function for titles
 def title(text="",ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
     ax.set_title(text,**kwargs)
-    
+
 
 # Creates circles with more control than draw_dots, created a PatchCollection
 # Can use setters to change all elements of the collection at once
