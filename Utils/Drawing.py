@@ -207,12 +207,18 @@ def connect(A,B,ax=None,**kwargs):
     line = lines.Line2D([A[0],B[0]], [A[1],B[1]], axes=ax,**kwargs)
     ax.add_line(line)
     
+def connect_complex(A,B,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
+    line = lines.Line2D([A.real,B.real], [A.imag,B.imag], axes=ax,**kwargs)
+    ax.add_line(line)
     
     
 def title(text="",ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
-    plt.title(text,**kwargs)
+    ax.set_title(text,**kwargs)
+    
 
 # Creates circles with more control than draw_dots, created a PatchCollection
 # Can use setters to change all elements of the collection at once
@@ -280,3 +286,6 @@ if __name__ == '__main__':
     
     draw_circles([0,1,2],[0,0,0],[.5,.3,1],sp2,fc='green')
     draw_circle(.5,.8,.2,sp1,ec='black',linewidth=3)
+    
+    title("BLOOP",size=30)
+    title(r'$\sum_{n=1}^\infty'r'\frac{-e^{i\pi}}{2^n}$',ax=sp1,size=16,pad=20)
