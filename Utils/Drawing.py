@@ -266,8 +266,13 @@ if __name__ == '__main__':
     make_blank_canvas()
     
     # Make and use a subplot
-    sp1 = make_blank_subplot(2,2,1)
+    sp1 = make_blank_subplot(2,2,1,[-3,3])
     draw_closed_curve_xy([1,2,3],[0,1,0])
+    
+    # mbline takes ylim and xlim from axes so it might get cut off
+    mbline(-.5,0)
+    # mbline can be manually adjusted
+    mblines([2,3,4,5],[0,0,0,0],xlim=[-2,2],ylim=[-2,2],color='red')
     
     # Subplots of different layouts can coexist
     sp2 = make_blank_subplot(4,4,4,[-2,2])
@@ -276,23 +281,22 @@ if __name__ == '__main__':
     mbline(1,1)
     
     # Plots can be created out of order
+    # When subplots are not square shapes are warped
     sp3 = make_blank_subplot(2,2,4,[-3,3],[-5,5])
-    draw_closed_curve_xy([1,2,3],[0,1,0])
+    draw_circle(1.5,-.5,1,fc='white',ec='black')
     
-    sp4 = make_blank_subplot(4,4,7,[-3,3])
-    draw_dots_xy(np.random.uniform(-2,2,200),np.random.uniform(-2,2,200),alpha=.5,color='limegreen')
+    # Show automatic xlim and ylim settings
+    sp4 = make_blank_subplot(4,4,7)
+    x = np.random.uniform(-2,2,200)
+    y = x+np.random.uniform(-2,2,200),
+    draw_dots_xy(x,y,alpha=.5,color='limegreen')
+    title("BLOOPS",size=30)
     
     # Add lines to a chosen axes
     mblines([1,2,3,4,5],[0,0,0,0,0],ax=sp3)
     
-    # mbline takes ylim and xlim from axes so it might get cut off
-    mbline(1,-.4,ax=sp1)
-    # mbline can be manually corrected
-    mbline(1,-.6,ylim=[-2,2],ax=sp1,color='red')
-    
     # Make some circles
     draw_circles([0,1,2],[0,0,0],[.5,.3,1],sp2,fc='green')
     
-    
-    title("BLOOPS",size=30)
+    # Title on selected axis
     title(r'$\sum_{n=1}^\infty\frac{-e^{i\pi}}{2^n}$',ax=sp1,size=16,pad=20)
