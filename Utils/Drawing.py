@@ -288,4 +288,4 @@ if __name__ == '__main__':
     draw_circle(.5,.8,.2,sp1,ec='black',linewidth=3)
     
     title("BLOOP",size=30)
-    title(r'$\sum_{n=1}^\infty'r'\frac{-e^{i\pi}}{2^n}$',ax=sp1,size=16,pad=20)
+    title(r'$\sum_{n=1}^\infty\frac{-e^{i\pi}}{2^n}$',ax=sp1,size=16,pad=20)
