@@ -96,7 +96,7 @@ def mbline(m,b,xlim=[],ylim=[],ax=None,**kwargs):
     line = lines.Line2D([x0,x1], [y0,y1], axes=ax,**kwargs)
     ax.add_line(line)
     
-    return [[x0,y0],[x1,y1]]
+    return [[x0,y0],[x1,y1]],line
 
 # Draw multiple slope-intercept lines
 def mblines(M,B,xlim=[],ylim=[],ax=None,**kwargs):
@@ -113,6 +113,17 @@ def mblines(M,B,xlim=[],ylim=[],ax=None,**kwargs):
     return out
 
 
+# Draw an infinite line through a given point with a given line
+def point_slope_line(P,m,xlim=[],ylim=[],ax=None,**kwargs):    
+    b = m*P[1]+P[0]
+    return mbline(m,b,xlim,ylim,ax,**kwargs)
+
+# Draw multiple point-slope lines
+def point_slope_lines(P,M,xlim=[],ylim=[],ax=None,**kwargs):    
+    B = [m*p[0]+p[1] for m,p in zip(M,P)]
+    return mblines(M,B,xlim,ylim,ax,**kwargs)
+    
+
 # Vertical and horizontal lines
 def vertical_line(xpos=0,ylim=[],ax=None,**kwargs):
     if ax == None:
@@ -121,6 +132,7 @@ def vertical_line(xpos=0,ylim=[],ax=None,**kwargs):
         ylim = ax.get_ylim()
     line = lines.Line2D([xpos,xpos],ylim, axes=ax,**kwargs)
     ax.add_line(line)
+    return [[xpos,xpos],ylim],line
     
 def horizontal_line(ypos=0,xlim=[],ax=None,**kwargs):
     if ax == None:
@@ -129,7 +141,7 @@ def horizontal_line(ypos=0,xlim=[],ax=None,**kwargs):
         xlim = ax.get_xlim()
     line = lines.Line2D(xlim,[ypos,ypos], axes=ax,**kwargs)
     ax.add_line(line)
-
+    return [xlim,[ypos,ypos]],line
 
 # Draw a curve from:
 #   seperate lists of x and y coordinates
@@ -240,11 +252,16 @@ if __name__ == '__main__':
     
     import numpy as np
     
+    ## SIMPLE PLOT ## 
+    
     make_blank_canvas([-5,5],[-5,5])
     draw_curve_xy([1,2,3],[1,2,1])
     draw_closed_curve_xy([1,2,3],[0,1,0],color="green")
     horizontal_line(-2)
     vertical_line(1,color='brown')
+    
+    
+    ## PLOTS AND SUBPLOTS ##
     
     # Make a circle
     # Then make a circle with exactly half the radius
@@ -256,12 +273,12 @@ if __name__ == '__main__':
     
     # Make and use a subplot
     sp1 = make_blank_subplot(2,2,1,[-3,3])
-    draw_closed_curve_xy([1,2,3],[0,1,0])
     
-    # mbline takes ylim and xlim from axes so it might get cut off
+    # mbline takes ylim and xlim from axes to automatically appear infinite
     mbline(-.5,0)
-    # mbline can be manually adjusted
-    mblines([2,3,4,5],[0,0,0,0],xlim=[-2,2],ylim=[-2,2],color='red')
+    # mbline can be manually limited
+    slopes = np.linspace(0,5,10)
+    mblines(slopes,[0]*20,xlim=[-2,2],ylim=[-2,2],color='red')
     
     # Subplots of different layouts can coexist
     sp2 = make_blank_subplot(4,4,4,[-2,2])
@@ -288,4 +305,4 @@ if __name__ == '__main__':
     draw_circles([0,1,2],[0,0,0],[.5,.3,1],sp2,fc='green')
     
     # Title on selected axis
-    title(r'$\sum_{n=1}^\infty\frac{-e^{i\pi}}{2^n}$',ax=sp1,size=16,pad=20)
+    title(r'We can use LaTeX $\sum_{n=1}^\infty\frac{-e^{i\pi}}{2^n}$',ax=sp1,size=16,pad=20)
