@@ -61,17 +61,16 @@ if __name__ == '__main__':
     
     # Make some graphics showing different measures
     
-    from Utils.Drawing import make_blank_canvas, draw_dots_xy, connect, draw_circles
+    from Utils.Drawing import make_blank_canvas, draw_dots_xy, connect, draw_circles, title
     import numpy as np
     
     def simple_mean_example():
         make_blank_canvas([-10,10],box=True)
-        plt.title("The Arithmetic Mean is the Point of Balance",size=25)
+        title("The Arithmetic Mean is the Point of Balance",size=25)
         
         n = 20
         X = np.random.uniform(-8,8,n//2)
         X = np.append(X,np.random.uniform(-2,8,n//2))
-        Y = [0]*n
         
         draw_circles(X,[.2]*n,[.2]*n)
         connect([-8,-.01],[8,-.01],color="black")
@@ -80,7 +79,7 @@ if __name__ == '__main__':
         
     def weighted_mean_example():
         make_blank_canvas([-1,1],box=True)
-        plt.title("The Weighted Mean is the Point of Balance",size=25)
+        title("The Weighted Mean is the Point of Balance",size=25)
         
         n = 20
         X = np.random.uniform(-.8,.8,n//2)

@@ -26,6 +26,7 @@ def make_blank_canvas(xlim=None,ylim=None,size=[12,12],box=False):
     return fig,ax
 
 
+
 def make_blank_subplot(a,b,p,xlim=None,ylim=None,box=True):
     ax = plt.subplot(a,b,p)
     
@@ -206,6 +207,12 @@ def connect(A,B,ax=None,**kwargs):
     line = lines.Line2D([A[0],B[0]], [A[1],B[1]], axes=ax,**kwargs)
     ax.add_line(line)
     
+    
+    
+def title(text="",ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
+    plt.title(text,**kwargs)
 
 # Creates circles with more control than draw_dots, created a PatchCollection
 # Can use setters to change all elements of the collection at once
@@ -215,7 +222,6 @@ def connect(A,B,ax=None,**kwargs):
 def draw_circles(X,Y,R,ax=None, **kwargs):
     if ax == None:
         ax = plt.gca()
-        
     circles = [plt.Circle((x,y), radius=r, **kwargs) for x,y,r in zip(X,Y,R)]
     C = collections.PatchCollection(circles)
     ax.add_collection(C)
