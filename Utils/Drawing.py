@@ -249,12 +249,18 @@ def draw_circle(X,Y,R,ax=None,**kwargs):
 
 if __name__ == '__main__':
     
+    import numpy as np
     
     make_blank_canvas([-5,5],[-5,5])
     draw_curve_xy([1,2,3],[1,2,1])
     draw_closed_curve_xy([1,2,3],[0,1,0],color="green")
     horizontal_line(-2)
     vertical_line(1,color='brown')
+    
+    # Make a circle
+    # Then make a circle with exactly half the radius
+    draw_circle(-1.5,.8,2,ec='black',linewidth=3)
+    draw_circle(-.5,.8,1,fc='salmon')
     
     # Subplots example
     make_blank_canvas()
@@ -274,9 +280,9 @@ if __name__ == '__main__':
     draw_closed_curve_xy([1,2,3],[0,1,0])
     
     sp4 = make_blank_subplot(4,4,7,[-3,3])
-    draw_closed_curve_xy([1,2,3],[0,1,0])
+    draw_dots_xy(np.random.uniform(-2,2,200),np.random.uniform(-2,2,200),alpha=.5,color='limegreen')
     
-    # Add lines to a previous axis
+    # Add lines to a chosen axes
     mblines([1,2,3,4,5],[0,0,0,0,0],ax=sp3)
     
     # mbline takes ylim and xlim from axes so it might get cut off
@@ -284,8 +290,9 @@ if __name__ == '__main__':
     # mbline can be manually corrected
     mbline(1,-.6,ylim=[-2,2],ax=sp1,color='red')
     
+    # Make some circles
     draw_circles([0,1,2],[0,0,0],[.5,.3,1],sp2,fc='green')
-    draw_circle(.5,.8,.2,sp1,ec='black',linewidth=3)
     
-    title("BLOOP",size=30)
+    
+    title("BLOOPS",size=30)
     title(r'$\sum_{n=1}^\infty\frac{-e^{i\pi}}{2^n}$',ax=sp1,size=16,pad=20)
