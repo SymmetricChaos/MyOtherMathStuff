@@ -76,10 +76,9 @@ if __name__ == '__main__':
         X = np.random.uniform(-.8,.8,n//2)
         X = np.append(X,np.random.uniform(.2,.8,n//2))
         W = np.random.exponential(5,n)+1
+        # Sized reduced by square root to show weight by area
         Sz = np.sqrt(W)/85
         
-        # Using weight for sizes of dots IS correct, the underlying MLP rules
-        # scale the area of the dot not the radius
         C = draw_circles(X,Sz,Sz)
         C.set_alpha(.5)
         connect([-.8,0],[.8,0],color="black")
