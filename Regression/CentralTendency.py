@@ -61,7 +61,7 @@ if __name__ == '__main__':
     
     # Make some graphics showing different measures
     
-    from Utils.Drawing import make_blank_canvas, draw_dots_xy, connect, draw_circles, title
+    from Utils.Drawing import make_blank_canvas, draw_dots_xy, connect, draw_circles, title, make_blank_subplot, canvas_title
     import numpy as np
     
     def simple_mean_example():
@@ -83,7 +83,7 @@ if __name__ == '__main__':
         
         n = 20
         X = np.random.uniform(-.8,.8,n//2)
-        X = np.append(X,np.random.uniform(-.2,.8,n//2))
+        X = np.append(X,np.random.uniform(.2,.8,n//2))
         W = np.random.exponential(5,n)+1
         Sz = np.sqrt(W)/85
         
@@ -93,6 +93,31 @@ if __name__ == '__main__':
         C.set_alpha(.5)
         connect([-.8,0],[.8,0],color="black")
         draw_dots_xy([weighted_mean(X,W)],[-.035],color="red",marker="^",s=200)
+    
+    
         
-    simple_mean_example()
-    weighted_mean_example()
+    def median_mean_example():
+        make_blank_canvas(size=[16,8])
+        canvas_title("The Median is the Point of Typicality\nThe Mean is the Point of Balance",size=25,y=1.05)
+        
+        n = 20
+        X = np.random.uniform(-8,8,n//2)
+        X = np.append(X,np.random.uniform(5,8,n//2))
+        
+        
+        make_blank_subplot(1,2,1,[-10,10])
+        draw_circles(X,[.2]*n,[.2]*n)
+        connect([-8,-.01],[8,-.01],color="black")
+        draw_dots_xy([mean(X)],[-.35],color="black",marker="^",s=200)
+        title("Mean",size=25)
+        
+        
+        make_blank_subplot(1,2,2,[-10,10])        
+        draw_circles(X,[.2]*n,[.2]*n)
+        connect([-8,-.01],[8,-.01],color="black")
+        draw_dots_xy([median(X)],[-.35],color="black",marker="^",s=200)
+        title("Median",size=25)
+        
+#    simple_mean_example()
+#    weighted_mean_example()
+    median_mean_example()

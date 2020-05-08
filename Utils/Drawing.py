@@ -214,11 +214,16 @@ def connect_complex(A,B,ax=None,**kwargs):
     ax.add_line(line)
 
 
-# Convenience function for titles
+# Convenience functions for titles
 def title(text="",ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
     ax.set_title(text,**kwargs)
+
+def canvas_title(text="",fig=None,**kwargs):
+    if fig == None:
+        fig = plt.gcf()
+    fig.suptitle(text,**kwargs)
 
 
 # Creates circles with more control than draw_dots, created a PatchCollection
@@ -306,3 +311,4 @@ if __name__ == '__main__':
     
     # Title on selected axis
     title(r'We can use LaTeX $\sum_{n=1}^\infty\frac{-e^{i\pi}}{2^n}$',ax=sp1,size=16,pad=20)
+    canvas_title("A Title for the whole Canvas")
