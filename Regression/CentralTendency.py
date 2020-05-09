@@ -111,6 +111,10 @@ if __name__ == '__main__':
 
  
     def harmonic_mean_example():
+        
+        def midpoint_xy(X,Y):
+            return [ [(X[0]+X[1])/2], [(Y[0]+Y[1])/2] ]
+        
         canvas, plot = draw.make_blank_canvas(size=[16,8])
         draw.canvas_title("The Harmonic Mean is Relevant to Rates",size=25,y=1.05)
         

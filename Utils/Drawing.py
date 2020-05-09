@@ -153,14 +153,14 @@ def draw_curve_xy(x,y,ax=None,**kwargs):
     line = lines.Line2D(x,y, axes=ax,**kwargs)
     ax.add_line(line)
 
-def draw_curve_points(P,ax=None,**kwargs):
+def draw_curve_p(P,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
     x,y = points_to_xy(P)
     line = lines.Line2D(x,y, axes=ax,**kwargs)
     ax.add_line(line)
 
-def draw_curve_complex(C,ax=None,**kwargs):
+def draw_curve_c(C,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
     x,y = complex_to_xy(C)
@@ -178,11 +178,11 @@ def draw_closed_curve_xy(x,y,ax=None,**kwargs):
     line = lines.Line2D(X,Y, axes=ax,**kwargs)
     ax.add_line(line)
     
-def draw_closed_curve_points(P,ax=None,**kwargs):
+def draw_closed_curve_p(P,ax=None,**kwargs):
     x,y = points_to_xy(P)
     draw_closed_curve_xy(x,y,ax,**kwargs)
     
-def draw_closed_curve_complex(P,ax=None,**kwargs):
+def draw_closed_curve_c(P,ax=None,**kwargs):
     x,y = complex_to_xy(P)
     draw_closed_curve_xy(x,y,ax,**kwargs)
 
@@ -191,23 +191,23 @@ def draw_closed_curve_complex(P,ax=None,**kwargs):
 def draw_dots_xy(x,y,**kwargs):
     plt.scatter(x,y,**kwargs)
 
-def draw_dots_points(P,**kwargs):
+def draw_dots_p(P,**kwargs):
     x,y = points_to_xy(P)
     plt.scatter(x,y,**kwargs)
 
-def draw_dots_complex(C,**kwargs):
+def draw_dots_c(C,**kwargs):
     x,y = complex_to_xy(C)
     plt.scatter(x,y,**kwargs)
 
 
 # Connect points A and B, complex version provided, xy version doesn't make much sense
-def connect(A,B,ax=None,**kwargs):
+def connect_p(A,B,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
     line = lines.Line2D([A[0],B[0]], [A[1],B[1]], axes=ax,**kwargs)
     ax.add_line(line)
 
-def connect_complex(A,B,ax=None,**kwargs):
+def connect_c(A,B,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
     line = lines.Line2D([A.real,B.real], [A.imag,B.imag], axes=ax,**kwargs)
@@ -231,7 +231,7 @@ def canvas_title(text="",fig=None,**kwargs):
 # Accepts single **kwargs for args other than X,Y,and R, these are reused for
 # all of the circles
 # KWARGS IS BUGGED
-def draw_circles(X,Y,R,ax=None, **kwargs):
+def draw_circles_xy(X,Y,R,ax=None, **kwargs):
     if ax == None:
         ax = plt.gca()
     circles = [plt.Circle((x,y), radius=r, **kwargs) for x,y,r in zip(X,Y,R)]
@@ -242,7 +242,7 @@ def draw_circles(X,Y,R,ax=None, **kwargs):
 
 # Convenient function for a single circle, can be used for finer control of
 # lots of different circles
-def draw_circle(X,Y,R,ax=None,**kwargs):
+def draw_circle_xy(X,Y,R,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
     circle = plt.Circle((X,Y), radius=R, **kwargs)
@@ -270,8 +270,8 @@ if __name__ == '__main__':
     
     # Make a circle
     # Then make a circle with exactly half the radius
-    draw_circle(-1.5,.8,2,ec='black',linewidth=3)
-    draw_circle(-.5,.8,1,fc='salmon')
+    draw_circle_xy(-1.5,.8,2,ec='black',linewidth=3)
+    draw_circle_xy(-.5,.8,1,fc='salmon')
     
     # Subplots example
     make_blank_canvas()
@@ -294,7 +294,7 @@ if __name__ == '__main__':
     # Plots can be created out of order
     # When subplots are not square shapes are warped
     sp3 = make_blank_subplot(2,2,4,[-3,3],[-5,5])
-    draw_circle(1.5,-.5,1,fc='white',ec='black')
+    draw_circle_xy(1.5,-.5,1,fc='white',ec='black')
     
     # Show automatic xlim and ylim settings
     sp4 = make_blank_subplot(4,4,7)
@@ -307,7 +307,7 @@ if __name__ == '__main__':
     mblines([1,2,3,4,5],[0,0,0,0,0],ax=sp3)
     
     # Make some circles
-    draw_circles([0,1,2],[0,0,0],[.5,.3,1],sp2,fc='green')
+    draw_circles_xy([0,1,2],[0,0,0],[.5,.3,1],sp2,fc='green')
     
     # Title on selected axis
     title(r'We can use LaTeX $\sum_{n=1}^\infty\frac{-e^{i\pi}}{2^n}$',ax=sp1,size=16,pad=20)
