@@ -65,6 +65,8 @@ if __name__ == '__main__':
     
     import Utils.Drawing as draw
     import numpy as np
+    import matplotlib.pyplot as plt
+    from Utils.PointManip import push_from_center, midpoint
 
 
 
@@ -112,18 +114,25 @@ if __name__ == '__main__':
  
     def harmonic_mean_example():
         
-        def midpoint_xy(X,Y):
-            return [ [(X[0]+X[1])/2], [(Y[0]+Y[1])/2] ]
         
-        canvas, plot = draw.make_blank_canvas(size=[16,8])
-        draw.canvas_title("The Harmonic Mean is Relevant to Rates",size=25,y=1.05)
+        canvas, plot = draw.make_blank_canvas([-2,2],[-2,2],[10,10])
+        draw.canvas_title("The Harmonic Mean is Relevant to Rates\n",size=25,y=1.05)
         
         th = np.linspace(0,2*np.pi,8)
         X = np.sin(th)[:-1]
         Y = np.cos(th)[:-1]
         
+        P = [(x,y) for x,y in zip(X,Y)]
+        # Hard to read change this
+        M = [midpoint(a,b) for a,b in zip(P[1:]+[P[-1]],P[:-1]+[P[0]])]
+        M = [push_from_center(m,[0,0],.2) for m in M]
+        
         draw.draw_dots_xy(X,Y)
         draw.draw_closed_curve_xy(X,Y,linewidth=.5,color="black")
+
+        S = np.random.randint(1,9,7)
+        for speed,p in zip(S,M):
+            plt.text(p[0],p[1],f"{speed} mph",ha='center')
 
 #    weighted_mean_example()
 #    median_mean_example()
