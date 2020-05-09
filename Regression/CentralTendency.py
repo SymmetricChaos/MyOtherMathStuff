@@ -10,7 +10,7 @@ def median(L):
         return L[half_range]
     else:
         return (L[half_range-1]+L[half_range])/2
-    
+
 
 # Crude weighted median
 # Weighted median should be equivalent of having extra entries corresponding to
@@ -38,7 +38,7 @@ def mean(L):
 # Arithmetic mean with quartiles beyond t and 1-t removed
 #def truncated_mean(L,t=.05):
 
-    
+
 def weighted_mean(L,W=[]):
     if len(W) == 0:
         W = [1]*len(L)
@@ -51,7 +51,9 @@ def geometric_mean(L):
     return P**(1/len(L))
 
 
-#def harmonic_mean(L):
+def harmonic_mean(L):
+    S = sum([1/l for l in L])
+    return len(L)/S
 
 
 
@@ -61,16 +63,14 @@ if __name__ == '__main__':
     
     # Make some graphics showing different measures
     
-    from Utils.Drawing import make_blank_canvas, draw_dots_xy, connect, \
-                              draw_circles, title, make_blank_subplot, \
-                              canvas_title
+    import Utils.Drawing as draw
     import numpy as np
 
 
 
     def weighted_mean_example():
-        canvas, plot = make_blank_canvas([-1,1],box=True)
-        title("The Weighted Mean is the Point of Balance",size=25)
+        canvas, plot = draw.make_blank_canvas([-1,1],box=True)
+        draw.title("The Weighted Mean is the Point of Balance",size=25)
         
         n = 20
         X = np.random.uniform(-.8,.8,n//2)
@@ -79,34 +79,48 @@ if __name__ == '__main__':
         # Sized reduced by square root to show weight by area
         Sz = np.sqrt(W)/85
         
-        C = draw_circles(X,Sz,Sz)
+        C = draw.draw_circles(X,Sz,Sz)
         C.set_alpha(.5)
-        connect([-.8,0],[.8,0],color="black")
-        draw_dots_xy([weighted_mean(X,W)],[-.035],color="red",marker="^",s=200)
-    
+        draw.connect([-.8,0],[.8,0],color="black")
+        draw.draw_dots_xy([weighted_mean(X,W)],[-.035],color="red",marker="^",s=200)
+
 
 
     def median_mean_example():
-        canvas, plot = make_blank_canvas(size=[16,8])
-        canvas_title("The Median is the Point of Typicality\nThe Mean is the Point of Balance",size=25,y=1.05)
+        canvas, plot = draw.make_blank_canvas(size=[16,8])
+        draw.canvas_title("The Median is the Point of Typicality\nThe Mean is the Point of Balance",size=25,y=1.05)
         
         n = 20
         X = np.random.uniform(-8,8,n//2)
         X = np.append(X,np.random.uniform(5,8,n//2))
         
-        make_blank_subplot(1,2,1,[-10,10])
-        draw_circles(X,[.2]*n,[.2]*n)
-        connect([-8,-.01],[8,-.01],color="black")
-        draw_dots_xy([mean(X)],[-.35],color="black",marker="^",s=200)
-        draw_dots_xy([median(X)],[-.35],color="lightgray",marker="^",s=200)
-        title("Mean",size=25)
+        draw.make_blank_subplot(1,2,1,[-10,10])
+        draw.draw_circles(X,[.2]*n,[.2]*n)
+        draw.connect([-8,-.01],[8,-.01],color="black")
+        draw.draw_dots_xy([mean(X)],[-.35],color="black",marker="^",s=200)
+        draw.draw_dots_xy([median(X)],[-.35],color="lightgray",marker="^",s=200)
+        draw.title("Mean",size=25)
         
-        make_blank_subplot(1,2,2,[-10,10])        
-        draw_circles(X,[.2]*n,[.2]*n)
-        connect([-8,-.01],[8,-.01],color="black")
-        draw_dots_xy([median(X)],[-.35],color="black",marker="^",s=200)
-        draw_dots_xy([mean(X)],[-.35],color="lightgray",marker="^",s=200)
-        title("Median",size=25)
+        draw.make_blank_subplot(1,2,2,[-10,10])        
+        draw.draw_circles(X,[.2]*n,[.2]*n)
+        draw.connect([-8,-.01],[8,-.01],color="black")
+        draw.draw_dots_xy([median(X)],[-.35],color="black",marker="^",s=200)
+        draw.draw_dots_xy([mean(X)],[-.35],color="lightgray",marker="^",s=200)
+        draw.title("Median",size=25)
 
-    weighted_mean_example()
-    median_mean_example()
+
+ 
+    def harmonic_mean_example():
+        canvas, plot = draw.make_blank_canvas(size=[16,8])
+        draw.canvas_title("The Harmonic Mean is Relevant to Rates",size=25,y=1.05)
+        
+        th = np.linspace(0,2*np.pi,8)
+        X = np.sin(th)[:-1]
+        Y = np.cos(th)[:-1]
+        
+        draw.draw_dots_xy(X,Y)
+        draw.draw_closed_curve_xy(X,Y,linewidth=.5,color="black")
+
+#    weighted_mean_example()
+#    median_mean_example()
+    harmonic_mean_example()
