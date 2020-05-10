@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import matplotlib.collections as collections
 import matplotlib.lines as lines
+import matplotlib.patches as patches
 from Utils.PointTypes import complex_to_xy, points_to_xy
 
 def make_blank_canvas(xlim=None,ylim=None,size=[12,12],box=False):
@@ -263,6 +264,14 @@ def draw_circle_p(P,R,ax=None,**kwargs):
     circle = plt.Circle(P, radius=R, **kwargs)
     ax.add_patch(circle)
     return circle
+
+
+def draw_rect_xy(x0,y0,x1,y1,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
+    rect = patches.Rectangle([x0,y0],x1-x0,y1-y0,**kwargs)
+    ax.add_patch(rect)
+    return rect
 
 
 # Convenience for writing text

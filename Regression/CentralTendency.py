@@ -65,26 +65,24 @@ if __name__ == '__main__':
     
     import Utils.Drawing as draw
     import numpy as np
-    import matplotlib.pyplot as plt
     from Utils.PointManip import push_from_center, midpoint
 
 
 
     def weighted_mean_example():
-        canvas, plot = draw.make_blank_canvas([-1,1],box=True)
+        canvas, plot = draw.make_blank_canvas([-10,10],box=True)
         draw.title("The Weighted Mean is the Point of Balance",size=25)
         
-        n = 20
-        X = np.random.uniform(-.8,.8,n//2)
-        X = np.append(X,np.random.uniform(.2,.8,n//2))
-        W = np.random.exponential(5,n)+1
-        # Sized reduced by square root to show weight by area
-        Sz = np.sqrt(W)/85
+        X = [x for x in range(-8,9)]
+        W = np.random.randint(0,5,17)**2
+        W[0] = 50
+        W[1] = 40
         
-        C = draw.draw_circles_xy(X,Sz,Sz)
-        C.set_alpha(.5)
-        draw.connect_p([-.8,0],[.8,0],color="black")
-        draw.draw_dots_xy([weighted_mean(X,W)],[-.035],color="red",marker="^",s=200)
+        for i in range(len(X)-1):
+            draw.draw_rect_xy(X[i]+.05,0,X[i+1]-.05,W[i]/10)
+        
+        draw.connect_p([-8,0],[8,0],color="black",linewidth=3)
+        draw.draw_dots_xy([weighted_mean(X,W)],[-.2],color="red",marker="^",s=200)
 
 
 
@@ -137,5 +135,5 @@ if __name__ == '__main__':
             
 
     weighted_mean_example()
-    median_mean_example()
-    harmonic_mean_example()
+#    median_mean_example()
+#    harmonic_mean_example()
