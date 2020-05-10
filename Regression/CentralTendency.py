@@ -31,7 +31,7 @@ def weighted_median(L,W):
     return LW[ctr-1][0]
     
 
-def mean(L):
+def arithmetic_mean(L):
     return sum(L)/len(L)
 
 
@@ -81,9 +81,9 @@ if __name__ == '__main__':
         # Sized reduced by square root to show weight by area
         Sz = np.sqrt(W)/85
         
-        C = draw.draw_circles(X,Sz,Sz)
+        C = draw.draw_circles_xy(X,Sz,Sz)
         C.set_alpha(.5)
-        draw.connect([-.8,0],[.8,0],color="black")
+        draw.connect_p([-.8,0],[.8,0],color="black")
         draw.draw_dots_xy([weighted_mean(X,W)],[-.035],color="red",marker="^",s=200)
 
 
@@ -97,26 +97,24 @@ if __name__ == '__main__':
         X = np.append(X,np.random.uniform(5,8,n//2))
         
         draw.make_blank_subplot(1,2,1,[-10,10])
-        draw.draw_circles(X,[.2]*n,[.2]*n)
-        draw.connect([-8,-.01],[8,-.01],color="black")
-        draw.draw_dots_xy([mean(X)],[-.35],color="black",marker="^",s=200)
+        draw.draw_circles_xy(X,[.2]*n,[.2]*n)
+        draw.connect_p([-8,-.01],[8,-.01],color="black")
+        draw.draw_dots_xy([arithmetic_mean(X)],[-.35],color="black",marker="^",s=200)
         draw.draw_dots_xy([median(X)],[-.35],color="lightgray",marker="^",s=200)
         draw.title("Mean",size=25)
         
         draw.make_blank_subplot(1,2,2,[-10,10])        
-        draw.draw_circles(X,[.2]*n,[.2]*n)
-        draw.connect([-8,-.01],[8,-.01],color="black")
+        draw.draw_circles_xy(X,[.2]*n,[.2]*n)
+        draw.connect_p([-8,-.01],[8,-.01],color="black")
         draw.draw_dots_xy([median(X)],[-.35],color="black",marker="^",s=200)
-        draw.draw_dots_xy([mean(X)],[-.35],color="lightgray",marker="^",s=200)
+        draw.draw_dots_xy([arithmetic_mean(X)],[-.35],color="lightgray",marker="^",s=200)
         draw.title("Median",size=25)
 
 
  
     def harmonic_mean_example():
-        
-        
-        canvas, plot = draw.make_blank_canvas([-2,2],[-2,2],[10,10])
-        draw.canvas_title("The Harmonic Mean is Relevant to Rates\n",size=25,y=1.05)
+        canvas, plot = draw.make_blank_canvas([-1.5,1.5],[-1.5,1.5],[10,10])
+        draw.canvas_title("The Harmonic Mean is Relevant to Rates\nWhat Is the Average Speed Around The Track Below?\nEach Distance is Equal",size=25,y=1.05)
         
         th = np.linspace(0,2*np.pi,8)
         X = np.sin(th)[:-1]
@@ -132,8 +130,12 @@ if __name__ == '__main__':
 
         S = np.random.randint(1,9,7)
         for speed,p in zip(S,M):
-            draw.text(p[0],p[1],f"{speed} mph",ha='center')
+            draw.text(p[0],p[1],f"{speed} mph",ha='center',size=12)
+            
+        draw.text(0,0,f"Average Speed: {harmonic_mean(S):.2f} mph",ha='center',size=20)
+        print(sum([1/s for s in S]))
+            
 
-#    weighted_mean_example()
-#    median_mean_example()
+    weighted_mean_example()
+    median_mean_example()
     harmonic_mean_example()

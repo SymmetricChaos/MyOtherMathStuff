@@ -13,6 +13,9 @@ def midpoint(A,B):
 
 
 def slope_between(A,B):
+    """
+    Slope from point A to point B
+    """
     return (A[1]-B[1])/(A[0]-B[0])
 
 
