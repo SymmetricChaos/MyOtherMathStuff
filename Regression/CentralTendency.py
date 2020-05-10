@@ -132,7 +132,7 @@ if __name__ == '__main__':
 
         S = np.random.randint(1,9,7)
         for speed,p in zip(S,M):
-            plt.text(p[0],p[1],f"{speed} mph",ha='center')
+            draw.text(p[0],p[1],f"{speed} mph",ha='center')
 
 #    weighted_mean_example()
 #    median_mean_example()

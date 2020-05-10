@@ -239,6 +239,14 @@ def draw_circles_xy(X,Y,R,ax=None, **kwargs):
     ax.add_collection(C)
     return C
 
+def draw_circles_p(P,R,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
+    circles = [plt.Circle(p, radius=r, **kwargs) for p,r in zip(P,R)]
+    C = collections.PatchCollection(circles)
+    ax.add_collection(C)
+    return C
+
 
 # Convenient function for a single circle, can be used for finer control of
 # lots of different circles
@@ -249,6 +257,19 @@ def draw_circle_xy(X,Y,R,ax=None,**kwargs):
     ax.add_patch(circle)
     return circle
 
+def draw_circle_p(P,R,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
+    circle = plt.Circle(P, radius=R, **kwargs)
+    ax.add_patch(circle)
+    return circle
+
+
+# Convenience for writing text
+def text(x,y,t,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
+    ax.text(x,y,t,**kwargs)
 
 
 
@@ -295,6 +316,7 @@ if __name__ == '__main__':
     # When subplots are not square shapes are warped
     sp3 = make_blank_subplot(2,2,4,[-3,3],[-5,5])
     draw_circle_xy(1.5,-.5,1,fc='white',ec='black')
+    text(-.8,3.5,"Shapes and lines on this plot are skewed\nbut not text\nthat's a circle down there",ha="center")
     
     # Show automatic xlim and ylim settings
     sp4 = make_blank_subplot(4,4,7)
@@ -304,7 +326,7 @@ if __name__ == '__main__':
     title("BLOOPS",size=30)
     
     # Add lines to a chosen axes
-    mblines([1,2,3,4,5],[0,0,0,0,0],ax=sp3)
+    mblines([1,2,3],[0,0,0],ax=sp3)
     
     # Make some circles
     draw_circles_xy([0,1,2],[0,0,0],[.5,.3,1],sp2,fc='green')
