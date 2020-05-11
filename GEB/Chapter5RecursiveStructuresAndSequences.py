@@ -32,6 +32,29 @@ def Q(n):
         return Q(n-Q(n-1)) + Q(n-Q(n-2))
 
 
+#def OrnateNoun():
+    # Article
+    # Adjectives
+    # Noun
+    
+    
+#def FancyNoun():
+    # OrnateNoun
+    # Preposition
+    # FancyNoun
+    
+    # OrnateNoun
+    # RelativePronoun
+    # Verb
+    # FancyNoun
+    
+    # OrnateNoun
+    # RelativePronoun
+    # FancyNoun
+    # Verb
+
+    
+
 
 
 
