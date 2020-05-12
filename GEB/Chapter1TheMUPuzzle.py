@@ -33,11 +33,12 @@ def MUI_theorems(n):
                     theorems_new.add(result)
         theorems_old = theorems_new.copy()
     
-    print(theorems_new)
+    return theorems_new
 
 
 
 
     
 if __name__ == '__main__':
-    MUI_theorems(3)
+    T = MUI_theorems(3)
+    print(sorted(T,key=len))
