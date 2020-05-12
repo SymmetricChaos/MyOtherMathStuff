@@ -1,3 +1,5 @@
+import re
+
 def MIU_rule1(S):
     if S[-1] == "I":
         yield S + "U"
@@ -12,10 +14,12 @@ def MIU_rule3(S):
         if S[pos:pos+3] == "III":
             yield S[:pos] + "U" + S[pos+3:]
 
+# We use regex to save some work here. It doesn't matter where in a string of
+# U's we remove a UU. So we'll always remove it from the start.
 def MIU_rule4(S):
-    for pos in range(len(S)):
-        if S[pos:pos+2] == "UU":
-            yield S[:pos] + S[pos+2:]
+    UU_pos = [i.span()[0] for i in re.finditer("UU+",S)]
+    for pos in UU_pos:
+        yield S[:pos] + S[pos+2:]
 
 
 def MUI_theorems(n):
@@ -52,5 +56,7 @@ def MUI_theorems(n):
 
     
 if __name__ == '__main__':
-    T = MUI_theorems(4)
+    T = MUI_theorems(5)
     print(sorted(T,key=len))
+    
+    
