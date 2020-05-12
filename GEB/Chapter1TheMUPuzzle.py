@@ -34,6 +34,10 @@ def MUI_theorems(n):
         theorems_old = theorems_new.copy()
     
     print(theorems_new)
+
+
+
+
     
-    
-MUI_theorems(3)
+if __name__ == '__main__':
+    MUI_theorems(3)
