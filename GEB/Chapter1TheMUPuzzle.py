@@ -24,21 +24,33 @@ def MUI_theorems(n):
     
     
     theorems_old = set(["MI"])
-    theorems_new = set(["MI"])
+    theorems_all = set(["MI"])
     
     for i in range(n):
+        # We know no new theorems yet
+        theorems_new = set([])
+        # Go through every string/theorem we know
         for string in theorems_old:
+            # For each rule we can apply
             for rule in rules:
+                # For each possible result of that rule
                 for result in rule(string):
-                    theorems_new.add(result)
-        theorems_old = theorems_new.copy()
+                    # If we have never seen it before
+                    if result not in theorems_all:
+                        # Make it a new theorem
+                        theorems_new.add(result)
+                        theorems_all.add(result)
     
-    return theorems_new
+        # The theorems we've just found are now old
+        theorems_old = theorems_new.copy()
+        theorems_new = set([])
+    
+    return theorems_all
 
 
 
 
     
 if __name__ == '__main__':
-    T = MUI_theorems(3)
+    T = MUI_theorems(4)
     print(sorted(T,key=len))
