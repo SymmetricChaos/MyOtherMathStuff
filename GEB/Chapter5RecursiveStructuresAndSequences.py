@@ -15,11 +15,11 @@ def G_graph(root,scale=0,ax=None):
     leaf2 = [ root[0]-5*s , root[1]+1 ]
     
     draw.draw_circle_p(node1,R=.1,ax=ax)
+    draw.draw_circle_p(node2,R=.1,ax=ax)
     draw.connect_p(node1,leaf2)
     draw.connect_p(node1,node2)
     draw.connect_p(node2,leaf1)
-    draw.draw_circle_p(node2,R=.1,ax=ax)
-    
+
     return leaf1,leaf2
 
 def G_graph_recur(root,levels=1,scale=0,ax=None):
@@ -47,12 +47,12 @@ def H_graph(root,scale=0,ax=None):
     leaf2 = [ root[0]-5*s , root[1]+1 ]
     
     draw.draw_circle_p(node1,R=.1,ax=ax)
+    draw.draw_circle_p(node2,R=.1,ax=ax)
+    draw.draw_circle_p(node3,R=.1,ax=ax)
     draw.connect_p(node1,leaf2)
     draw.connect_p(node1,node2)
     draw.connect_p(node2,leaf1)
-    draw.draw_circle_p(node2,R=.1,ax=ax)
-    draw.draw_circle_p(node3,R=.1,ax=ax)
-    
+
     return leaf1,leaf2
 
 def H_graph_recur(root,levels=1,scale=0,ax=None):
@@ -63,22 +63,68 @@ def H_graph_recur(root,levels=1,scale=0,ax=None):
         leaf1,leaf2 = H_graph(root,scale,ax)
         H_graph_recur(leaf1,levels,scale+1,ax)
         H_graph_recur(leaf2,levels,scale+1,ax)
-        H_graph_recur(leaf2,levels,scale+1,ax)
 
 
+# Married recursion
 def F(n):
-#    print(f"F({n})")
     if n == 0:
         return 1
     else:
         return n-M(F(n-1))
     
 def M(n):
-#    print(f"M({n})")
     if n == 0:
         return 0
     else:
         return n-F(M(n-1))
+    
+def F_graph1(root,scale=0,ax=None):
+    s = 1/(2**scale)
+    node1 = root
+    node2 = [ root[0]-5*s , root[1]+1 ]
+    leaf1 = [ root[0]+5*s , root[1]+1 ]
+    leaf2 = [ root[0]-5*s , root[1]+2 ]
+    
+    draw.draw_circle_p(node1,R=.1,ax=ax)
+    draw.draw_circle_p(node2,R=.1,ax=ax)
+    draw.connect_p(node1,node2)
+    draw.connect_p(node2,leaf2)
+    draw.connect_p(node1,leaf1)
+
+    return leaf1,leaf2
+
+def F_graph2(root,scale=0,ax=None):
+    s = 1/(2**scale)
+    node1 = root
+    node2 = [ root[0]+5*s , root[1]+1 ]
+    leaf1 = [ root[0]-5*s , root[1]+1 ]
+    leaf2 = [ root[0]+5*s , root[1]+2 ]
+    
+    draw.draw_circle_p(node1,R=.1,ax=ax)
+    draw.draw_circle_p(node2,R=.1,ax=ax)
+    draw.connect_p(node1,node2)
+    draw.connect_p(node1,leaf1)
+    draw.connect_p(node2,leaf2)
+
+    return leaf1,leaf2
+
+def F_graph_recur1(root,levels=1,scale=0,ax=None):
+
+    if scale >= levels:
+        return 0
+    else:
+        leaf1,leaf2 = F_graph1(root,scale,ax)
+        F_graph_recur1(leaf1,levels,scale+1,ax)
+        F_graph_recur2(leaf2,levels,scale+1,ax)
+        
+def F_graph_recur2(root,levels=1,scale=0,ax=None):
+
+    if scale >= levels:
+        return 0
+    else:
+        leaf1,leaf2 = F_graph2(root,scale,ax)
+        F_graph_recur1(leaf1,levels,scale+1,ax)
+        F_graph_recur2(leaf2,levels,scale+1,ax)
 
 
 def Q(n):
@@ -88,7 +134,7 @@ def Q(n):
         return Q(n-Q(n-1)) + Q(n-Q(n-2))
 
 
-# RTN
+# Recursive Transition Network
 adj_list = ["acidic","basic","small","large","hot","cold","bright","dark","red","green","blue","orange","tall","short","clean","dirty","simple","complex"]
 noun_list = ["animal","plant","rock","computer","book","desk","fan","bottle","person","oven","country","thing","child","adult","road"]
 prep_list = ["about","above","across","after","against","among","around","at","before","behind","below","beside","between","by","down","during","except","for","from","in","inside","into","near","of","off","on","out","over","through","to","toward","under","up","with"]
@@ -154,24 +200,38 @@ def FancyNoun():
 if __name__ == '__main__':
 
     # Ornate Noun
-    print(f"Ornate noun: {OrnateNoun()}")
+    print(f"Fancy noun: {FancyNoun()}")
     print(f"Fancy noun: {FancyNoun()}")
     
     print("\nG(n) = n-G(G(n-1))")
     for i in range(25):
-        print(G(i),end=" ")
+        print(f"{i:>2}",end=" ")
+    print()
+    for i in range(25):
+        print(f"{G(i):>2}",end=" ")
 
-    draw.make_blank_canvas([-10,10],[-5,15],[8,8])
+
+
+    draw.make_blank_canvas([-10,10],[-5,15],[14,14])
     G_graph_recur([0,0],5)
     draw.title("G(n) = n-G(G(n-1))",size=22)
     
-    print("\nH(n) = n-H(H(H(n-1)))")
-    for i in range(25):
-        print(H(i),end=" ")
-
-    draw.make_blank_canvas([-10,10],[-5,15],[8,8])
-    H_graph_recur([0,0],5)
-    draw.title("H(n) = n-H(H(H(n-1)))",size=22)
+    draw.make_blank_canvas([-10,10],[-5,15],[14,14])
+    F_graph_recur1([0,0],5)
+    draw.draw_rect_xy(-3,11.5,-1,14.5,ec='black',fc='white',zorder=-1)
+    F_graph1([-2,12],3)
+    draw.draw_rect_xy(1,11.5,3,14.5,ec='black',fc='white',zorder=-1)
+    F_graph2([2,12],3)
+    draw.title("F(n) = n-M(F(n-1)))\nM(n) = n-F(M(n-1)))",size=22)
+    
+    
+#    print("\nH(n) = n-H(H(H(n-1)))")
+#    for i in range(25):
+#        print(H(i),end=" ")
+#
+#    draw.make_blank_canvas([-10,10],[-5,15],[8,8])
+#    H_graph_recur([0,0],5)
+#    draw.title("H(n) = n-H(H(H(n-1)))",size=22)
 
         
 #    print("\n\nDiagram Q")
@@ -179,5 +239,11 @@ if __name__ == '__main__':
 #        print(Q(i),end=" ")
         
     print("\nMarried Recursion")
-    for i in range(25):
-        print(M(i),end=" ")
+    for i in range(35):
+        print(f"{i:>2}",end=" ")
+    print()
+    for i in range(35):
+        print(f"{F(i):>2}",end=" ")
+#    print()
+#    for i in range(25):
+#        print(f"{M(i):>2}",end=" ")
