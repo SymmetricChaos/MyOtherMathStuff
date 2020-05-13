@@ -150,15 +150,11 @@ def FancyNoun():
 
 
 if __name__ == '__main__':
-    
-    
-    
-    
+
     # Ornate Noun
     print(f"Ornate noun: {OrnateNoun()}")
     print(f"Fancy noun: {FancyNoun()}")
     
-
     print("\nG(n) = n-G(G(n-1))")
     for i in range(25):
         print(G(i),end=" ")
@@ -176,9 +172,9 @@ if __name__ == '__main__':
     draw.title("H(n) = n-H(H(H(n-1)))",size=22)
 
         
-    print("\n\nDiagram Q")
-    for i in range(1,25):
-        print(Q(i),end=" ")
+#    print("\n\nDiagram Q")
+#    for i in range(1,25):
+#        print(Q(i),end=" ")
         
 #    print("\nMarried Recursion")
 #    for i in range(10):
