@@ -10,9 +10,9 @@ def G(n):
 def G_graph(root,scale=0,ax=None):
     s = 1/(2**scale)
     node1 = root
-    node2 = [ root[0]+4*s , root[1]+1 ]
-    leaf1 = [ root[0]+4*s , root[1]+2 ]
-    leaf2 = [ root[0]-4*s , root[1]+1 ]
+    node2 = [ root[0]+5*s , root[1]+1 ]
+    leaf1 = [ root[0]+5*s , root[1]+2 ]
+    leaf2 = [ root[0]-5*s , root[1]+1 ]
     
     draw.draw_circle_p(node1,R=.1,ax=ax)
     draw.connect_p(node1,leaf2)
@@ -37,6 +37,33 @@ def H(n):
         return 0
     else:
         return n-H(H(H(n-1)))
+
+def H_graph(root,scale=0,ax=None):
+    s = 1/(2**scale)
+    node1 = root
+    node2 = [ root[0]+5*s , root[1]+1 ]
+    node3 = [ root[0]+5*s , root[1]+2 ]
+    leaf1 = [ root[0]+5*s , root[1]+3 ]
+    leaf2 = [ root[0]-5*s , root[1]+1 ]
+    
+    draw.draw_circle_p(node1,R=.1,ax=ax)
+    draw.connect_p(node1,leaf2)
+    draw.connect_p(node1,node2)
+    draw.connect_p(node2,leaf1)
+    draw.draw_circle_p(node2,R=.1,ax=ax)
+    draw.draw_circle_p(node3,R=.1,ax=ax)
+    
+    return leaf1,leaf2
+
+def H_graph_recur(root,levels=1,scale=0,ax=None):
+
+    if scale >= levels:
+        return 0
+    else:
+        leaf1,leaf2 = H_graph(root,scale,ax)
+        H_graph_recur(leaf1,levels,scale+1,ax)
+        H_graph_recur(leaf2,levels,scale+1,ax)
+        H_graph_recur(leaf2,levels,scale+1,ax)
 
 
 def F(n):
@@ -131,19 +158,23 @@ if __name__ == '__main__':
     print(f"Ornate noun: {OrnateNoun()}")
     print(f"Fancy noun: {FancyNoun()}")
     
-    #Recreate the graphs from the book
-    
-    
-    draw.make_blank_canvas([-10,10],[-10,10])
-    G_graph_recur([0,0],5)
-    
-    print("\nDiagram G")
+
+    print("\nG(n) = n-G(G(n-1))")
     for i in range(25):
         print(G(i),end=" ")
+
+    draw.make_blank_canvas([-10,10],[-5,15],[8,8])
+    G_graph_recur([0,0],5)
+    draw.title("G(n) = n-G(G(n-1))",size=22)
     
-    print("\n\nDiagram H")
+    print("\nH(n) = n-H(H(H(n-1)))")
     for i in range(25):
         print(H(i),end=" ")
+
+    draw.make_blank_canvas([-10,10],[-5,15],[8,8])
+    H_graph_recur([0,0],5)
+    draw.title("H(n) = n-H(H(H(n-1)))",size=22)
+
         
     print("\n\nDiagram Q")
     for i in range(1,25):
