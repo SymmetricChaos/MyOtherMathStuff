@@ -67,16 +67,18 @@ def H_graph_recur(root,levels=1,scale=0,ax=None):
 
 
 def F(n):
+#    print(f"F({n})")
     if n == 0:
         return 1
     else:
-        return n-F(M(n-1))
+        return n-M(F(n-1))
     
 def M(n):
+#    print(f"M({n})")
     if n == 0:
         return 0
     else:
-        return n-M(F(n-1))
+        return n-F(M(n-1))
 
 
 def Q(n):
@@ -87,7 +89,7 @@ def Q(n):
 
 
 # RTN
-adj_list = ["acidic","basic","small","large","hot","cold","bright","dark","red","green","blue","orange","tall","short","clean","dirty"]
+adj_list = ["acidic","basic","small","large","hot","cold","bright","dark","red","green","blue","orange","tall","short","clean","dirty","simple","complex"]
 noun_list = ["animal","plant","rock","computer","book","desk","fan","bottle","person","oven","country","thing","child","adult","road"]
 prep_list = ["about","above","across","after","against","among","around","at","before","behind","below","beside","between","by","down","during","except","for","from","in","inside","into","near","of","off","on","out","over","through","to","toward","under","up","with"]
 verb_list = ["chose","wore","bought","flew","dropped","grabbed","ate","climbed","threw","jumped"]
@@ -176,6 +178,6 @@ if __name__ == '__main__':
 #    for i in range(1,25):
 #        print(Q(i),end=" ")
         
-#    print("\nMarried Recursion")
-#    for i in range(10):
-#        print(M(i),end=" ")
+    print("\nMarried Recursion")
+    for i in range(25):
+        print(M(i),end=" ")
