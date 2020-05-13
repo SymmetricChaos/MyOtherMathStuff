@@ -1,4 +1,5 @@
-def pq_system():
+# Recusrively check validity of a pq-statement
+def pq_system(S):
     
 
 

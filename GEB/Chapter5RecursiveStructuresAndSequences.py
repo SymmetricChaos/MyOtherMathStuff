@@ -1,9 +1,35 @@
 import numpy as np
+import Utils.Drawing as draw
+
 def G(n):
     if n == 0:
         return 0
     else:
         return n-G(G(n-1))
+    
+def G_graph(root,scale=0,ax=None):
+    s = 1/(2**scale)
+    node1 = root
+    node2 = [ root[0]+4*s , root[1]+1 ]
+    leaf1 = [ root[0]+4*s , root[1]+2 ]
+    leaf2 = [ root[0]-4*s , root[1]+1 ]
+    
+    draw.draw_circle_p(node1,R=.1,ax=ax)
+    draw.connect_p(node1,leaf2)
+    draw.connect_p(node1,node2)
+    draw.connect_p(node2,leaf1)
+    draw.draw_circle_p(node2,R=.1,ax=ax)
+    
+    return leaf1,leaf2
+
+def G_graph_recur(root,levels=1,scale=0,ax=None):
+
+    if scale >= levels:
+        return 0
+    else:
+        leaf1,leaf2 = G_graph(root,scale,ax)
+        G_graph_recur(leaf1,levels,scale+1,ax)
+        G_graph_recur(leaf2,levels,scale+1,ax)
 
 
 def H(n):
@@ -96,14 +122,20 @@ def FancyNoun():
 
 
 
-
 if __name__ == '__main__':
+    
+    
+    
     
     # Ornate Noun
     print(f"Ornate noun: {OrnateNoun()}")
     print(f"Fancy noun: {FancyNoun()}")
     
     #Recreate the graphs from the book
+    
+    
+    draw.make_blank_canvas([-10,10],[-10,10])
+    G_graph_recur([0,0],5)
     
     print("\nDiagram G")
     for i in range(25):

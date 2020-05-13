@@ -26,7 +26,6 @@ def MUI_theorems(n):
     
     rules = [MIU_rule1,MIU_rule2,MIU_rule3,MIU_rule4]
     
-    
     theorems_old = set(["MI"])
     theorems_all = set(["MI"])
     
@@ -47,7 +46,6 @@ def MUI_theorems(n):
     
         # The theorems we've just found are now old
         theorems_old = theorems_new.copy()
-        theorems_new = set([])
     
     return theorems_all
 
@@ -58,5 +56,3 @@ def MUI_theorems(n):
 if __name__ == '__main__':
     T = MUI_theorems(5)
     print(sorted(T,key=len))
-    
-    
