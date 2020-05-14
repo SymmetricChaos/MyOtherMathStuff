@@ -153,7 +153,7 @@ def F_graph_example():
     F_graph1([-2,12],3)
     draw.draw_rect_xy(1,11.5,3,14.5,ec='black',fc='white',zorder=-1)
     F_graph2([2,12],3)
-    draw.title("F(n) = n-M(F(n-1)))\nM(n) = n-F(M(n-1)))",size=22)
+    draw.title("F(n) = n-M(F(n-1))), F(0) = 1\nM(n) = n-F(M(n-1))), M(0) = 0",size=22)
 
 
 
@@ -235,39 +235,45 @@ if __name__ == '__main__':
     print(f"Fancy noun: {FancyNoun()}")
     print(f"Fancy noun: {FancyNoun()}")
     
-    print("\nG(n) = n-G(G(n-1))")
+    print("\n\n\nG(n) = n-G(G(n-1))")
+    print("n   :",end=" ")
     for i in range(25):
         print(f"{i:>2}",end=" ")
-    print()
+    print("\nG(n):",end=" ")
     for i in range(25):
         print(f"{G(i):>2}",end=" ")
-    
     G_graph_example()
+    draw.show_now()
+    
+    
+    print("\n\n\nH(n) = n-H(H(H(n-1)))")
+    print("n   :",end=" ")
+    for i in range(25):
+        print(f"{i:>2}",end=" ")
+    print("\nH(n):",end=" ")
+    for i in range(25):
+        print(f"{H(i):>2}",end=" ")
     H_graph_example()
+    draw.show_now()
+    
+    
+    print("\n\n\nF(n) = n-M(F(n-1)), F(0) = 1\nM(n) = n-F(M(n-1)), M(0) = 0")
+    print("n   :",end=" ")
+    for i in range(25):
+        print(f"{i:>2}",end=" ")
+    print("\nF(n):",end=" ")
+    for i in range(25):
+        print(f"{F(i):>2}",end=" ")
+    print("\nM(n):",end=" ")
+    for i in range(25):
+        print(f"{M(i):>2}",end=" ")
     F_graph_example()
+    draw.show_now()
     
 
     
-    
-#    print("\nH(n) = n-H(H(H(n-1)))")
-#    for i in range(25):
-#        print(H(i),end=" ")
-#
-#    draw.make_blank_canvas([-10,10],[-5,15],[8,8])
-#    H_graph_recur([0,0],5)
-#    draw.title("H(n) = n-H(H(H(n-1)))",size=22)
 
         
 #    print("\n\nDiagram Q")
 #    for i in range(1,25):
 #        print(Q(i),end=" ")
-        
-    print("\nMarried Recursion")
-    for i in range(35):
-        print(f"{i:>2}",end=" ")
-    print()
-    for i in range(35):
-        print(f"{F(i):>2}",end=" ")
-#    print()
-#    for i in range(25):
-#        print(f"{M(i):>2}",end=" ")

@@ -281,6 +281,8 @@ def text(x,y,t,ax=None,**kwargs):
     ax.text(x,y,t,**kwargs)
 
 
+def show_now():
+    plt.show()
 
 
 
