@@ -31,6 +31,16 @@ def G_graph_recur(root,levels=1,scale=0,ax=None):
         G_graph_recur(leaf1,levels,scale+1,ax)
         G_graph_recur(leaf2,levels,scale+1,ax)
 
+def G_graph_example():
+    draw.make_blank_canvas([-10,10],[-5,15],[14,14])
+    G_graph_recur([0,0],5)
+    draw.title("G(n) = n-G(G(n-1))",size=22)
+    draw.draw_rect_xy(1,11.5,3,14.5,ec='black',fc='white',zorder=-1)
+    G_graph([2,12],3)
+
+
+
+
 
 def H(n):
     if n == 0:
@@ -63,6 +73,16 @@ def H_graph_recur(root,levels=1,scale=0,ax=None):
         leaf1,leaf2 = H_graph(root,scale,ax)
         H_graph_recur(leaf1,levels,scale+1,ax)
         H_graph_recur(leaf2,levels,scale+1,ax)
+        
+def H_graph_example():
+    draw.make_blank_canvas([-10,10],[-5,15],[14,14])
+    H_graph_recur([0,-3],5)
+    draw.title("H(n) = n-H(H(H(n-1)))",size=22)
+    draw.draw_rect_xy(1,10.5,3,14.5,ec='black',fc='white',zorder=-1)
+    H_graph([2,11],3)
+
+
+
 
 
 # Married recursion
@@ -125,6 +145,18 @@ def F_graph_recur2(root,levels=1,scale=0,ax=None):
         leaf1,leaf2 = F_graph2(root,scale,ax)
         F_graph_recur1(leaf1,levels,scale+1,ax)
         F_graph_recur2(leaf2,levels,scale+1,ax)
+        
+def F_graph_example():
+    draw.make_blank_canvas([-10,10],[-5,15],[14,14])
+    F_graph_recur1([0,0],5)
+    draw.draw_rect_xy(-3,11.5,-1,14.5,ec='black',fc='white',zorder=-1)
+    F_graph1([-2,12],3)
+    draw.draw_rect_xy(1,11.5,3,14.5,ec='black',fc='white',zorder=-1)
+    F_graph2([2,12],3)
+    draw.title("F(n) = n-M(F(n-1)))\nM(n) = n-F(M(n-1)))",size=22)
+
+
+
 
 
 def Q(n):
@@ -134,13 +166,15 @@ def Q(n):
         return Q(n-Q(n-1)) + Q(n-Q(n-2))
 
 
+
+
+
 # Recursive Transition Network
 adj_list = ["acidic","basic","small","large","hot","cold","bright","dark","red","green","blue","orange","tall","short","clean","dirty","simple","complex"]
 noun_list = ["animal","plant","rock","computer","book","desk","fan","bottle","person","oven","country","thing","child","adult","road"]
 prep_list = ["about","above","across","after","against","among","around","at","before","behind","below","beside","between","by","down","during","except","for","from","in","inside","into","near","of","off","on","out","over","through","to","toward","under","up","with"]
 verb_list = ["chose","wore","bought","flew","dropped","grabbed","ate","climbed","threw","jumped"]
 rel_pronoun_list = ["who","which","that","whom"]
-
 
 def Article():
     return np.random.choice(["a","an","the"],1)[0]
@@ -160,7 +194,6 @@ def Verb():
 def RelativePronoun():
     return np.random.choice(rel_pronoun_list,1)[0]
 
-
 def OrnateNoun():
     S = ""
     S += Article() + " "
@@ -168,7 +201,6 @@ def OrnateNoun():
         S += Adjective() + " "
     S += Noun()
     return S
-    
     
 def FancyNoun():
     S = ""
@@ -209,20 +241,12 @@ if __name__ == '__main__':
     print()
     for i in range(25):
         print(f"{G(i):>2}",end=" ")
-
-
-
-    draw.make_blank_canvas([-10,10],[-5,15],[14,14])
-    G_graph_recur([0,0],5)
-    draw.title("G(n) = n-G(G(n-1))",size=22)
     
-    draw.make_blank_canvas([-10,10],[-5,15],[14,14])
-    F_graph_recur1([0,0],5)
-    draw.draw_rect_xy(-3,11.5,-1,14.5,ec='black',fc='white',zorder=-1)
-    F_graph1([-2,12],3)
-    draw.draw_rect_xy(1,11.5,3,14.5,ec='black',fc='white',zorder=-1)
-    F_graph2([2,12],3)
-    draw.title("F(n) = n-M(F(n-1)))\nM(n) = n-F(M(n-1)))",size=22)
+    G_graph_example()
+    H_graph_example()
+    F_graph_example()
+    
+
     
     
 #    print("\nH(n) = n-H(H(H(n-1)))")
