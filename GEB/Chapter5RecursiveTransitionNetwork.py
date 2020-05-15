@@ -82,9 +82,78 @@ def FancyNoun():
         
     return S
 
+# Selects adjectives in a way that respect the typical adjective order in English
+def ComplexAdjective():
+
+    # Opinion
+    opinion = ["beautiful","horrible","amazing","excellent","skillful","strange","unusual","bizzare","ordinary"]
+    # Size
+    size = ["big","small","huge","tiny","tremendous","tall","short","long","diminutive","fat","thin","narrow"]
+    # Physical quality
+    quality = ["dirty","clean","rough","smooth","soft","hard","fragile"]
+    # Age
+    age = ["old","young","baby","ancient","geriatric","infantile","modern","classical"]
+    # Shape
+    shape = ["square","round","triangular","cubical"]
+    # Color
+    color = ["red","orange","yellow","green","blue","indigo","violet","pink","brown","black","white","colorless","transparent"]
+    # Title/Origin
+    origin = ["American","French","Chinese","Russian","Egyptian","Australian","Turkish","Dutch","northern","southern","eastern","western"]
+    # Material
+    material = ["wooden","metal","plastic","ceramic","cotton"]
+    # Distinguishing Type
+#    dtype = []
     
+    A = ""
+    
+    for adj_list in [opinion, size, quality, age, shape, color, origin, material]:
+        while np.random.uniform() < .15:
+            A += np.random.choice(adj_list,1)[0] + " "
+    
+    return A
+
+def ChooseArticle(s):
+    if s[0] in "aeiou":
+        return np.random.choice(["an","the"],1)[0]
+    else:
+        return np.random.choice(["a","the"],1)[0]
+
+def ArticleAdjectiveNoun():
+    noun = np.random.choice(noun_list,1)[0]
+    c_adj = ComplexAdjective()
+    
+    phrase = c_adj + noun
+    art = ChooseArticle(phrase)
+    return art + " " + phrase
 
 
+def ComplexNounPhrase():
+    S = ""
+    path = np.random.randint(0,2)
+    
+    if path == 0:
+        S += ArticleAdjectiveNoun() + " "
+        S += Preposition() + " "
+        S += ComplexNounPhrase()
+    
+    elif path == 1:
+        S += ArticleAdjectiveNoun() + " "
+        S += RelativePronoun() + " "
+        S += Verb() + " "
+        S += ArticleAdjectiveNoun()
+    
+    elif path == 2:
+        S += ArticleAdjectiveNoun() + " "
+        S += RelativePronoun() + " "
+        S += ArticleAdjectiveNoun() + " "
+        S += Verb()
+        
+    return S
+    
+    
+    
+    
+    
 
 if __name__ == '__main__':
     
@@ -97,3 +166,8 @@ if __name__ == '__main__':
     print(f"Fancy noun: {FancyNoun()}")
     print(f"Fancy noun: {FancyNoun()}")
     
+    
+    # A more sophisticated grammatical system
+    print("\n\nA slightly more complicated system that better respect how English is spoken\nNote that this system still often produces nonsense because it cannot consider context.")
+    print(f"Fancy noun: {ComplexNounPhrase()}")
+    print(f"Fancy noun: {ComplexNounPhrase()}")
