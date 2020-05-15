@@ -270,8 +270,9 @@ if __name__ == '__main__':
     F_graph_example()
     draw.show_now()
     
-
-    print("\n\nDiagram Q")
+    
+    print("\n\nWhile the recusive functions above have regular structure shown by the trees the function below apparently does not.")
+    print("Q(n) = Q(n-Q(n-1)) + Q(n-Q(n-2)), Q(1) = Q(2) = 1")
     print("n   :",end=" ")
     for i in range(1,25):
         print(f"{i:>2}",end=" ")
