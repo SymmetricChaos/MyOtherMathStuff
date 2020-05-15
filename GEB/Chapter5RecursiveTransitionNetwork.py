@@ -94,7 +94,7 @@ def ComplexAdjective():
     # Age
     age = ["old","young","baby","ancient","geriatric","infantile","modern","classical"]
     # Shape
-    shape = ["square","round","triangular","cubical"]
+    shape = ["square","round","triangular","cubical","convex","concave","spherical"]
     # Color
     color = ["red","orange","yellow","green","blue","indigo","violet","pink","brown","black","white","colorless","transparent"]
     # Title/Origin
@@ -118,7 +118,7 @@ def ChooseArticle(s):
     else:
         return np.random.choice(["a","the"],1)[0]
 
-def ArticleAdjectiveNoun():
+def SimpleNounPhrase():
     noun = np.random.choice(noun_list,1)[0]
     c_adj = ComplexAdjective()
     
@@ -126,26 +126,25 @@ def ArticleAdjectiveNoun():
     art = ChooseArticle(phrase)
     return art + " " + phrase
 
-
 def ComplexNounPhrase():
     S = ""
     path = np.random.randint(0,2)
     
     if path == 0:
-        S += ArticleAdjectiveNoun() + " "
+        S += SimpleNounPhrase() + " "
         S += Preposition() + " "
         S += ComplexNounPhrase()
     
     elif path == 1:
-        S += ArticleAdjectiveNoun() + " "
+        S += SimpleNounPhrase() + " "
         S += RelativePronoun() + " "
         S += Verb() + " "
-        S += ArticleAdjectiveNoun()
+        S += SimpleNounPhrase()
     
     elif path == 2:
-        S += ArticleAdjectiveNoun() + " "
+        S += SimpleNounPhrase() + " "
         S += RelativePronoun() + " "
-        S += ArticleAdjectiveNoun() + " "
+        S += SimpleNounPhrase() + " "
         S += Verb()
         
     return S
@@ -169,5 +168,5 @@ if __name__ == '__main__':
     
     # A more sophisticated grammatical system
     print("\n\nA slightly more complicated system that better respect how English is spoken\nNote that this system still often produces nonsense because it cannot consider context.")
-    print(f"Fancy noun: {ComplexNounPhrase()}")
-    print(f"Fancy noun: {ComplexNounPhrase()}")
+    print(f"Simple Phrase: {SimpleNounPhrase()}")
+    print(f"Complex Phrase: {ComplexNounPhrase()}")
