@@ -26,9 +26,6 @@ def fib_expansion(n):
 
 
 
-
-
-
 # Recursive Transition Network
 adj_list = ["acidic","basic","small","large","hot","cold","bright","dark","red","green","blue","orange","tall","short","clean","dirty","simple","complex"]
 noun_list = ["animal","plant","rock","computer","book","desk","fan","bottle","person","oven","country","thing","child","adult","road"]
@@ -100,47 +97,3 @@ if __name__ == '__main__':
     print(f"Fancy noun: {FancyNoun()}")
     print(f"Fancy noun: {FancyNoun()}")
     
-#    print("\n\n\nG(n) = n-G(G(n-1)), G(0) = 0")
-#    print("n   :",end=" ")
-#    for i in range(25):
-#        print(f"{i:>2}",end=" ")
-#    print("\nG(n):",end=" ")
-#    for i in range(25):
-#        print(f"{G(i):>2}",end=" ")
-#    G_graph_example()
-#    draw.show_now()
-#    
-#    
-#    print("\n\n\nH(n) = n-H(H(H(n-1))), H(0) = 0")
-#    print("n   :",end=" ")
-#    for i in range(25):
-#        print(f"{i:>2}",end=" ")
-#    print("\nH(n):",end=" ")
-#    for i in range(25):
-#        print(f"{H(i):>2}",end=" ")
-#    H_graph_example()
-#    draw.show_now()
-#    
-#    
-#    print("\n\n\nF(n) = n-M(F(n-1)), F(0) = 1\nM(n) = n-F(M(n-1)), M(0) = 0")
-#    print("n   :",end=" ")
-#    for i in range(25):
-#        print(f"{i:>2}",end=" ")
-#    print("\nF(n):",end=" ")
-#    for i in range(25):
-#        print(f"{F(i):>2}",end=" ")
-#    print("\nM(n):",end=" ")
-#    for i in range(25):
-#        print(f"{M(i):>2}",end=" ")
-#    F_graph_example()
-#    draw.show_now()
-#    
-#    
-#    print("\n\nWhile the recusive functions above have regular structure shown by the trees the function below apparently does not.")
-#    print("Q(n) = Q(n-Q(n-1)) + Q(n-Q(n-2)), Q(1) = Q(2) = 1")
-#    print("n   :",end=" ")
-#    for i in range(1,25):
-#        print(f"{i:>2}",end=" ")
-#    print("\nQ(n):",end=" ")
-#    for i in range(1,25):
-#        print(f"{Q(i):>2}",end=" ")
