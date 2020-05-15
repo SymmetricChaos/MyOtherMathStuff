@@ -235,7 +235,7 @@ if __name__ == '__main__':
     print(f"Fancy noun: {FancyNoun()}")
     print(f"Fancy noun: {FancyNoun()}")
     
-    print("\n\n\nG(n) = n-G(G(n-1))")
+    print("\n\n\nG(n) = n-G(G(n-1)), G(0) = 0")
     print("n   :",end=" ")
     for i in range(25):
         print(f"{i:>2}",end=" ")
@@ -246,7 +246,7 @@ if __name__ == '__main__':
     draw.show_now()
     
     
-    print("\n\n\nH(n) = n-H(H(H(n-1)))")
+    print("\n\n\nH(n) = n-H(H(H(n-1))), H(0) = 0")
     print("n   :",end=" ")
     for i in range(25):
         print(f"{i:>2}",end=" ")
@@ -271,9 +271,10 @@ if __name__ == '__main__':
     draw.show_now()
     
 
-    
-
-        
-#    print("\n\nDiagram Q")
-#    for i in range(1,25):
-#        print(Q(i),end=" ")
+    print("\n\nDiagram Q")
+    print("n   :",end=" ")
+    for i in range(1,25):
+        print(f"{i:>2}",end=" ")
+    print("\nQ(n):",end=" ")
+    for i in range(1,25):
+        print(f"{Q(i):>2}",end=" ")
