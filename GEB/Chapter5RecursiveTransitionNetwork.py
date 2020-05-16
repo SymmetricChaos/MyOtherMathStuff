@@ -28,9 +28,9 @@ def fib_expansion(n):
 
 # Recursive Transition Network
 adj_list = ["acidic","basic","small","large","hot","cold","bright","dark","red","green","blue","orange","tall","short","clean","dirty","simple","complex"]
-noun_list = ["animal","plant","rock","computer","book","desk","fan","bottle","person","oven","country","thing","child","adult","road"]
-prep_list = ["about","above","across","after","against","among","around","at","before","behind","below","beside","between","by","down","during","except","for","from","in","inside","into","near","of","off","on","out","over","through","to","toward","under","up","with"]
-verb_list = ["chose","wore","bought","flew","dropped","grabbed","ate","climbed","threw","jumped"]
+noun_list = ["animal","plant","rock","computer","book","desk","fan","bottle","person","oven","country","thing","child","adult","road","family","river","ocean","woman","man","dragon","planet","snack","doctor","meat","library","button","paper"]
+prep_list = ["about","above","across","after","against","among","around","before","behind","below","beside","between","by","from","in","inside","into","near","on","over","to","toward","under","with"]
+verb_list = ["chose","wore","bought","flew","dropped","grabbed","ate","climbed","threw","jumped","attacked","helped","twirled","insulted","complimented"]
 rel_pronoun_list = ["who","which","that"]
 
 def Article():
@@ -86,7 +86,7 @@ def FancyNoun():
 def ComplexAdjective():
 
     # Opinion
-    opinion = ["beautiful","horrible","amazing","excellent","skillful","strange","unusual","bizzare","ordinary"]
+    opinion = ["beautiful","useless","horrible","amazing","excellent","skillful","strange","unusual","bizzare","ordinary"]
     # Size
     size = ["big","small","huge","tiny","tremendous","tall","short","long","diminutive","fat","thin","narrow"]
     # Physical quality
@@ -94,21 +94,23 @@ def ComplexAdjective():
     # Age
     age = ["old","young","baby","ancient","geriatric","infantile","modern","classical"]
     # Shape
-    shape = ["square","round","triangular","cubical","convex","concave","spherical"]
+    shape = ["square","round","triangular","cubical","convex","concave","spherical","rectangular"]
     # Color
     color = ["red","orange","yellow","green","blue","indigo","violet","pink","brown","black","white","colorless","transparent"]
     # Title/Origin
     origin = ["American","French","Chinese","Russian","Egyptian","Australian","Turkish","Dutch","northern","southern","eastern","western"]
     # Material
     material = ["wooden","metal","plastic","ceramic","cotton"]
-    # Distinguishing Type
-#    dtype = []
-    
+
     A = ""
     
+    # go through the lists in order randomly picking adjectives
     for adj_list in [opinion, size, quality, age, shape, color, origin, material]:
-        while np.random.uniform() < .15:
+        # how much to reduce the chance of adding an adjective of the same kind
+        rep_adjust = 0
+        while np.random.uniform() < (.15-rep_adjust):
             A += np.random.choice(adj_list,1)[0] + " "
+            rep_adjust += .03
     
     return A
 
@@ -161,12 +163,13 @@ if __name__ == '__main__':
         print(fib_expansion(i))
         
     # Ornate Noun
-    print("\n\nCreate a complex noun phrase using a recursive formula\nNote that a grammatical noun phrase is more sophisticated than this and must respect things like adjective order and correct articles.")
+    print("\n\nCreate a complex noun phrase using a recursive formula\nNote that a grammatical noun phrase is more sophisticated than this and must respect things like adjective order and correct articles.\n")
     print(f"Fancy noun: {FancyNoun()}")
     print(f"Fancy noun: {FancyNoun()}")
     
     
     # A more sophisticated grammatical system
-    print("\n\nA slightly more complicated system that better respect how English is spoken\nNote that this system still often produces nonsense because it cannot consider context.")
-    print(f"Simple Phrase: {SimpleNounPhrase()}")
-    print(f"Complex Phrase: {ComplexNounPhrase()}")
+    print("\n\nA slightly more complicated system that better respects how English is spoken. Note that this system still often produces nonsense because it cannot consider context.\n")
+    print(f"Plain Noun: {Noun()}")
+    print(f"Simple Noun: {SimpleNounPhrase()}")
+    print(f"Complex Noun: {ComplexNounPhrase()}")
