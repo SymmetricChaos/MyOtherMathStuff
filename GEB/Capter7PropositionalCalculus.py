@@ -1,4 +1,5 @@
 import re
+from Utils.StringManip import bracket_matching
 
 # ∧∨⊃
 
@@ -21,29 +22,6 @@ def IF(x,y):
 def NOT(x):
     return f"~{x}"
 
-def bracket_matching(x):
-    # Positions of left brackets
-    left = []
-    # Spans covered
-    spans = []
-    for pos in range(len(x)):
-        if x[pos] == "<":
-            left.append(pos)
-        if x[pos] == ">":
-            try:
-                spans.append( (left.pop(),pos) )
-            except:
-                raise Exception(f"Too many right brackets")
-    
-    if len(left) != 0:
-        raise Exception(f"Too many left brackets")
-
-    # output is list with the subsections and the spans
-    out = []
-    for lo,hi in spans:
-        out.append((x[lo:hi+1],lo,hi))
-
-    return out
 
 
 
@@ -63,6 +41,6 @@ if __name__ == '__main__':
     s = "<~<P∧~Q'>∨<~~<P∧R>⊃Q'>>"
     print(s)
     print("The bracketed parts of the string are:")
-    braks = bracket_matching(s)
+    braks = bracket_matching(s,"<>")
     for i in braks:
-        print(i[0])
+        print(i[0],i[1:3])
