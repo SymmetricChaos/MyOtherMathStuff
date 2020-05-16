@@ -1,4 +1,5 @@
 import Utils.Drawing as draw
+import numpy as np
 
 
 def G(n):
@@ -159,55 +160,114 @@ def F_graph_example():
 
 
 
+
 def Q(n):
     if n == 1 or n == 2:
         return 1
     else:
         return Q(n-Q(n-1)) + Q(n-Q(n-2))
 
+
+
+
+
+# A version of INT from the book
+def INT(x):
+    
+    if x < .5:
+        for denom in [2,4,8,16,32,64,128,256,512,1024]:
+            if x <= 1/denom:
+                continue
+            else:
+                return x+((denom-3)/denom)
+            
+    if x >= .5:
+        for denom in [2,4,8,16,32,64,128,256,512,1024]:
+            if x >= (denom-1)/denom:
+                continue
+            else:
+                return x-((denom-3)/denom)
+
+    return 1-x
+
+def INT_range(x,lo,hi):
+    if lo < .5:
+        x = (x-lo)/(hi-lo)
+        x = INT(x)
+        return (x*(hi-lo))+lo
+    if lo >= .5:
+        x = (x-lo)/(hi-lo)
+        x = INT(x)
+        return (x*(hi-lo))+lo
+
+
+def INT_level_2():
+    for denom in [4,8,16,32,64,128,256,512,1024]:
+        lo = 1/denom*2
+        hi = 1/denom
+        x1 = np.linspace(lo,hi,100)
+        y1 = [1-INT_range(i,lo,hi) for i in x1]
+        draw.draw_dots_xy(x1,y1,s=.5,color='black')
+        
+    for denom in [2,4,8,16,32,64,128,256,512,1024]:
+        lo = (denom-1)/denom
+        hi = (denom*2-1)/(denom*2)
+        x1 = np.linspace(lo,hi,100)
+        y1 = [1-INT_range(i,lo,hi) for i in x1]
+        draw.draw_dots_xy(x1,y1,s=.5,color='black')
+
+
+
+
+
 if __name__ == '__main__':
 
-    print("\n\n\nG(n) = n-G(G(n-1)), G(0) = 0")
-    print("n   :",end=" ")
-    for i in range(25):
-        print(f"{i:>2}",end=" ")
-    print("\nG(n):",end=" ")
-    for i in range(25):
-        print(f"{G(i):>2}",end=" ")
-    G_graph_example()
-    draw.show_now()
+#    print("\n\n\nG(n) = n-G(G(n-1)), G(0) = 0")
+#    print("n   :",end=" ")
+#    for i in range(25):
+#        print(f"{i:>2}",end=" ")
+#    print("\nG(n):",end=" ")
+#    for i in range(25):
+#        print(f"{G(i):>2}",end=" ")
+#    G_graph_example()
+#    draw.show_now()
+#    
+#    
+#    print("\n\n\nH(n) = n-H(H(H(n-1))), H(0) = 0")
+#    print("n   :",end=" ")
+#    for i in range(25):
+#        print(f"{i:>2}",end=" ")
+#    print("\nH(n):",end=" ")
+#    for i in range(25):
+#        print(f"{H(i):>2}",end=" ")
+#    H_graph_example()
+#    draw.show_now()
+#    
+#    
+#    print("\n\n\nF(n) = n-M(F(n-1)), F(0) = 1\nM(n) = n-F(M(n-1)), M(0) = 0")
+#    print("n   :",end=" ")
+#    for i in range(25):
+#        print(f"{i:>2}",end=" ")
+#    print("\nF(n):",end=" ")
+#    for i in range(25):
+#        print(f"{F(i):>2}",end=" ")
+#    print("\nM(n):",end=" ")
+#    for i in range(25):
+#        print(f"{M(i):>2}",end=" ")
+#    F_graph_example()
+#    draw.show_now()
+#    
+#    
+#    print("\n\nWhile the recusive functions above have regular structure shown by the trees the function below apparently does not.")
+#    print("Q(n) = Q(n-Q(n-1)) + Q(n-Q(n-2)), Q(1) = Q(2) = 1")
+#    print("n   :",end=" ")
+#    for i in range(1,25):
+#        print(f"{i:>2}",end=" ")
+#    print("\nQ(n):",end=" ")
+#    for i in range(1,25):
+#        print(f"{Q(i):>2}",end=" ")
+        
     
-    
-    print("\n\n\nH(n) = n-H(H(H(n-1))), H(0) = 0")
-    print("n   :",end=" ")
-    for i in range(25):
-        print(f"{i:>2}",end=" ")
-    print("\nH(n):",end=" ")
-    for i in range(25):
-        print(f"{H(i):>2}",end=" ")
-    H_graph_example()
-    draw.show_now()
-    
-    
-    print("\n\n\nF(n) = n-M(F(n-1)), F(0) = 1\nM(n) = n-F(M(n-1)), M(0) = 0")
-    print("n   :",end=" ")
-    for i in range(25):
-        print(f"{i:>2}",end=" ")
-    print("\nF(n):",end=" ")
-    for i in range(25):
-        print(f"{F(i):>2}",end=" ")
-    print("\nM(n):",end=" ")
-    for i in range(25):
-        print(f"{M(i):>2}",end=" ")
-    F_graph_example()
-    draw.show_now()
-    
-    
-    print("\n\nWhile the recusive functions above have regular structure shown by the trees the function below apparently does not.")
-    print("Q(n) = Q(n-Q(n-1)) + Q(n-Q(n-2)), Q(1) = Q(2) = 1")
-    print("n   :",end=" ")
-    for i in range(1,25):
-        print(f"{i:>2}",end=" ")
-    print("\nQ(n):",end=" ")
-    for i in range(1,25):
-        print(f"{Q(i):>2}",end=" ")
+    draw.make_blank_canvas([0,1],[0,1],[16,16])
+    INT_level_2()
+    draw.title("Adapatation of INT from GEB\nNote that this isn't a function on x since there are slight overlaps",size=22)
