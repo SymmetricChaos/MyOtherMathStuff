@@ -50,12 +50,11 @@ if __name__ == '__main__':
     print(Qp)
     print(NOT(Qp))
     print(AND(P,NOT(Qp)))
-    print(NOT(AND(P,NOT(Qp))))
-    print(IF(NOT(NOT(P)),Qp))
+    
+    print("\nTo decompose well-formed strings we need to be able to find bracketed sections. Consider the well-formed string below.")
     s = OR(NOT(AND(P,NOT(Qp))),IF(NOT(NOT(P)),Qp))
     print(s)
-    
-    print()
+    print("The bracketed parts of the string area:")
     braks = bracket_matching(s)
     for lo,hi in braks:
         print(s[lo:hi+1])
