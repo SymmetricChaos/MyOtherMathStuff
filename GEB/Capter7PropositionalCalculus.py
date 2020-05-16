@@ -21,7 +21,24 @@ def IF(x,y):
 def NOT(x):
     return f"~{x}"
 
+def bracket_matching(x):
+    # Positions of left brackets
+    left = []
+    # 
+    spans = []
+    for pos in range(len(x)):
+        if x[pos] == "<":
+            left.append(pos)
+        if x[pos] == ">":
+            try:
+                spans.append( (left.pop(),pos) )
+            except:
+                raise Exception(f"Too many right brackets")
+    
+    if len(left) != 0:
+        raise Exception(f"Too many left brackets")
 
+    return spans
 
 if __name__ == '__main__':
 
@@ -35,4 +52,10 @@ if __name__ == '__main__':
     print(AND(P,NOT(Qp)))
     print(NOT(AND(P,NOT(Qp))))
     print(IF(NOT(NOT(P)),Qp))
-    print(OR(NOT(AND(P,NOT(Qp))),IF(NOT(NOT(P)),Qp)))
+    s = OR(NOT(AND(P,NOT(Qp))),IF(NOT(NOT(P)),Qp))
+    print(s)
+    
+    print()
+    braks = bracket_matching(s)
+    for lo,hi in braks:
+        print(s[lo:hi+1])
