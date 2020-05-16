@@ -24,7 +24,7 @@ def NOT(x):
 def bracket_matching(x):
     # Positions of left brackets
     left = []
-    # 
+    # Spans covered
     spans = []
     for pos in range(len(x)):
         if x[pos] == "<":
@@ -38,7 +38,16 @@ def bracket_matching(x):
     if len(left) != 0:
         raise Exception(f"Too many left brackets")
 
-    return spans
+    # output is list with the subsections and the spans
+    out = []
+    for lo,hi in spans:
+        out.append((x[lo:hi+1],lo,hi))
+
+    return out
+
+
+
+
 
 if __name__ == '__main__':
 
@@ -48,13 +57,12 @@ if __name__ == '__main__':
     print(NOT(P))
     print(NOT(NOT(P)))
     print(Qp)
-    print(NOT(Qp))
     print(AND(P,NOT(Qp)))
     
     print("\nTo decompose well-formed strings we need to be able to find bracketed sections. Consider the well-formed string below.")
-    s = OR(NOT(AND(P,NOT(Qp))),IF(NOT(NOT(P)),Qp))
+    s = "<~<P∧~Q'>∨<~~<P∧R>⊃Q'>>"
     print(s)
-    print("The bracketed parts of the string area:")
+    print("The bracketed parts of the string are:")
     braks = bracket_matching(s)
-    for lo,hi in braks:
-        print(s[lo:hi+1])
+    for i in braks:
+        print(i[0])
