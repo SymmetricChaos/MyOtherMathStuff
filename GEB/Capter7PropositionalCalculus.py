@@ -22,31 +22,30 @@ def IF(x,y):
 def NOT(x):
     return f"~{x}"
 
+# Doesn't work because it doesn't detect the "level" of nested brackets
 def is_well_formed(x):
-    strings = bracket_matching(x,"<>")
-    sub_strings = strings[:-1]
-
-    #Little debugger
-    #print(f"\ntesting {x}")
     
-    # If there are no lower substrings
-    if len(sub_strings) == 0:
-        # If its a simple formula then it is well-formed
-        if re.match("<~*[PQR]'*[∧∨⊃]~*[PQR]'*>",x):
-            return True
-        # If its an atom then it is well-formed
-        else:
-            return is_atom(x)
-    
-    # Otherwise check every substring for being well formed and return false
-    # If any of them are false
+    if is_atom(x):
+        return True
+    elif re.match("^~*[PQR]'*[∧∨⊃]~*[PQR]'*>$",x):
+#        print("{x} is a simple formula")
+        return True
     else:
-        for s in sub_strings:
-            if not is_well_formed(s[0]):
-                return False
-    
-    # Otherwise it must be well-formed
-    return True
+#        print("!")
+        if re.match("^<.*[∧∨⊃].*>$",x):
+#            print(re.match("^<.*[∧∨⊃].*>$",x))
+            strings = bracket_matching(x,"<>")
+            sub_strings = strings[:-1]
+#            print(f"\ntesting {x}")
+            for s in sub_strings:
+                if not is_well_formed(s[0]):
+#                    print(f"{x} is not well-formed")
+                    return False
+            
+            return True
+        else:
+#            print(f"{x} is not well-formed")
+            return False
 
 
 
@@ -70,5 +69,8 @@ if __name__ == '__main__':
     for i in braks:
         print(i[0],i[1:3])
     
+    s1 = "<~<P∧~Q'>∨<~<~P∧R>⊃Q'>>"
+    s2 = "<R<~<~P∧R>⊃Q'>>"
     print("\n\n")
-    print(is_well_formed(s))
+    print(f"{s1} {is_well_formed(s1)}, should be True")
+    print(f"{s2} {is_well_formed(s2)}, should be False")
