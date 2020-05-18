@@ -34,10 +34,11 @@ def is_well_formed(x):
 #        print("!")
         if re.match("^<.*[∧∨⊃].*>$",x):
 #            print(re.match("^<.*[∧∨⊃].*>$",x))
-            strings = bracket_matching(x,"<>")
-            sub_strings = strings[:-1]
-#            print(f"\ntesting {x}")
+            strings = bracket_matching(x[1:-1],"<>",overlap=False)
+            sub_strings = strings
+            print(f"\ntesting {x}")
             for s in sub_strings:
+                print(s)
                 if not is_well_formed(s[0]):
 #                    print(f"{x} is not well-formed")
                     return False
@@ -65,7 +66,7 @@ if __name__ == '__main__':
     s = "<~<P∧~Q'>∨<~<~P∧R>⊃Q'>>"
     print(s)
     print("The bracketed parts of the string are:")
-    braks = bracket_matching(s,"<>")
+    braks = bracket_matching(s[1:-1],"<>",overlap=False)
     for i in braks:
         print(i[0],i[1:3])
     
