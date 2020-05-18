@@ -1,20 +1,17 @@
-def bracket_matching(S,parens="()",overlap=True,inner=False):
-    
-    if len(parens) != 2:
-        raise Exception("Must have exactly one opening and one closing character")
+def bracket_matching(S,left="(",right=")",overlap=True,inner=False):
     
     # Positions of left brackets
-    left = []
+    starts = []
     # Spans covered
     spans = []
     for pos in range(len(S)):
-        if S[pos] == parens[0]:
-            left.append(pos)
-        if S[pos] == parens[1]:
+        if S[pos] in left:
+            starts.append(pos)
+        if S[pos] in right:
             # Once we find a right bracket remove the most recently added left
             # bracket from the stack
             try:
-                L = left.pop()
+                L = starts.pop()
             except:
                 print("Warning: Too many right brackets")
             # If overlaps are allowed the pair goes directly onto the list
@@ -23,11 +20,11 @@ def bracket_matching(S,parens="()",overlap=True,inner=False):
             # If they are not allowed only put the pair onto the list if the
             # stack is empty
             else:
-                if len(left) == 0:
+                if len(starts) == 0:
                     spans.append( (L,pos) )
     
     # If there are unused left bracket something is wrong
-    if len(left) != 0:
+    if len(starts) != 0:
         print("Warning: Too many left brackets")
 
     # output is list with the subsections and the spans
@@ -47,21 +44,30 @@ def bracket_matching(S,parens="()",overlap=True,inner=False):
 
 if __name__ == '__main__':
     
-    s = "(this(is))a((long)(bracketed)string)(is)it"
-    braks1 = bracket_matching(s)
-    braks2 = bracket_matching(s,inner=True)
-    braks3 = bracket_matching(s,overlap=False)
+    s1 = "(this(is))a((long)(bracketed)string)(is)it"
+    braks1 = bracket_matching(s1)
+    braks2 = bracket_matching(s1,inner=True)
+    braks3 = bracket_matching(s1,overlap=False)
     
     explanations = ["find every pair of matched parentheses",
                     "same as before but returning only contents of parentheses",
                     "find the parentheses that are outermost"]
     
-    print(s)
+    print(s1)
     for e,b in zip(explanations,[braks1,braks2,braks3]):
         print(f"\n{e}")
         for i in b:
             print(i[0])
-            
     
-            
+    
+    s2 = "<~<P∧~Q'>∨<~<~P∧R>⊃Q'>>"
+    braks1 = bracket_matching(s2,"<","⊃∧∨")
+    braks2 = bracket_matching(s2,"<","⊃∧∨",inner=True)
+    braks3 = bracket_matching(s2,"<","⊃∧∨",overlap=False)
+    
+    print(s2)
+    for e,b in zip(explanations,[braks1,braks2,braks3]):
+        print(f"\n{e}")
+        for i in b:
+            print(i[0])  
     
