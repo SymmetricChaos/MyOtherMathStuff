@@ -1,4 +1,4 @@
-def bracket_matching(S,left="(",right=")",overlap=True,inner=False):
+def bracket_matching(S,left="(",right=")",overlap=True,inner=False,warn=True):
     
     # Positions of left brackets
     starts = []
@@ -13,7 +13,8 @@ def bracket_matching(S,left="(",right=")",overlap=True,inner=False):
             try:
                 L = starts.pop()
             except:
-                print("Warning: Too many right brackets")
+                if warn:
+                    print("Warning: Too many right brackets")
             # If overlaps are allowed the pair goes directly onto the list
             if overlap:
                 spans.append( (L,pos) )
@@ -25,7 +26,9 @@ def bracket_matching(S,left="(",right=")",overlap=True,inner=False):
     
     # If there are unused left bracket something is wrong
     if len(starts) != 0:
-        print("Warning: Too many left brackets")
+        if warn:
+            print("Warning: Too many left brackets")
+        
 
     # output is list with the subsections and the spans
     output = []
@@ -65,6 +68,7 @@ if __name__ == '__main__':
     braks2 = bracket_matching(s2,"<","⊃∧∨",inner=True)
     braks3 = bracket_matching(s2,"<","⊃∧∨",overlap=False)
     
+    print("\n\nA slightly different kind of string. In this one we are looking for the left halves of binary statements.")
     print(s2)
     for e,b in zip(explanations,[braks1,braks2,braks3]):
         print(f"\n{e}")
