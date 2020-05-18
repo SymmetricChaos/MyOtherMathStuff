@@ -7,6 +7,7 @@ def bracket_matching(S,left="(",right=")",overlap=True,inner=False,warn=True):
     for pos in range(len(S)):
         if S[pos] in left:
             starts.append(pos)
+            continue
         if S[pos] in right:
             # Once we find a right bracket remove the most recently added left
             # bracket from the stack
@@ -23,12 +24,11 @@ def bracket_matching(S,left="(",right=")",overlap=True,inner=False,warn=True):
             else:
                 if len(starts) == 0:
                     spans.append( (L,pos) )
-    
+
     # If there are unused left bracket something is wrong
     if len(starts) != 0:
         if warn:
             print("Warning: Too many left brackets")
-        
 
     # output is list with the subsections and the spans
     output = []
@@ -73,5 +73,5 @@ if __name__ == '__main__':
     for e,b in zip(explanations,[braks1,braks2,braks3]):
         print(f"\n{e}")
         for i in b:
-            print(i[0])  
+            print(i)  
     

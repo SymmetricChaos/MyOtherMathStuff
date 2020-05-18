@@ -23,23 +23,40 @@ def NOT(x):
     return f"~{x}"
 
 def left_string(x):
-    return bracket_matching(x[1:-1],"<","⊃∧∨",overlap=True,inner=False)
+    braks = bracket_matching(x,"<","⊃∧∨",overlap=True,inner=True,warn=False)
+    for i in braks:
+        if i[1] == 1:
+            return i
 
-def right_string(x):
-    return bracket_matching(x[1:-1],"⊃∧∨",">",overlap=True,inner=False)
+
 
 # Doesn't work because it doesn't detect the "level" of nested brackets
 def is_well_formed(x):
     
     if is_atom(x):
-        print("{x} is an atom")
+        print(f"{x} is an atom")
         return True
     elif re.match("^~*[PQR]'*[∧∨⊃]~*[PQR]'*>$",x):
-        print("{x} is a simple formula")
+        print(f"{x} is a simple formula")
         return True
     else:
         #split left and right and try again
-        pass
+        #remember to check that new substring starts in a valid way with ~ or <
+        while x[0] == "~":
+            x = x[1:]
+        try:
+            L,lo,hi = left_string(x)
+        except:
+            print(f"{x} is invalid")
+            return False
+        R = x[hi+2:-1]
+        
+        print(f"recur on {L} and {R}")
+        
+        ltrue = is_well_formed(L)
+        rtrue = is_well_formed(R)
+        
+        return ltrue and rtrue
 
 
 
@@ -56,8 +73,11 @@ if __name__ == '__main__':
     print(AND(P,NOT(Qp)))
     
     
-    print("\n\n")
-    s1 = "<~<P∧~Q'>∨<~<~P∧R>⊃Q'>>"
-    print(s1)
-    print(left_string(s1))
-    print(right_string(s1))
+    ss = ["<~<P∧~Q'>∨<~<~P∧R>⊃Q'>>",
+          "<~<P∧~Q'∧R>∨<~<~P∧R>⊃Q'>>",
+          "<~<P∧~Q'∧R><~<~P∧R>⊃Q'>>"]
+    print("\n")
+    for s in ss:
+        print()
+        print(s)
+        print(is_well_formed(s))
