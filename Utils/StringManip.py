@@ -1,4 +1,4 @@
-def bracket_matching(S,parens="()",inner=False):
+def bracket_matching(S,parens="()",overlap=True):
     
     if len(parens) != 2:
         raise Exception("Must have exactly one opening and one closing character")
@@ -20,12 +20,39 @@ def bracket_matching(S,parens="()",inner=False):
         raise Exception(f"Too many left brackets")
 
     # output is list with the subsections and the spans
-    out = []
-    if inner:
-        for lo,hi in spans:
-            out.append((S[lo+1:hi],lo+1,hi-1))
-    else:
-        for lo,hi in spans:
-            out.append((S[lo:hi+1],lo,hi))
+    output = []
+    for lo,hi in spans:
+        output.append((S[lo:hi+1],lo,hi))
 
-    return out
+    # If overlap is false filter out any string contained in another string
+    if not overlap:
+        filtered_output = []
+        for a in output:
+            outside_all = True
+            for b in output:
+                if a[0] == b[0]:
+                    continue
+                elif a[0] in b[0]:
+                    outside_all = False
+                    break
+            if outside_all:
+                filtered_output.append(a)
+        output = filtered_output
+
+    return output
+
+
+
+if __name__ == '__main__':
+    
+    s = "(this(is))()a((long)(bracketed)string)"
+    braks1 = bracket_matching(s)
+    braks2 = bracket_matching(s,overlap=False)
+    
+    print(s)
+    print()
+    for i in braks1:
+        print(i[0])
+    print()
+    for i in braks2:
+        print(i[0])
