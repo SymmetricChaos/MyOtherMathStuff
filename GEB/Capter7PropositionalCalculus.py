@@ -30,25 +30,26 @@ def left_string(x):
 
 
 
-# Doesn't work because it doesn't detect the "level" of nested brackets
+# Maybe works?
 def is_well_formed(x):
     
     if is_atom(x):
         print(f"{x} is an atom")
         return True
-    elif re.match("^~*[PQR]'*[∧∨⊃]~*[PQR]'*>$",x):
-        print(f"{x} is a simple formula")
-        return True
     else:
-        #split left and right and try again
-        #remember to check that new substring starts in a valid way with ~ or <
+        #try to split left and right and try again
         while x[0] == "~":
             x = x[1:]
+        if x[0] != "<":
+            print(f"{x} is invalid")
+            return False
+        
         try:
             L,lo,hi = left_string(x)
         except:
-            print(f"{x} is invalid")
+            print(f"{x} caused an error")
             return False
+            
         R = x[hi+2:-1]
         
         print(f"recur on {L} and {R}")
@@ -75,7 +76,8 @@ if __name__ == '__main__':
     
     ss = ["<~<P∧~Q'>∨<~<~P∧R>⊃Q'>>",
           "<~<P∧~Q'∧R>∨<~<~P∧R>⊃Q'>>",
-          "<~<P∧~Q'∧R><~<~P∧R>⊃Q'>>"]
+          "<~<P∧~Q'∧R><~<~P∧R>⊃Q'>>",
+          "<<<P∧~Q'>∨<~<~P∧R>⊃Q'>>",]
     print("\n")
     for s in ss:
         print()
