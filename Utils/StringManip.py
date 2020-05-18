@@ -11,19 +11,22 @@ def bracket_matching(S,parens="()",overlap=True,inner=False):
         if S[pos] == parens[0]:
             left.append(pos)
         if S[pos] == parens[1]:
+            # Once we find a right bracket remove the most recently added left
+            # bracket from the stack
+            try:
+                L = left.pop()
+            except:
+                print("Warning: Too many right brackets")
+            # If overlaps are allowed the pair goes directly onto the list
             if overlap:
-                try:
-                    spans.append( (left.pop(),pos) )
-                except:
-                    print("Warning: Too many right brackets")
+                spans.append( (L,pos) )
+            # If they are not allowed only put the pair onto the list if the
+            # stack is empty
             else:
-                try:
-                    L = left.pop()
-                    if len(left) == 0:
-                        spans.append( (L,pos) )
-                except:
-                    print("Warning: Too many right brackets")
+                if len(left) == 0:
+                    spans.append( (L,pos) )
     
+    # If there are unused left bracket something is wrong
     if len(left) != 0:
         print("Warning: Too many left brackets")
 
@@ -36,21 +39,6 @@ def bracket_matching(S,parens="()",overlap=True,inner=False):
         for lo,hi in spans:
             output.append((S[lo:hi+1],lo,hi))
 
-    # If overlap is false filter out any string contained in another string
-#    if not overlap:
-#        filtered_output = []
-#        for a in output:
-#            outside_all = True
-#            for b in output:
-#                if a[1] == b[1]:
-#                    continue
-#                elif a[1] > b[1] and a[2] < b[2]:
-#                    outside_all = False
-#                    break
-#            if outside_all:
-#                filtered_output.append(a)
-#        output = filtered_output
-    
     return output
 
 
