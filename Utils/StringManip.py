@@ -30,22 +30,22 @@ def bracket_matching(S,parens="()",overlap=True):
         for a in output:
             outside_all = True
             for b in output:
-                if a[0] == b[0]:
+                if a[1] == b[1]:
                     continue
-                elif a[0] in b[0]:
+                elif a[1] > b[1] and a[2] < b[2]:
                     outside_all = False
                     break
             if outside_all:
                 filtered_output.append(a)
         output = filtered_output
-
+    
     return output
 
 
 
 if __name__ == '__main__':
     
-    s = "(this(is))()a((long)(bracketed)string)"
+    s = "(this(is))()a((long)(bracketed)string)(is)"
     braks1 = bracket_matching(s)
     braks2 = bracket_matching(s,overlap=False)
     
