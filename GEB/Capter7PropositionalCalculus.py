@@ -28,7 +28,10 @@ def left_string(x):
         if i[1] == 1:
             return i
 
-
+def split(x):
+    L,lo,hi = left_string(x)
+    R = x[hi+2:-1]
+    return L,R
 
 # Maybe works?
 def is_well_formed(x):
@@ -72,9 +75,11 @@ if __name__ == '__main__':
     print(NOT(NOT(P)))
     print(Qp)
     print(AND(P,NOT(Qp)))
+    print(split(AND("P",NOT("Q'"))))
     
     
     ss = ["<~<P∧~Q'>∨<~<~P∧R>⊃Q'>>",
+          "<~<P∧~'Q>∨<~<~P∧R>⊃Q'>>",
           "<~<P∧~Q'∧R>∨<~<~P∧R>⊃Q'>>",
           "<~<P∧~Q'∧R><~<~P∧R>⊃Q'>>",
           "<<<P∧~Q'>∨<~<~P∧R>⊃Q'>>",]
