@@ -33,6 +33,7 @@ def split(x):
     R = x[hi+2:-1]
     return L,R
 
+
 # Maybe works?
 def is_well_formed(x):
     
@@ -85,6 +86,5 @@ if __name__ == '__main__':
           "<<<P∧~Q'>∨<~<~P∧R>⊃Q'>>",]
     print("\n")
     for s in ss:
-        print()
-        print(s)
+        print(f"\n\n{s}")
         print(is_well_formed(s))
