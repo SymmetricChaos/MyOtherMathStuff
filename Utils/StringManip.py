@@ -69,10 +69,9 @@ if __name__ == '__main__':
     braks3 = bracket_matching(s2,"<","⊃∧∨",overlap=False)
     
     explanations = ["find every left half",
-                    "same as before but urniretng only contents",
+                    "same as before but returning only contents",
                     "find the outermost left halves"]
 
-    
     print("\n\nA slightly different kind of string. In this one we are looking for the left halves of binary statements. The left bracktet is < while the right bracket is any one of ⊃∧∨.")
     print(s2)
     for e,b in zip(explanations,[braks1,braks2,braks3]):
