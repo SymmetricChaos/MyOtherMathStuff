@@ -85,16 +85,19 @@ def RandomTreeExample():
     draw.make_blank_canvas([-10,10],[-5,15],[14,14])
     base, = np.random.choice([1,2,3,4],1)
     recur(GDict[base],[0,-2],6)
-    draw.title("Randomized Tree",size=22)
+    draw.title("Randomized Tree\n\nComponents:",size=22)
     # Show the components
-    draw.draw_rect_xy(-5,11.5,-3,14.5,ec='black',fc='white',zorder=-1)
-    Graph1([-4,12],3)
-    draw.draw_rect_xy(3,11.5,5,14.5,ec='black',fc='white',zorder=-1)
-    Graph2([4,12],3)
+    draw.draw_rect_xy(-5.5,11.5,-3.5,14.5,ec='black',fc='white',zorder=-1)
+    Graph1([-4.5,12],3)
+    
     draw.draw_rect_xy(-2.5,11.5,-.5,14.5,ec='black',fc='white',zorder=-1)
-    Graph3([-1.5,12],3)
+    Graph2([-1.5,12],3)
+    
     draw.draw_rect_xy(.5,11.5,2.5,14.5,ec='black',fc='white',zorder=-1)
-    Graph4([1.5,12],3)
+    Graph3([1.5,12],3)
+    
+    draw.draw_rect_xy(3.5,11.5,5.5,14.5,ec='black',fc='white',zorder=-1)
+    Graph4([4.5,12],3)
 
     
 if __name__ == '__main__':
