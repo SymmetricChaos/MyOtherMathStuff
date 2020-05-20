@@ -10,8 +10,8 @@ def Graph1(root,scale=0,ax=None):
     leaf1 = [ root[0]+5*s , root[1]+1 ]
     leaf2 = [ root[0]-5*s , root[1]+2 ]
     
-    draw.draw_circle_p(node1,R=.06,ax=ax)
-    draw.draw_circle_p(node2,R=.06,ax=ax)
+#    draw.draw_circle_p(node1,R=.06,ax=ax)
+#    draw.draw_circle_p(node2,R=.06,ax=ax)
     draw.connect_p(node1,node2,linewidth=1)
     draw.connect_p(node2,leaf2,linewidth=1)
     draw.connect_p(node1,leaf1,linewidth=1)
@@ -25,8 +25,8 @@ def Graph2(root,scale=0,ax=None):
     leaf1 = [ root[0]-5*s , root[1]+1 ]
     leaf2 = [ root[0]+5*s , root[1]+2 ]
     
-    draw.draw_circle_p(node1,R=.06,ax=ax)
-    draw.draw_circle_p(node2,R=.06,ax=ax)
+#    draw.draw_circle_p(node1,R=.06,ax=ax)
+#    draw.draw_circle_p(node2,R=.06,ax=ax)
     draw.connect_p(node1,node2,linewidth=1)
     draw.connect_p(node1,leaf1,linewidth=1)
     draw.connect_p(node2,leaf2,linewidth=1)
@@ -41,9 +41,9 @@ def Graph3(root,scale=0,ax=None):
     leaf1 = [ root[0]+5*s , root[1]+2 ]
     leaf2 = [ root[0]-5*s , root[1]+2 ]
     
-    draw.draw_circle_p(node1,R=.06,ax=ax)
-    draw.draw_circle_p(node2,R=.06,ax=ax)
-    draw.draw_circle_p(node3,R=.06,ax=ax)
+#    draw.draw_circle_p(node1,R=.06,ax=ax)
+#    draw.draw_circle_p(node2,R=.06,ax=ax)
+#    draw.draw_circle_p(node3,R=.06,ax=ax)
     
     draw.connect_p(node1,node2,linewidth=1)
     draw.connect_p(node1,node3,linewidth=1)
@@ -58,7 +58,7 @@ def Graph4(root,scale=0,ax=None):
     leaf1 = [ root[0]+5*s , root[1]+1 ]
     leaf2 = [ root[0]-5*s , root[1]+1 ]
     
-    draw.draw_circle_p(node1,R=.06,ax=ax)
+#    draw.draw_circle_p(node1,R=.06,ax=ax)
     
     draw.connect_p(node1,leaf1,linewidth=1)
     draw.connect_p(node1,leaf2,linewidth=1)
