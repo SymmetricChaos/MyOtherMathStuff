@@ -2,56 +2,46 @@ import re
 from Utils.StringManip import bracket_matching
 
 
-class TNT:
-    
-    def __init__(self,s=""):
-        self.s = s
-        
-    def EXISTS(self,a):
-        if is_atom(str(a)):
-            return TNT(f"∃{a}:{self.s}")
-        else:
-            raise Exception(f"Existential quantifier does not apply to {a}")
-        
-    def FOR_ALL(self,a):
-        if is_atom(str(a)):
-            return TNT(f"∀{a}:{self.s}")
-        else:
-            raise Exception(f"Universal quantifier does not apply to {a}")
+def EXISTS(a,x=""):
+	if is_atom(a):
+		return f"∃{a}:{x}"
+	else:
+		raise Exception(f"Existential quantifier does not apply to {a}")
+	
+def FOR_ALL(a,x=""):
+	if is_atom(a):
+		return f"∀{a}:{x}"
+	else:
+		raise Exception(f"Universal quantifier does not apply to {a}")
 
-    def AND(self,y):
-        return TNT(f"<{self.s}∧{y}>")
-        
-    def OR(self,y):
-        return TNT(f"<{self.s}∨{y}>")
-        
-    def IF(self,y):
-        return TNT(f"<{self.s}⊃{y}>")
-        
-    def NOT(self,):
-        return TNT(f"~{self.s}")
-    
-    def SUCC(self):
-        if is_num(self.s):
-            return TNT(f"S{self.s}")
-        else:
-            raise Exception(f"Cannot have successor of {self.s}")
-      
-        
-    def ADD(self,y):
-        return TNT(f"({self.s}+{y})")
+def AND(x,y):
+	return f"<{x}∧{y}>"
+	
+def OR(x,y):
+	return f"<{x}∨{y}>"
+	
+def IF(x,y):
+	return f"<{x}⊃{y}>"
+	
+def NOT(x,):
+	return f"~{x}"
 
-    def MUL(self,y):
-        return TNT(f"({self.s}⋅{y})")
-    
-    def EQ(self,y):
-        return TNT(f"{self.s}={y}")
-        
-    def ASSERT(self,y):
-        return TNT(f"{self.s}{y}")
-        
-    def __str__(self):
-        return self.s
+def SUCC(x):
+	if is_num(x):
+		return f"S{x}"
+	else:
+		raise Exception(f"Cannot have successor of {x}")
+  
+def ADD(x,y):
+	return f"({x}+{y})"
+
+def MUL(x,y):
+	return f"({x}⋅{y})"
+
+def EQ(x,y):
+	return f"{x}={y}"
+	
+
 
 # ∧∨⊃∃∀⋅
 def is_atom(x):
@@ -74,14 +64,14 @@ def is_num(x):
 
 
 if __name__ == '__main__':
-    zero = TNT("0")
-    one = zero.SUCC()
-    two = one.SUCC()
-    b = TNT("b")
-    sq = b.MUL(b)
-    ex_sq = sq.EXISTS(b)
-    ex_sq_2 = ex_sq.EQ(two)
-    not_ex_sq_2 = ex_sq_2.NOT()
+    zero = "0"
+    one = SUCC(zero)
+    two = SUCC(one)
+    b = "b"
+    sq = MUL(b,b)
+    ex_sq = EXISTS(b,sq)
+    ex_sq_2 = EQ(ex_sq,two)
+    not_ex_sq_2 = NOT(ex_sq_2)
     print(zero)
     print(one)
     print(two)
