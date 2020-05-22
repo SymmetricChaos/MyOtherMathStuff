@@ -25,7 +25,6 @@ def pq_production_alt(s):
     return left + "-" + "p" + right + "-"
 
 
-
 def pq_all_theorems():
     old_theorems = []
     new_theorems = []
@@ -47,7 +46,8 @@ def pq_all_theorems():
             
         old_theorems = new_theorems.copy()
         new_theorems = []
-            
+
+
 # Crudest possible check check for being well-formed
 def well_formed_pq(S):
     for t in pq_all_theorems():
@@ -55,8 +55,6 @@ def well_formed_pq(S):
             return True
         if len(t) > len(S):
             return False
-        
-    
 
 
 
