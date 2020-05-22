@@ -2,14 +2,14 @@
 # of the form x+y=z over the integers
 
 def pq_axioms():
-    n = 0
+    n = 1
     while True:
         p = "-"*n + "p-q" + "-"*n + "-"
         yield p
         n += 1
         
 def pq_axioms_alt():
-    n = 0
+    n = 1
     while True:
         p = "-p" + "-"*n + "q" + "-"*n + "-"
         yield p
@@ -70,7 +70,7 @@ if __name__ == '__main__':
         if enum > 19:
             break
     
-    print("\n\nIn a formal system all statements are formally correct or formally incorrect. However the reason for the interpretation being true or false may vary. The final example below is formally incorrect but would interpret as a true statement.")
+    print("\n\nIn a formal system all statements are formally correct or formally incorrect. However the reason for the interpretation being true or false may vary. The final example below is formally incorrect but would interpret as a true statement. In that case it is because the pq-system does not define an analogue to zero.")
     strings = ["--p--p----",
                "---p--q-----",
                "-p-q---",
