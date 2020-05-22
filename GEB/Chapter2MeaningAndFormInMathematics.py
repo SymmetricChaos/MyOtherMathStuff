@@ -1,3 +1,6 @@
+# The pq-system is a toy formal system that is an analogue for simple addition
+# of the form x+y=z over the integers
+
 def pq_axioms():
     n = 0
     while True:
@@ -5,9 +8,23 @@ def pq_axioms():
         yield p
         n += 1
         
+def pq_axioms_alt():
+    n = 0
+    while True:
+        p = "-p" + "-"*n + "q" + "-"*n + "-"
+        yield p
+        n +=  1
+        
+        
 def pq_production(s):
     left, right = s.split("q")
     return left + "-q" + right + "-"
+
+def pq_production_alt(s):
+    left, right = s.split("p")
+    return left + "-" + "p" + right + "-"
+
+
 
 def pq_all_theorems():
     old_theorems = []
@@ -31,12 +48,13 @@ def pq_all_theorems():
         old_theorems = new_theorems.copy()
         new_theorems = []
             
-        
-    
-    
-# Recusrively check validity of a pq-statement
+# Crudest possible check check for being well-formed
 def well_formed_pq(S):
-    pass
+    for t in pq_all_theorems():
+        if t == S:
+            return True
+        if len(t) > len(S):
+            return False
         
     
 
@@ -49,5 +67,16 @@ if __name__ == '__main__':
     print("Enumerating the theorems of the pq-system not only produces simple addition theorems but it lists them in order of increasing value")
     for enum,theorem in enumerate(pq_all_theorems()):
         print(theorem)
-        if enum > 20:
+        if enum > 19:
             break
+    
+    print("\n\nIn a formal system all statements are formally correct or formally incorrect. However the reason for the interpretation being true or false may vary. The final example below is formally incorrect but would interpret as a true statement.")
+    strings = ["--p--p----",
+               "---p--q-----",
+               "-p-q---",
+               "-pq-"]
+    for s in strings:
+        if well_formed_pq(s):
+            print(f"{s:<12} is well formed")
+        else:
+            print(f"{s:<12} is not well formed")
