@@ -108,6 +108,9 @@ def translate_TNT(s):
     s = s.replace("+"," plus ")
     s = s.replace("⋅"," times ")
     s = s.replace("="," equals ")
+    s = s.replace("⊃"," implies that ")
+    s = s.replace("∧"," and ")
+    s = s.replace("∨"," or ")
 
     return s
 
