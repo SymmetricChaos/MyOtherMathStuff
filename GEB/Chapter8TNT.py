@@ -126,7 +126,7 @@ if __name__ == '__main__':
     zero = "0"
     one = SUCC(zero)
     two = SUCC(one)
-    b = "b'"
+    b = "b"
     sq = MUL(b,b)
     sq_2 = EQ(sq,two)
     ex_sq_2 = EXISTS(b,sq_2)
@@ -139,5 +139,14 @@ if __name__ == '__main__':
     print(sq_2)
     print(ex_sq_2)
     print(not_ex_sq_2)
-    
     print(translate_TNT(not_ex_sq_2))
+    
+    print("\n\n\nTranslation puzzles from GEB\n")
+    for i in ["~∀c:∃b:(SS0⋅b)=c",
+              "∀c:~∃b:(SS0⋅b)=c",
+              "∀c:∃b:~(SS0⋅b)=c",
+              "~∃b:∀c:(SS0⋅b)=c",
+              "∃b:~∀c:(SS0⋅b)=c",
+              "∃b:∀c:~(SS0⋅b)=c"]:
+        print(f"{i}\n{translate_TNT(i)}\n\n")
+    
