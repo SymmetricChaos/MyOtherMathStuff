@@ -1,6 +1,5 @@
 import re
-from Utils.StringManip import bracket_matching
-
+# ∧∨⊃∃∀⋅
 
 def EXISTS(a,x=""):
 	if is_atom(a):
@@ -43,7 +42,6 @@ def EQ(x,y):
 	
 
 
-# ∧∨⊃∃∀⋅
 def is_atom(x):
     if re.match("^[a-z]\'*$",x):
         return True
@@ -59,6 +57,8 @@ def is_num(x):
 
 
 def translate_TNT(s):
+    
+    # Translate existential quantifier
     E = re.search("∃[a-z]\'*:",s)
     while E != None:
         lo, hi = E.span()
@@ -68,6 +68,7 @@ def translate_TNT(s):
         s = left + "there exists " + inside + " such that " + right
         E = re.search("∃[a-z]\'*:",s)
 
+    # Translate universal quantifier
     A = re.search("∀[a-z]\'*:",s)
     while A != None:
         lo, hi = A.span()
@@ -77,19 +78,7 @@ def translate_TNT(s):
         s = left + "for all " + inside + " it is the case that " + right
         A = re.search("∀[a-z]\'*:",s)
     
-    N = re.search("S+[a-z]\'*",s)
-    while N != None:
-        lo, hi = N.span()
-        num = s[lo:hi]
-        ctr = 0
-        while num[0] == "S":
-            ctr += 1
-            num = num[1:]
-        left = s[:lo]
-        right = s[hi:]
-        s = left + num + f"{ctr}" + right
-        N = re.search("S*[a-z]\'*",s)
-        
+    # Translate natural numbers
     N = re.search("S+0",s)
     while N != None:
         lo, hi = N.span()
@@ -104,6 +93,21 @@ def translate_TNT(s):
         s = left + f"{ctr}" + right
         N = re.search("S*0",s)
     
+    # Translate addition natural number addition of variables
+    N = re.search("S+[a-z]\'*",s)
+    while N != None:
+        lo, hi = N.span()
+        num = s[lo:hi]
+        ctr = 0
+        while num[0] == "S":
+            ctr += 1
+            num = num[1:]
+        left = s[:lo]
+        right = s[hi:]
+        s = left + num + f"{ctr}" + right
+        N = re.search("S*[a-z]\'*",s)
+    
+    # Simple translations
     s = s.replace("~","it is false that ")
     s = s.replace("+"," plus ")
     s = s.replace("⋅"," times ")
@@ -113,6 +117,9 @@ def translate_TNT(s):
     s = s.replace("∨"," or ")
 
     return s
+
+
+
 
 
 if __name__ == '__main__':
