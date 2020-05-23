@@ -58,26 +58,76 @@ def is_num(x):
 
 
 
-#def translate_TNT(s):
-#    re.findall("")
+def translate_TNT(s):
+    E = re.search("∃[a-z]\'*:",s)
+    while E != None:
+        lo, hi = E.span()
+        inside = s[lo+1:hi-1]
+        left = s[:lo]
+        right = s[hi:]
+        s = left + "there exists " + inside + " such that " + right
+        E = re.search("∃[a-z]\'*:",s)
 
+    A = re.search("∀[a-z]\'*:",s)
+    while A != None:
+        lo, hi = A.span()
+        inside = s[lo+1:hi-1]
+        left = s[:lo]
+        right = s[hi:]
+        s = left + "for all " + inside + " it is the case that " + right
+        A = re.search("∀[a-z]\'*:",s)
+    
+    N = re.search("S+[a-z]\'*",s)
+    while N != None:
+        lo, hi = N.span()
+        num = s[lo:hi]
+        ctr = 0
+        while num[0] == "S":
+            ctr += 1
+            num = num[1:]
+        left = s[:lo]
+        right = s[hi:]
+        s = left + num + f"{ctr}" + right
+        N = re.search("S*[a-z]\'*",s)
+        
+    N = re.search("S+0",s)
+    while N != None:
+        lo, hi = N.span()
+        num = s[lo:hi]
+        ctr = 0
+        while num[0] == "S":
+            ctr += 1
+            num = num[1:]
+        
+        left = s[:lo]
+        right = s[hi:]
+        s = left + f"{ctr}" + right
+        N = re.search("S*0",s)
+    
+    s = s.replace("~","it is false that ")
+    s = s.replace("+"," plus ")
+    s = s.replace("⋅"," times ")
+    s = s.replace("="," equals ")
+
+    return s
 
 
 if __name__ == '__main__':
     zero = "0"
     one = SUCC(zero)
     two = SUCC(one)
-    b = "b"
+    b = "b'"
     sq = MUL(b,b)
-    ex_sq = EXISTS(b,sq)
-    ex_sq_2 = EQ(ex_sq,two)
+    sq_2 = EQ(sq,two)
+    ex_sq_2 = EXISTS(b,sq_2)
     not_ex_sq_2 = NOT(ex_sq_2)
     print(zero)
     print(one)
     print(two)
     print(b)
     print(sq)
-    print(ex_sq)
+    print(sq_2)
     print(ex_sq_2)
     print(not_ex_sq_2)
     
+    print(translate_TNT(not_ex_sq_2))
