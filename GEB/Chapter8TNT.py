@@ -54,7 +54,7 @@ def translate_TNT(s):
         inside = s[lo+1:hi-1]
         left = s[:lo]
         right = s[hi:]
-        s = f"{left}there exists {inside} such that{right}"
+        s = f"{left}there exists {inside} such that {right}"
         E = re.search("∃[a-z]\'*:",s)
 
     # Translate universal quantifier
@@ -118,7 +118,7 @@ def translate_TNT(s):
                 if left == "":
                     break
 
-        s = f"{left}(({num} plus {ctr}){right}"
+        s = f"{left}({num} plus {ctr}{right}"
         N = re.search("S+\(",s)
 
     # Simple translations
@@ -269,65 +269,59 @@ def is_quantifier(x):
 
 
 if __name__ == '__main__':
+
+    zero = "0"
+    one = SUCC(zero)
+    two = SUCC(one)
+    b = "b"
+    sq = MUL(b,b)
+    sq_2 = EQ(sq,two)
+    ex_sq_2 = EXISTS(b,sq_2)
+    not_ex_sq_2 = NOT(ex_sq_2)
+    print(zero)
+    print(one)
+    print(two)
+    print(b)
+    print(sq)
+    print(sq_2)
+    print(ex_sq_2)
+    print(not_ex_sq_2)
+    print(translate_TNT(not_ex_sq_2))
     
-    S = "SS(b+c)=(S(c⋅d)⋅e)"
-    print(S)
-    print(translate_TNT(S))
+    
+    
+    print("\n\n\nTranslation puzzles from GEB\n")
+    for i in ["~∀c:∃b:(SS0⋅b)=c",
+              "∀c:~∃b:(SS0⋅b)=c",
+              "∀c:∃b:~(SS0⋅b)=c",
+              "~∃b:∀c:(SS0⋅b)=c",
+              "∃b:~∀c:(SS0⋅b)=c",
+              "∃b:∀c:~(SS0⋅b)=c"]:
+        print(f"{i}\n{translate_TNT(i)}\n\n")
+    
+    
+    
+    print("\n\n\nVariables extracted from ~∀c:∃b':(SS0⋅b')=c")
+    print(get_vars("~∀c:∃b':(SS0⋅b')=c"))
+    
     
 
+    terms = ["0","b","SSa'","(S0⋅(SS0+c))","S(Sa⋅(Sb⋅Sc))"]
+    atoms = ["S0=0","(SS0+SS0)=SSSS0","S(b+c)=(S(c⋅d)⋅e)"]
+    compounds = ["<S0=0⊃∀c:~∃b:(b+b)=c>"]
+
+    parts_list = [terms,atoms,compounds]
+    check_list = [is_term,is_atom,is_compound]
+    name_list = ["Terms","Atoms","Compound Formulas"]
     
-#    zero = "0"
-#    one = SUCC(zero)
-#    two = SUCC(one)
-#    b = "b"
-#    sq = MUL(b,b)
-#    sq_2 = EQ(sq,two)
-#    ex_sq_2 = EXISTS(b,sq_2)
-#    not_ex_sq_2 = NOT(ex_sq_2)
-#    print(zero)
-#    print(one)
-#    print(two)
-#    print(b)
-#    print(sq)
-#    print(sq_2)
-#    print(ex_sq_2)
-#    print(not_ex_sq_2)
-#    print(translate_TNT(not_ex_sq_2))
-#    
-#    
-#    
-#    print("\n\n\nTranslation puzzles from GEB\n")
-#    for i in ["~∀c:∃b:(SS0⋅b)=c",
-#              "∀c:~∃b:(SS0⋅b)=c",
-#              "∀c:∃b:~(SS0⋅b)=c",
-#              "~∃b:∀c:(SS0⋅b)=c",
-#              "∃b:~∀c:(SS0⋅b)=c",
-#              "∃b:∀c:~(SS0⋅b)=c"]:
-#        print(f"{i}\n{translate_TNT(i)}\n\n")
-#    
-#    
-#    
-#    print("\n\n\nVariables extracted from ~∀c:∃b':(SS0⋅b')=c")
-#    print(get_vars("~∀c:∃b':(SS0⋅b')=c"))
-#    
-#    
-#
-#    terms = ["0","b","SSa'","(S0⋅(SS0+c))","S(Sa⋅(Sb⋅Sc))"]
-#    atoms = ["S0=0","(SS0+SS0)=SSSS0","S(b+c)=(S(c⋅d)⋅e)"]
-#    compounds = ["<S0=0⊃∀c:~∃b:(b+b)=c>"]
-#
-#    parts_list = [terms,atoms,compounds]
-#    check_list = [is_term,is_atom,is_compound]
-#    name_list = ["Terms","Atoms","Compound Formulas"]
-#    
-#    print("\n\n\nChecking well-formedness\nAll should be well-formed (but may be false)")
-#    for parts,check,name in zip(parts_list,check_list,name_list):
-#        print(f"\n{name}")
-#        l = max([len(p) for p in parts])
-#        for p in parts:
-#            if check(p):
-#                print(f"{p:<{l}} {translate_TNT(p)}")
-#            else:
-#                print(f"{p:<{l}} ERROR")
-#                
-#                
+    print("\n\n\nChecking well-formedness\nAll should be well-formed (but may be false)")
+    for parts,check,name in zip(parts_list,check_list,name_list):
+        print(f"\n{name}")
+        l = max([len(p) for p in parts])
+        for p in parts:
+            if check(p):
+                print(f"{p:<{l}} {translate_TNT(p)}")
+            else:
+                print(f"{p:<{l}} ERROR")
+                
+                
