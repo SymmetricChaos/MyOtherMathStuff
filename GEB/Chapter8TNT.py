@@ -93,7 +93,7 @@ def translate_TNT(s):
             num = num[1:]
         left = s[:lo]
         right = s[hi:]
-        s = f"{left}{num} plus {ctr}{right}"
+        s = f"{left}({num} plus {ctr}){right}"
         N = re.search("S+[a-z]\'*",s)
         
     # Translate even more generalized additions that remain
@@ -107,7 +107,7 @@ def translate_TNT(s):
             num = num[1:]
         left = s[:lo]
         right = s[hi:]
-        s = f"{left}{num} plus {ctr}{right}"
+        s = f"{left}({num} plus {ctr}){right}"
         N = re.search("S+.*",s)
     
     # Simple translations
@@ -117,9 +117,16 @@ def translate_TNT(s):
                    " equals ", " implies that ",
                    " or ", " and ", "", ""]
     
+    # Fix spacing issues
     for sym,t in zip(symbol,translation):
         s = s.replace(sym,t)
-
+        
+    while "  " in s:
+        s = s.replace("  "," ")
+        
+    if s[0] == " ":
+        s = s[1:]
+    
     return s
 
 
@@ -295,14 +302,13 @@ if __name__ == '__main__':
     check_list = [is_term,is_atom,is_compound]
     name_list = ["Terms","Atoms","Compound Formulas"]
     
-    print("\n\n\nChecking well-formedness\nAll should be well-formed")
+    print("\n\n\nChecking well-formedness\nAll should be well-formed (but may be false)")
     for parts,check,name in zip(parts_list,check_list,name_list):
         print(f"\n{name}")
         l = max([len(p) for p in parts])
         for p in parts:
             if check(p):
                 print(f"{p:<{l}} {translate_TNT(p)}")
-#                print()
             else:
                 print(f"{p:<{l}} ERROR")
                 
