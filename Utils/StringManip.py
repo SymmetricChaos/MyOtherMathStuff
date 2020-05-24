@@ -42,6 +42,14 @@ def bracket_matching(S,left="(",right=")",overlap=True,inner=False,warn=True):
     return output
 
 
+# Returns the outermost left portion of the string
+def left_string(x,L="(",R=")"):
+    braks = bracket_matching(x,L,R,overlap=True,inner=True,warn=False)
+    for i in braks:
+        if i[1] == 1:
+            return i
+
+
 
 
 
