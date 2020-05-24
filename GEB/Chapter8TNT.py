@@ -80,7 +80,7 @@ def translate_TNT(s):
         left = s[:lo]
         right = s[hi:]
         s = left + f"{ctr}" + right
-        N = re.search("S*0",s)
+        N = re.search("S+0",s)
     
     # Translate addition natural number addition of variables
     N = re.search("S+[a-z]\'*",s)
@@ -94,7 +94,7 @@ def translate_TNT(s):
         left = s[:lo]
         right = s[hi:]
         s = left + num + f"{ctr}" + right
-        N = re.search("S*[a-z]\'*",s)
+        N = re.search("S+[a-z]\'*",s)
     
     # Simple translations
     s = s.replace("~","it is false that ")
@@ -104,6 +104,8 @@ def translate_TNT(s):
     s = s.replace("⊃"," implies that ")
     s = s.replace("∧"," and ")
     s = s.replace("∨"," or ")
+    s = s.replace("<","")
+    s = s.replace(">","")
 
     return s
 
@@ -286,8 +288,9 @@ if __name__ == '__main__':
         l = max([len(p) for p in parts])
         for p in parts:
             if check(p):
-                print(f"{p:<{l}} well-formed")
+                print(f"{p:<{l}} {translate_TNT(p)}")
+#                print()
             else:
-                print(f"{p:<{l}} not well-formed")
+                print(f"{p:<{l}} ERROR")
                 
                 
