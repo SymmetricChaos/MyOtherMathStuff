@@ -1,5 +1,5 @@
 import re
-from Utils.StringManip import left_string
+from Utils.StringManip import left_string, bracket_matching
 # ∧∨⊃∃∀⋅
 
 # Build statements in Typographical Number Theory
@@ -97,19 +97,30 @@ def translate_TNT(s):
         N = re.search("S+[a-z]\'*",s)
         
     # Translate even more generalized additions that remain
-    N = re.search("S+.*",s)
+    # Needs to use a bracket matching system to isolate correctly
+    N = re.search("S+\(",s)
     while N != None:
-        lo, hi = N.span()
-        num = s[lo:hi]
-        ctr = 0
-        while num[0] == "S":
-            ctr += 1
-            num = num[1:]
+        braks = bracket_matching(s,"(",")")
+        span = N.span()
+        for i in braks:
+            if i[1] == span[1]-1:
+                num, lo, hi = i
+                break
+
         left = s[:lo]
         right = s[hi:]
-        s = f"{left}({num} plus {ctr}){right}"
-        N = re.search("S+.*",s)
-    
+
+        ctr = 0
+        if left != "":
+            while left[-1] == "S":
+                ctr += 1
+                left = left[:-1]
+                if left == "":
+                    break
+
+        s = f"{left}(({num} plus {ctr}){right}"
+        N = re.search("S+\(",s)
+
     # Simple translations
     symbol = ["~","+","⋅","=","⊃","∨","∧","<",">"]
     translation = [" it is false that ",
@@ -258,58 +269,65 @@ def is_quantifier(x):
 
 
 if __name__ == '__main__':
-    zero = "0"
-    one = SUCC(zero)
-    two = SUCC(one)
-    b = "b"
-    sq = MUL(b,b)
-    sq_2 = EQ(sq,two)
-    ex_sq_2 = EXISTS(b,sq_2)
-    not_ex_sq_2 = NOT(ex_sq_2)
-    print(zero)
-    print(one)
-    print(two)
-    print(b)
-    print(sq)
-    print(sq_2)
-    print(ex_sq_2)
-    print(not_ex_sq_2)
-    print(translate_TNT(not_ex_sq_2))
     
-    
-    
-    print("\n\n\nTranslation puzzles from GEB\n")
-    for i in ["~∀c:∃b:(SS0⋅b)=c",
-              "∀c:~∃b:(SS0⋅b)=c",
-              "∀c:∃b:~(SS0⋅b)=c",
-              "~∃b:∀c:(SS0⋅b)=c",
-              "∃b:~∀c:(SS0⋅b)=c",
-              "∃b:∀c:~(SS0⋅b)=c"]:
-        print(f"{i}\n{translate_TNT(i)}\n\n")
-    
-    
-    
-    print("\n\n\nVariables extracted from ~∀c:∃b':(SS0⋅b')=c")
-    print(get_vars("~∀c:∃b':(SS0⋅b')=c"))
-    
+    S = "SS(b+c)=(S(c⋅d)⋅e)"
+    print(S)
+    print(translate_TNT(S))
     
 
-    terms = ["0","b","SSa'","(S0⋅(SS0+c))","S(Sa⋅(Sb⋅Sc))"]
-    atoms = ["S0=0","(SS0+SS0)=SSSS0","S(b+c)=(S(c⋅d)⋅e)"]
-    compounds = ["<S0=0⊃∀c:~∃b:(b+b)=c>"]
-
-    parts_list = [terms,atoms,compounds]
-    check_list = [is_term,is_atom,is_compound]
-    name_list = ["Terms","Atoms","Compound Formulas"]
     
-    print("\n\n\nChecking well-formedness\nAll should be well-formed (but may be false)")
-    for parts,check,name in zip(parts_list,check_list,name_list):
-        print(f"\n{name}")
-        l = max([len(p) for p in parts])
-        for p in parts:
-            if check(p):
-                print(f"{p:<{l}} {translate_TNT(p)}")
-            else:
-                print(f"{p:<{l}} ERROR")
-                
-                
+#    zero = "0"
+#    one = SUCC(zero)
+#    two = SUCC(one)
+#    b = "b"
+#    sq = MUL(b,b)
+#    sq_2 = EQ(sq,two)
+#    ex_sq_2 = EXISTS(b,sq_2)
+#    not_ex_sq_2 = NOT(ex_sq_2)
+#    print(zero)
+#    print(one)
+#    print(two)
+#    print(b)
+#    print(sq)
+#    print(sq_2)
+#    print(ex_sq_2)
+#    print(not_ex_sq_2)
+#    print(translate_TNT(not_ex_sq_2))
+#    
+#    
+#    
+#    print("\n\n\nTranslation puzzles from GEB\n")
+#    for i in ["~∀c:∃b:(SS0⋅b)=c",
+#              "∀c:~∃b:(SS0⋅b)=c",
+#              "∀c:∃b:~(SS0⋅b)=c",
+#              "~∃b:∀c:(SS0⋅b)=c",
+#              "∃b:~∀c:(SS0⋅b)=c",
+#              "∃b:∀c:~(SS0⋅b)=c"]:
+#        print(f"{i}\n{translate_TNT(i)}\n\n")
+#    
+#    
+#    
+#    print("\n\n\nVariables extracted from ~∀c:∃b':(SS0⋅b')=c")
+#    print(get_vars("~∀c:∃b':(SS0⋅b')=c"))
+#    
+#    
+#
+#    terms = ["0","b","SSa'","(S0⋅(SS0+c))","S(Sa⋅(Sb⋅Sc))"]
+#    atoms = ["S0=0","(SS0+SS0)=SSSS0","S(b+c)=(S(c⋅d)⋅e)"]
+#    compounds = ["<S0=0⊃∀c:~∃b:(b+b)=c>"]
+#
+#    parts_list = [terms,atoms,compounds]
+#    check_list = [is_term,is_atom,is_compound]
+#    name_list = ["Terms","Atoms","Compound Formulas"]
+#    
+#    print("\n\n\nChecking well-formedness\nAll should be well-formed (but may be false)")
+#    for parts,check,name in zip(parts_list,check_list,name_list):
+#        print(f"\n{name}")
+#        l = max([len(p) for p in parts])
+#        for p in parts:
+#            if check(p):
+#                print(f"{p:<{l}} {translate_TNT(p)}")
+#            else:
+#                print(f"{p:<{l}} ERROR")
+#                
+#                
