@@ -134,6 +134,16 @@ def strip_succ(x):
         x = x[1:]
     return x
 
+def strip_qaunt(x):
+    x = strip_neg(x)
+    m = re.match("^[∀∃][a-z]\'*:",x)
+    while m:
+        span = m.span()
+        x = x[span[1]:]
+        x = strip_neg(x)
+        m = re.match("^[∀∃][a-z]\'*:",x)
+    return x
+
 # Get variables
 def get_vars(x):
     v = re.findall("[a-z]\'*",x)
@@ -196,16 +206,26 @@ def is_atom(x):
 # out the negations before working with the formula
 def is_compound(x):
     x = strip_neg(x)
-    if is_atom(x) or is_term(x):
+    if is_atom(x) or is_term(x) or is_quantifier(x):
         return True
     else:
         try:
             L,R = split_logical(x)
+            # Remove negatives and quantifiers
             L = strip_neg(L)
+            L = strip_qaunt(L)
+            # Remove negatives and quantifiers
             R = strip_neg(R)
+            R = strip_qaunt(R)
             return is_compound(L) and is_compound(R)
         except:
             return False
+        
+def is_quantifier(x):
+    x = strip_neg(x)
+    if re.match("^[∀∃][a-z]\'*:$",x):
+        return True
+    return False
             
 
 #def is_open(x):
@@ -251,20 +271,23 @@ if __name__ == '__main__':
     print(get_vars("~∀c:∃b':(SS0⋅b')=c"))
     
     
-    
-    print("\n\n\nChecking well-formedness")
+
     terms = ["0","b","SSa'","(S0⋅(SS0+c))","S(Sa⋅(Sb⋅Sc))"]
     atoms = ["S0=0","(SS0+SS0)=SSSS0","S(b+c)=((c⋅d)⋅e)"]
-    compounds = [""]
+    compounds = ["<S0=0⊃∀c:~∃b:(b+b)=c>"]
 
     parts_list = [terms,atoms,compounds]
     check_list = [is_term,is_atom,is_compound]
     name_list = ["Terms","Atoms","Compound Formulas"]
     
+    print("\n\n\nChecking well-formedness\nAll should be well-formed")
     for parts,check,name in zip(parts_list,check_list,name_list):
         print(f"\n{name}")
+        l = max([len(p) for p in parts])
         for p in parts:
             if check(p):
-                print(f"{p:<16} TRUE")
+                print(f"{p:<{l}} well-formed")
             else:
-                print(f"{p:<16} FALSE")
+                print(f"{p:<{l}} not well-formed")
+                
+                
