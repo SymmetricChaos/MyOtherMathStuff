@@ -54,7 +54,7 @@ def translate_TNT(s):
         inside = s[lo+1:hi-1]
         left = s[:lo]
         right = s[hi:]
-        s = left + "there exists " + inside + " such that " + right
+        s = f"{left}there exists {inside} such that{right}"
         E = re.search("∃[a-z]\'*:",s)
 
     # Translate universal quantifier
@@ -64,7 +64,7 @@ def translate_TNT(s):
         inside = s[lo+1:hi-1]
         left = s[:lo]
         right = s[hi:]
-        s = left + "for all " + inside + " it is the case that " + right
+        s = f"{left} for all {inside} {right} "
         A = re.search("∀[a-z]\'*:",s)
     
     # Translate natural numbers
@@ -79,7 +79,7 @@ def translate_TNT(s):
         
         left = s[:lo]
         right = s[hi:]
-        s = left + f"{ctr}" + right
+        s = f"{left}{ctr}{right} "
         N = re.search("S+0",s)
     
     # Translate addition natural number addition of variables
@@ -93,11 +93,25 @@ def translate_TNT(s):
             num = num[1:]
         left = s[:lo]
         right = s[hi:]
-        s = left + num + f"{ctr}" + right
+        s = f"{left}{num} plus {ctr}{right}"
         N = re.search("S+[a-z]\'*",s)
+        
+    # Translate even more generalized additions that remain
+    N = re.search("S+.*",s)
+    while N != None:
+        lo, hi = N.span()
+        num = s[lo:hi]
+        ctr = 0
+        while num[0] == "S":
+            ctr += 1
+            num = num[1:]
+        left = s[:lo]
+        right = s[hi:]
+        s = f"{left}{num} plus {ctr}{right}"
+        N = re.search("S+.*",s)
     
     # Simple translations
-    s = s.replace("~","it is false that ")
+    s = s.replace("~"," it is false that ")
     s = s.replace("+"," plus ")
     s = s.replace("⋅"," times ")
     s = s.replace("="," equals ")
@@ -275,7 +289,7 @@ if __name__ == '__main__':
     
 
     terms = ["0","b","SSa'","(S0⋅(SS0+c))","S(Sa⋅(Sb⋅Sc))"]
-    atoms = ["S0=0","(SS0+SS0)=SSSS0","S(b+c)=((c⋅d)⋅e)"]
+    atoms = ["S0=0","(SS0+SS0)=SSSS0","S(b+c)=(S(c⋅d)⋅e)"]
     compounds = ["<S0=0⊃∀c:~∃b:(b+b)=c>"]
 
     parts_list = [terms,atoms,compounds]
