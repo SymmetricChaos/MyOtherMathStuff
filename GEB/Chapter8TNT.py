@@ -111,15 +111,14 @@ def translate_TNT(s):
         N = re.search("S+.*",s)
     
     # Simple translations
-    s = s.replace("~"," it is false that ")
-    s = s.replace("+"," plus ")
-    s = s.replace("⋅"," times ")
-    s = s.replace("="," equals ")
-    s = s.replace("⊃"," implies that ")
-    s = s.replace("∧"," and ")
-    s = s.replace("∨"," or ")
-    s = s.replace("<","")
-    s = s.replace(">","")
+    symbol = ["~","+","⋅","=","⊃","∨","∧","<",">"]
+    translation = [" it is false that ",
+                   " plus ", " times ",
+                   " equals ", " implies that ",
+                   " or ", " and ", "", ""]
+    
+    for sym,t in zip(symbol,translation):
+        s = s.replace(sym,t)
 
     return s
 
