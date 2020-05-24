@@ -117,7 +117,27 @@ def split_add_mul(x):
 
 def split_eq(x):
     return x.split("=",maxsplit=1)
-    
+
+# Strip out ~ and S
+def strip_neg(x):
+    while x[0] == "~":
+        x = x[1:]
+    return x
+
+def strip_succ(x):
+    while x[0] == "S":
+        x = x[1:]
+    return x
+
+# Get variables
+def get_vars(x):
+    v = re.findall("[a-z]\'*",x)
+    return set(v)
+
+#def get_free_vars(x):
+#
+#def get_bound_vars(x):
+
 
 
 # Simplest atoms
@@ -127,15 +147,13 @@ def is_var(x):
     return False
 
 def is_num(x):
-    while x[0] == "S":
-        x = x[1:]
+    x = strip_succ(x)
     if x == "0" or is_var(x):
         return True
     return False
 
 def is_pure_num(x):
-    while x[0] == "S":
-        x = x[1:]
+    x = strip_succ(x)
     if x == "0":
         return True
     return False
@@ -186,6 +204,8 @@ if __name__ == '__main__':
     print(not_ex_sq_2)
     print(translate_TNT(not_ex_sq_2))
     
+    
+    
     print("\n\n\nTranslation puzzles from GEB\n")
     for i in ["~∀c:∃b:(SS0⋅b)=c",
               "∀c:~∃b:(SS0⋅b)=c",
@@ -194,6 +214,13 @@ if __name__ == '__main__':
               "∃b:~∀c:(SS0⋅b)=c",
               "∃b:∀c:~(SS0⋅b)=c"]:
         print(f"{i}\n{translate_TNT(i)}\n\n")
+    
+    
+    
+    print("\n\n\nVariables extracted from ~∀c:∃b':(SS0⋅b')=c")
+    print(get_vars("~∀c:∃b':(SS0⋅b')=c"))
+    
+    
     
     print("\n\n\nChecking well-formedness")
     terms = ["0","b","SSa'","(S0⋅(SS0+c))","S(Sa⋅(Sb⋅Sc))"]
