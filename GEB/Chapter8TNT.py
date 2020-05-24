@@ -115,6 +115,11 @@ def split_add_mul(x):
     R = x[hi+2:-1]
     return L,R
 
+def split_logical(x):
+    L,lo,hi = left_string(x,"<","∧∨⊃")
+    R = x[hi+2:-1]
+    return L,R
+
 def split_eq(x):
     return x.split("=",maxsplit=1)
 
@@ -158,29 +163,54 @@ def is_pure_num(x):
         return True
     return False
 
-# Variables and numbers are terms
-# For more complex expressions split additions and multiplication until a lowest
-# level is reached.
+# Variables and numbers are terms as are negations of them
 def is_term(x):
+    x = strip_neg(x)
     if is_var(x) or is_num(x):
         return True
     else:
         # Before splitting we strip out S from the left
         # This prevents an error is there is a chain of Ss outside the parentheses
         # Removing S cannot turn a non-term into a term so there is no risk here
-        while x[0] == "S":
-            x = x[1:]
-        L,R = split_add_mul(x)
-        return is_term(L) and is_term(R)
+        x = strip_succ(x)
+        try:
+            L,R = split_add_mul(x)
+            return is_term(L) and is_term(R)
+        except:
+            return False
 
+# Atoms are terms seperated by an equality
 def is_atom(x):
+    x = strip_neg(x)
     if "=" not in x:
         return False
     else:
-        L,R = x.split("=",maxsplit=1)
-        return is_term(L) and is_term(R)
+        try:
+            L,R = x.split("=",maxsplit=1)
+            return is_term(L) and is_term(R)
+        except:
+            return False
 
+# Compounds are the first level at which negation comes into play
+# Since negation of atoms and terms also gives a valid formula we just strip
+# out the negations before working with the formula
+def is_compound(x):
+    x = strip_neg(x)
+    if is_atom(x) or is_term(x):
+        return True
+    else:
+        try:
+            L,R = split_logical(x)
+            L = strip_neg(L)
+            R = strip_neg(R)
+            return is_compound(L) and is_compound(R)
+        except:
+            return False
+            
 
+#def is_open(x):
+#
+#def is_closed(x):
 
 
 
@@ -225,10 +255,11 @@ if __name__ == '__main__':
     print("\n\n\nChecking well-formedness")
     terms = ["0","b","SSa'","(S0⋅(SS0+c))","S(Sa⋅(Sb⋅Sc))"]
     atoms = ["S0=0","(SS0+SS0)=SSSS0","S(b+c)=((c⋅d)⋅e)"]
+    compounds = [""]
 
-    parts_list = [terms,atoms]
-    check_list = [is_term,is_atom]
-    name_list = ["Terms","Atoms"]
+    parts_list = [terms,atoms,compounds]
+    check_list = [is_term,is_atom,is_compound]
+    name_list = ["Terms","Atoms","Compound Formulas"]
     
     for parts,check,name in zip(parts_list,check_list,name_list):
         print(f"\n{name}")
