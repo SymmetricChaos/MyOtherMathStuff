@@ -334,6 +334,7 @@ def is_closed(x):
 
 if __name__ == '__main__':
 
+    print("Build some statements of Typographical Number Theory")
     zero = "0"
     one = SUCC(zero)
     two = SUCC(one)
@@ -350,7 +351,6 @@ if __name__ == '__main__':
     print(sq_2)
     print(ex_sq_2)
     print(not_ex_sq_2)
-    print(translate_TNT(not_ex_sq_2))
     
     
     
@@ -361,11 +361,11 @@ if __name__ == '__main__':
               "~∃b:∀c:(SS0⋅b)=c",
               "∃b:~∀c:(SS0⋅b)=c",
               "∃b:∀c:~(SS0⋅b)=c"]:
-        print(f"{i}\n{translate_TNT(i)}\n\n")
+        print(f"{i}\n{translate_TNT(i)}\n")
     
     
     open_formula = "<∀b:d'-b∧~c=c>"
-    print(f"\n\n\nVariables and quantifiers extracted from {open_formula}")
+    print(f"\n\nVariables and quantifiers extracted from {open_formula}")
     print(f"Variables used {get_vars(open_formula)}")
     print(f"Quantifications used {get_quants(open_formula)}")
     print(f"Bound variables {get_bound_vars(open_formula)}")
@@ -397,10 +397,10 @@ if __name__ == '__main__':
     Pax4 = "∀a:(a⋅0)=0"
     Pax5 = "∀a:∀b:(a⋅Sb)=((a⋅b)+a)"
     peano_axioms = [Pax1,Pax2,Pax3,Pax4,Pax5]
-    print("\n\nAxioms of Peano Arithmetic")
+    print("\n\n\nAxioms of Peano Arithmetic")
     for i in peano_axioms:
         print(f"{i}\n{translate_TNT(i)}\n")
         
         
     print("\n\nSpecifications of Peano Arithmetic")
-    print(f"{Pax1} can be specified to {specification(Pax1,'a','0')}")
+    print(f"{Pax1} ⟹ {specification(Pax1,'a','0')}")
