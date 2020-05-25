@@ -48,6 +48,26 @@ def MUL(x,y):
 def EQ(x,y):
 	return f"{x}={y}"
 
+def specification(x,u,s):
+
+    if f"∀{u}:" in x:
+        # Eliminate the quantifer
+        x = x.replace(f"∀{u}:","")
+        
+        x_b_vars = get_bound_vars(x)
+        u_vars = get_vars(u)
+        
+        for uv in u_vars:
+            for xbv in x_b_vars:
+                if uv in xbv:
+                    raise Exception("{uv} is bound in {x}")
+        
+        x = x.replace(u,s)
+        return x
+    else:
+        raise Exception("{u} is not bound in {x}")
+        
+
 
 
 # Translate to "plain English"
@@ -70,7 +90,7 @@ def translate_TNT(s):
         inside = s[lo+1:hi-1]
         left = s[:lo]
         right = s[hi:]
-        s = f"{left} for all {inside} {right} "
+        s = f"{left} for all {inside} it is that {right} "
         A = re.search("∀[a-z]\'*:",s)
     
     # Translate natural numbers
@@ -370,10 +390,17 @@ if __name__ == '__main__':
             else:
                 print(f"{p:<{l}} ERROR")
         
+        
+    Pax1 = "∀a:~Sa=0"
+    Pax2 = "∀a:(a+0)=a"
+    Pax3 = "∀a:∀b:(a+Sb)=S(a+b)"
+    Pax4 = "∀a:(a⋅0)=0"
+    Pax5 = "∀a:∀b:(a⋅Sb)=((a⋅b)+a)"
+    peano_axioms = [Pax1,Pax2,Pax3,Pax4,Pax5]
     print("\n\nAxioms of Peano Arithmetic")
-    for i in ["∀a:~Sa=0",
-              "∀a:(a+0)=a",
-              "∀a:∀b:(a+Sb)=S(a+b)",
-              "∀a:(a⋅0)=0",
-              "∀a:∀b:(a⋅Sb)=((a⋅b)+a)",]:
+    for i in peano_axioms:
         print(f"{i}\n{translate_TNT(i)}\n")
+        
+        
+    print("\n\nSpecifications of Peano Arithmetic")
+    print(f"{Pax1} can be specified to {specification(Pax1,'a','0')}")
