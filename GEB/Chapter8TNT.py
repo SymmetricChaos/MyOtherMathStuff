@@ -4,16 +4,22 @@ from Utils.StringManip import left_string, bracket_matching
 
 # Build statements in Typographical Number Theory
 def EXISTS(a,x=""):
-	if is_var(a):
-		return f"∃{a}:{x}"
-	else:
-		raise Exception(f"Existential quantifier does not apply to {a}")
+    if is_var(a):
+        if a in get_free_vars(x):
+            return f"∃{a}:{x}"
+        else:
+            raise Exception(f"{a} is already quantified in {x}")
+    else:
+        raise Exception(f"Existential quantifier does not apply to {a}")
 	
 def FOR_ALL(a,x=""):
-	if is_var(a):
-		return f"∀{a}:{x}"
-	else:
-		raise Exception(f"Universal quantifier does not apply to {a}")
+    if is_var(a):
+        if a in get_free_vars(x):
+            return f"∀{a}:{x}"
+        else:
+            raise Exception(f"{a} is already quantified in {x}")
+    else:
+        raise Exception(f"Existential quantifier does not apply to {a}")
 
 def AND(x,y):
 	return f"<{x}∧{y}>"
@@ -156,17 +162,21 @@ def split_logical(x):
 def split_eq(x):
     return x.split("=",maxsplit=1)
 
-# Strip out ~ and S
+
+
+# Strip out ~
 def strip_neg(x):
     while x[0] == "~":
         x = x[1:]
     return x
 
+# Strip out S
 def strip_succ(x):
     while x[0] == "S":
         x = x[1:]
     return x
 
+# Also strips negatives within a chain of quantifiers
 def strip_qaunt(x):
     x = strip_neg(x)
     m = re.match("^[∀∃][a-z]\'*:",x)
@@ -176,6 +186,8 @@ def strip_qaunt(x):
         x = strip_neg(x)
         m = re.match("^[∀∃][a-z]\'*:",x)
     return x
+
+
 
 # Get variables
 def get_vars(x):
@@ -251,9 +263,15 @@ def is_atom(x):
         except:
             return False
 
-# Compounds are the first level at which negation comes into play
-# Since negation of atoms and terms also gives a valid formula we just strip
-# out the negations before working with the formula
+def is_quantifier(x):
+    x = strip_neg(x)
+    if re.match("^[∀∃][a-z]\'*:$",x):
+        return True
+    return False
+
+# Checks if a formula is a compound well-formed formula or is a valid part of
+# such. Since valid parts are not technically well-formed we will check
+# seperately for that.
 def is_compound(x):
     x = strip_neg(x)
     if is_atom(x) or is_term(x) or is_quantifier(x):
@@ -270,17 +288,27 @@ def is_compound(x):
             return is_compound(L) and is_compound(R)
         except:
             return False
-        
-def is_quantifier(x):
-    x = strip_neg(x)
-    if re.match("^[∀∃][a-z]\'*:$",x):
-        return True
-    return False
-            
 
-#def is_open(x):
-#
-#def is_closed(x):
+#def is_well_formed(x):
+#    if is_atom(x):
+#        return True
+#    elif:
+#        
+#    else:
+#        return False
+    
+
+def is_open(x):
+    var = get_vars(x)
+    quant = get_quants(x)
+    for v in var:
+        for q in quant:
+            if v in q:
+                return False
+    return True
+
+def is_closed(x):
+    return not is_open(x)
 
 
 
