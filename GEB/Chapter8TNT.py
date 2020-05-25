@@ -164,19 +164,18 @@ def split_eq(x):
 
 
 
-# Strip out ~
+# Functions for removing certain symbols
 def strip_neg(x):
     while x[0] == "~":
         x = x[1:]
     return x
 
-# Strip out S
 def strip_succ(x):
     while x[0] == "S":
         x = x[1:]
     return x
 
-# Also strips negatives within a chain of quantifiers
+# Removes quantifiers and also strips out negatives in the chain
 def strip_qaunt(x):
     x = strip_neg(x)
     m = re.match("^[∀∃][a-z]\'*:",x)
@@ -370,5 +369,11 @@ if __name__ == '__main__':
                 print(f"{p:<{l}} {translate_TNT(p)}")
             else:
                 print(f"{p:<{l}} ERROR")
-                
-                
+        
+    print("\n\nAxioms of Peano Arithmetic")
+    for i in ["∀a:~Sa=0",
+              "∀a:(a+0)=a",
+              "∀a:∀b:(a+Sb)=S(a+b)",
+              "∀a:(a⋅0)=0",
+              "∀a:∀b:(a⋅Sb)=((a⋅b)+a)",]:
+        print(f"{i}\n{translate_TNT(i)}\n")
