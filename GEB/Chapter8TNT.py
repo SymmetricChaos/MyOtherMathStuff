@@ -182,9 +182,26 @@ def get_vars(x):
     v = re.findall("[a-z]\'*",x)
     return set(v)
 
-#def get_free_vars(x):
-#
-#def get_bound_vars(x):
+def get_quants(x):
+    q = re.findall("[∀∃][a-z]\'*:",x)
+    return set(q)
+
+def get_bound_vars(x):
+    var = get_vars(x)
+    quant = get_quants(x)
+    bound = set([])
+    for v in var:
+        for q in quant:
+            if v in q:
+                bound.add(v)
+                break
+    return bound
+
+def get_free_vars(x):
+    var = get_vars(x)
+    bvar = get_bound_vars(x)
+    return var-bvar
+        
 
 
 
@@ -300,10 +317,12 @@ if __name__ == '__main__':
         print(f"{i}\n{translate_TNT(i)}\n\n")
     
     
-    
-    print("\n\n\nVariables extracted from ~∀c:∃b':(SS0⋅b')=c")
-    print(get_vars("~∀c:∃b':(SS0⋅b')=c"))
-    
+    open_formula = "<∀b:d'-b∧~c=c>"
+    print(f"\n\n\nVariables and quantifiers extracted from {open_formula}")
+    print(f"Variables used {get_vars(open_formula)}")
+    print(f"Quantifications used {get_quants(open_formula)}")
+    print(f"Bound variables {get_bound_vars(open_formula)}")
+    print(f"Free variables {get_free_vars(open_formula)}")
     
 
     terms = ["0","b","SSa'","(S0⋅(SS0+c))","S(Sa⋅(Sb⋅Sc))"]
