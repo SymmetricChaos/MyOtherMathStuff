@@ -3,7 +3,7 @@ from Utils.StringManip import left_string, bracket_matching
 # ∧∨⊃∃∀⋅
 
 # Build statements in Typographical Number Theory
-def EXISTS(a,x=""):
+def EXISTS(x,a):
     if is_var(a):
         if a in get_free_vars(x):
             return f"∃{a}:{x}"
@@ -12,7 +12,7 @@ def EXISTS(a,x=""):
     else:
         raise Exception(f"Existential quantifier does not apply to {a}")
 	
-def FOR_ALL(a,x=""):
+def FOR_ALL(x,a):
     if is_var(a):
         if a in get_free_vars(x):
             return f"∀{a}:{x}"
@@ -48,25 +48,43 @@ def MUL(x,y):
 def EQ(x,y):
 	return f"{x}={y}"
 
-def specification(x,u,s):
+def specify(x,u,s):
 
     if f"∀{u}:" in x:
         # Eliminate the quantifer
         x = x.replace(f"∀{u}:","")
         
+        # Check if replacement is allowed
         x_b_vars = get_bound_vars(x)
         u_vars = get_vars(u)
         
         for uv in u_vars:
             for xbv in x_b_vars:
                 if uv in xbv:
-                    raise Exception("{uv} is bound in {x}")
+                    raise Exception(f"{uv} is bound in {x}")
         
         x = x.replace(u,s)
         return x
+    
     else:
-        raise Exception("{u} is not bound in {x}")
+        raise Exception(f"{u} is not bound in {x}")
+
+def generalize(x,u):
+    f_vars = get_free_vars(x)
+    if u in f_vars:
+        return FOR_ALL(x,u)
+    else:
+        raise Exception(f"{u} is not free in {x}")
         
+def interchange_EA(x,u):
+    E = f"~∃{u}:"
+    A = f"∀{u}:~"
+    return x.replace(E,A)
+
+def interchange_AE(x,u):
+    E = f"~∃{u}:"
+    A = f"∀{u}:~"
+    return x.replace(A,E)
 
 
 
@@ -235,7 +253,6 @@ def get_free_vars(x):
         
 
 
-
 # Simplest atoms
 def is_var(x):
     if re.match("^[a-z]\'*$",x):
@@ -332,6 +349,7 @@ def is_closed(x):
 
 
 
+
 if __name__ == '__main__':
 
     print("Build some statements of Typographical Number Theory")
@@ -341,7 +359,7 @@ if __name__ == '__main__':
     b = "b"
     sq = MUL(b,b)
     sq_2 = EQ(sq,two)
-    ex_sq_2 = EXISTS(b,sq_2)
+    ex_sq_2 = EXISTS(sq_2,b)
     not_ex_sq_2 = NOT(ex_sq_2)
     print(zero)
     print(one)
@@ -351,7 +369,6 @@ if __name__ == '__main__':
     print(sq_2)
     print(ex_sq_2)
     print(not_ex_sq_2)
-    
     
     
     print("\n\n\nTranslation puzzles from GEB\n")
