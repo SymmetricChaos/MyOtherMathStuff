@@ -2,6 +2,7 @@ from GEB.Chapter8TNT.Properties import is_var, get_vars, get_free_vars, is_num, 
                                        get_bound_vars, get_quants, is_term, is_atom, \
                                        is_compound
 from GEB.Chapter8TNT.Translate import translate
+from GEB.Chapter8TNT.StripSplit import split_eq
 # ∧∨⊃∃∀⋅
 
 # Build statements in Typographical Number Theory
@@ -50,6 +51,7 @@ def MUL(x,y):
 def EQ(x,y):
 	return f"{x}={y}"
 
+# Rules of Production
 def specify(x,u,s):
     if f"∀{u}:" in x:
         # Eliminate the quantifer
@@ -86,8 +88,24 @@ def interchange_AE(x,u):
     A = f"∀{u}:~"
     return x.replace(A,E)
 
+def successor(x):
+    if is_atom(x):
+        left, right = split_eq(x)
+        return f"S{left}=S{right}"
+    else:
+        raise Exception(f"{x} is not an equality of two terms")
 
-
+def predecessor(x):
+    if is_atom(x):
+        left, right = split_eq(x)
+        if left[0] != "S":
+            raise Exception(f"{left} has no predecessor")
+        if right[0] != "S":
+            raise Exception(f"{right} has no predecessor")
+            
+        return f"{left[1:]}={right[1:]}"
+    else:
+        raise Exception(f"{x} is not an equality of two terms")
 
 
 
@@ -166,3 +184,9 @@ if __name__ == '__main__':
     print(f"{Pax3} ⟹ {specify(Pax3,'a','(c+d)')}")
     print(f"{Pax4} ⟹ {specify(Pax4,'a','(S0⋅0)')}")
     print(f"{Pax5} ⟹ {specify(Pax5,'b','(S0+b)')}")
+    
+    
+    print("\n\n\nRules of Successorship")
+    succ_example = "SSS0=S(S0+S0)"
+    print(f"{succ_example} ⟹ {successor(S)}")
+    print(f"{succ_example} ⟹ {predecessor(S)}")
