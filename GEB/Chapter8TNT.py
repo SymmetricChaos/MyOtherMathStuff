@@ -49,19 +49,17 @@ def EQ(x,y):
 	return f"{x}={y}"
 
 def specify(x,u,s):
-
     if f"∀{u}:" in x:
         # Eliminate the quantifer
         x = x.replace(f"∀{u}:","")
         
         # Check if replacement is allowed
         x_b_vars = get_bound_vars(x)
-        u_vars = get_vars(u)
-        
-        for uv in u_vars:
+        s_vars = get_vars(s)
+        for sv in s_vars:
             for xbv in x_b_vars:
-                if uv in xbv:
-                    raise Exception(f"{uv} is bound in {x}")
+                if sv in xbv:
+                    raise Exception(f"{sv} is bound in {x}")
         
         x = x.replace(u,s)
         return x
@@ -420,8 +418,8 @@ if __name__ == '__main__':
         
         
     print("\n\nExample Specifications of Peano Arithmetic")
-    print(f"{Pax1} ⟹ {specification(Pax1,'a','0')}")
-    print(f"{Pax2} ⟹ {specification(Pax2,'a','S0')}")
-    print(f"{Pax3} ⟹ {specification(Pax3,'a','(c+d)')}")
-    print(f"{Pax4} ⟹ {specification(Pax4,'a','(S0⋅0)')}")
-    print(f"{Pax5} ⟹ {specification(Pax5,'b','(S0+c)')}")
+    print(f"{Pax1} ⟹ {specify(Pax1,'a','0')}")
+    print(f"{Pax2} ⟹ {specify(Pax2,'a','S0')}")
+    print(f"{Pax3} ⟹ {specify(Pax3,'a','(c+d)')}")
+    print(f"{Pax4} ⟹ {specify(Pax4,'a','(S0⋅0)')}")
+    print(f"{Pax5} ⟹ {specify(Pax5,'b','(S0+b)')}")
