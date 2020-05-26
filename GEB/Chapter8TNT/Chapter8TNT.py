@@ -120,6 +120,14 @@ def existence(x,u,v):
     else:
         raise Exception(f"{u} is not a valid terms")
 
+def symmetry(x):
+    if is_atom(x):
+        left, right = split_eq(x)
+
+        return f"{right}={left}"
+    else:
+        raise Exception(f"{x} is not an equality of two terms")
+
 
 
 if __name__ == '__main__':
