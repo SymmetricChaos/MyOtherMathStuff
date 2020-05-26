@@ -108,7 +108,7 @@ def translate_TNT(s):
         inside = s[lo+1:hi-1]
         left = s[:lo]
         right = s[hi:]
-        s = f"{left} for all {inside} it is that {right} "
+        s = f"{left} for all {inside}, {right} "
         A = re.search("∀[a-z]\'*:",s)
     
     # Translate natural numbers
@@ -419,5 +419,9 @@ if __name__ == '__main__':
         print(f"{i}\n{translate_TNT(i)}\n")
         
         
-    print("\n\nSpecifications of Peano Arithmetic")
+    print("\n\nExample Specifications of Peano Arithmetic")
     print(f"{Pax1} ⟹ {specification(Pax1,'a','0')}")
+    print(f"{Pax2} ⟹ {specification(Pax2,'a','S0')}")
+    print(f"{Pax3} ⟹ {specification(Pax3,'a','(c+d)')}")
+    print(f"{Pax4} ⟹ {specification(Pax4,'a','(S0⋅0)')}")
+    print(f"{Pax5} ⟹ {specification(Pax5,'b','(S0+c)')}")
