@@ -1,5 +1,6 @@
 import re
 from Utils.StringManip import bracket_matching
+from GEB.Chapter8TNT.Properties import starts_quantifier
 
 # Translate to "plain English"
 def translate(s):
@@ -11,8 +12,8 @@ def translate(s):
         inside = s[lo+1:hi-1]
         left = s[:lo]
         right = s[hi:]
-        if left != "":
-            s = f"{left} and there exists {inside} {right} "
+        if starts_quantifier(right):
+            s = f"{left} there exists {inside} and {right} "
         else:
             s = f"{left} there exists {inside} such that {right}"
         E = re.search("∃[a-z]\'*:",s)
@@ -24,8 +25,8 @@ def translate(s):
         inside = s[lo+1:hi-1]
         left = s[:lo]
         right = s[hi:]
-        if left != "":
-            s = f"{left} and for all {inside} {right} "
+        if starts_quantifier(right):
+            s = f"{left} for all {inside} and {right} "
         else:
             s = f"{left} for all {inside} {right} "
         A = re.search("∀[a-z]\'*:",s)

@@ -81,6 +81,12 @@ def is_quantifier(x):
         return True
     return False
 
+def starts_quantifier(x):
+    x = strip_neg(x)
+    if re.match("^[∀∃][a-z]\'*:.*",x):
+        return True
+    return False
+
 # Checks if a formula is a compound well-formed formula or is a valid part of
 # such. Since valid parts are not technically well-formed we will check
 # seperately for that.
