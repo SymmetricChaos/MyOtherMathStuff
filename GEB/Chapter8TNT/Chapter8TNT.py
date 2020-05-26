@@ -222,7 +222,7 @@ if __name__ == '__main__':
     print(f"{gen_example} ⟹ {generalize(gen_example,'c')}")
 
     
-    print("\n\n\Rule of Existence")
+    print("\n\n\nRule of Existence")
     print(f"{Pax1} ⟹ {existence(Pax1,'0','b')}")
     print(f"{Pax3} ⟹ {existence(Pax3,'Sb','c')}")
     

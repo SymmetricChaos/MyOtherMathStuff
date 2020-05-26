@@ -32,7 +32,7 @@ def get_free_vars(x):
         
 
 
-# Simplest atoms
+# Simplest parts
 def is_var(x):
     if re.match("^[a-z]\'*$",x):
         return True
