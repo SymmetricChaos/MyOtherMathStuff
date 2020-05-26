@@ -7,10 +7,12 @@ def get_vars(x):
     v = re.findall("[a-z]\'*",x)
     return set(v)
 
+# Return all quantifications used
 def get_quants(x):
     q = re.findall("[∀∃][a-z]\'*:",x)
     return set(q)
 
+# Return all variables that appear in quantifications
 def get_bound_vars(x):
     var = get_vars(x)
     quant = get_quants(x)
@@ -22,6 +24,7 @@ def get_bound_vars(x):
                 break
     return bound
 
+# Return all variables that don't appear in quantifications
 def get_free_vars(x):
     var = get_vars(x)
     bvar = get_bound_vars(x)
@@ -81,6 +84,7 @@ def is_quantifier(x):
         return True
     return False
 
+# Check if a string starts with a quantifier
 def starts_quantifier(x):
     x = strip_neg(x)
     if re.match("^[∀∃][a-z]\'*:.*",x):

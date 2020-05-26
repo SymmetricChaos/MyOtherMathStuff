@@ -110,7 +110,15 @@ def predecessor(x):
     else:
         raise Exception(f"{x} is not an equality of two terms")
 
-
+def existence(x,u,v):
+    if is_term(u):
+        if v in get_bound_vars(x):
+            raise Exception(f"{v} is already bound in {x}")
+        else:
+            x = x.replace(u,v)
+            return EXISTS(x,v)
+    else:
+        raise Exception(f"{u} is not a valid terms")
 
 
 
@@ -195,3 +203,8 @@ if __name__ == '__main__':
     succ_example = "SSS0=S(S0+S0)"
     print(f"{succ_example} ⟹ {successor(succ_example)}")
     print(f"{succ_example} ⟹ {predecessor(succ_example)}")
+    
+    
+    print("\n\n\nRule of Existence")
+    print(f"{Pax1} ⟹ {existence(Pax1,'0','b')}")
+    
