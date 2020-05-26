@@ -1,6 +1,6 @@
-import re
-from Utils.StringManip import left_string, bracket_matching
-from GEB.Chapter8TNT.Properties import *
+from GEB.Chapter8TNT.Properties import is_var, get_vars, get_free_vars, is_num, \
+                                       get_bound_vars, get_quants, is_term, is_atom, \
+                                       is_compound
 from GEB.Chapter8TNT.Translate import translate
 # ∧∨⊃∃∀⋅
 
@@ -85,17 +85,6 @@ def interchange_AE(x,u):
     E = f"~∃{u}:"
     A = f"∀{u}:~"
     return x.replace(A,E)
-
-
-
-
-
-
-
-
-
-
-
 
 
 
