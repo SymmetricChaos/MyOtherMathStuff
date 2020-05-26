@@ -1,6 +1,7 @@
 import re
 from Utils.StringManip import left_string
 
+# CANNOT IMPORT FROM PROPERTIES
 
 # Functions for splitting strings to be used for checking well formedness
 def split_add_mul(x):

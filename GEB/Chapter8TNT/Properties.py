@@ -1,5 +1,6 @@
 import re
-from GEB.Chapter8TNT.StripSplit import *
+from GEB.Chapter8TNT.StripSplit import strip_succ, strip_neg, split_add_mul, \
+                                       split_logical, strip_qaunt
 
 # Get variables
 def get_vars(x):
