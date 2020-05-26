@@ -71,13 +71,15 @@ def specify(x,u,s):
     else:
         raise Exception(f"{u} is not bound in {x}")
 
+# DOUBLE CHECK RESTRICTION
 def generalize(x,u):
     f_vars = get_free_vars(x)
     if u in f_vars:
         return FOR_ALL(x,u)
     else:
         raise Exception(f"{u} is not free in {x}")
-        
+
+# MAKE THESE INTO ONE FUNCTION WITH SOME OPTIONS
 def interchange_EA(x,u):
     E = f"~∃{u}:"
     A = f"∀{u}:~"
@@ -88,6 +90,7 @@ def interchange_AE(x,u):
     A = f"∀{u}:~"
     return x.replace(A,E)
 
+# CHECK HOW THESE INTERACT WITH NEGATIONS
 def successor(x):
     if is_atom(x):
         left, right = split_eq(x)
@@ -106,6 +109,8 @@ def predecessor(x):
         return f"{left[1:]}={right[1:]}"
     else:
         raise Exception(f"{x} is not an equality of two terms")
+
+
 
 
 
@@ -188,5 +193,5 @@ if __name__ == '__main__':
     
     print("\n\n\nRules of Successorship")
     succ_example = "SSS0=S(S0+S0)"
-    print(f"{succ_example} ⟹ {successor(S)}")
-    print(f"{succ_example} ⟹ {predecessor(S)}")
+    print(f"{succ_example} ⟹ {successor(succ_example)}")
+    print(f"{succ_example} ⟹ {predecessor(succ_example)}")
