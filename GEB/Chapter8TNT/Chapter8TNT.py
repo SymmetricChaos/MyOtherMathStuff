@@ -30,7 +30,7 @@ def AND(x,y):
 def OR(x,y):
 	return f"<{x}∨{y}>"
 	
-def IF(x,y):
+def IMPLIES(x,y):
 	return f"<{x}⊃{y}>"
 	
 def NOT(x,):
