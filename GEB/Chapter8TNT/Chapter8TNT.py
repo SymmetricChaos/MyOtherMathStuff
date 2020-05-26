@@ -51,7 +51,8 @@ def MUL(x,y):
 def EQ(x,y):
 	return f"{x}={y}"
 
-# Rules of Production
+### Rules of Production ###
+# Change a general statement into a specifice assertion
 def specify(x,u,s):
     if f"∀{u}:" in x:
         # Eliminate the quantifer
@@ -71,7 +72,8 @@ def specify(x,u,s):
     else:
         raise Exception(f"{u} is not bound in {x}")
 
-# DOUBLE CHECK RESTRICTION
+
+# Assert that a statement about a free variable is universally true
 def generalize(x,u):
     f_vars = get_free_vars(x)
     if u in f_vars:
@@ -80,11 +82,13 @@ def generalize(x,u):
         raise Exception(f"{u} is not free in {x}")
 
 # MAKE THESE INTO ONE FUNCTION WITH SOME OPTIONS
+# Rephrase the existential quantifier as a universal quantifer
 def interchange_EA(x,u):
     E = f"~∃{u}:"
     A = f"∀{u}:~"
     return x.replace(E,A)
 
+# Rephrase the universal quantifier as an existential quantifer
 def interchange_AE(x,u):
     E = f"~∃{u}:"
     A = f"∀{u}:~"
@@ -199,7 +203,7 @@ if __name__ == '__main__':
         print(f"{i}\n{translate(i)}\n")
     
     
-    print("\n\nExample Specifications of Peano Arithmetic")
+    print("\n\nRule of Specification")
     print(f"{Pax1} ⟹ {specify(Pax1,'a','0')}")
     print(f"{Pax2} ⟹ {specify(Pax2,'a','S0')}")
     print(f"{Pax3} ⟹ {specify(Pax3,'a','(c+d)')}")
@@ -213,7 +217,12 @@ if __name__ == '__main__':
     print(f"{succ_example} ⟹ {predecessor(succ_example)}")
     
     
-    print("\n\n\nRule of Existence")
+    print("\n\n\nRule of Generalization")
+    gen_example = "~S(c+SS0)=0"
+    print(f"{gen_example} ⟹ {generalize(gen_example,'c')}")
+
+    
+    print("\n\n\Rule of Existence")
     print(f"{Pax1} ⟹ {existence(Pax1,'0','b')}")
     print(f"{Pax3} ⟹ {existence(Pax3,'Sb','c')}")
     
