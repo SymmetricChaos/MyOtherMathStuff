@@ -40,3 +40,24 @@ def strip_qaunt(x):
         x = strip_neg(x)
         m = re.match("^[∀∃][a-z]\'*:",x)
     return x
+
+
+# Need this because ordinary replacement will replace the a in a'
+def replace_var(x,v,r):
+    left = ""
+    f = re.search(v,x)
+
+    while f != None:
+        lo,hi = f.span()
+        if hi != len(x):
+            if x[hi] == "'":
+                left += x[:hi]
+                x = x[hi:]
+            else:
+                left += x[:lo] + r
+                x = x[hi:]
+        else:
+            left += x[:lo] + r
+            x = x[hi:]
+        f = re.search(v,x)
+    return left+x

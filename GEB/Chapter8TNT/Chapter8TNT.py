@@ -2,7 +2,7 @@ from GEB.Chapter8TNT.Properties import is_var, get_vars, get_free_vars, is_num, 
                                        get_bound_vars, get_quants, is_term, is_atom, \
                                        is_compound
 from GEB.Chapter8TNT.Translate import translate
-from GEB.Chapter8TNT.StripSplit import split_eq
+from GEB.Chapter8TNT.StripSplit import split_eq, replace_var
 # ∧∨⊃∃∀⋅
 
 # Build statements in Typographical Number Theory
@@ -66,7 +66,7 @@ def specify(x,u,s):
                 if sv in xbv:
                     raise Exception(f"{sv} is bound in {x}")
         
-        x = x.replace(u,s)
+        x = replace_var(x,u,s)
         return x
     
     else:
@@ -119,7 +119,7 @@ def existence(x,u,v):
         if v in get_bound_vars(x):
             raise Exception(f"{v} is already bound in {x}")
         else:
-            x = x.replace(u,v)
+            x = replace_var(x,u,v)
             return EXISTS(x,v)
     else:
         raise Exception(f"{u} is not a valid terms")
@@ -220,11 +220,10 @@ if __name__ == '__main__':
     
     
     print("\n\nRule of Specification")
-    print(f"{Pax1} ⟹ {specify(Pax1,'a','0')}")
-    print(f"{Pax2} ⟹ {specify(Pax2,'a','S0')}")
     print(f"{Pax3} ⟹ {specify(Pax3,'a','(c+d)')}")
     print(f"{Pax4} ⟹ {specify(Pax4,'a','(S0⋅0)')}")
     print(f"{Pax5} ⟹ {specify(Pax5,'b','(S0+b)')}")
+    print(f"")
     
     
     print("\n\n\nRules of Successorship")
