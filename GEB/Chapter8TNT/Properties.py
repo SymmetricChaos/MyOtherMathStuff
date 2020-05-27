@@ -50,6 +50,8 @@ def is_pure_num(x):
         return True
     return False
 
+
+# Combined parts
 # Variables and numbers are terms as are negations of them
 def is_term(x):
     x = strip_neg(x)

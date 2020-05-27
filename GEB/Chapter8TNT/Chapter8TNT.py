@@ -127,10 +127,26 @@ def existence(x,u,v):
 def symmetry(x):
     if is_atom(x):
         left, right = split_eq(x)
-
         return f"{right}={left}"
     else:
         raise Exception(f"{x} is not an equality of two terms")
+
+def transitivity(x,y):
+    # Helpful errors
+    if not is_atom(x):
+        raise Exception(f"{x} is not an equality of two terms")
+    if not is_atom(y):
+        raise Exception(f"{y} is not an equality of two terms")
+
+    # Split and recombine
+    leftx, rightx = split_eq(x)
+    lefty, righty = split_eq(y)
+    if rightx == lefty:
+        return f"{leftx}={righty}"
+    else:
+        raise Exception(f"{x} and {y} do not form a transitive statement")
+
+
 
 
 
@@ -226,3 +242,10 @@ if __name__ == '__main__':
     print(f"{Pax1} ⟹ {existence(Pax1,'0','b')}")
     print(f"{Pax3} ⟹ {existence(Pax3,'Sb','c')}")
     
+    
+    print("\n\n\nRule of Transitivity")
+    trans_example1 = "(a+b)=(a+S0)"
+    trans_example2 = "(a+S0)=S(a+0)"
+    print(f"{trans_example1}")
+    print(f"{trans_example2}")
+    print(f"{transitivity(trans_example1,trans_example2)}")
