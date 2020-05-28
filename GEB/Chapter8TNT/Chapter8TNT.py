@@ -3,153 +3,32 @@ from GEB.Chapter8TNT.Properties import is_var, get_vars, get_free_vars, is_num, 
                                        is_compound
 from GEB.Chapter8TNT.Translate import translate
 from GEB.Chapter8TNT.StripSplit import split_eq, replace_var
-# ∧∨⊃∃∀⋅
+from GEB.Chapter8TNT.Rules import *
 
-# Build statements in Typographical Number Theory
-def EXISTS(x,a):
-    if is_var(a):
-        if a in get_free_vars(x):
-            return f"∃{a}:{x}"
-        else:
-            raise Exception(f"{a} is already quantified in {x}")
-    else:
-        raise Exception(f"Existential quantifier does not apply to {a}")
-	
-def FOR_ALL(x,a):
-    if is_var(a):
-        if a in get_free_vars(x):
-            return f"∀{a}:{x}"
-        else:
-            raise Exception(f"{a} is already quantified in {x}")
-    else:
-        raise Exception(f"Existential quantifier does not apply to {a}")
-
-def AND(x,y):
-	return f"<{x}∧{y}>"
-	
-def OR(x,y):
-	return f"<{x}∨{y}>"
-	
-def IMPLIES(x,y):
-	return f"<{x}⊃{y}>"
-	
-def NOT(x,):
-	return f"~{x}"
-
-def SUCC(x):
-	if is_num(x):
-		return f"S{x}"
-	else:
-		raise Exception(f"Cannot have successor of {x}")
-  
-def ADD(x,y):
-	return f"({x}+{y})"
-
-def MUL(x,y):
-	return f"({x}⋅{y})"
-
-def EQ(x,y):
-	return f"{x}={y}"
-
-### Rules of Production ###
-# Change a general statement into a specifice assertion
-def specify(x,u,s):
-    if f"∀{u}:" in x:
-        # Eliminate the quantifer
-        x = x.replace(f"∀{u}:","")
-        
-        # Check if replacement is allowed
-        x_b_vars = get_bound_vars(x)
-        s_vars = get_vars(s)
-        for sv in s_vars:
-            for xbv in x_b_vars:
-                if sv in xbv:
-                    raise Exception(f"{sv} is bound in {x}")
-        
-        x = replace_var(x,u,s)
-        return x
+# Need to create a hierarchical structure
+class Deduction:
     
-    else:
-        raise Exception(f"{u} is not bound in {x}")
-
-
-# Assert that a statement about a free variable is universally true
-def generalize(x,u):
-    f_vars = get_free_vars(x)
-    if u in f_vars:
-        return FOR_ALL(x,u)
-    else:
-        raise Exception(f"{u} is not free in {x}")
-
-# MAKE THESE INTO ONE FUNCTION WITH SOME OPTIONS
-# Rephrase the existential quantifier as a universal quantifer
-def interchange_EA(x,u):
-    E = f"~∃{u}:"
-    A = f"∀{u}:~"
-    return x.replace(E,A)
-
-# Rephrase the universal quantifier as an existential quantifer
-def interchange_AE(x,u):
-    E = f"~∃{u}:"
-    A = f"∀{u}:~"
-    return x.replace(A,E)
-
-# CHECK HOW THESE INTERACT WITH NEGATIONS
-def successor(x):
-    if is_atom(x):
-        left, right = split_eq(x)
-        return f"S{left}=S{right}"
-    else:
-        raise Exception(f"{x} is not an equality of two terms")
-
-def predecessor(x):
-    if is_atom(x):
-        left, right = split_eq(x)
-        if left[0] != "S":
-            raise Exception(f"{left} has no predecessor")
-        if right[0] != "S":
-            raise Exception(f"{right} has no predecessor")
-            
-        return f"{left[1:]}={right[1:]}"
-    else:
-        raise Exception(f"{x} is not an equality of two terms")
-
-def existence(x,u,v):
-    if is_term(u):
-        if v in get_bound_vars(x):
-            raise Exception(f"{v} is already bound in {x}")
-        else:
-            x = replace_var(x,u,v)
-            return EXISTS(x,v)
-    else:
-        raise Exception(f"{u} is not a valid terms")
-
-def symmetry(x):
-    if is_atom(x):
-        left, right = split_eq(x)
-        return f"{right}={left}"
-    else:
-        raise Exception(f"{x} is not an equality of two terms")
-
-def transitivity(x,y):
-    # Helpful errors
-    if not is_atom(x):
-        raise Exception(f"{x} is not an equality of two terms")
-    if not is_atom(y):
-        raise Exception(f"{y} is not an equality of two terms")
-
-    # Split and recombine
-    leftx, rightx = split_eq(x)
-    lefty, righty = split_eq(y)
-    if rightx == lefty:
-        return f"{leftx}={righty}"
-    else:
-        raise Exception(f"{x} and {y} do not form a transitive statement")
-
-class Fantasy:
-    
-    def __init__(self,premise):
+    def __init__(self,premise,depth=0):
         self.theorems = [premise]
+        self.depth = depth
+        
+    def __str__(self):
+        s = f"\n{' '*self.depth*2}["
+        for num,t in enumerate(self.theorems):
+            s += f"\n{' '*(self.depth*2+1)}({num}) {t}"
+        s += f"\n{' '*self.depth*2}]"
+        return s
+    
+    def __getitem__(self,n):
+        return self.theorems[n]
+        
+    def implication(self):
+        return IMPLIES(self.theorems[0],self.theorems[-1])
+    
+    def fantasy(self,premise):
+        d = Deduction(premise,self.depth+1)
+        self.theorems.append(d)
+        return d
     
     def add_premise(self,premise):
         self.theorems.append(premise)
@@ -172,7 +51,10 @@ class Fantasy:
     def predecessor(self,n):
         self.theorems.append(predecessor(self.theorems[n]))
 
-#def induction()
+    def transitivity(self,n1,n2):
+        self.theorems.append(transitivity(self.theorems[n1],self.theorems[n2]))
+
+
 
     
 
@@ -280,18 +162,21 @@ if __name__ == '__main__':
 
 
     print("\n\n\nFantasy")
-    T1 = Pax3
-    T2 = specify(T1,'a','d')
-    T3 = specify(T2,'b','Sc')
-    T4 = specify(T1,'a','Sd')
-    T5 = specify(T4,'b','c')
-    T6 = symmetry(T5)
-    F = Fantasy("∀d:(d+Sc)=(Sd+c)")
+    T = Deduction(Pax3)
+    T.specify(0,'a','d')
+    T.specify(1,'b','Sc')
+    T.specify(0,'a','Sd')
+    T.specify(3,'b','c')
+    T.symmetry(4)
+    F = T.fantasy("∀d:(d+Sc)=(Sd+c)")
     F.specify(0,'d','d')
     F.successor(1)
+    F.add_premise(T[2])
+    F.transitivity(3,2)
+    F.add_premise(T[5])
+    F.transitivity(4,5)
+    F.generalize(6,'d')
+    T.add_premise(F.implication())
+    print(T)
     
-    theorems = [T1,T2,T3,T4,T5,T6,F.theorems]
     
-    for num,t in enumerate(theorems,1):
-        print(f"({num}) {t}")
-        
