@@ -103,3 +103,13 @@ def translate(s):
         s = s[1:]
     
     return s
+
+
+
+
+
+if __name__ == '__main__':
+    # Quick tests
+    strings = ["~S0=0"]
+    for s in strings:
+        print(f"{s}\n{translate(s)}")

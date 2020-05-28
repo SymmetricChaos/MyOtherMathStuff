@@ -146,6 +146,35 @@ def transitivity(x,y):
     else:
         raise Exception(f"{x} and {y} do not form a transitive statement")
 
+class Fantasy:
+    
+    def __init__(self,premise):
+        self.theorems = [premise]
+    
+    def add_premise(self,premise):
+        self.theorems.append(premise)
+        
+    def specify(self,n,u,v):
+        self.theorems.append(specify(self.theorems[n],u,v))
+        
+    def symmetry(self,n):
+        self.theorems.append(symmetry(self.theorems[n]))
+        
+    def existence(self,n,u,v):
+        self.theorems.append(existence(self.theorems[n],u,v))
+        
+    def generalize(self,n,u):
+        self.theorems.append(generalize(self.theorems[n],u))
+        
+    def successor(self,n):
+        self.theorems.append(successor(self.theorems[n]))
+        
+    def predecessor(self,n):
+        self.theorems.append(predecessor(self.theorems[n]))
+
+#def induction()
+
+    
 
 
 
@@ -248,3 +277,21 @@ if __name__ == '__main__':
     print(f"{trans_example1}")
     print(f"{trans_example2}")
     print(f"{transitivity(trans_example1,trans_example2)}")
+
+
+    print("\n\n\nFantasy")
+    T1 = Pax3
+    T2 = specify(T1,'a','d')
+    T3 = specify(T2,'b','Sc')
+    T4 = specify(T1,'a','Sd')
+    T5 = specify(T4,'b','c')
+    T6 = symmetry(T5)
+    F = Fantasy("∀d:(d+Sc)=(Sd+c)")
+    F.specify(0,'d','d')
+    F.successor(1)
+    
+    theorems = [T1,T2,T3,T4,T5,T6,F.theorems]
+    
+    for num,t in enumerate(theorems,1):
+        print(f"({num}) {t}")
+        

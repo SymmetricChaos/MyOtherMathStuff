@@ -133,3 +133,6 @@ def is_open(x):
 
 def is_closed(x):
     return not is_open(x)
+
+
+
