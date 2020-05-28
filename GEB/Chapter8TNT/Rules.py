@@ -144,4 +144,14 @@ def transitivity(x,y):
     else:
         raise Exception(f"{x} and {y} do not form a transitive statement")
         
-#def induction():
+def induction(x,u,T):
+    if u not in get_free_vars(x):
+        raise Exception(f"{u} is not free in {x}")
+    
+    xS = replace_var(x,u,f"S{u}")
+    x0 = replace_var(x,u,"0")
+    
+    if f"∀{u}:<{x}⊃{xS}>" in T and f"{x0}" in T:
+        return f"∀{u}:{x}"
+    else:
+        raise Exception(f"Theorems do not allow induction on {x}")

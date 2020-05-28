@@ -71,8 +71,9 @@ class Deduction:
         self.theorems.append(transitivity(self.theorems[n1],self.theorems[n2]))
         self.theorems_description.append(f"transitivity of {n1} and {n2}")
                
-
-
+    def induction(self,n,u,n1,n2):
+        self.theorems.append(induction(n,u,[self.theorems[n1],self.theorems[n2]]))
+        self.theorems_description.append(f"induction on {n1} and {n2}")
     
 
 
@@ -206,6 +207,47 @@ if __name__ == '__main__':
     T.symmetry(14)
     T.transitivity(13,15)
     T.generalize(16,'d')
+    T.induction("∀d:(d+Sc)=(Sd+c)",'c',8,17)
+    T.specify(0,'a','c')
+    T.specify(19,'b','d')
+    T.specify(0,'a','d')
+    T.specify(21,'b','c')
+    T.symmetry(22)
+    T.specify(18,'c','c')
+    T.specify(24,'d','d')
+    
+    G = T.fantasy("∀c:(c+d)=(d+c)")
+    G.specify(0,'c','c')
+    G.successor(1)
+    G.add_premise(T[20])
+    G.transitivity(3,2)
+    G.add_premise(T[23])
+    G.transitivity(4,5)
+    G.add_premise(T[25])
+    G.transitivity(6,7)
+    G.generalize(8,'c')
+    G.implication()
+    
+    T.generalize(27,'d')
+    T.specify(10,'a','c')
+    T.specify(0,'a','0')
+    T.specify(30,'b','b')
+    
+    H = T.fantasy("(0+b)=b")
+    H.successor(0)
+    H.add_premise(T[31])
+    H.transitivity(2,1)
+    H.implication()
+    
+    T.generalize(33,'b')
+    T.specify(10,'a','0')
+    T.induction("(0+b)=b",'b',34,35)
+    T.specify(36,'b','c')
+    T.symmetry(37)
+    T.transitivity(29,38)
+    T.generalize(39,'c')
+    T.induction("∀c:(c+d)=(d+c)",'d',28,40)
+    
     print(T)
     
     
