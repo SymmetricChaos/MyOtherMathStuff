@@ -143,3 +143,5 @@ def transitivity(x,y):
         return f"{leftx}={righty}"
     else:
         raise Exception(f"{x} and {y} do not form a transitive statement")
+        
+#def induction():

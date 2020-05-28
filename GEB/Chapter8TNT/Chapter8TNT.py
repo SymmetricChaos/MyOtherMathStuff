@@ -198,6 +198,14 @@ if __name__ == '__main__':
     
     T.generalize(7,'c')
     T.specify(1,'b','0')
+    T.add_premise(Pax2)
+    T.specify(10,'a','d')
+    T.successor(11)
+    T.transitivity(9,12)
+    T.specify(10,'a','Sd')
+    T.symmetry(14)
+    T.transitivity(13,15)
+    T.generalize(16,'d')
     print(T)
     
     
