@@ -8,14 +8,19 @@ from GEB.Chapter8TNT.Rules import *
 # Need to create a hierarchical structure
 class Deduction:
     
-    def __init__(self,premise,depth=0):
+    def __init__(self,premise,depth=0,reality=None):
         self.theorems = [premise]
+        self.theorems_description = ["premise"]
         self.depth = depth
+        self.reality = reality
         
     def __str__(self):
         s = f"\n{' '*self.depth*2}["
-        for num,t in enumerate(self.theorems):
-            s += f"\n{' '*(self.depth*2+1)}({num}) {t}"
+        for num,(t,d) in enumerate(zip(self.theorems,self.theorems_description)):
+            if type(t) == Deduction:
+                s += f"{' '*(self.depth*2+2)} {t}"
+            else:
+                s += f"\n{' '*(self.depth*2+2)}({num}) {t}"
         s += f"\n{' '*self.depth*2}]"
         return s
     
@@ -23,37 +28,49 @@ class Deduction:
         return self.theorems[n]
         
     def implication(self):
-        return IMPLIES(self.theorems[0],self.theorems[-1])
+        if self.reality == None:
+            return IMPLIES(self.theorems[0],self.theorems[-1])
+        else:
+            self.reality.add_premise(IMPLIES(self.theorems[0],self.theorems[-1]))
     
     def fantasy(self,premise):
-        d = Deduction(premise,self.depth+1)
+        d = Deduction(premise,self.depth+1,self)
         self.theorems.append(d)
+        self.theorems_description.append("")
         return d
     
     def add_premise(self,premise):
         self.theorems.append(premise)
+        self.theorems_description.append("premise")
         
     def specify(self,n,u,v):
         self.theorems.append(specify(self.theorems[n],u,v))
+        self.theorems_description.append(f"specification of {n}")
         
     def symmetry(self,n):
         self.theorems.append(symmetry(self.theorems[n]))
-        
+        self.theorems_description.append(f"symmetry of {n}")
+                
     def existence(self,n,u,v):
         self.theorems.append(existence(self.theorems[n],u,v))
-        
+        self.theorems_description.append(f"existence of {n}")
+               
     def generalize(self,n,u):
         self.theorems.append(generalize(self.theorems[n],u))
-        
+        self.theorems_description.append(f"generalization of {n}")
+                       
     def successor(self,n):
         self.theorems.append(successor(self.theorems[n]))
-        
+        self.theorems_description.append(f"successor of {n}")
+                       
     def predecessor(self,n):
         self.theorems.append(predecessor(self.theorems[n]))
-
+        self.theorems_description.append(f"predecessor of {n}")
+               
     def transitivity(self,n1,n2):
         self.theorems.append(transitivity(self.theorems[n1],self.theorems[n2]))
-
+        self.theorems_description.append(f"transitivity of {n1} and {n2}")
+               
 
 
     
@@ -161,13 +178,14 @@ if __name__ == '__main__':
     print(f"{transitivity(trans_example1,trans_example2)}")
 
 
-    print("\n\n\nFantasy")
+    print("\n\n\nDeduction Example from GEB")
     T = Deduction(Pax3)
     T.specify(0,'a','d')
     T.specify(1,'b','Sc')
     T.specify(0,'a','Sd')
     T.specify(3,'b','c')
     T.symmetry(4)
+    
     F = T.fantasy("∀d:(d+Sc)=(Sd+c)")
     F.specify(0,'d','d')
     F.successor(1)
@@ -176,7 +194,10 @@ if __name__ == '__main__':
     F.add_premise(T[5])
     F.transitivity(4,5)
     F.generalize(6,'d')
-    T.add_premise(F.implication())
+    F.implication()
+    
+    T.generalize(7,'c')
+    T.specify(1,'b','0')
     print(T)
     
     
