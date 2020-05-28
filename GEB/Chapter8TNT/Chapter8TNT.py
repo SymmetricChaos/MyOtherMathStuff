@@ -16,7 +16,7 @@ class Deduction:
         
     def __str__(self):
         s = f"\n{' '*self.depth*2}["
-        for num,(t,d) in enumerate(zip(self.theorems,self.theorems_description)):
+        for num,(t,d) in enumerate(zip(self.theorems,self.theorems_description),1):
             if type(t) == Deduction:
                 s += f"{' '*(self.depth*2+2)} {t}"
             else:
@@ -24,12 +24,13 @@ class Deduction:
         s += f"\n{' '*self.depth*2}]"
         return s
     
+    # Force one-based indexing since this make more sense when counting steps
     def __getitem__(self,n):
-        return self.theorems[n]
+        return self.theorems[n-1]
         
     def implication(self):
         if self.reality == None:
-            return IMPLIES(self.theorems[0],self.theorems[-1])
+            return IMPLIES(self.theorems[1],self.theorems[-1])
         else:
             self.reality.add_premise(IMPLIES(self.theorems[0],self.theorems[-1]))
     
@@ -40,39 +41,42 @@ class Deduction:
         return d
     
     def add_premise(self,premise):
+        if self.depth != 0:
+            if premise not in self.reality.theorems:
+                raise Exception("Fantasies can only borrow premises from the level immediately below")
         self.theorems.append(premise)
         self.theorems_description.append("premise")
         
     def specify(self,n,u,v):
-        self.theorems.append(specify(self.theorems[n],u,v))
+        self.theorems.append(specify(self.theorems[n-1],u,v))
         self.theorems_description.append(f"specification of {n}")
         
     def symmetry(self,n):
-        self.theorems.append(symmetry(self.theorems[n]))
+        self.theorems.append(symmetry(self.theorems[n-1]))
         self.theorems_description.append(f"symmetry of {n}")
                 
     def existence(self,n,u,v):
-        self.theorems.append(existence(self.theorems[n],u,v))
+        self.theorems.append(existence(self.theorems[n-1],u,v))
         self.theorems_description.append(f"existence of {n}")
                
     def generalize(self,n,u):
-        self.theorems.append(generalize(self.theorems[n],u))
+        self.theorems.append(generalize(self.theorems[n-1],u))
         self.theorems_description.append(f"generalization of {n}")
                        
     def successor(self,n):
-        self.theorems.append(successor(self.theorems[n]))
+        self.theorems.append(successor(self.theorems[n-1]))
         self.theorems_description.append(f"successor of {n}")
                        
     def predecessor(self,n):
-        self.theorems.append(predecessor(self.theorems[n]))
+        self.theorems.append(predecessor(self.theorems[n-1]))
         self.theorems_description.append(f"predecessor of {n}")
                
     def transitivity(self,n1,n2):
-        self.theorems.append(transitivity(self.theorems[n1],self.theorems[n2]))
+        self.theorems.append(transitivity(self.theorems[n1-1],self.theorems[n2-1]))
         self.theorems_description.append(f"transitivity of {n1} and {n2}")
                
-    def induction(self,n,u,n1,n2):
-        self.theorems.append(induction(n,u,[self.theorems[n1],self.theorems[n2]]))
+    def induction(self,t,u,n1,n2):
+        self.theorems.append(induction(t,u,[self.theorems[n1-1],self.theorems[n2-1]]))
         self.theorems_description.append(f"induction on {n1} and {n2}")
     
 
@@ -181,72 +185,72 @@ if __name__ == '__main__':
 
     print("\n\n\nDeduction Example from GEB")
     T = Deduction(Pax3)
-    T.specify(0,'a','d')
-    T.specify(1,'b','Sc')
-    T.specify(0,'a','Sd')
-    T.specify(3,'b','c')
-    T.symmetry(4)
+    T.specify(1,'a','d')
+    T.specify(2,'b','Sc')
+    T.specify(1,'a','Sd')
+    T.specify(4,'b','c')
+    T.symmetry(5)
     
     F = T.fantasy("∀d:(d+Sc)=(Sd+c)")
-    F.specify(0,'d','d')
-    F.successor(1)
-    F.add_premise(T[2])
-    F.transitivity(3,2)
-    F.add_premise(T[5])
-    F.transitivity(4,5)
-    F.generalize(6,'d')
+    F.specify(1,'d','d')
+    F.successor(2)
+    F.add_premise(T[3])
+    F.transitivity(4,3)
+    F.add_premise(T[6])
+    F.transitivity(5,6)
+    F.generalize(7,'d')
     F.implication()
     
-    T.generalize(7,'c')
-    T.specify(1,'b','0')
+    T.generalize(8,'c')
+    T.specify(2,'b','0')
     T.add_premise(Pax2)
-    T.specify(10,'a','d')
-    T.successor(11)
-    T.transitivity(9,12)
-    T.specify(10,'a','Sd')
-    T.symmetry(14)
-    T.transitivity(13,15)
-    T.generalize(16,'d')
-    T.induction("∀d:(d+Sc)=(Sd+c)",'c',8,17)
-    T.specify(0,'a','c')
-    T.specify(19,'b','d')
-    T.specify(0,'a','d')
-    T.specify(21,'b','c')
-    T.symmetry(22)
-    T.specify(18,'c','c')
-    T.specify(24,'d','d')
+    T.specify(11,'a','d')
+    T.successor(12)
+    T.transitivity(10,13)
+    T.specify(11,'a','Sd')
+    T.symmetry(15)
+    T.transitivity(14,16)
+    T.generalize(17,'d')
+    T.induction("∀d:(d+Sc)=(Sd+c)",'c',9,18)
+    T.specify(1,'a','c')
+    T.specify(20,'b','d')
+    T.specify(1,'a','d')
+    T.specify(22,'b','c')
+    T.symmetry(23)
+    T.specify(19,'c','c')
+    T.specify(25,'d','d')
     
     G = T.fantasy("∀c:(c+d)=(d+c)")
-    G.specify(0,'c','c')
-    G.successor(1)
-    G.add_premise(T[20])
-    G.transitivity(3,2)
-    G.add_premise(T[23])
-    G.transitivity(4,5)
-    G.add_premise(T[25])
-    G.transitivity(6,7)
-    G.generalize(8,'c')
+    G.specify(1,'c','c')
+    G.successor(2)
+    G.add_premise(T[21])
+    G.transitivity(4,3)
+    G.add_premise(T[24])
+    G.transitivity(5,6)
+    G.add_premise(T[26])
+    G.transitivity(7,8)
+    G.generalize(9,'c')
     G.implication()
     
-    T.generalize(27,'d')
-    T.specify(10,'a','c')
-    T.specify(0,'a','0')
-    T.specify(30,'b','b')
+    T.generalize(28,'d')
+    T.specify(11,'a','c')
+    T.specify(1,'a','0')
+    T.specify(31,'b','b')
     
     H = T.fantasy("(0+b)=b")
-    H.successor(0)
-    H.add_premise(T[31])
-    H.transitivity(2,1)
+    H.successor(1)
+    H.add_premise(T[32])
+    H.transitivity(3,2)
     H.implication()
     
-    T.generalize(33,'b')
-    T.specify(10,'a','0')
-    T.induction("(0+b)=b",'b',34,35)
-    T.specify(36,'b','c')
-    T.symmetry(37)
-    T.transitivity(29,38)
-    T.generalize(39,'c')
-    T.induction("∀c:(c+d)=(d+c)",'d',28,40)
+    T.generalize(34,'b')
+    T.specify(11,'a','0')
+    T.induction("(0+b)=b",'b',35,36)
+    T.specify(37,'b','c')
+    T.symmetry(38)
+    T.transitivity(30,39)
+    T.generalize(40,'c')
+    T.induction("∀c:(c+d)=(d+c)",'d',29,41)
     
     print(T)
     
