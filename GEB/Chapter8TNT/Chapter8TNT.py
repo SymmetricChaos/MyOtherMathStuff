@@ -15,12 +15,14 @@ class Deduction:
         self.reality = reality
         
     def __str__(self):
+        num_fantasies = 0
         s = f"\n{' '*self.depth*2}["
-        for num,t in enumerate(self.theorems,1):
+        for line,t in enumerate(self.theorems,1):
             if type(t) == Deduction:
                 s += f"{' '*(self.depth*2+2)} {t}"
+                num_fantasies += 1
             else:
-                s += f"\n{' '*(self.depth*2+2)}({num}) {t}"
+                s += f"\n{' '*(self.depth*2+2)}({line-num_fantasies}) {t}"
         s += f"\n{' '*self.depth*2}]"
         return s
     
@@ -33,6 +35,7 @@ class Deduction:
             return IMPLIES(self.theorems[0],self.theorems[-1])
         else:
             self.reality.theorems.append(IMPLIES(self.theorems[0],self.theorems[-1]))
+            self.reality.theorems_description.append("implication")
     
     def fantasy(self,premise):
         d = Deduction(premise,self.depth+1,self)
@@ -188,7 +191,7 @@ if __name__ == '__main__':
     print(f"{trans_example1}")
     print(f"{trans_example2}")
     print(f"{transitivity(trans_example1,trans_example2)}")
-#
+
 
     print("\n\n\nDeduction of Commutativity")
     T = Deduction(Pax3)
