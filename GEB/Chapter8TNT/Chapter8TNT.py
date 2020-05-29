@@ -32,7 +32,7 @@ class Deduction:
         if self.reality == None:
             return IMPLIES(self.theorems[1],self.theorems[-1])
         else:
-            self.reality.add_premise(IMPLIES(self.theorems[0],self.theorems[-1]))
+            self.reality.theorems.append(IMPLIES(self.theorems[0],self.theorems[-1]))
     
     def fantasy(self,premise):
         d = Deduction(premise,self.depth+1,self)
@@ -41,9 +41,16 @@ class Deduction:
         return d
     
     def add_premise(self,premise):
-        if self.depth != 0:
+        # At the lowest level we accept only axioms without justification
+        # At all other levels we accept only known theorems
+        if self.depth == 0:
+            if premise not in ["∀a:~Sa=0","∀a:(a+0)=a",
+                               "∀a:∀b:(a+Sb)=S(a+b)",
+                               "∀a:(a⋅0)=0","∀a:∀b:(a⋅Sb)=((a⋅b)+a)"]:
+                raise Exception(f"{premise} is not an axiom of TNT")                
+        else:
             if premise not in self.reality.theorems:
-                raise Exception("Fantasies can only borrow premises from the level immediately below")
+                raise Exception(f"{premise} does not exist at the level one step lower")
         self.theorems.append(premise)
         self.theorems_description.append("premise")
         
