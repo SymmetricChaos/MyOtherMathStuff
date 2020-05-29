@@ -16,7 +16,7 @@ class Deduction:
         
     def __str__(self):
         s = f"\n{' '*self.depth*2}["
-        for num,(t,d) in enumerate(zip(self.theorems,self.theorems_description),1):
+        for num,t in enumerate(self.theorems,1):
             if type(t) == Deduction:
                 s += f"{' '*(self.depth*2+2)} {t}"
             else:
@@ -30,7 +30,7 @@ class Deduction:
         
     def implication(self):
         if self.reality == None:
-            return IMPLIES(self.theorems[1],self.theorems[-1])
+            return IMPLIES(self.theorems[0],self.theorems[-1])
         else:
             self.reality.theorems.append(IMPLIES(self.theorems[0],self.theorems[-1]))
     
@@ -188,9 +188,9 @@ if __name__ == '__main__':
     print(f"{trans_example1}")
     print(f"{trans_example2}")
     print(f"{transitivity(trans_example1,trans_example2)}")
+#
 
-
-    print("\n\n\nDeduction Example from GEB")
+    print("\n\n\nDeduction of Commutativity")
     T = Deduction(Pax3)
     T.specify(1,'a','d')
     T.specify(2,'b','Sc')
@@ -258,7 +258,5 @@ if __name__ == '__main__':
     T.transitivity(30,39)
     T.generalize(40,'c')
     T.induction("∀c:(c+d)=(d+c)",'d',29,41)
-    
+
     print(T)
-    
-    
