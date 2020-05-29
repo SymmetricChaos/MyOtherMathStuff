@@ -5,12 +5,24 @@ from GEB.Chapter8TNT.Translate import translate
 from GEB.Chapter8TNT.StripSplit import split_eq, replace_var
 from GEB.Chapter8TNT.Rules import *
 
+PeanoAxioms = ["∀a:~Sa=0","∀a:(a+0)=a",
+               "∀a:∀b:(a+Sb)=S(a+b)",
+               "∀a:(a⋅0)=0","∀a:∀b:(a⋅Sb)=((a⋅b)+a)"]
+
 # Need to create a hierarchical structure
 class Deduction:
     
     def __init__(self,premise,depth=0,reality=None):
         self.theorems = [premise]
-        self.theorems_description = ["premise"]
+        if depth == 0:
+            if premise not in PeanoAxioms:
+                raise Exception("Must begin with an axiom of TNT")
+                
+        if premise in PeanoAxioms:
+            self.theorems_description = ["axiom"]
+        else:
+            self.theorems_description = ["premise"]
+        
         self.depth = depth
         self.reality = reality
         
@@ -47,15 +59,16 @@ class Deduction:
         # At the lowest level we accept only axioms without justification
         # At all other levels we accept only known theorems
         if self.depth == 0:
-            if premise not in ["∀a:~Sa=0","∀a:(a+0)=a",
-                               "∀a:∀b:(a+Sb)=S(a+b)",
-                               "∀a:(a⋅0)=0","∀a:∀b:(a⋅Sb)=((a⋅b)+a)"]:
+            if premise not in PeanoAxioms:
                 raise Exception(f"{premise} is not an axiom of TNT")                
         else:
             if premise not in self.reality.theorems:
                 raise Exception(f"{premise} does not exist at the level one step lower")
         self.theorems.append(premise)
-        self.theorems_description.append("premise")
+        if premise in PeanoAxioms:
+            self.theorems_description.append(f"axiom {premise}")
+        else:
+            self.theorems_description.append(f"premise {premise}")
         
     def specify(self,n,u,v):
         self.theorems.append(specify(self.theorems[n-1],u,v))
@@ -151,14 +164,8 @@ if __name__ == '__main__':
                 print(f"{p:<{l}} ERROR")
     
     
-    Pax1 = "∀a:~Sa=0"
-    Pax2 = "∀a:(a+0)=a"
-    Pax3 = "∀a:∀b:(a+Sb)=S(a+b)"
-    Pax4 = "∀a:(a⋅0)=0"
-    Pax5 = "∀a:∀b:(a⋅Sb)=((a⋅b)+a)"
-    peano_axioms = [Pax1,Pax2,Pax3,Pax4,Pax5]
     print("\n\n\nAxioms of Peano Arithmetic")
-    for i in peano_axioms:
+    for i in PeanoAxioms:
         print(f"{i}\n{translate(i)}\n")
     
     
@@ -194,7 +201,7 @@ if __name__ == '__main__':
 
 
     print("\n\n\nDeduction of Commutativity")
-    T = Deduction(Pax3)
+    T = Deduction(PeanoAxioms[2])
     T.specify(1,'a','d')
     T.specify(2,'b','Sc')
     T.specify(1,'a','Sd')
@@ -213,7 +220,7 @@ if __name__ == '__main__':
     
     T.generalize(8,'c')
     T.specify(2,'b','0')
-    T.add_premise(Pax2)
+    T.add_premise(PeanoAxioms[1])
     T.specify(11,'a','d')
     T.successor(12)
     T.transitivity(10,13)
@@ -263,3 +270,5 @@ if __name__ == '__main__':
     T.induction("∀c:(c+d)=(d+c)",'d',29,41)
 
     print(T)
+#    for i in T.theorems_description:
+#        print(i)
