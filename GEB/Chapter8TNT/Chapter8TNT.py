@@ -48,6 +48,9 @@ class Deduction:
         return s
     
     def write_descriptions(self):
+        """
+        Write out the descriptions of each line, the same as .write_theorems()
+        """
         s = f"\n{' '*self.depth*2}["
         for line,(d,t) in enumerate(zip(self.descriptions,self.theorems),1):
             if type(t) == Deduction:
