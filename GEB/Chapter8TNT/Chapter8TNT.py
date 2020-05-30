@@ -30,7 +30,7 @@ class Deduction:
         self.depth = depth
         self.reality = reality
         
-    def __str__(self):
+    def write_theorems(self):
         """
         Write out the deduction with lines numbered from 1
         Fantasies are indented relative to their depth
@@ -41,7 +41,7 @@ class Deduction:
         for line,t in enumerate(self.theorems,1):
             if type(t) == Deduction:
                 s += f"\n{' '*(self.depth*2+2)}({line}) BEGIN FANTASY"
-                s += f"{' '*(self.depth*2+2)} {t}"
+                s += f"{' '*(self.depth*2+2)} {t.write_theorems()}"
             else:
                 s += f"\n{' '*(self.depth*2+2)}({line}) {t}"
         s += f"\n{' '*self.depth*2}]"
@@ -293,5 +293,5 @@ if __name__ == '__main__':
     T.generalize(40,'c')
     T.induction("∀c:(c+d)=(d+c)",'d',29,41)
 
-    print(T)
+    print(T.write_theorems())
     print(T.write_descriptions())
