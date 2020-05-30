@@ -41,10 +41,10 @@ class Deduction:
         s = f"\n{' '*self.depth*2}["
         for line,t in enumerate(self.theorems,1):
             if type(t) == Deduction:
+                s += f"\n{' '*(self.depth*2+2)}({line}) BEGIN FANTASY"
                 s += f"{' '*(self.depth*2+2)} {t}"
-                num_fantasies += 1
             else:
-                s += f"\n{' '*(self.depth*2+2)}({line-num_fantasies}) {t}"
+                s += f"\n{' '*(self.depth*2+2)}({line}) {t}"
         s += f"\n{' '*self.depth*2}]"
         return s
     
