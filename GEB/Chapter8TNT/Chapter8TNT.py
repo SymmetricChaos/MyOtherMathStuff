@@ -170,9 +170,9 @@ if __name__ == '__main__':
     
     
     print("\n\nRule of Specification")
-    print(f"{Pax3} ⟹ {specify(Pax3,'a','(c+d)')}")
-    print(f"{Pax4} ⟹ {specify(Pax4,'a','(S0⋅0)')}")
-    print(f"{Pax5} ⟹ {specify(Pax5,'b','(S0+b)')}")
+    print(f"{PeanoAxioms[1]} ⟹ {specify(PeanoAxioms[1],'a','(c+d)')}")
+    print(f"{PeanoAxioms[3]} ⟹ {specify(PeanoAxioms[3],'a','(S0⋅0)')}")
+    print(f"{PeanoAxioms[4]} ⟹ {specify(PeanoAxioms[4],'b','(S0+b)')}")
     print(f"")
     
     
@@ -188,8 +188,8 @@ if __name__ == '__main__':
 
     
     print("\n\n\nRule of Existence")
-    print(f"{Pax1} ⟹ {existence(Pax1,'0','b')}")
-    print(f"{Pax3} ⟹ {existence(Pax3,'Sb','c')}")
+    print(f"{PeanoAxioms[0]} ⟹ {existence(PeanoAxioms[0],'0','b')}")
+    print(f"{PeanoAxioms[2]} ⟹ {existence(PeanoAxioms[2],'Sb','c')}")
     
     
     print("\n\n\nRule of Transitivity")

@@ -57,7 +57,7 @@ def translate(s):
             num = num[1:]
         left = s[:lo]
         right = s[hi:]
-        s = f"{left}({num} plus {ctr}){right}"
+        s = f"{left}({num} + {ctr}){right}"
         N = re.search("S+[a-z]\'*",s)
         
     # Translate even more generalized additions that remain
@@ -82,7 +82,7 @@ def translate(s):
                 if left == "":
                     break
 
-        s = f"{left}({num} plus {ctr}{right}"
+        s = f"{left}({num} + {ctr}{right}"
         N = re.search("S+\(",s)
 
     # Simple translations

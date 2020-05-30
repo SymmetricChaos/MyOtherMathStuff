@@ -79,6 +79,7 @@ def generalize(x,u):
     else:
         raise Exception(f"{u} is not free in {x}")
 
+
 # MAKE THESE INTO ONE FUNCTION WITH SOME OPTIONS
 # Rephrase the existential quantifier as a universal quantifer
 def interchange_EA(x,u):
@@ -91,6 +92,7 @@ def interchange_AE(x,u):
     E = f"~∃{u}:"
     A = f"∀{u}:~"
     return x.replace(A,E)
+
 
 # CHECK HOW THESE INTERACT WITH NEGATIONS
 def successor(x):
@@ -112,6 +114,7 @@ def predecessor(x):
     else:
         raise Exception(f"{x} is not an equality of two terms")
 
+
 def existence(x,u,v):
     if is_term(u):
         if v in get_bound_vars(x):
@@ -122,12 +125,14 @@ def existence(x,u,v):
     else:
         raise Exception(f"{u} is not a valid terms")
 
+
 def symmetry(x):
     if is_atom(x):
         left, right = split_eq(x)
         return f"{right}={left}"
     else:
         raise Exception(f"{x} is not an equality of two terms")
+
 
 def transitivity(x,y):
     # Helpful errors
@@ -143,6 +148,7 @@ def transitivity(x,y):
         return f"{leftx}={righty}"
     else:
         raise Exception(f"{x} and {y} do not form a transitive statement")
+        
         
 def induction(x,u,T):
     if u not in get_free_vars(x):
