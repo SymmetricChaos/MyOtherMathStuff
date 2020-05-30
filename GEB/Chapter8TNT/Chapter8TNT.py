@@ -34,8 +34,8 @@ class Deduction:
         """
         Write out the deduction with lines numbered from 1
         Fantasies are indented relative to their depth
-        The fantasy will count its own steps and the reality below it only count
-        one step in the form of implication
+        The fantasy will count its own steps and the reality below it only 
+        counts one step in the form of implication
         """
         num_fantasies = 0
         s = f"\n{' '*self.depth*2}["
@@ -284,5 +284,6 @@ if __name__ == '__main__':
     T.induction("∀c:(c+d)=(d+c)",'d',29,41)
 
     print(T)
-#    for i in T.theorems_description:
-#        print(i)
+    print()
+    for i in T.theorems_description:
+        print(i)
