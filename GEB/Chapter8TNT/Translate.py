@@ -88,8 +88,8 @@ def translate(s):
     # Simple translations
     symbol = ["~","+","⋅","=","⊃","∨","∧","<",">"]
     translation = [" it is false that ",
-                   " plus ", " times ",
-                   " equals ", ") implies that (",
+                   " + ", " ⋅ ",
+                   " = ", ") implies that (",
                    ") or (", ") and (", "(", ")"]
     
     # Fix spacing issues
@@ -110,6 +110,6 @@ def translate(s):
 
 if __name__ == '__main__':
     # Quick tests
-    strings = ["~S0=0","SSSc'=d''","∀e:<<e+0=0∧0+e=0>∨e⋅0=0>"]
+    strings = ["~S0=0","SSSc'=d''","∀e:<<e+0=0∧0+b=0>∨y⋅0=0>"]
     for s in strings:
         print(f"{s}\n{translate(s)}\n")
