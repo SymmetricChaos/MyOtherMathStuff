@@ -61,6 +61,29 @@ class Deduction:
         s += f"\n{' '*self.depth*2}]"
         return s
     
+    def write_theorems_and_descriptions(self):
+        """
+        Write out the descriptions of each line, the same as .write_theorems()
+        """
+        max_length = 0
+        for t in self.theorems:
+            if type(t) == Deduction:
+                continue
+            max_length = max(max_length,len(t))
+            
+        s = f"\n{' '*self.depth*2}["
+        for line,(d,t) in enumerate(zip(self.descriptions,self.theorems),1):
+            
+            line_number = f"({line})"
+            
+            if type(t) == Deduction:
+                s += f"\n{' '*(self.depth*2+2)}({line}) BEGIN FANTASY"
+                s += f"{' '*(self.depth*2+2)} {t.write_theorems_and_descriptions()}"
+            else:
+                s += f"\n{' '*(self.depth*2+2)}{line_number:<4} {t:<{max_length}} {d}"
+        s += f"\n{' '*self.depth*2}]"
+        return s
+    
     # Force one-based indexing since this make more sense when counting steps
     def __getitem__(self,n):
         return self.theorems[n-1]
@@ -296,5 +319,7 @@ if __name__ == '__main__':
     T.generalize(40,'c')
     T.induction("∀c:(c+d)=(d+c)",'d',29,41)
 
-    print(T.write_theorems())
-    print(T.write_descriptions())
+#    print(T.write_theorems())
+#    print(T.write_descriptions())
+    
+    print(T.write_theorems_and_descriptions())
