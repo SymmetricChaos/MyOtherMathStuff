@@ -23,9 +23,9 @@ class Deduction:
                 raise Exception("Must begin with an axiom of TNT")
                 
         if premise in PeanoAxioms:
-            self.theorems_description = ["axiom"]
+            self.theorems_description = ["(1) axiom"]
         else:
-            self.theorems_description = ["premise"]
+            self.theorems_description = ["(1) premise"]
         
         self.depth = depth
         self.reality = reality
@@ -58,13 +58,13 @@ class Deduction:
             raise Exception("Implication rule only applies within a fantasy")
         else:
             self.reality.theorems.append(IMPLIES(self.theorems[0],self.theorems[-1]))
-            self.reality.theorems_description.append("implication")
+            self.reality.theorems_description.append(f"({len(self.reality.theorems)}) implication")
     
     def fantasy(self,premise):
         """Begin deduction on an arbitrary premise"""
         d = Deduction(premise,self.depth+1,self)
         self.theorems.append(d)
-        self.theorems_description.append("fantasy")
+        self.theorems_description.append(f"({len(self.theorems)}) fantasy")
         return d
     
     def add_premise(self,premise):
@@ -80,41 +80,41 @@ class Deduction:
                 raise Exception(f"{premise} does not exist at the level one step lower")
         self.theorems.append(premise)
         if premise in PeanoAxioms:
-            self.theorems_description.append(f"axiom {premise}")
+            self.theorems_description.append(f"({len(self.theorems)}) axiom {premise}")
         else:
-            self.theorems_description.append(f"premise {premise}")
+            self.theorems_description.append(f"({len(self.theorems)}) premise {premise}")
         
     def specify(self,n,u,v):
         self.theorems.append(specify(self.theorems[n-1],u,v))
-        self.theorems_description.append(f"specification of {n}")
+        self.theorems_description.append(f"({len(self.theorems)}) specification of {n}")
         
     def symmetry(self,n):
         self.theorems.append(symmetry(self.theorems[n-1]))
-        self.theorems_description.append(f"symmetry of {n}")
+        self.theorems_description.append(f"({len(self.theorems)}) symmetry of {n}")
                 
     def existence(self,n,u,v):
         self.theorems.append(existence(self.theorems[n-1],u,v))
-        self.theorems_description.append(f"existence of {n}")
+        self.theorems_description.append(f"({len(self.theorems)}) existence of {n}")
                
     def generalize(self,n,u):
         self.theorems.append(generalize(self.theorems[n-1],u))
-        self.theorems_description.append(f"generalization of {n}")
+        self.theorems_description.append(f"({len(self.theorems)}) generalization of {n}")
                        
     def successor(self,n):
         self.theorems.append(successor(self.theorems[n-1]))
-        self.theorems_description.append(f"successor of {n}")
+        self.theorems_description.append(f"({len(self.theorems)}) successor of {n}")
                        
     def predecessor(self,n):
         self.theorems.append(predecessor(self.theorems[n-1]))
-        self.theorems_description.append(f"predecessor of {n}")
+        self.theorems_description.append(f"(({len(self.theorems)}) predecessor of {n}")
                
     def transitivity(self,n1,n2):
         self.theorems.append(transitivity(self.theorems[n1-1],self.theorems[n2-1]))
-        self.theorems_description.append(f"transitivity of {n1} and {n2}")
+        self.theorems_description.append(f"({len(self.theorems)}) transitivity of {n1} and {n2}")
                
     def induction(self,t,u,n1,n2):
         self.theorems.append(induction(t,u,[self.theorems[n1-1],self.theorems[n2-1]]))
-        self.theorems_description.append(f"induction on {n1} and {n2}")
+        self.theorems_description.append(f"({len(self.theorems)}) induction on {n1} and {n2}")
     
 
 
