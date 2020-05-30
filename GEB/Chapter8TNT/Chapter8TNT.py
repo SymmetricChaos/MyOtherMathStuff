@@ -49,7 +49,7 @@ class Deduction:
     
     def write_descriptions(self):
         """
-        Write out the descriptions of each line, the same as .write_theorems()
+        Write out the descriptions of each line
         """
         s = f"\n{' '*self.depth*2}["
         for line,(d,t) in enumerate(zip(self.descriptions,self.theorems),1):
@@ -63,7 +63,7 @@ class Deduction:
     
     def write_theorems_and_descriptions(self):
         """
-        Write out the descriptions of each line, the same as .write_theorems()
+        Write out the theorems and their descriptions together
         """
         max_length = 0
         for t in self.theorems:
