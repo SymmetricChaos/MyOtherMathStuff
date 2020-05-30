@@ -13,6 +13,10 @@ PeanoAxioms = ["∀a:~Sa=0","∀a:(a+0)=a",
 class Deduction:
     
     def __init__(self,premise,depth=0,reality=None):
+        """
+        Force deduction from reality to start with an axiom
+        Otherwise any premise is allowed
+        """
         self.theorems = [premise]
         if depth == 0:
             if premise not in PeanoAxioms:
@@ -27,6 +31,12 @@ class Deduction:
         self.reality = reality
         
     def __str__(self):
+        """
+        Write out the deduction with lines numbered from 1
+        Fantasies are indented relative to their depth
+        The fantasy will count its own steps and the reality below it only count
+        one step in the form of implication
+        """
         num_fantasies = 0
         s = f"\n{' '*self.depth*2}["
         for line,t in enumerate(self.theorems,1):
@@ -43,21 +53,25 @@ class Deduction:
         return self.theorems[n-1]
         
     def implication(self):
+        """Implication of a fantasy"""
         if self.reality == None:
-            return IMPLIES(self.theorems[0],self.theorems[-1])
+            raise Exception("Implication rule only applies within a fantasy")
         else:
             self.reality.theorems.append(IMPLIES(self.theorems[0],self.theorems[-1]))
             self.reality.theorems_description.append("implication")
     
     def fantasy(self,premise):
+        """Begin deduction on an arbitrary premise"""
         d = Deduction(premise,self.depth+1,self)
         self.theorems.append(d)
-        self.theorems_description.append("")
+        self.theorems_description.append("fantasy")
         return d
     
     def add_premise(self,premise):
-        # At the lowest level we accept only axioms without justification
-        # At all other levels we accept only known theorems
+        """
+        At the lowest level we accept only axioms without justification
+        At all other levels we accept only known theorems
+        """
         if self.depth == 0:
             if premise not in PeanoAxioms:
                 raise Exception(f"{premise} is not an axiom of TNT")                
