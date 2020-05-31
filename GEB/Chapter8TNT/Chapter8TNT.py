@@ -1,13 +1,16 @@
 from GEB.Chapter8TNT.Properties import is_var, get_vars, get_free_vars, is_num, \
                                        get_bound_vars, get_quants, is_term, is_atom, \
                                        is_compound
-from GEB.Chapter8TNT.Translate import translate
+from GEB.Chapter8TNT.Translate import translate, translate_arithmetic
 from GEB.Chapter8TNT.StripSplit import split_eq, replace_var
 from GEB.Chapter8TNT.Rules import *
 
 PeanoAxioms = ["∀a:~Sa=0","∀a:(a+0)=a",
                "∀a:∀b:(a+Sb)=S(a+b)",
                "∀a:(a⋅0)=0","∀a:∀b:(a⋅Sb)=((a⋅b)+a)"]
+AusterePeanoAxioms = ["∀a:~Sa=0","∀a:(a+0)=a",
+               "∀a:∀a':(a+Sa')=S(a+a')",
+               "∀a:(a⋅0)=0","∀a:∀a':(a⋅Sa')=((a⋅a')+a)"]
 
 # Need to create a hierarchical structure
 class Deduction:
@@ -217,13 +220,16 @@ if __name__ == '__main__':
     print("\n\n\nAxioms of Peano Arithmetic")
     for i in PeanoAxioms:
         print(f"{i}\n{translate(i)}\n")
+   
+    print("\n\nArithmetized Axioms of Peano Arithmetic")
+    for i in AusterePeanoAxioms:
+        print(f"{i}\n{translate_arithmetic(i)}\n")
     
     
     print("\n\nRule of Specification")
     print(f"{PeanoAxioms[1]} ⟹ {specify(PeanoAxioms[1],'a','(c+d)')}")
     print(f"{PeanoAxioms[3]} ⟹ {specify(PeanoAxioms[3],'a','(S0⋅0)')}")
     print(f"{PeanoAxioms[4]} ⟹ {specify(PeanoAxioms[4],'b','(S0+b)')}")
-    print(f"")
     
     
     print("\n\n\nRules of Successorship")

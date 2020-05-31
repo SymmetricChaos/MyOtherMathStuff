@@ -108,7 +108,7 @@ def translate_arithmetic(s):
     
     disallowed = re.findall("[b-z]",s)
     if disallowed != []:
-        raise Exception(f"Austere TNT requires for arithmetic coding. The symbold {disallowed} are disallowed.")
+        raise Exception(f"Austere TNT requires for arithmetic coding. The symbols {set(disallowed)} are disallowed.")
     
     D = {"0":"666", "S":"123", "=":"111", "+":"123",
          "⋅":"236", "(":"362", ")":"323", "<":"212",
