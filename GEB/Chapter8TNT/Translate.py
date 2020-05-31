@@ -1,36 +1,62 @@
 import re
 from Utils.StringManip import bracket_matching
-from GEB.Chapter8TNT.Properties import starts_quantifier
+from GEB.Chapter8TNT.Properties import starts_quantifier, get_vars
+from GEB.Chapter8TNT.StripSplit import replace_var
 
-# Translate to "plain English"
+def make_austere(s):
+    """
+    Convert a string of TNT to austere TNT by rewriting all variables
+    """
+    V = get_vars(s)
+    a = "a"
+    for v in V:
+        # Don't replace variables that are already use "a" type variables
+        if "a" in v:
+            continue
+        # Otherwise find the next usable "a" type variable and use it as replacement
+        else:
+            while a in V:
+                a += "'"                
+            s = replace_var(s,v,a)
+            a += "'"
+    return s
+
+
+
 def translate(s):
+    """
+    Translate a statement of TNT to 'plain english'
+    """
     
-    # Translate existential quantifier
-    E = re.search("∃[a-z]\'*:",s)
-    while E != None:
-        lo, hi = E.span()
+    # Translate universal and existential quantifiers in order left to right
+    # What we say changes depending on what follows
+    Q = re.search("[∀∃][a-z]\'*:",s)
+    while Q != None:
+        print(Q.group())
+        
+        lo, hi = Q.span()
         inside = s[lo+1:hi-1]
         left = s[:lo]
         right = s[hi:]
-        if starts_quantifier(right):
-            s = f"{left} there exists {inside} and {right} "
-        else:
-            s = f"{left} there exists {inside} such that {right}"
-        E = re.search("∃[a-z]\'*:",s)
+        
+        if Q.group()[0] == "∀":
+            if right[0] == "∀":
+                s = f"{left} for all {inside} and {right} "
+            elif right[0] == "∃":
+                s = f"{left} for all {inside} {right} "
+            else:
+                s = f"{left} for all {inside} it is the case that {right} "
+                
+        if Q.group()[0] == "∃":
+            if right[0] == "∀":
+                s = f"{left} there exists {inside} such that {right} "
+            elif right[0] == "∃":
+                s = f"{left} there exists {inside} and {right} "
+            else:
+                s = f"{left} there exists {inside} such that {right} " 
+        Q = re.search("[∀∃][a-z]\'*:",s)
+    
 
-    # Translate universal quantifier
-    A = re.search("∀[a-z]\'*:",s)
-    while A != None:
-        lo, hi = A.span()
-        inside = s[lo+1:hi-1]
-        left = s[:lo]
-        right = s[hi:]
-        if starts_quantifier(right):
-            s = f"{left} for all {inside} and {right} "
-        else:
-            s = f"{left} for all {inside} it is the case that {right} "
-        A = re.search("∀[a-z]\'*:",s)
-    
     # Translate natural numbers
     N = re.search("S+0",s)
     while N != None:
@@ -86,11 +112,11 @@ def translate(s):
         N = re.search("S+\(",s)
 
     # Simple translations
-    symbol = ["~","+","⋅","=","⊃","∨","∧","<",">"]
+    symbol = ["~","+","⋅","=","⊃","∨","∧","<",">","it is the case that there exists"]
     translation = [" it is false that ",
                    " + ", " ⋅ ",
                    " = ", ") implies that (",
-                   ") or (", ") and (", "(", ")"]
+                   ") or (", ") and (", "(", ")","there exists"]
     
     # Fix spacing issues
     for sym,t in zip(symbol,translation):
@@ -104,8 +130,12 @@ def translate(s):
     
     return s
 
+
+
 def translate_arithmetic(s,reverse=False):
 
+    s = make_austere(s)
+    
     if reverse == True:
         
         D = {"666":"0", "123":"S", "111":"=", "112":"+",
@@ -137,19 +167,13 @@ def translate_arithmetic(s,reverse=False):
         return int(s)
 
 
+    
+
 
 if __name__ == '__main__':
     # Quick tests
     strings = ["~S0=0","SSSc'=d''",
                "∀e:<<e+0=0∧0+b=0>∨y⋅0=0>",
-               "∀a:∀a':(a+Sa')=S(a+a')"]
+               "∀a:∃a':(a+Sa')=S(a+a')"]
     for s in strings:
-        print(f"{s}\n{translate(s)}")
-        try:
-            arith_code = translate_arithmetic(s)
-            if translate_arithmetic(arith_code,reverse=True) != s:
-                raise Exception(f"{s} decoded from arithmetic coding incorrectly")
-            print(f"{arith_code}\n")
-        except:
-            print()
-            
+        print(f"{s}\n{translate(s)}\n{translate_arithmetic(s)}\n")
