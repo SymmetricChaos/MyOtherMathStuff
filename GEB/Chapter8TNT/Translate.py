@@ -140,12 +140,16 @@ def translate_arithmetic(s,reverse=False):
 
 if __name__ == '__main__':
     # Quick tests
-    strings = ["~S0=0","SSSc'=d''","∀e:<<e+0=0∧0+b=0>∨y⋅0=0>","∀a:∀a':(a+Sa')=S(a+a')"]
+    strings = ["~S0=0","SSSc'=d''",
+               "∀e:<<e+0=0∧0+b=0>∨y⋅0=0>",
+               "∀a:∀a':(a+Sa')=S(a+a')"]
     for s in strings:
         print(f"{s}\n{translate(s)}")
         try:
-            print(f"{translate_arithmetic(s)}\n")
+            arith_code = translate_arithmetic(s)
+            if translate_arithmetic(arith_code,reverse=True) != s:
+                raise Exception(f"{s} decoded from arithmetic coding incorrectly")
+            print(f"{arith_code}\n")
         except:
             print()
             
-    print(translate_arithmetic(626262636626262163636362262112123262163323111123362262112262163323,reverse=True))
