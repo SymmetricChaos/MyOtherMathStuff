@@ -104,22 +104,37 @@ def translate(s):
     
     return s
 
-def translate_arithmetic(s):
-    
-    disallowed = re.findall("[b-z]",s)
-    if disallowed != []:
-        raise Exception(f"Austere TNT requires for arithmetic coding. The symbols {set(disallowed)} are disallowed.")
-    
-    D = {"0":"666", "S":"123", "=":"111", "+":"123",
-         "⋅":"236", "(":"362", ")":"323", "<":"212",
-         ">":"213", "[":"312", "a":"262", "'":"163",
-         "∧":"161", "∨":"616", "⊃":"633", "~":"223",
-         "∃":"333", "∀":"626", ":":"636"}
-    
-    for sym,codon in D.items():
-        s = s.replace(sym,codon)
-    
-    return int(s)
+def translate_arithmetic(s,reverse=False):
+
+    if reverse == True:
+        
+        D = {"666":"0", "123":"S", "111":"=", "112":"+",
+             "236":"⋅", "362":"(", "323":")", "212":"<",
+             "213":">", "312":"[", "262":"a", "163":"'",
+             "161":"∧", "616":"∨", "633":"⊃", "223":"~",
+             "333":"∃", "626":"∀", "636":":"}
+        
+        out = ""
+        while s != 0:
+            s,codon = divmod(s,1000)
+            out = D[str(codon)]+out
+        return out
+        
+    else:
+        D = {"0":"666", "S":"123", "=":"111", "+":"112",
+             "⋅":"236", "(":"362", ")":"323", "<":"212",
+             ">":"213", "[":"312", "a":"262", "'":"163",
+             "∧":"161", "∨":"616", "⊃":"633", "~":"223",
+             "∃":"333", "∀":"626", ":":"636"}
+        
+        disallowed = re.findall("[b-z]",s)
+        if disallowed != []:
+            raise Exception(f"Austere TNT requires for arithmetic coding. The symbols {set(disallowed)} are disallowed.")
+        
+        for sym,codon in D.items():
+            s = s.replace(sym,codon)
+        
+        return int(s)
 
 
 
@@ -132,3 +147,5 @@ if __name__ == '__main__':
             print(f"{translate_arithmetic(s)}\n")
         except:
             print()
+            
+    print(translate_arithmetic(626262636626262163636362262112123262163323111123362262112262163323,reverse=True))
