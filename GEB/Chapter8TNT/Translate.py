@@ -1,6 +1,6 @@
 import re
 from Utils.StringManip import bracket_matching
-from GEB.Chapter8TNT.Properties import starts_quantifier, get_vars
+from GEB.Chapter8TNT.Properties import get_vars
 from GEB.Chapter8TNT.StripSplit import replace_var
 
 def make_austere(s):
@@ -32,7 +32,6 @@ def translate(s):
     # What we say changes depending on what follows
     Q = re.search("[∀∃][a-z]\'*:",s)
     while Q != None:
-        print(Q.group())
         
         lo, hi = Q.span()
         inside = s[lo+1:hi-1]

@@ -9,8 +9,8 @@ PeanoAxioms = ["∀a:~Sa=0","∀a:(a+0)=a",
                "∀a:∀b:(a+Sb)=S(a+b)",
                "∀a:(a⋅0)=0","∀a:∀b:(a⋅Sb)=((a⋅b)+a)"]
 AusterePeanoAxioms = ["∀a:~Sa=0","∀a:(a+0)=a",
-               "∀a:∀a':(a+Sa')=S(a+a')",
-               "∀a:(a⋅0)=0","∀a:∀a':(a⋅Sa')=((a⋅a')+a)"]
+                      "∀a:∀a':(a+Sa')=S(a+a')",
+                      "∀a:(a⋅0)=0","∀a:∀a':(a⋅Sa')=((a⋅a')+a)"]
 
 # Need to create a hierarchical structure
 class Deduction:
@@ -42,11 +42,12 @@ class Deduction:
         """
         s = f"\n{' '*self.depth*2}["
         for line,t in enumerate(self.theorems,1):
+            line_number = f"({line})"
             if type(t) == Deduction:
-                s += f"\n{' '*(self.depth*2+2)}({line}) BEGIN FANTASY"
-                s += f"{' '*(self.depth*2+2)} {t.write_theorems()}"
+                s += f"\n{' '*(self.depth*2+2)}{line_number:>4} BEGIN FANTASY"
+                s += f"{t.write_theorems()}"
             else:
-                s += f"\n{' '*(self.depth*2+2)}({line}) {t}"
+                s += f"\n{' '*(self.depth*2+2)}{line_number:>4} {t}"
         s += f"\n{' '*self.depth*2}]"
         return s
     
@@ -56,11 +57,12 @@ class Deduction:
         """
         s = f"\n{' '*self.depth*2}["
         for line,(d,t) in enumerate(zip(self.descriptions,self.theorems),1):
+            line_number = f"({line})"
             if type(t) == Deduction:
-                s += f"\n{' '*(self.depth*2+2)}({line}) BEGIN FANTASY"
-                s += f"{' '*(self.depth*2+2)} {t.write_descriptions()}"
+                s += f"\n{' '*(self.depth*2+2)}{line_number:>4} BEGIN FANTASY"
+                s += f"{t.write_descriptions()}"
             else:
-                s += f"\n{' '*(self.depth*2+2)}({line}) {d}"
+                s += f"\n{' '*(self.depth*2+2)}{line_number:>4} {d}"
         s += f"\n{' '*self.depth*2}]"
         return s
     
@@ -80,8 +82,7 @@ class Deduction:
             line_number = f"({line})"
             
             if type(t) == Deduction:
-                s += f"\n{' '*(self.depth*2+2)}({line}) BEGIN FANTASY"
-                s += f"{' '*(self.depth*2+2)} {t.write_theorems_and_descriptions()}"
+                s += f"{t.write_theorems_and_descriptions()}"
             else:
                 s += f"\n{' '*(self.depth*2+2)}{line_number:<4} {t:<{max_length}} {d}"
         s += f"\n{' '*self.depth*2}]"
@@ -217,7 +218,7 @@ if __name__ == '__main__':
                 print(f"{p:<{l}} ERROR")
     
     
-    print("\n\n\nAxioms of Peano Arithmetic")
+    print("\n\n\nTranslated Axioms of Peano Arithmetic")
     for i in PeanoAxioms:
         print(f"{i}\n{translate(i)}\n")
    
