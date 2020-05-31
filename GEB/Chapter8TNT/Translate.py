@@ -28,7 +28,7 @@ def translate(s):
         if starts_quantifier(right):
             s = f"{left} for all {inside} and {right} "
         else:
-            s = f"{left} for all {inside} {right} "
+            s = f"{left} for all {inside} it is the case that {right} "
         A = re.search("∀[a-z]\'*:",s)
     
     # Translate natural numbers
@@ -104,12 +104,31 @@ def translate(s):
     
     return s
 
-
+def translate_arithmetic(s):
+    
+    disallowed = re.findall("[b-z]",s)
+    if disallowed != []:
+        raise Exception(f"Austere TNT requires for arithmetic coding. The symbold {disallowed} are disallowed.")
+    
+    D = {"0":"666", "S":"123", "=":"111", "+":"123",
+         "⋅":"236", "(":"362", ")":"323", "<":"212",
+         ">":"213", "[":"312", "a":"262", "'":"163",
+         "∧":"161", "∨":"616", "⊃":"633", "~":"223",
+         "∃":"333", "∀":"626", ":":"636"}
+    
+    for sym,codon in D.items():
+        s = s.replace(sym,codon)
+    
+    return int(s)
 
 
 
 if __name__ == '__main__':
     # Quick tests
-    strings = ["~S0=0","SSSc'=d''","∀e:<<e+0=0∧0+b=0>∨y⋅0=0>"]
+    strings = ["~S0=0","SSSc'=d''","∀e:<<e+0=0∧0+b=0>∨y⋅0=0>","∀a:∀a':(a+Sa')=S(a+a')"]
     for s in strings:
-        print(f"{s}\n{translate(s)}\n")
+        print(f"{s}\n{translate(s)}")
+        try:
+            print(f"{translate_arithmetic(s)}\n")
+        except:
+            print()
