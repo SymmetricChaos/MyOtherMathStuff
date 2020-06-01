@@ -43,6 +43,8 @@ def translate(s):
                 s = f"{left} for all {inside} and {right} "
             elif right[0] == "∃":
                 s = f"{left} for all {inside} {right} "
+            elif right[0] == "~":
+                s = f"{left} for all {inside} it is false that {right[1:]} "
             else:
                 s = f"{left} for all {inside} it is the case that {right} "
                 
@@ -111,18 +113,25 @@ def translate(s):
         N = re.search("S+\(",s)
 
     # Simple translations
-    symbol = ["~","+","⋅","=","⊃","∨","∧","<",">","it is the case that there exists"]
+    symbol = ["~","+","⋅","=","⊃","∨","∧","<",">",
+              "it is the case that there exists"]
     translation = [" it is false that ",
                    " + ", " ⋅ ",
-                   " = ", ") implies that (",
-                   ") or (", ") and (", "(", ")","there exists"]
+                   " = ", " implies that ",
+                   " or ", " and ", "[", "]",
+                   "there exists"]
     
-    # Fix spacing issues
     for sym,t in zip(symbol,translation):
         s = s.replace(sym,t)
         
+    # Fix various spacing issues
     while "  " in s:
         s = s.replace("  "," ")
+    
+    s = s.replace("( ","(")
+    s = s.replace(" )",")")
+    s = s.replace("[ ","[")
+    s = s.replace(" ]","]")
         
     if s[0] == " ":
         s = s[1:]
