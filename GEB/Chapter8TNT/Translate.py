@@ -113,13 +113,11 @@ def translate(s):
         N = re.search("S+\(",s)
 
     # Simple translations
-    symbol = ["~","+","⋅","=","⊃","∨","∧","<",">",
-              "it is the case that there exists"]
+    symbol = ["~","+","⋅","=","⊃","∨","∧","<",">"]
     translation = [" it is false that ",
                    " + ", " ⋅ ",
                    " = ", " implies that ",
-                   " or ", " and ", "[", "]",
-                   "there exists"]
+                   " or ", " and ", "[", "]"]
     
     for sym,t in zip(symbol,translation):
         s = s.replace(sym,t)
