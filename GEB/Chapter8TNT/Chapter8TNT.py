@@ -1,6 +1,6 @@
 from GEB.Chapter8TNT.Properties import is_var, get_vars, get_free_vars, is_num, \
                                        get_bound_vars, get_quants, is_term, is_atom, \
-                                       is_compound
+                                       is_compound, is_well_formed
 from GEB.Chapter8TNT.Translate import translate, translate_arithmetic
 from GEB.Chapter8TNT.StripSplit import split_eq, replace_var
 from GEB.Chapter8TNT.Rules import *
@@ -89,7 +89,7 @@ class Deduction:
     # Force one-based indexing since this make more sense when counting steps
     def __getitem__(self,n):
         return self.theorems[n-1]
-        
+    
     def implication(self):
         """Implication of a fantasy"""
         if self.reality == None:
@@ -97,14 +97,14 @@ class Deduction:
         else:
             self.reality.theorems.append(IMPLIES(self.theorems[0],self.theorems[-1]))
             self.reality.descriptions.append(f"implication")
-    
+
     def fantasy(self,premise):
         """Begin deduction on an arbitrary premise"""
         d = Deduction(premise,self.depth+1,self)
         self.theorems.append(d)
         self.descriptions.append(f"fantasy")
         return d
-    
+
     def add_premise(self,premise):
         """
         At the lowest level we accept only axioms without justification
@@ -121,39 +121,70 @@ class Deduction:
             self.descriptions.append(f"axiom")
         else:
             self.descriptions.append(f"premise")
-        
+
     def specify(self,n,u,v):
-        self.theorems.append(specify(self.theorems[n-1],u,v))
-        self.descriptions.append(f"specification of {n}")
-        
+        T = specify(self.theorems[n-1],u,v)
+        if is_well_formed(T):
+            self.theorems.append(T)
+            self.descriptions.append(f"specification of {n}")
+        else:
+            raise Exception(f"{T} is not well-formed")
+
     def symmetry(self,n):
-        self.theorems.append(symmetry(self.theorems[n-1]))
-        self.descriptions.append(f"symmetry of {n}")
-                
+        T = symmetry(self.theorems[n-1])
+        if is_well_formed(T):
+            self.theorems.append(T)
+            self.descriptions.append(f"symmetry of {n}")
+        else:
+            raise Exception(f"{T} is not well-formed")
+
     def existence(self,n,u,v):
-        self.theorems.append(existence(self.theorems[n-1],u,v))
-        self.descriptions.append(f"existence of {n}")
-               
+        T = existence(self.theorems[n-1],u,v)
+        if is_well_formed(T):
+            self.theorems.append(T)
+            self.descriptions.append(f"existence of {n}")
+        else:
+            raise Exception(f"{T} is not well-formed")
+
     def generalize(self,n,u):
-        self.theorems.append(generalize(self.theorems[n-1],u))
-        self.descriptions.append(f"generalization of {n}")
-                       
+        T = generalize(self.theorems[n-1],u)
+        if is_well_formed(T):
+            self.theorems.append(T)
+            self.descriptions.append(f"generalization of {n}")
+        else:
+            raise Exception(f"{T} is not well-formed")
+
     def successor(self,n):
-        self.theorems.append(successor(self.theorems[n-1]))
-        self.descriptions.append(f"successor of {n}")
-                       
+        T = successor(self.theorems[n-1])
+        if is_well_formed(T):
+            self.theorems.append(T)
+            self.descriptions.append(f"successor of {n}")
+        else:
+            raise Exception(f"{T} is not well-formed")
+
     def predecessor(self,n):
-        self.theorems.append(predecessor(self.theorems[n-1]))
-        self.descriptions.append(f"(predecessor of {n}")
-               
+        T = predecessor(self.theorems[n-1])
+        if is_well_formed(T):
+            self.theorems.append(T)
+            self.descriptions.append(f"(predecessor of {n}")
+        else:
+            raise Exception(f"{T} is not well-formed")
+
     def transitivity(self,n1,n2):
-        self.theorems.append(transitivity(self.theorems[n1-1],self.theorems[n2-1]))
-        self.descriptions.append(f"transitivity of {n1} and {n2}")
-               
+        T = transitivity(self.theorems[n1-1],self.theorems[n2-1])
+        if is_well_formed(T):
+            self.theorems.append(T)
+            self.descriptions.append(f"transitivity of {n1} and {n2}")
+        else:
+            raise Exception(f"{T} is not well-formed")      
+
     def induction(self,t,u,n1,n2):
-        self.theorems.append(induction(t,u,[self.theorems[n1-1],self.theorems[n2-1]]))
-        self.descriptions.append(f"induction on {n1} and {n2}")
-    
+        T = induction(t,u,[self.theorems[n1-1],self.theorems[n2-1]])
+        if is_well_formed(T):
+            self.theorems.append(T)
+            self.descriptions.append(f"induction on {n1} and {n2}")
+        else:
+            raise Exception(f"{T} is not well-formed") 
 
 
 

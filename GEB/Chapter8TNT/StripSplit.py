@@ -42,6 +42,7 @@ def strip_qaunt(x):
     return x
 
 
+
 # Need this because ordinary replacement will replace the a in a'
 def replace_var(x,v,r):
     left = ""

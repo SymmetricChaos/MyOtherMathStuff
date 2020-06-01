@@ -51,8 +51,9 @@ def is_pure_num(x):
     return False
 
 
+
 # Combined parts
-# Variables and numbers are terms as are negations of them
+# Variables and numbers are terms as are negations and arithmetic of them
 def is_term(x):
     x = strip_neg(x)
     if is_var(x) or is_num(x):
@@ -97,9 +98,9 @@ def starts_quantifier(x):
 # such. Since valid parts are not technically well-formed we will check
 # seperately for that.
 def is_compound(x):
-    x = strip_neg(x)
+    x = strip_qaunt(x)
     if is_atom(x) or is_term(x) or is_quantifier(x):
-        return True
+        return False
     else:
         try:
             L,R = split_logical(x)
@@ -109,18 +110,30 @@ def is_compound(x):
             # Remove negatives and quantifiers
             R = strip_neg(R)
             R = strip_qaunt(R)
+            if is_atom(L) or is_term(L) or is_quantifier(L):
+                if is_atom(R) or is_term(R) or is_quantifier(R):
+                    return True
+                return is_compound(R)
+            
+            if is_atom(R) or is_term(R) or is_quantifier(R):
+                if is_atom(L) or is_term(L) or is_quantifier(L):
+                    return True
+                return is_compound(L)
+                    
             return is_compound(L) and is_compound(R)
         except:
             return False
 
-#def is_well_formed(x):
-#    if is_atom(x):
-#        return True
-#    elif:
-#        
-#    else:
-#        return False
-    
+def is_well_formed(x):
+    # Only atoms and compounds of atoms are well-formed, smaller parts are still
+    # valid but they are not specifically "well-formed"
+    # Removing the leading quantifiers and negations can never change if a string
+    # is well formed
+    x = strip_qaunt(x)
+    if is_compound(x) or is_atom(x):
+        return True
+    return False
+        
 
 def is_open(x):
     var = get_vars(x)
@@ -134,3 +147,11 @@ def is_open(x):
 def is_closed(x):
     return not is_open(x)
 
+
+
+
+
+if __name__ == '__main__':
+    theorems = ["∀b:(d+Sb)=S(d+b)"]
+    for i in theorems:
+        print(f"is {i} well-formed? {is_well_formed(i)}")

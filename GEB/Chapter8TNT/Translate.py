@@ -57,7 +57,6 @@ def translate(s):
                 s = f"{left} there exists {inside} such that {right} " 
         Q = re.search("[∀∃][a-z]\'*:",s)
     
-
     # Translate natural numbers
     N = re.search("S+0",s)
     while N != None:
@@ -173,13 +172,15 @@ def translate_arithmetic(s,reverse=False):
         return int(s)
 
 
-    
+
 
 
 if __name__ == '__main__':
     # Quick tests
     strings = ["~S0=0","SSSc'=d''",
                "∀e:<<e+0=0∧0+b=0>∨y⋅0=0>",
-               "∀a:∃a':(a+Sa')=S(a+a')"]
+               "∀a:∃a':(a+Sa')=S(a+a')",
+               "~∀a:∃b:<a=b⊃0=1>",
+               "∀a:~∃b:<a=0∧1=b>",]
     for s in strings:
         print(f"{s}\n{translate(s)}\n{translate_arithmetic(s)}\n")
