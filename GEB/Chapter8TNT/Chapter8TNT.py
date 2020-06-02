@@ -189,6 +189,7 @@ class Deduction:
 
 
 
+
 if __name__ == '__main__':
 
     print("Build some statements of Typographical Number Theory")
@@ -354,8 +355,5 @@ if __name__ == '__main__':
     T.transitivity(30,39)
     T.generalize(40,'c')
     T.induction("∀c:(c+d)=(d+c)",'d',29,41)
-
-#    print(T.write_theorems())
-#    print(T.write_descriptions())
     
     print(T.write_theorems_and_descriptions())

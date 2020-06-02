@@ -135,6 +135,7 @@ def is_well_formed(x):
     return False
         
 
+
 def is_open(x):
     var = get_vars(x)
     quant = get_quants(x)
