@@ -37,12 +37,10 @@ def POWER(M,N):
 
 def TWO_TO_THE_THREE_TO_THE(N):
     cell = [0,0]
-    
-    cell[0] = POWER(3,N)
         
-    cell[1] = POWER(2,cell[0])
+    cell[0] = POWER(2,POWER(3,N))
         
-    return cell[1]
+    return cell[0]
 
 
 def DIVIDE(M,N):
@@ -77,7 +75,6 @@ def REMAINDER(M,N):
     cell[1] = 1
     
     for _ in range(M):
-        
         cell[0] = MINUS(cell[0],N)
         
         if cell[0] < N:
@@ -85,17 +82,53 @@ def REMAINDER(M,N):
 
 
 def PRIME(N):
-    out = 0
     cell = [0]
     if N == 0:
-        return out
+        return 0
     
     cell[0] = 1
     for _ in range(MINUS(N,2)):
         cell[0] = 1+cell[0]
+        
         if REMAINDER(N,cell[0]) == 0:
             return 0
+        
     return 1
+
+
+def FACTORIAL(N):
+    cell = [0,0]
+    cell[0] = 1
+    cell[1] = 1
+    
+    for _ in range(N):
+        cell[0] = cell[0] * cell[1]
+        cell[1] = 1+cell[1]
+    
+    return cell[0]
+
+
+def FIBONACCI(N):
+    cell = [0,0,0]
+    cell[0] = 0
+    cell[1] = 1
+    cell[2] = 1
+    
+    if N == 0:
+        return 0
+    
+    if N < 2:
+        return 1
+    
+    for _ in range(N):
+        cell[0] = cell[1]
+        cell[1] = cell[2]
+        cell[2] = cell[0]+cell[1]
+    
+    return cell[2]
+
+
+#def GOLDBACH(N):
 
 
 if __name__ == '__main__':
@@ -106,4 +139,6 @@ if __name__ == '__main__':
     print(f"DIVIDE(71,8) = {DIVIDE(71,8)}")
     print(f"REMAINDER(71,8) = {REMAINDER(71,8)}")
     print(f"PRIME(131) = {PRIME(131)}")
+    print(f"FACTORIAL(9) = {FACTORIAL(9)}")
+    print(f"FIBONACCI(16) = {FIBONACCI(16)}")
 
