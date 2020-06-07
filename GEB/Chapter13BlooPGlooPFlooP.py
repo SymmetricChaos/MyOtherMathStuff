@@ -9,7 +9,7 @@
 # * can be used for arithmetic multiplication
 # The only variable allowed is a list named cell which can hold ony integers
 # A for loop is allowed but its can only loop over either an input or over an
-# element of cell, the 
+# element of cell, the iteration variable must be discarded
 
 def MINUS(M,N):
     cell = [0]
@@ -60,11 +60,9 @@ def DIVIDE(M,N):
         cell[0] = MINUS(cell[0],N)
         
         if cell[0] < N:
-            return cell[1]+1
+            return cell[1]
         
         cell[1] = 1+cell[1]
-
-    return cell[1]
 
 
 def REMAINDER(M,N):
@@ -99,5 +97,13 @@ def PRIME(N):
             return 0
     return 1
 
-print(POWER(7,7))
-print(TWO_TO_THE_THREE_TO_THE(3))
+
+if __name__ == '__main__':
+    
+    print(f"MINUS(56,9) = {MINUS(56,9)}")
+    print(f"POWER(7,7) = {POWER(7,7)}")
+    print(f"TWO_TO_THE_THREE_TO_THE(3) = {TWO_TO_THE_THREE_TO_THE(3)}")
+    print(f"DIVIDE(71,8) = {DIVIDE(71,8)}")
+    print(f"REMAINDER(71,8) = {REMAINDER(71,8)}")
+    print(f"PRIME(131) = {PRIME(131)}")
+
