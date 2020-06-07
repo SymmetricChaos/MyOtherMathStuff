@@ -285,6 +285,35 @@ def show_now():
     plt.show()
 
 
+def histoplot(L,bins,x_ticks,percentiles=[25,50,75],size=[13,6],title=""):
+    
+    fig = plt.figure()
+    fig.set_size_inches(size[0], size[1])
+    plt.hist(L,bins=bins)
+    plt.xticks(x_ticks)
+    plt.title(title,size=20)
+    percentile_vals = np.nanpercentile(L,percentiles)
+    for x in percentile_vals:
+        plt.axvline(x,color='black',linewidth=3)
+    percentile_legend = []
+    for i,j in zip(['20','50','80'],percentile_vals):
+         percentile_legend.append(f"{i}th Percentile: {j:.1f}")
+    plt.legend(percentile_legend)
+    plt.show()
+    
+    
+def histoplot_simple(L,bins,size=[13,6],title=""):
+    
+    fig = plt.figure()
+    fig.set_size_inches(size[0], size[1])
+    plt.hist(L,bins=bins)
+    plt.xticks(bins)
+    plt.title(title,size=20)
+    med = np.nanmedian(L)
+    plt.axvline(med,color='black',linewidth=3)
+    plt.legend([f"Median: {med:.1f}"])
+    plt.show()
+
 
 if __name__ == '__main__':
     
