@@ -280,39 +280,26 @@ def text(x,y,t,ax=None,**kwargs):
         ax = plt.gca()
     ax.text(x,y,t,**kwargs)
 
-
+#Convenience to force show without directly importing matplotlib
 def show_now():
     plt.show()
 
-
-def histoplot(L,bins,x_ticks,percentiles=[25,50,75],size=[13,6],title=""):
-    
-    fig = plt.figure()
-    fig.set_size_inches(size[0], size[1])
-    plt.hist(L,bins=bins)
-    plt.xticks(x_ticks)
-    plt.title(title,size=20)
-    percentile_vals = np.nanpercentile(L,percentiles)
-    for x in percentile_vals:
-        plt.axvline(x,color='black',linewidth=3)
-    percentile_legend = []
-    for i,j in zip(['20','50','80'],percentile_vals):
-         percentile_legend.append(f"{i}th Percentile: {j:.1f}")
-    plt.legend(percentile_legend)
-    plt.show()
-    
-    
-def histoplot_simple(L,bins,size=[13,6],title=""):
-    
-    fig = plt.figure()
-    fig.set_size_inches(size[0], size[1])
+# Quick histogram drawer with option for showing percentiles
+# Something about this doesn't work. Might have to rebuild from primitives.
+def histoplot(L,bins,percentiles=[],size=[13,6],title=""):
+    make_blank_canvas()
     plt.hist(L,bins=bins)
     plt.xticks(bins)
     plt.title(title,size=20)
-    med = np.nanmedian(L)
-    plt.axvline(med,color='black',linewidth=3)
-    plt.legend([f"Median: {med:.1f}"])
-    plt.show()
+    if percentiles:
+        percentile_vals = np.nanpercentile(L,np.asarray(percentiles))
+        for x in percentile_vals:
+            plt.axvline(x,color='black',linewidth=3)
+        percentile_legend = []
+        for i,j in zip(percentiles,percentile_vals):
+             percentile_legend.append(f"{i}th Percentile: {j:.1f}")
+        plt.legend(percentile_legend)
+
 
 
 if __name__ == '__main__':
@@ -375,3 +362,4 @@ if __name__ == '__main__':
     # Title on selected axis
     title(r'We can use LaTeX $\sum_{n=1}^\infty\frac{-e^{i\pi}}{2^n}$',ax=sp1,size=16,pad=20)
     canvas_title("A Title for the whole Canvas")
+    show_now()
