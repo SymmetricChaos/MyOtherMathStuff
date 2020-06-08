@@ -8,12 +8,40 @@
 # + can be used for arithmetic addition
 # < can be used for arithmetic less-than
 # * can be used for arithmetic multiplication
-# The only variable allowed is a list named cell which can hold ony integers
+# Numeric constants are allowed
+# The only variables allow are integers assigned to and taken from the Cell dictionary
+# The Cell dictionary must be indexed by integers
 # A for loop is allowed but its can only loop over either an input or over an
 # element of cell, the iteration variable must be discarded
 
+# Create an "infinite list of zeroes" to work with
+
+from collections import defaultdict
+
+def zero():
+    return 0
+
+class Cell:
+
+    def __init__(self):
+        self.CELLS = defaultdict(zero)
+        
+    def __getitem__(self,n):
+        return self.CELLS[n]
+    
+    def __setitem__(self,n,val):
+        if not type(n) == int:
+            raise Exception("Cell can be indexed only by integers")
+        if not type(val) == int:
+            raise Exception("Cell can contain only integers")
+        self.CELLS[n] = val
+        
+
+
+
+
 def MINUS(M,N):
-    cell = [0]
+    cell = Cell()
     
     if M < N:
         return cell[0]
@@ -26,7 +54,7 @@ def MINUS(M,N):
 
 
 def POWER(M,N):
-    cell = [0]
+    cell = Cell()
     
     cell[0] = 1
     
@@ -37,14 +65,14 @@ def POWER(M,N):
 
 
 def TWO_TO_THE_THREE_TO_THE(N):
-    cell = [0]
+    cell = Cell()
     
     cell[0] = POWER( 2, POWER(3,N) )
     return cell[0]
 
 
 def DIVIDE(M,N):
-    cell = [0,0]
+    cell = Cell()
     
     if M < N:
         return cell[0]
@@ -65,7 +93,7 @@ def DIVIDE(M,N):
 
 
 def REMAINDER(M,N):
-    cell = [0,0]
+    cell = Cell()
     
     if M < N:
         return cell[0]
@@ -84,7 +112,7 @@ def REMAINDER(M,N):
 
 
 def PRIME(N):
-    cell = [0]
+    cell = Cell()
     
     if N < 2:
         return 0
@@ -100,7 +128,7 @@ def PRIME(N):
 
 
 def FACTORIAL(N):
-    cell = [0,0]
+    cell = Cell()
     
     cell[0] = 1
     cell[1] = 1
@@ -113,7 +141,7 @@ def FACTORIAL(N):
 
 
 def FIBONACCI(N):
-    cell = [0,0,0]
+    cell = Cell()
     
     cell[0] = 0
     cell[1] = 1
@@ -134,7 +162,7 @@ def FIBONACCI(N):
 
 
 def GOLDBACH(N):
-    cell = [0]
+    cell = Cell()
     
     for _ in range(N):
         cell[0] = 1+cell[0]
@@ -145,7 +173,7 @@ def GOLDBACH(N):
 
 
 def PYTHAGOREAN(A,B,C):
-    cell = [0,0]
+    cell = Cell()
     
     cell[0] = A*A+B*B
     cell[1] = C*C
