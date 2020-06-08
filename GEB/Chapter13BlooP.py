@@ -184,6 +184,9 @@ def PYTHAGOREAN(A,B,C):
     return 0
 
 
+
+
+
 if __name__ == '__main__':
     
     print(f"MINUS(56,9) = {MINUS(56,9)}")
