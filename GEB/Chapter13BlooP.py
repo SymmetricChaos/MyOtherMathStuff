@@ -3,6 +3,7 @@
 # They can contain the following symbols and term
 #    if, return, break, =, ==, +, <
 # They can also contain any other valid BlooP program
+# There must always be a value returned and it must always be an integer
 # Parentheses and colons are allowed for Python's formatting
 # + can be used for arithmetic addition
 # < can be used for arithmetic less-than
@@ -143,6 +144,18 @@ def GOLDBACH(N):
     return 0
 
 
+def PYTHAGOREAN(A,B,C):
+    cell = [0,0]
+    
+    cell[0] = A*A+B*B
+    cell[1] = C*C
+    
+    if cell[0] == cell[1]:
+        return 1
+    
+    return 0
+
+
 if __name__ == '__main__':
     
     print(f"MINUS(56,9) = {MINUS(56,9)}")
@@ -153,4 +166,4 @@ if __name__ == '__main__':
     print(f"PRIME(131) = {PRIME(131)}")
     print(f"FACTORIAL(9) = {FACTORIAL(9)}")
     print(f"FIBONACCI(16) = {FIBONACCI(16)}")
-    print(f"GOLDBACH(19) = {GOLDBACH(19)}")
+    print(f"GOLDBACH(76) = {GOLDBACH(76)}")
