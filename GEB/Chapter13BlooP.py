@@ -109,6 +109,27 @@ def REMAINDER(M,N):
         
         if cell[0] < N:
             return cell[0]
+        
+        
+def ROOT(M,N):
+    cell = Cell()
+    
+    if M < N:
+        return cell[0]
+    
+    if N == 0:
+        return cell[0]
+
+    cell[0] = M
+    cell[1] = 1
+    
+    for _ in range(M):
+        cell[0] = DIVIDE(cell[0],N)
+        
+        if cell[0] < N:
+            return cell[1]
+        
+        cell[1] = 1+cell[1]
 
 
 def PRIME(N):
@@ -194,6 +215,7 @@ if __name__ == '__main__':
     print(f"TWO_TO_THE_THREE_TO_THE(3) = {TWO_TO_THE_THREE_TO_THE(3)}")
     print(f"DIVIDE(71,8) = {DIVIDE(71,8)}")
     print(f"REMAINDER(71,8) = {REMAINDER(71,8)}")
+    print(f"ROOT(81,3) = {ROOT(81,3)}")
     print(f"PRIME(131) = {PRIME(131)}")
     print(f"FACTORIAL(9) = {FACTORIAL(9)}")
     print(f"FIBONACCI(16) = {FIBONACCI(16)}")
