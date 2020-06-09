@@ -18,7 +18,7 @@
 
 from collections import defaultdict
 from Utils.StringManip import innermost, left_string
-import re
+
 
 def zero():
     return 0
@@ -59,8 +59,12 @@ def FACTORIAL(N):
 def TWO_THREE_CODE(M,N):
     return POWER(2,M)*POWER(3,N)
 
-# Not a valid FlooP program
-# We can Godel number each Ackerman input as 2**M * 3**N
+
+# The Ackerman function is general recursive but not primitive recursive so
+# there must be a FlooP program for it but not a BlooP program
+# Its not obvious what that is so lets investigate
+
+# We can Godel number each input to the Ackerman function as 2**M * 3**N
 def A(M,N):
     print(f"A({M},{N}) = cell[{2**M*3**N}] = {A_clean(M,N)}")
     if M == 0:
@@ -107,8 +111,8 @@ def ACKERMAN(M,N):
     cell[1] = 1 # corresponds to ACKERMAN(0,0)
     cell[2] = 2 # corresponds to ACKERMAN(1,0)
     cell[3] = 2 # corresponds to ACKERMAN(0,1)
-    
-    
+
+
 
 
 
@@ -118,4 +122,6 @@ if __name__ == '__main__':
 #    print(FACTORIAL(5))
 #    print(POWER(3,4))
 #    A(2,4)
-    print(A_expand_recur(2,3))
+    A_expand_recur(2,1)
+    print()
+    A(2,1)
