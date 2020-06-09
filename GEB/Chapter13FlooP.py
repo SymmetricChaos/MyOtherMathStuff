@@ -17,6 +17,8 @@
 # Create an "infinite list of zeroes" to work with
 
 from collections import defaultdict
+from Utils.StringManip import innermost, left_string
+import re
 
 def zero():
     return 0
@@ -77,10 +79,24 @@ def A_clean(M,N):
         return A_clean(M-1,1)
     return A_clean(M-1,A_clean(M,N-1))
 
-def A_expand(M,N,steps):
-    if steps == 0:
-        return f"fA({M},{N})"
-    
+def A_expand(M,N):
+    if M == 0:
+        return f"{N+1}"
+    if N == 0:
+        return f"A({M-1},1)"
+    return f"A({M-1},A({M},{N-1}))"
+
+def A_expand_recur(M,N):
+    S = f"A({M},{N})"
+    print(S)
+    while "A" in S:
+        bottom,_,_ = innermost(S,"A",")")[0]
+        m = int(left_string(bottom,"(",",",inner=True)[0])
+        n = int(left_string(bottom,",",")",inner=True)[0])
+        bottom_ex = A_expand(m,n)
+        S = S.replace(bottom,bottom_ex)
+        print(S)
+        
     
         
        
@@ -101,5 +117,5 @@ if __name__ == '__main__':
 #    print(f"MINUS(56,27) = {MINUS(56,27)}")
 #    print(FACTORIAL(5))
 #    print(POWER(3,4))
-    print()
-    A(2,4)
+#    A(2,4)
+    print(A_expand_recur(2,3))
