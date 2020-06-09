@@ -18,7 +18,7 @@
 
 from collections import defaultdict
 from Utils.StringManip import innermost, left_string
-
+import time
 
 def zero():
     return 0
@@ -37,11 +37,14 @@ class Cell:
         if not type(val) == int:
             raise Exception("Cell can contain only integers")
         self.CELLS[n] = val
+    
+    def __str__(self):
+        s = ""
+        for k,v in self.CELLS.items():
+            s += f"{k}: {v}\n"
+        return s
 
 
-from Chapter13BlooP import MINUS,POWER,DIVIDE,REMAINDER,ROOT
-
-        
 def FACTORIAL(N):
     cell = Cell()
 
@@ -56,32 +59,48 @@ def FACTORIAL(N):
         cell[0] = 1+cell[0]       # <- essentially tracking the level of "recusion"
         
 
-def TWO_THREE_CODE(M,N):
-    return POWER(2,M)*POWER(3,N)
+from Chapter13BlooP import MINUS,POWER,DIVIDE,REMAINDER,ROOT
+
+        
+
+
+
 
 
 # The Ackerman function is general recursive but not primitive recursive so
 # there must be a FlooP program for it but not a BlooP program
 # Its not obvious what that is so lets investigate
 
-# We can Godel number each input to the Ackerman function as 2**M * 3**N
 def A(M,N):
-    print(f"A({M},{N}) = cell[{2**M*3**N}] = {A_clean(M,N)}")
     if M == 0:
         return N+1
-    
     if N == 0:
         return A(M-1,1)
-    
     return A(M-1,A(M,N-1))
 
-# Ackerman function without printing anything
-def A_clean(M,N):
+# We can Godel number each input to the Ackerman function as 2**M * 3**N
+def ack_g_code(M,N):
+    return 2**M*3**N
+
+def ack_g_code_rev(G):
+    M,N = 0,0
+    while G%2 == 0:
+        M += 1
+        G //= 2
+    while G%3 == 0:
+        N += 1
+        G //= 3
+    return M,N
+
+def A_coded(M,N):
+    print(f"A({M},{N}) → cell[{ack_g_code(M,N)}]")
     if M == 0:
         return N+1
+    
     if N == 0:
-        return A_clean(M-1,1)
-    return A_clean(M-1,A_clean(M,N-1))
+        return A_coded(M-1,1)
+    
+    return A_coded(M-1,A_coded(M,N-1))
 
 def A_expand(M,N):
     if M == 0:
@@ -100,10 +119,44 @@ def A_expand_recur(M,N):
         bottom_ex = A_expand(m,n)
         S = S.replace(bottom,bottom_ex)
         print(S)
+
+
+# Start with creating the simplest loop when N = 0
+def M_loop(M):
+    return ack_g_code(M-1,1)
+
+def MN_loop(M,N):
+    return ack_g_code(M,N-1)
         
+
+def A_loop(M,N):
+
+    aux = []
+    while True:
+        print("\nstate",M,N)
+        time.sleep(.15)
+        if M == 0 and aux == []:
+            return N+1
+        elif M == 0 and aux != []:
+            N += 1
+            M = aux.pop()
+        elif N == 0:
+            goto = M_loop(M)
+            M,N = ack_g_code_rev(goto)
+            print("Mloop",M,N)
+            print(aux)
+        else:
+            aux.append(M)
+            goto = MN_loop(M,N)
+            M,N = ack_g_code_rev(goto)
+            print("MNloop",M,N)
+            print(aux)
+
     
         
-       
+def TWO_THREE_CODE(M,N):
+    return POWER(2,M)*POWER(3,N)
+
 def ACKERMAN(M,N):
     cell = Cell()
     
@@ -112,7 +165,7 @@ def ACKERMAN(M,N):
     cell[2] = 2 # corresponds to ACKERMAN(1,0)
     cell[3] = 2 # corresponds to ACKERMAN(0,1)
 
-
+    
 
 
 
@@ -122,6 +175,8 @@ if __name__ == '__main__':
 #    print(FACTORIAL(5))
 #    print(POWER(3,4))
 #    A(2,4)
-    A_expand_recur(2,1)
+    M,N = 3,0
+    A_expand_recur(M,N)
     print()
-    A(2,1)
+    A_coded(M,N)
+    print(A_loop(3,0))
