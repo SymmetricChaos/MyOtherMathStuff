@@ -133,39 +133,63 @@ def A_loop(M,N):
 
     aux = []
     while True:
-        print("\nstate",M,N)
-        time.sleep(.15)
+#        print("\nstate",M,N)
         if M == 0 and aux == []:
+            print(M,N,aux)
             return N+1
         elif M == 0 and aux != []:
+#            print("Nloop",M,N)
+            print(M,N,aux)
             N += 1
             M = aux.pop()
         elif N == 0:
             goto = M_loop(M)
             M,N = ack_g_code_rev(goto)
-            print("Mloop",M,N)
-            print(aux)
+#            print("Mloop",M,N)
+            print(M,N,aux)
         else:
-            aux.append(M)
+            aux.append(M-1)
             goto = MN_loop(M,N)
             M,N = ack_g_code_rev(goto)
-            print("MNloop",M,N)
-            print(aux)
+#            print("MNloop",M,N)
+            print(M,N,aux)
 
     
         
 def TWO_THREE_CODE(M,N):
     return POWER(2,M)*POWER(3,N)
 
-def ACKERMAN(M,N):
-    cell = Cell()
-    
-    cell[0] = TWO_THREE_CODE(M,N) # our position counter
-    cell[1] = 1 # corresponds to ACKERMAN(0,0)
-    cell[2] = 2 # corresponds to ACKERMAN(1,0)
-    cell[3] = 2 # corresponds to ACKERMAN(0,1)
+#def GCODE_M(G):
+#    DIVIDE,REMAINDER
 
-    
+#def ACKERMAN(M,N):
+#    cell = Cell()
+#    
+#    cell[0] = M
+#    cell[1] = N
+#    cell[2] = 3 # Stack counter
+#
+#    while True:
+#        if cell[2] == 0:
+#            if cell[0] == 1:
+#                return cell[1]+1
+#        
+#        if cell[0] == 0 and 1 < cell[2]
+#            cell[1] = 1+cell[1]
+#            M = cell[cell[2]]
+#            cell[2] = MINUS(cell[2],1)
+#            
+#        elif cell[1] == 0:
+#            goto = TWO_THREE_CODE(MINUS(cell[0],1),1)
+#            cell[0]
+#            cell[1]
+#            M,N = ack_g_code_rev(goto)
+#
+#        else:
+#            aux.append(M-1)
+#            goto = MN_loop(M,N)
+#            M,N = ack_g_code_rev(goto)
+
 
 
 
@@ -175,8 +199,8 @@ if __name__ == '__main__':
 #    print(FACTORIAL(5))
 #    print(POWER(3,4))
 #    A(2,4)
-    M,N = 3,0
-    A_expand_recur(M,N)
+    M,N = 3,2
+#    A_expand_recur(M,N)
     print()
-    A_coded(M,N)
-    print(A_loop(3,0))
+#    A_coded(M,N)
+    print(A_loop(3,1))
