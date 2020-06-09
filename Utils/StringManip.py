@@ -1,14 +1,29 @@
 def bracket_matching(S,left="(",right=")",overlap=True,inner=False,warn=True):
     
+    """
+    Args:
+        S (str): a string to work on
+        left (str): string with all characters to be counted as left brackets
+        right (str): string with all characters to be counted as right brackets
+        overlap (bool): allow or disallow overlapping matches
+        inner (bool): return the whole substring or just the content
+        warm (bool): printing warnings
+    
+    Returns:
+        list: a list of strings
+    """
+    
     # Positions of left brackets
     starts = []
     # Spans covered
     spans = []
-    for pos in range(len(S)):
-        if S[pos] in left:
+    
+    for pos,char in enumerate(S):
+        if char in left:
             starts.append(pos)
             continue
-        if S[pos] in right:
+        
+        if char in right:
             # Once we find a right bracket remove the most recently added left
             # bracket from the stack
             try:
@@ -42,12 +57,53 @@ def bracket_matching(S,left="(",right=")",overlap=True,inner=False,warn=True):
     return output
 
 
-# Returns the outermost left portion of the string
-def left_string(x,L="(",R=")"):
-    braks = bracket_matching(x,L,R,overlap=True,inner=True,warn=False)
+# Returns the contents of the outermost leftmost matched pair
+def left_string(S,L="(",R=")",warn=True):
+    braks = bracket_matching(S,L,R,overlap=True,inner=True,warn=warn)
     for i in braks:
         if i[1] == 1:
             return i
+
+
+# Returns the list of innermost brackets
+# Too awkward to make an option for bracket matching
+def innermost(S,left="(",right=")",inner=False,warn=True):
+
+    starts = []
+    spans = []
+    # Is the stack currently growing
+    rising = True
+    
+    for pos,char in enumerate(S):
+        if char in left:
+            starts.append(pos)
+            rising = True
+            continue
+        
+        if char in right:
+            try:
+                L = starts.pop()
+            except:
+                if warn:
+                    print("Warning: Too many right brackets")
+            
+            if rising:
+                spans.append( (L,pos) )
+                rising = False
+                    
+    if len(starts) != 0:
+        if warn:
+            print("Warning: Too many left brackets")
+
+    output = []
+    if inner:
+        for lo,hi in spans:
+            output.append((S[lo+1:hi],lo+1,hi-1))        
+    else:
+        for lo,hi in spans:
+            output.append((S[lo:hi+1],lo,hi))
+
+    return output
 
 
 
@@ -55,35 +111,35 @@ def left_string(x,L="(",R=")"):
 
 if __name__ == '__main__':
     
-    s1 = "(this(is))a((long)(bracketed)string)(is)it"
-    braks1 = bracket_matching(s1)
-    braks2 = bracket_matching(s1,inner=True)
-    braks3 = bracket_matching(s1,overlap=False)
+    s1 = "(do(you))think((this)()(bracketed)string)(is)weird"
+    braks1 = bracket_matching(s1,overlap=True,inner=False)
+    braks2 = bracket_matching(s1,overlap=False,inner=False)
+    braks3 = innermost(s1)
     
-    explanations = ["find every pair of matched parentheses",
-                    "same as before but returning only contents of parentheses",
-                    "find the parentheses that are outermost"]
+    explanations = ["every pair:",
+                    "outermost:",
+                    "innermost:"]
     
     print(s1)
     for e,b in zip(explanations,[braks1,braks2,braks3]):
-        print(f"\n{e}")
+        print(f"\n\n{e}")
         for i in b:
             print(i[0])
     
     
-    s2 = "<~<P∧~Q'>∨<~<~P∧R>⊃Q'>>"
-    braks1 = bracket_matching(s2,"<","⊃∧∨")
-    braks2 = bracket_matching(s2,"<","⊃∧∨",inner=True)
-    braks3 = bracket_matching(s2,"<","⊃∧∨",overlap=False)
-    
-    explanations = ["find every left half",
-                    "same as before but returning only contents",
-                    "find the outermost left halves"]
-
-    print("\n\nA slightly different kind of string. In this one we are looking for the left halves of binary statements. The left bracktet is < while the right bracket is any one of ⊃∧∨.")
-    print(s2)
-    for e,b in zip(explanations,[braks1,braks2,braks3]):
-        print(f"\n{e}")
-        for i in b:
-            print(i)  
+#    s2 = "<~<P∧~Q'>∨<~<~P∧R>⊃Q'>>"
+#    braks1 = bracket_matching(s2,"<","⊃∧∨")
+#    braks2 = bracket_matching(s2,"<","⊃∧∨",inner=True)
+#    braks3 = bracket_matching(s2,"<","⊃∧∨",overlap=False)
+#    
+#    explanations = ["find every left half",
+#                    "same as before but returning only contents",
+#                    "find the outermost left halves"]
+#
+#    print("\n\nA slightly different kind of string. In this one we are looking for the left halves of binary statements. The left bracktet is < while the right bracket is any one of ⊃∧∨.")
+#    print(s2)
+#    for e,b in zip(explanations,[braks1,braks2,braks3]):
+#        print(f"\n{e}")
+#        for i in b:
+#            print(i)  
     
