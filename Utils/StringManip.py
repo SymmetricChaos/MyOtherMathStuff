@@ -12,13 +12,14 @@ def bracket_matching(S,left="(",right=")",overlap=True,inner=False,warn=True):
     Returns:
         list: a list of strings
     """
-    
+
     # Positions of left brackets
     starts = []
     # Spans covered
     spans = []
     
     for pos,char in enumerate(S):
+        
         if char in left:
             starts.append(pos)
             continue
@@ -58,8 +59,8 @@ def bracket_matching(S,left="(",right=")",overlap=True,inner=False,warn=True):
 
 
 # Returns the contents of the outermost leftmost matched pair
-def left_string(S,L="(",R=")",warn=True):
-    braks = bracket_matching(S,L,R,overlap=True,inner=True,warn=warn)
+def left_string(S,L="(",R=")",inner=False,warn=True):
+    braks = bracket_matching(S,L,R,overlap=True,inner=inner,warn=warn)
     s_braks = sorted(braks,key=lambda x: x[1])
     return s_braks[0]
 
