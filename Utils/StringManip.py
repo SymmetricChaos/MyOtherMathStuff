@@ -60,9 +60,8 @@ def bracket_matching(S,left="(",right=")",overlap=True,inner=False,warn=True):
 # Returns the contents of the outermost leftmost matched pair
 def left_string(S,L="(",R=")",warn=True):
     braks = bracket_matching(S,L,R,overlap=True,inner=True,warn=warn)
-    for i in braks:
-        if i[1] == 1:
-            return i
+    s_braks = sorted(braks,key=lambda x: x[1])
+    return s_braks[0]
 
 
 # Returns the list of innermost brackets
@@ -111,17 +110,19 @@ def innermost(S,left="(",right=")",inner=False,warn=True):
 
 if __name__ == '__main__':
     
-    s1 = "(do(you))think((this)()(bracketed)string)(is)weird"
+    s1 = "do((you))think((this)()(bracketed)string)(is)weird"
     braks1 = bracket_matching(s1,overlap=True,inner=False)
     braks2 = bracket_matching(s1,overlap=False,inner=False)
     braks3 = innermost(s1)
+    braks4 = [left_string(s1)]
     
     explanations = ["every pair:",
                     "outermost:",
-                    "innermost:"]
+                    "innermost:",
+                    "leftmost outermost:"]
     
     print(s1)
-    for e,b in zip(explanations,[braks1,braks2,braks3]):
+    for e,b in zip(explanations,[braks1,braks2,braks3,braks4]):
         print(f"\n\n{e}")
         for i in b:
             print(i[0])
