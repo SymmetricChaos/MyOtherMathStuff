@@ -40,10 +40,10 @@ class Cell:
         self.CELLS[n] = val
     
     def __str__(self):
-        s = "["
+        s = ""
         for k,v in self.CELLS.items():
-            s += f"{v}, "
-        return s + "]"
+            s += f"{k}: {v}\n"
+        return s
 
 
 def FACTORIAL(N):
@@ -108,6 +108,7 @@ def A_expand_recur(M,N):
 
 def A_loop(M,N):
     aux = []
+    print(M,N,aux)
     while True:
         if M == 0 and aux == []:
             return N+1
@@ -129,31 +130,31 @@ def ACKERMANN(M,N):
     cell[0] = M
     cell[1] = N
     cell[2] = 0 # hold codes
-    cell[3] = 4 # Stack counter
+    cell[3] = 3 # stack pointer
 
     while True:
-        print(cell)
         # If M == 0 and the stack is empty
-        if cell[3] == 4 and cell[0] == 0:
+        if cell[3] == 3 and cell[0] == 0:
             return 1+cell[1]
 
         # M == 0
         if cell[0] == 0:
-            cell[1] = 1+cell[1]
             cell[0] = cell[cell[3]]
+            cell[1] = 1+cell[1]
+            cell[cell[3]] = 0
             cell[3] = MINUS(cell[3],1)
             continue
 
-        # If N = zero
+        # If N == 0
         if cell[1] == 0:
             cell[0] = MINUS(cell[0],1)
             cell[1] = 1
             continue
 
-        # Append M-1 to the list
-        cell[cell[3]] = MINUS(cell[0],1)
+        # If M > 0 and N > 0
+        # increment the stack pointer and append M-1 to the stack
         cell[3] = 1+cell[3]
-        
+        cell[cell[3]] = MINUS(cell[0],1)
         cell[1] = MINUS(cell[1],1)
 
 
@@ -169,8 +170,8 @@ if __name__ == '__main__':
     M,N = 3,1
 #    A_expand_recur(M,N)
 #    print()
-#    print(A_loop(M,N))
-#    print()
-    print(ACKERMANN(M,N))
+    print(A_loop(M,N))
     print()
-    print(A(M,N))
+    print(ACKERMANN(M,N))
+#    print()
+#    print(A(M,N))
