@@ -105,27 +105,30 @@ def A_expand_recur(M,N):
         bottom_ex = A_expand(m,n)
         S = S.replace(bottom,bottom_ex)
         print(S)
-
-
-# Start with creating the simplest loop when N = 0
-def M_loop(M):
-    return ack_g_code(M-1,1)
-
-def MN_loop(M,N):
-    return ack_g_code(M,N-1)
         
+def A_wave(M,N):
+    S = f"A({M},{N})"
+    print(">")
+    while "A" in S:
+        time.sleep(.15)
+        bottom,_,_ = innermost(S,"A",")")[0]
+        m = int(left_string(bottom,"(",",",inner=True)[0])
+        n = int(left_string(bottom,",",")",inner=True)[0])
+        bottom_ex = A_expand(m,n)
+        S = S.replace(bottom,bottom_ex)
+        print(">"*S.count("A"))
+
+
 
 def A_loop(M,N):
     aux = []
     while True:
-#        print("\nstate",M,N)
         if M == 0 and aux == []:
-            print(M,N,aux)
             return N+1
         elif M == 0 and aux != []:
-            print(M,N,aux)
             N += 1
             M = aux.pop()
+            print(M,N,aux)
         elif N == 0:
             M,N = M-1,1
             print(M,N,aux)
@@ -133,6 +136,8 @@ def A_loop(M,N):
             aux.append(M-1)
             M,N = M,N-1
             print(M,N,aux)
+            
+
             
 
 def ACKERMAN(M,N):
@@ -177,10 +182,13 @@ if __name__ == '__main__':
 #    print(f"MINUS(56,27) = {MINUS(56,27)}")
 #    print(FACTORIAL(5))
 #    print(POWER(3,4))
-#    A(2,4)
-    M,N = 2,4
+
+    M,N = 5,3
+    A_wave(M,N)
 #    A_expand_recur(M,N)
 #    print()
-    print(A_loop(M,N))
-    print()
-    print(ACKERMAN(M,N))
+#    print(A_loop(M,N))
+#    print()
+#    print(ACKERMAN(M,N))
+#    print()
+#    print(A(M,N))
