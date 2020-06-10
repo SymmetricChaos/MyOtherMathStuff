@@ -105,20 +105,6 @@ def A_expand_recur(M,N):
         bottom_ex = A_expand(m,n)
         S = S.replace(bottom,bottom_ex)
         print(S)
-        
-def A_wave(M,N):
-    S = f"A({M},{N})"
-    print(">")
-    while "A" in S:
-        time.sleep(.15)
-        bottom,_,_ = innermost(S,"A",")")[0]
-        m = int(left_string(bottom,"(",",",inner=True)[0])
-        n = int(left_string(bottom,",",")",inner=True)[0])
-        bottom_ex = A_expand(m,n)
-        S = S.replace(bottom,bottom_ex)
-        print(">"*S.count("A"))
-
-
 
 def A_loop(M,N):
     aux = []
@@ -136,11 +122,8 @@ def A_loop(M,N):
             aux.append(M-1)
             M,N = M,N-1
             print(M,N,aux)
-            
 
-            
-
-def ACKERMAN(M,N):
+def ACKERMANN(M,N):
     cell = Cell()
     
     cell[0] = M
@@ -183,12 +166,11 @@ if __name__ == '__main__':
 #    print(FACTORIAL(5))
 #    print(POWER(3,4))
 
-    M,N = 5,3
-    A_wave(M,N)
+    M,N = 3,1
 #    A_expand_recur(M,N)
 #    print()
 #    print(A_loop(M,N))
 #    print()
-#    print(ACKERMAN(M,N))
-#    print()
-#    print(A(M,N))
+    print(ACKERMANN(M,N))
+    print()
+    print(A(M,N))
