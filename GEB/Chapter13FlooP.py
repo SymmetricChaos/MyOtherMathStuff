@@ -19,6 +19,7 @@
 from collections import defaultdict
 from Utils.StringManip import innermost, left_string
 import time
+from Chapter13BlooP import MINUS
 
 def zero():
     return 0
@@ -59,13 +60,6 @@ def FACTORIAL(N):
         cell[0] = 1+cell[0]       # <- essentially tracking the level of "recusion"
         
 
-from Chapter13BlooP import MINUS,POWER,DIVIDE,REMAINDER,ROOT
-
-        
-
-
-
-
 
 # The Ackerman function is general recursive but not primitive recursive so
 # there must be a FlooP program for it but not a BlooP program
@@ -79,18 +73,9 @@ def A(M,N):
     return A(M-1,A(M,N-1))
 
 # We can Godel number each input to the Ackerman function as 2**M * 3**N
+# Turned out not to need this
 def ack_g_code(M,N):
     return 2**M*3**N
-
-def ack_g_code_rev(G):
-    M,N = 0,0
-    while G%2 == 0:
-        M += 1
-        G //= 2
-    while G%3 == 0:
-        N += 1
-        G //= 3
-    return M,N
 
 def A_coded(M,N):
     print(f"A({M},{N}) → cell[{ack_g_code(M,N)}]")
@@ -113,6 +98,7 @@ def A_expand_recur(M,N):
     S = f"A({M},{N})"
     print(S)
     while "A" in S:
+        time.sleep(.2)
         bottom,_,_ = innermost(S,"A",")")[0]
         m = int(left_string(bottom,"(",",",inner=True)[0])
         n = int(left_string(bottom,",",")",inner=True)[0])
@@ -130,65 +116,56 @@ def MN_loop(M,N):
         
 
 def A_loop(M,N):
-
     aux = []
     while True:
-#        print("\nstate",M,N)
+        print("\nstate",M,N)
         if M == 0 and aux == []:
             print(M,N,aux)
             return N+1
         elif M == 0 and aux != []:
-#            print("Nloop",M,N)
             print(M,N,aux)
             N += 1
             M = aux.pop()
         elif N == 0:
-            goto = M_loop(M)
-            M,N = ack_g_code_rev(goto)
-#            print("Mloop",M,N)
+            M,N = M-1,1
             print(M,N,aux)
         else:
             aux.append(M-1)
-            goto = MN_loop(M,N)
-            M,N = ack_g_code_rev(goto)
-#            print("MNloop",M,N)
+            M,N = M,N-1
             print(M,N,aux)
+            
 
+def ACKERMAN(M,N):
+    cell = Cell()
     
+    cell[0] = M
+    cell[1] = N
+    cell[2] = 0 # hold codes
+    cell[3] = 4 # Stack counter
+
+    while True:
+        if cell[3] == 4 and cell[0] == 0:
+            return 1+cell[1]
+
+        if cell[0] == 0 and 4 < cell[3]:
+            cell[1] = 1+cell[1]
+            cell[0] = cell[cell[3]]
+            cell[3] = MINUS(cell[3],1)
+            continue
+
+        # If N equals zero
+        if cell[1] == 0:
+            cell[0] = MINUS(cell[0],1)
+            cell[1] = 1
+            continue
+
+        # Append M-1 to the list
+        cell[cell[3]] = MINUS(cell[0],1)
+        cell[3] = 1+cell[3]
         
-def TWO_THREE_CODE(M,N):
-    return POWER(2,M)*POWER(3,N)
+        cell[1] = MINUS(cell[1],1)
 
-#def GCODE_M(G):
-#    DIVIDE,REMAINDER
 
-#def ACKERMAN(M,N):
-#    cell = Cell()
-#    
-#    cell[0] = M
-#    cell[1] = N
-#    cell[2] = 3 # Stack counter
-#
-#    while True:
-#        if cell[2] == 0:
-#            if cell[0] == 1:
-#                return cell[1]+1
-#        
-#        if cell[0] == 0 and 1 < cell[2]
-#            cell[1] = 1+cell[1]
-#            M = cell[cell[2]]
-#            cell[2] = MINUS(cell[2],1)
-#            
-#        elif cell[1] == 0:
-#            goto = TWO_THREE_CODE(MINUS(cell[0],1),1)
-#            cell[0]
-#            cell[1]
-#            M,N = ack_g_code_rev(goto)
-#
-#        else:
-#            aux.append(M-1)
-#            goto = MN_loop(M,N)
-#            M,N = ack_g_code_rev(goto)
 
 
 
@@ -199,8 +176,9 @@ if __name__ == '__main__':
 #    print(FACTORIAL(5))
 #    print(POWER(3,4))
 #    A(2,4)
-    M,N = 3,2
-#    A_expand_recur(M,N)
+    M,N = 2,3
+    A_expand_recur(M,N)
     print()
-#    A_coded(M,N)
-    print(A_loop(3,1))
+#    print(A_loop(M,N))
+#    print()
+#    print(ACKERMAN(M,N))
