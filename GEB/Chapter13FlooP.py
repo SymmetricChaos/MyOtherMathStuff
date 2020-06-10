@@ -40,10 +40,10 @@ class Cell:
         self.CELLS[n] = val
     
     def __str__(self):
-        s = ""
+        s = "["
         for k,v in self.CELLS.items():
-            s += f"{k}: {v}\n"
-        return s
+            s += f"{v}, "
+        return s + "]"
 
 
 def FACTORIAL(N):
@@ -118,7 +118,7 @@ def MN_loop(M,N):
 def A_loop(M,N):
     aux = []
     while True:
-        print("\nstate",M,N)
+#        print("\nstate",M,N)
         if M == 0 and aux == []:
             print(M,N,aux)
             return N+1
@@ -144,16 +144,19 @@ def ACKERMAN(M,N):
     cell[3] = 4 # Stack counter
 
     while True:
+        print(cell)
+        # If M == 0 and the stack is empty
         if cell[3] == 4 and cell[0] == 0:
             return 1+cell[1]
 
-        if cell[0] == 0 and 4 < cell[3]:
+        # M == 0
+        if cell[0] == 0:
             cell[1] = 1+cell[1]
             cell[0] = cell[cell[3]]
             cell[3] = MINUS(cell[3],1)
             continue
 
-        # If N equals zero
+        # If N = zero
         if cell[1] == 0:
             cell[0] = MINUS(cell[0],1)
             cell[1] = 1
@@ -169,16 +172,15 @@ def ACKERMAN(M,N):
 
 
 
-
 if __name__ == '__main__':
     
 #    print(f"MINUS(56,27) = {MINUS(56,27)}")
 #    print(FACTORIAL(5))
 #    print(POWER(3,4))
 #    A(2,4)
-    M,N = 2,3
-    A_expand_recur(M,N)
-    print()
-#    print(A_loop(M,N))
+    M,N = 2,4
+#    A_expand_recur(M,N)
 #    print()
-#    print(ACKERMAN(M,N))
+    print(A_loop(M,N))
+    print()
+    print(ACKERMAN(M,N))
