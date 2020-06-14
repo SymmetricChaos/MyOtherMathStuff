@@ -53,6 +53,8 @@ def split_strand(strand):
     return U+L
 
 
+
+# Deal with duplets and amino acids
 amino_acids = ["cut","del","swi","mvr","mvl","cop","off","ina","inc",
                "ing","int","rpy","rpu","lpy","rpu"]
 
@@ -66,11 +68,11 @@ amino_to_duplet = {"   ":"AA", "cut":"AC", "del":"AG", "swi":"AT",
                    "ina":"GA", "inc":"GC", "ing":"GG", "int":"GT",
                    "rpy":"TA", "rpu":"TC", "lpy":"TG", "lpu":"TT"}
 
-def chunk_size(L,n):
+def chunk_by_size(L,n):
     return [L[i * n:(i + 1) * n] for i in range((len(L) + n - 1) // n )]
 
 def string_to_amino(S):
-    duplets = chunk_size(S,2)
+    duplets = chunk_by_size(S,2)
     return [duplet_to_amino[d] for d in duplets if len(d) == 2 ]
 
 
@@ -100,11 +102,12 @@ class ENZYME:
 #    copy_mode = False
     
 
-gene = STRAND("TAGATCCAGTCCACATCGA",
-              "GA  TTT            ")
+gene = STRAND("GA  TTT            ",
+              "TAGATCCAGTCCACATCGA")
 
 print(gene)
 
+print(string_to_amino(gene.lower))
 
 for s in split_strand(gene):
-    print(s,string_to_amino(s.lower))
+    print(s)
