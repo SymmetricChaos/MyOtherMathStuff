@@ -137,7 +137,11 @@ class ENZYME:
         self.copy_mode = False
         self.binding = aminos_to_binding(aminos)
     
+    def __str__(self):
+        return str(self.aminos)
     
+    def __repr__(self):
+        return str(self.aminos)
     
     def evaluate(self,strand,pos,show_steps=True):
         
@@ -210,39 +214,55 @@ class ENZYME:
             if a == "rpy":
                 if strand.lower[pos] in "TC":
                     pos += 1
+                    if pos == len(strand):
+                        break
                     if self.copy_mode:
                         strand.copy(pos)
                 while strand.lower[pos] not in "TC":
                     pos += 1
+                    if pos == len(strand):
+                        break
                     if self.copy_mode:
                         strand.copy(pos)
                         
             if a == "rpu":
                 if strand.lower[pos] in "AG":
                     pos += 1
+                    if pos == len(strand):
+                        break
                     if self.copy_mode:
                         strand.copy(pos)
                 while strand.lower[pos] not in "AG":
                     pos += 1
+                    if pos == len(strand):
+                        break
                     if self.copy_mode:
                         strand.copy(pos)
                         
             if a == "lpy":
                 if strand.lower[pos] in "TC":
                     pos -= 1
+                    if pos == -1:
+                        break
                     if self.copy_mode:
                         strand.copy(pos)
                 while strand.lower[pos] not in "TC":
                     pos -= 1
+                    if pos == -1:
+                        break
                     if self.copy_mode:
                         strand.copy(pos)
             if a == "lpu":
                 if strand.lower[pos] in "AG":
                     pos -= 1
+                    if pos == -1:
+                        break
                     if self.copy_mode:
                         strand.copy(pos)
                 while strand.lower[pos] not in "AG":
                     pos -= 1
+                    if pos == -1:
+                        break
                     if self.copy_mode:
                         strand.copy(pos)
             
@@ -263,13 +283,14 @@ def string_to_amino(S):
     duplets = chunk_by_size(S,2)
     return [duplet_to_amino[d] for d in duplets if len(d) == 2 ]
 
-#def strand_to_enzymes(strand):
-#    if not all([u == " " for u in strand.upper]):
-#        raise Exception("a strand with an upper attachment cannot be turned into an enzyme")
-#    
-#    s = "".join(strand.lower)
-#    
-#    return ENZYME(string_to_amino(s))
+def strand_to_enzymes(strand):
+    if not all([u == " " for u in strand.upper]):
+        raise Exception("a strand with an upper attachment cannot be turned into an enzyme")
+    
+    S = strand.lower_string
+    S = S.split("   ")
+    
+    return [ENZYME(string_to_amino(s)) for s in S]
     
 
 
