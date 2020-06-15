@@ -35,6 +35,10 @@ class STRAND:
             return f"{''.join(self.lower)}"
         return f"{''.join(self.upper)}\n{''.join(self.lower)}"
     
+    # Quickly return length
+    def __len__(self):
+        return len(self.lower)
+    
     # Rotates the STRAND by 180 degrees
     def switch(self):
         new_lower = self.upper[::-1]
@@ -43,11 +47,13 @@ class STRAND:
         self.lower = new_lower
         self.upper = new_upper
         
+    # Cut the strand at a position
     def cut(self,pos):
-        L = STRAND(self.lower[:pos+1],self.upper[:pos+1])
-        R = STRAND(self.lower[1+pos:],self.upper[1+pos:])
+        L = STRAND(self.lower[:pos],self.upper[:pos])
+        R = STRAND(self.lower[pos:],self.upper[pos:])
         return L,R
     
+    # Insert a valid base or base pair at a position
     def insert(self,base,pos,copy_mode):
         if base not in "ATGC":
             raise Exception(f"{base} is not a valid base")
@@ -60,15 +66,10 @@ class STRAND:
         self.lower = new_lower
         self.upper = new_upper
     
+    # Place the complement of the lower base on the upper side
     def copy(self,pos):
         self.upper[pos] = complement[self.lower[pos]]
- 
-    def delete(self,pos):
-        del self.lower[pos]
-        del self.upper[pos]
-        
-    def __len__(self):
-        return len(self.lower)
+
     
     
 def split_strand(strand):
@@ -161,9 +162,10 @@ class ENZYME:
             # Delete the base being worked on but NOT its complement if present
             if a == "del":
                 self.strand.lower[pos] = " "
-                
+            
+            # Cut to the right of the position
             if a == "cut":
-                strand, R = strand.cut(pos)
+                strand, R = strand.cut(pos+1)
                 snips.append(R)
             
             # Insert rules
@@ -259,7 +261,7 @@ if __name__ == '__main__':
     E = ENZYME(["rpy","cop","rpu","cut"])
     print(f"gene:\n{gene}\n\nenzyme:{E.aminos}\n")
     out = E.evaluate(gene,2)
-    print(["".join(o.lower) for o in out])
+    print("results:",["".join(o.lower) for o in out])
 
     print("\n\n\n")
 
@@ -267,4 +269,4 @@ if __name__ == '__main__':
     E = ENZYME(["rpu","inc","cop","mvr","mvl","swi","lpu","int"])
     print(f"gene:\n{gene}\n\nenzyme:{E.aminos}\n")
     out = E.evaluate(gene,8)
-    print(["".join(o.lower) for o in out])
+    print("results:",["".join(o.lower) for o in out])
