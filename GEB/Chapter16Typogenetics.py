@@ -3,6 +3,7 @@
 #lower_to_upper = {"A":"Ɐ", "T":"Ʇ", "G":"⅁", "C":"Ɔ", " ":" ", "_":"_"}
 #upper_to_lower = {"Ɐ":"A", "Ʇ":"T", "⅁":"G", "Ɔ":"C", " ":" ", "_":"_"}
 
+
 class STRAND:
     
     def __init__(self,A="",B=""):
@@ -19,15 +20,15 @@ class STRAND:
         # string and also lets us specify both an upper and lower string in a 
         # readable way
         if B == "":
-            self.upper = " "*len(A)
-            self.lower = A
+            self.upper = [" "]*len(A)
+            self.lower = [a for a in A]
         else:
-            self.upper = A
-            self.lower = B
+            self.upper = [a for a in A]
+            self.lower = [b for b in B]
     
     # No __repr__ method because the string has to be multiple lines
     def __str__(self):
-        return f"{self.upper}\n{self.lower}"
+        return f"{''.join(self.upper)}\n{''.join(self.lower)}"
     
     # Rotates the STRAND by 180 degrees
     def switch(self):
@@ -37,12 +38,40 @@ class STRAND:
         self.lower = new_lower
         self.upper = new_upper
         
-    def cut(self,n):
-        L = STRAND(self.lower[:n],self.upper[:n])
-        R = STRAND(self.lower[n:],self.upper[n:])
+    def cut(self,pos):
+        L = STRAND(self.lower[:pos],self.upper[:pos])
+        R = STRAND(self.lower[pos:],self.upper[pos:])
         return L,R
-
+    
+    def insert(self,base,pos):
+        if base not in "ATGC":
+            raise Exception(f"{base} is not a valid base")
+        new_lower = self.lower[:pos] + [base] + self.lower[pos:]
+        new_upper = self.upper[:pos] + [base] + self.upper[pos:]
+        self.lower = new_lower
+        self.upper = new_upper
+    
+    def copy(self,pos):
+        if self.lower[pos] == "A":
+            self.upper[pos] = "T"
+            
+        elif self.lower[pos] == "T":
+            self.upper[pos] = "A"
+            
+        elif self.lower[pos] == "G":
+            self.upper[pos] = "C"
+            
+        elif self.lower[pos] == "C":
+            self.upper[pos] = "G"
  
+    def delete(self,pos):
+        del self.lower[pos]
+        del self.upper[pos]
+        
+    def __len__(self):
+        return len(self.lower)
+    
+    
 def split_strand(strand):
     up = strand.lower
     lo = strand.upper
@@ -85,8 +114,8 @@ def string_to_amino(S):
     return [duplet_to_amino[d] for d in duplets if len(d) == 2 ]
 
 def aminos_to_binding(aminos):
-    direct = -amino_to_fold[aminos[0]]
-    for a in aminos[1:]:
+    direct = 0
+    for a in aminos[1:-1]:
         direct = (direct+amino_to_fold[a])%4
     return direct_to_binding[direct]
 
@@ -110,22 +139,53 @@ class ENZYME:
         self.aminos = aminos
         self.copy_mode = False
         self.binding = aminos_to_binding(aminos)
-        
-    
-    
-
-
+                
+    def evaluate(self):
+        for a in self.aminos:
+            # Set copy mode
+            if a == "cop":
+                self.copy_mode = True
+                self.strand.copy(self.pos)
+            if a == "off":
+                self.copy_mode = False
+            
+            # Insert rules
+            if a == "ing":
+                self.strand.insert("G",self.pos)
+            if a == "int":
+                self.strand.insert("T",self.pos)
+            if a == "inc":
+                self.strand.insert("C",self.pos)
+            if a == "ina":
+                self.strand.insert("A",self.pos)
+                
+            if a == "swi":
+                self.strand.switch()
+                
+            if a == "mvr":
+                self.pos += 1
+                if self.pos == len(self.strand):
+                    break
+                if self.copy_mode:
+                    self.strand.copy(self.pos)
+            
+            if a == "mvl":
+                self.pos -= 1
+                if self.pos == -1:
+                    break
+                if self.copy_mode:
+                    self.strand.copy(self.pos)
+            
+    def return_strand(self):
+        return self.strand
 
 if __name__ == '__main__':
     
 
     gene = STRAND("TAGATCCAGTCCACATCGA")
-    
     print(gene)
-    
-    A = string_to_amino(gene.lower)
-    
-    print(aminos_to_binding(A))
-    
-    for s in split_strand(gene):
-        print(s)
+
+    E = ENZYME(gene,0,["cop","mvr","mvr","mvr","mvr","mvr","mvr"])
+    E.evaluate()
+    print()
+    print(E.strand)
