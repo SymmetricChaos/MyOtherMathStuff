@@ -21,6 +21,7 @@ class STRAND:
         # This allows the common scenario where we just want the specify the lower
         # string and also lets us specify both an upper and lower string in a 
         # readable way
+        # The internal upper and lower are lists so that they are mutable
         if B == "":
             self.upper = [" "]*len(A)
             self.lower = [a for a in A]
@@ -41,8 +42,8 @@ class STRAND:
         self.upper = new_upper
         
     def cut(self,pos):
-        L = STRAND(self.lower[:pos],self.upper[:pos])
-        R = STRAND(self.lower[pos:],self.upper[pos:])
+        L = STRAND(self.lower[:pos+1],self.upper[:pos+1])
+        R = STRAND(self.lower[1+pos:],self.upper[1+pos:])
         return L,R
     
     def insert(self,base,pos,copy_mode):
@@ -69,8 +70,8 @@ class STRAND:
     
     
 def split_strand(strand):
-    up = strand.lower
-    lo = strand.upper
+    up = "".join(strand.lower)
+    lo = "".join(strand.upper)
     
     U = [STRAND(s) for s in up.split(" ") if s != ""]
     L = [STRAND(s) for s in lo.split(" ") if s != ""]
@@ -83,7 +84,7 @@ def split_strand(strand):
 
 # Deal with duplets and amino acids
 amino_acids = ["cut","del","swi","mvr","mvl","cop","off","ina","inc",
-               "ing","int","rpy","rpu","lpy","rpu"]
+               "ing","int","rpy","rpu","lpy","lpu"]
 
 duplet_to_amino = {"AA":"   ", "AC":"cut", "AG":"del", "AT":"swi",
                    "CA":"mvr", "CC":"mvl", "CG":"cop", "CT":"off",
@@ -142,6 +143,7 @@ class ENZYME:
         return S
     
     def evaluate(self):
+        snips = []
         for a in self.aminos:
             print(self)
             print()
@@ -156,22 +158,28 @@ class ENZYME:
             if a == "del":
                 self.strand.lower[self.pos] = " "
                 
-#            if a = "cut":
-                
+            if a == "cut":
+                self.strand, R = self.strand.cut(self.pos)
+                snips.append(R)
             
             # Insert rules
             if a == "ing":
-                self.strand.insert("G",self.pos,self.copy_mode)
+                self.strand.insert("G",self.pos+1,self.copy_mode)
+                self.pos += 1
             if a == "int":
-                self.strand.insert("T",self.pos,self.copy_mode)
+                self.strand.insert("T",self.pos+1,self.copy_mode)
+                self.pos += 1
             if a == "inc":
-                self.strand.insert("C",self.pos,self.copy_mode)
+                self.strand.insert("C",self.pos+1,self.copy_mode)
+                self.pos += 1
             if a == "ina":
-                self.strand.insert("A",self.pos,self.copy_mode)
+                self.strand.insert("A",self.pos+1,self.copy_mode)
+                self.pos += 1
             
             # Switch sides
             if a == "swi":
                 self.strand.switch()
+                self.pos = len(self.strand)-self.pos-1
                 
             # Move one unit left or right
             if a == "mvr":
@@ -190,30 +198,50 @@ class ENZYME:
             
             # Scan to find a purine or pyrimidine
             if a == "rpy":
+                if self.strand.lower[self.pos] in "TC":
+                    self.pos += 1
+                    if self.copy_mode:
+                        self.strand.copy(self.pos)
                 while self.strand.lower[self.pos] not in "TC":
                     self.pos += 1
                     if self.copy_mode:
                         self.strand.copy(self.pos)
+                        
             if a == "rpu":
+                if self.strand.lower[self.pos] in "AG":
+                    self.pos += 1
+                    if self.copy_mode:
+                        self.strand.copy(self.pos)
                 while self.strand.lower[self.pos] not in "AG":
                     self.pos += 1
                     if self.copy_mode:
                         self.strand.copy(self.pos)
                         
             if a == "lpy":
+                if self.strand.lower[self.pos] in "TC":
+                    self.pos -= 1
+                    if self.copy_mode:
+                        self.strand.copy(self.pos)
                 while self.strand.lower[self.pos] not in "TC":
                     self.pos -= 1
                     if self.copy_mode:
                         self.strand.copy(self.pos)
             if a == "lpu":
+                if self.strand.lower[self.pos] in "AG":
+                    self.pos -= 1
+                    if self.copy_mode:
+                        self.strand.copy(self.pos)
                 while self.strand.lower[self.pos] not in "AG":
                     self.pos -= 1
                     if self.copy_mode:
                         self.strand.copy(self.pos)
             
         print(self)
+        out = split_strand(self.strand)
         # seperate out everything
-#        return split_strand(self.strand)
+        for s in snips:
+            out += split_strand(s)
+        return out
 
 
 
@@ -222,7 +250,15 @@ class ENZYME:
 if __name__ == '__main__':
     
 
-    gene = STRAND("CAAAGAGAATCCTCTTTGAT")
-
-    E = ENZYME(gene,2,["rpy","cop","rpu"])
-    E.evaluate()
+#    gene = STRAND("CAAAGAGAATCCTCTTTGAT")
+#    E = ENZYME(gene,2,["rpy","cop","rpu","cut"])
+#    out = E.evaluate()
+#    for i in out:
+#        print(i)
+        
+        
+    gene = STRAND("TAGATCCAGTCCATCGA")
+    E = ENZYME(gene,8,["rpu","inc","cop","mvr","mvl","swi","lpu","int"])
+    out = E.evaluate()
+    for i in out:
+        print(i)
