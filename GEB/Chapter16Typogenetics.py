@@ -276,6 +276,7 @@ class ENZYME:
         return out
 
 
+
 def chunk_by_size(L,n):
     return [L[i * n:(i + 1) * n] for i in range((len(L) + n - 1) // n )]
 
@@ -294,9 +295,9 @@ def strand_to_enzymes(strand):
     
 
 
-if __name__ == '__main__':
-    
 
+
+if __name__ == '__main__':
     
     gene = STRAND("CAAAGAGAATCCTCTTTGAT")
     E = ENZYME(["rpy","cop","rpu","cut"])
