@@ -135,12 +135,8 @@ class ENZYME:
         self.copy_mode = False
         self.binding = aminos_to_binding(aminos)
     
-#    def __str__(self):
-#        S = str(self.strand) + "\n"
-#        S += " "*pos + "^"
-#        return S
     
-    def evaluate(self,strand,pos):
+    def evaluate(self,strand,pos,show_steps=True):
         
         if type(strand) != STRAND:
             raise Exception("not a valid strand")
@@ -150,8 +146,10 @@ class ENZYME:
 
         snips = []
         for a in self.aminos:
-#            print(self)
-#            print()
+            
+            if show_steps:
+                print(str(strand) + "\n" + " "*pos + "^")
+            
             # Set copy mode
             if a == "cop":
                 self.copy_mode = True
@@ -242,7 +240,9 @@ class ENZYME:
                     if self.copy_mode:
                         strand.copy(pos)
             
-#        print(self)
+        if show_steps:
+            print(str(strand) + "\n" + " "*pos + "^")
+            
         out = split_strand(strand)
         # seperate out everything
         for s in snips:
@@ -260,7 +260,7 @@ if __name__ == '__main__':
     gene = STRAND("CAAAGAGAATCCTCTTTGAT")
     E = ENZYME(["rpy","cop","rpu","cut"])
     print(f"gene:\n{gene}\n\nenzyme:{E.aminos}\n")
-    out = E.evaluate(gene,2)
+    out = E.evaluate(gene,2,show_steps=False)
     print("results:",["".join(o.lower) for o in out])
 
     print("\n\n\n")
@@ -268,5 +268,5 @@ if __name__ == '__main__':
     gene = STRAND("TAGATCCAGTCCATCGA")
     E = ENZYME(["rpu","inc","cop","mvr","mvl","swi","lpu","int"])
     print(f"gene:\n{gene}\n\nenzyme:{E.aminos}\n")
-    out = E.evaluate(gene,8)
+    out = E.evaluate(gene,8,show_steps=False)
     print("results:",["".join(o.lower) for o in out])
