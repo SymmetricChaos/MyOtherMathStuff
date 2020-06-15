@@ -138,10 +138,12 @@ class ENZYME:
         self.binding = aminos_to_binding(aminos)
     
     def __str__(self):
-        return str(self.aminos)
+        S = f"enzyme: ({' 🡢 '.join(self.aminos)})"
+        
+        return S
     
     def __repr__(self):
-        return str(self.aminos)
+        return str(self)
     
     def evaluate(self,strand,pos,show_steps=True):
         
@@ -280,19 +282,25 @@ class ENZYME:
 def chunk_by_size(L,n):
     return [L[i * n:(i + 1) * n] for i in range((len(L) + n - 1) // n )]
 
-def string_to_amino(S):
-    duplets = chunk_by_size(S,2)
-    return [duplet_to_amino[d] for d in duplets if len(d) == 2 ]
 
 def strand_to_enzymes(strand):
     if not all([u == " " for u in strand.upper]):
         raise Exception("a strand with an upper attachment cannot be turned into an enzyme")
     
-    S = strand.lower_string
-    S = S.split("   ")
+    string = strand.lower_string
+    enzymes = []
+    E = []
+    for duplet in chunk_by_size(string,2):
+        if len(duplet) < 2:
+            break
+        if duplet == "AA":
+            enzymes.append(ENZYME(E))
+            E = []
+            continue
+        E.append(duplet_to_amino[duplet])
+    enzymes.append(ENZYME(E))
     
-    return [ENZYME(string_to_amino(s)) for s in S]
-    
+    return enzymes
 
 
 
@@ -301,7 +309,7 @@ if __name__ == '__main__':
     
     gene = STRAND("CAAAGAGAATCCTCTTTGAT")
     E = ENZYME(["rpy","cop","rpu","cut"])
-    print(f"gene:\n{gene}\n\nenzyme:{E.aminos}\n")
+    print(f"gene:\n{gene}\n\n{E}\n")
     out = E.evaluate(gene,2,show_steps=False)
     print("results:",[o.lower_string for o in out])
 
@@ -310,6 +318,8 @@ if __name__ == '__main__':
 
     gene = STRAND("TAGATCCAGTCCATCGA")
     E = ENZYME(["rpu","inc","cop","mvr","mvl","swi","lpu","int"])
-    print(f"gene:\n{gene}\n\nenzyme:{E.aminos}\n")
+    print(f"gene:\n{gene}\n\n{E}\n")
     out = E.evaluate(gene,8,show_steps=False)
     print("results:",[o.lower_string for o in out])
+
+    print(strand_to_enzymes(out[1]))
