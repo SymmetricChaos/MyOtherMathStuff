@@ -31,6 +31,8 @@ class STRAND:
     
     # No __repr__ method because the string has to be multiple lines
     def __str__(self):
+        if all([u == " " for u in self.upper]):
+            return f"{''.join(self.lower)}"
         return f"{''.join(self.upper)}\n{''.join(self.lower)}"
     
     # Rotates the STRAND by 180 degrees
@@ -70,7 +72,7 @@ class STRAND:
     
     
 def split_strand(strand):
-    up = "".join(strand.lower)
+    up = "".join(strand.lower[::-1])
     lo = "".join(strand.upper)
     
     U = [STRAND(s) for s in up.split(" ") if s != ""]
@@ -122,122 +124,124 @@ def aminos_to_binding(aminos):
 
 class ENZYME:
     
-    def __init__(self,strand,pos,aminos):
-        if type(strand) != STRAND:
-            raise Exception("not a valid strand")
-        if type(pos) != int:
-            raise Exception("pos must be an integer")
+    def __init__(self,aminos):
+
         for i in aminos:
             if i not in amino_acids:
                 raise Exception(f"{i} is not a valid instruction")
-        
-        self.strand = strand
-        self.pos = pos
+
         self.aminos = aminos
         self.copy_mode = False
         self.binding = aminos_to_binding(aminos)
     
-    def __str__(self):
-        S = str(self.strand) + "\n"
-        S += " "*self.pos + "^"
-        return S
+#    def __str__(self):
+#        S = str(self.strand) + "\n"
+#        S += " "*pos + "^"
+#        return S
     
-    def evaluate(self):
+    def evaluate(self,strand,pos):
+        
+        if type(strand) != STRAND:
+            raise Exception("not a valid strand")
+        
+        if type(pos) != int:
+            raise Exception("pos must be an integer")
+
         snips = []
         for a in self.aminos:
-            print(self)
-            print()
+#            print(self)
+#            print()
             # Set copy mode
             if a == "cop":
                 self.copy_mode = True
-                self.strand.copy(self.pos)
+                strand.copy(pos)
             if a == "off":
                 self.copy_mode = False
             
             # Delete the base being worked on but NOT its complement if present
             if a == "del":
-                self.strand.lower[self.pos] = " "
+                self.strand.lower[pos] = " "
                 
             if a == "cut":
-                self.strand, R = self.strand.cut(self.pos)
+                strand, R = strand.cut(pos)
                 snips.append(R)
             
             # Insert rules
             if a == "ing":
-                self.strand.insert("G",self.pos+1,self.copy_mode)
-                self.pos += 1
+                strand.insert("G",pos+1,self.copy_mode)
+                pos += 1
             if a == "int":
-                self.strand.insert("T",self.pos+1,self.copy_mode)
-                self.pos += 1
+                strand.insert("T",pos+1,self.copy_mode)
+                pos += 1
             if a == "inc":
-                self.strand.insert("C",self.pos+1,self.copy_mode)
-                self.pos += 1
+                strand.insert("C",pos+1,self.copy_mode)
+                pos += 1
             if a == "ina":
-                self.strand.insert("A",self.pos+1,self.copy_mode)
-                self.pos += 1
+                strand.insert("A",pos+1,self.copy_mode)
+                pos += 1
             
             # Switch sides
             if a == "swi":
-                self.strand.switch()
-                self.pos = len(self.strand)-self.pos-1
+                strand.switch()
+                pos = len(strand)-pos-1
                 
             # Move one unit left or right
             if a == "mvr":
-                self.pos += 1
-                if self.pos == len(self.strand):
+                pos += 1
+                if pos == len(strand):
                     break
                 if self.copy_mode:
-                    self.strand.copy(self.pos)
+                    strand.copy(pos)
             
             if a == "mvl":
-                self.pos -= 1
-                if self.pos == -1:
+                pos -= 1
+                if pos == -1:
                     break
                 if self.copy_mode:
-                    self.strand.copy(self.pos)
+                    strand.copy(pos)
             
             # Scan to find a purine or pyrimidine
             if a == "rpy":
-                if self.strand.lower[self.pos] in "TC":
-                    self.pos += 1
+                if strand.lower[pos] in "TC":
+                    pos += 1
                     if self.copy_mode:
-                        self.strand.copy(self.pos)
-                while self.strand.lower[self.pos] not in "TC":
-                    self.pos += 1
+                        strand.copy(pos)
+                while strand.lower[pos] not in "TC":
+                    pos += 1
                     if self.copy_mode:
-                        self.strand.copy(self.pos)
+                        strand.copy(pos)
                         
             if a == "rpu":
-                if self.strand.lower[self.pos] in "AG":
-                    self.pos += 1
+                if strand.lower[pos] in "AG":
+                    pos += 1
                     if self.copy_mode:
-                        self.strand.copy(self.pos)
-                while self.strand.lower[self.pos] not in "AG":
-                    self.pos += 1
+                        strand.copy(pos)
+                while strand.lower[pos] not in "AG":
+                    pos += 1
                     if self.copy_mode:
-                        self.strand.copy(self.pos)
+                        strand.copy(pos)
                         
             if a == "lpy":
-                if self.strand.lower[self.pos] in "TC":
-                    self.pos -= 1
+                if strand.lower[pos] in "TC":
+                    pos -= 1
                     if self.copy_mode:
-                        self.strand.copy(self.pos)
-                while self.strand.lower[self.pos] not in "TC":
-                    self.pos -= 1
+                        strand.copy(pos)
+                while strand.lower[pos] not in "TC":
+                    pos -= 1
                     if self.copy_mode:
-                        self.strand.copy(self.pos)
+                        strand.copy(pos)
             if a == "lpu":
-                if self.strand.lower[self.pos] in "AG":
-                    self.pos -= 1
+                if strand.lower[pos] in "AG":
+                    pos -= 1
                     if self.copy_mode:
-                        self.strand.copy(self.pos)
-                while self.strand.lower[self.pos] not in "AG":
-                    self.pos -= 1
+                        strand.copy(pos)
+                while strand.lower[pos] not in "AG":
+                    pos -= 1
                     if self.copy_mode:
-                        self.strand.copy(self.pos)
+                        strand.copy(pos)
             
-        print(self)
-        out = split_strand(self.strand)
+#        print(self)
+        out = split_strand(strand)
         # seperate out everything
         for s in snips:
             out += split_strand(s)
@@ -250,15 +254,18 @@ class ENZYME:
 if __name__ == '__main__':
     
 
-#    gene = STRAND("CAAAGAGAATCCTCTTTGAT")
-#    E = ENZYME(gene,2,["rpy","cop","rpu","cut"])
-#    out = E.evaluate()
+    
+    gene = STRAND("CAAAGAGAATCCTCTTTGAT")
+    E = ENZYME(["rpy","cop","rpu","cut"])
+    
+    print(f"gene:\n{gene}\n\nenzyme:{E.aminos}")
+    
+    out = E.evaluate(gene,2)
+    print(["".join(o.lower) for o in out])
+
+
+#    gene = STRAND("TAGATCCAGTCCATCGA")
+#    E = ENZYME(["rpu","inc","cop","mvr","mvl","swi","lpu","int"])
+#    out = E.evaluate(gene,8)
 #    for i in out:
 #        print(i)
-        
-        
-    gene = STRAND("TAGATCCAGTCCATCGA")
-    E = ENZYME(gene,8,["rpu","inc","cop","mvr","mvl","swi","lpu","int"])
-    out = E.evaluate()
-    for i in out:
-        print(i)
