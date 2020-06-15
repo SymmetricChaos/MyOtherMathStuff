@@ -138,8 +138,7 @@ class ENZYME:
         self.binding = aminos_to_binding(aminos)
     
     def __str__(self):
-        S = f"enzyme: ({' 🡢 '.join(self.aminos)})"
-        
+        S = f"E({' 🡢 '.join(self.aminos)})"
         return S
     
     def __repr__(self):
@@ -305,21 +304,29 @@ def strand_to_enzymes(strand):
 
 
 
+
 if __name__ == '__main__':
     
     gene = STRAND("CAAAGAGAATCCTCTTTGAT")
     E = ENZYME(["rpy","cop","rpu","cut"])
-    print(f"gene:\n{gene}\n\n{E}\n")
-    out = E.evaluate(gene,2,show_steps=False)
-    print("results:",[o.lower_string for o in out])
-
+    print(f"{gene}\n\n{E}\n")
+    strands = E.evaluate(gene,2,show_steps=False)
+    print("strands:",[s.lower_string for s in strands])
+    print()
+    enzymes = []
+    for s in strands:
+        enzymes += strand_to_enzymes(s)
+    print(enzymes)
 
     print("\n\n\n")
 
     gene = STRAND("TAGATCCAGTCCATCGA")
     E = ENZYME(["rpu","inc","cop","mvr","mvl","swi","lpu","int"])
-    print(f"gene:\n{gene}\n\n{E}\n")
-    out = E.evaluate(gene,8,show_steps=False)
-    print("results:",[o.lower_string for o in out])
-
-    print(strand_to_enzymes(out[1]))
+    print(f"{gene}\n\n{E}\n")
+    strands = E.evaluate(gene,8,show_steps=False)
+    print("strands:",[s.lower_string for s in strands])
+    print()
+    enzymes = []
+    for s in strands:
+        enzymes += strand_to_enzymes(s)
+    print(enzymes)
