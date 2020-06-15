@@ -4,6 +4,8 @@
 #upper_to_lower = {"Ɐ":"A", "Ʇ":"T", "⅁":"G", "Ɔ":"C", " ":" ", "_":"_"}
 
 
+complement = {"A":"T", "T":"A", "G":"C", "C":"G"}
+
 class STRAND:
     
     def __init__(self,A="",B=""):
@@ -43,26 +45,20 @@ class STRAND:
         R = STRAND(self.lower[pos:],self.upper[pos:])
         return L,R
     
-    def insert(self,base,pos):
+    def insert(self,base,pos,copy_mode):
         if base not in "ATGC":
             raise Exception(f"{base} is not a valid base")
+        
         new_lower = self.lower[:pos] + [base] + self.lower[pos:]
-        new_upper = self.upper[:pos] + [base] + self.upper[pos:]
+        if copy_mode:
+            new_upper = self.upper[:pos] + [complement[base]] + self.upper[pos:]
+        else:
+            new_upper = self.upper[:pos] + [" "] + self.upper[pos:]
         self.lower = new_lower
         self.upper = new_upper
     
     def copy(self,pos):
-        if self.lower[pos] == "A":
-            self.upper[pos] = "T"
-            
-        elif self.lower[pos] == "T":
-            self.upper[pos] = "A"
-            
-        elif self.lower[pos] == "G":
-            self.upper[pos] = "C"
-            
-        elif self.lower[pos] == "C":
-            self.upper[pos] = "G"
+        self.upper[pos] = complement[self.lower[pos]]
  
     def delete(self,pos):
         del self.lower[pos]
@@ -139,9 +135,16 @@ class ENZYME:
         self.aminos = aminos
         self.copy_mode = False
         self.binding = aminos_to_binding(aminos)
-                
+    
+    def __str__(self):
+        S = str(self.strand) + "\n"
+        S += " "*self.pos + "^"
+        return S
+    
     def evaluate(self):
         for a in self.aminos:
+            print(self)
+            print()
             # Set copy mode
             if a == "cop":
                 self.copy_mode = True
@@ -149,19 +152,28 @@ class ENZYME:
             if a == "off":
                 self.copy_mode = False
             
+            # Delete the base being worked on but NOT its complement if present
+            if a == "del":
+                self.strand.lower[self.pos] = " "
+                
+#            if a = "cut":
+                
+            
             # Insert rules
             if a == "ing":
-                self.strand.insert("G",self.pos)
+                self.strand.insert("G",self.pos,self.copy_mode)
             if a == "int":
-                self.strand.insert("T",self.pos)
+                self.strand.insert("T",self.pos,self.copy_mode)
             if a == "inc":
-                self.strand.insert("C",self.pos)
+                self.strand.insert("C",self.pos,self.copy_mode)
             if a == "ina":
-                self.strand.insert("A",self.pos)
-                
+                self.strand.insert("A",self.pos,self.copy_mode)
+            
+            # Switch sides
             if a == "swi":
                 self.strand.switch()
                 
+            # Move one unit left or right
             if a == "mvr":
                 self.pos += 1
                 if self.pos == len(self.strand):
@@ -176,16 +188,41 @@ class ENZYME:
                 if self.copy_mode:
                     self.strand.copy(self.pos)
             
-    def return_strand(self):
-        return self.strand
+            # Scan to find a purine or pyrimidine
+            if a == "rpy":
+                while self.strand.lower[self.pos] not in "TC":
+                    self.pos += 1
+                    if self.copy_mode:
+                        self.strand.copy(self.pos)
+            if a == "rpu":
+                while self.strand.lower[self.pos] not in "AG":
+                    self.pos += 1
+                    if self.copy_mode:
+                        self.strand.copy(self.pos)
+                        
+            if a == "lpy":
+                while self.strand.lower[self.pos] not in "TC":
+                    self.pos -= 1
+                    if self.copy_mode:
+                        self.strand.copy(self.pos)
+            if a == "lpu":
+                while self.strand.lower[self.pos] not in "AG":
+                    self.pos -= 1
+                    if self.copy_mode:
+                        self.strand.copy(self.pos)
+            
+        print(self)
+        # seperate out everything
+#        return split_strand(self.strand)
+
+
+
+
 
 if __name__ == '__main__':
     
 
-    gene = STRAND("TAGATCCAGTCCACATCGA")
-    print(gene)
+    gene = STRAND("CAAAGAGAATCCTCTTTGAT")
 
-    E = ENZYME(gene,0,["cop","mvr","mvr","mvr","mvr","mvr","mvr"])
+    E = ENZYME(gene,2,["rpy","cop","rpu"])
     E.evaluate()
-    print()
-    print(E.strand)
