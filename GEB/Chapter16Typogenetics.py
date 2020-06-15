@@ -54,6 +54,8 @@ def split_strand(strand):
 
 
 
+
+
 # Deal with duplets and amino acids
 amino_acids = ["cut","del","swi","mvr","mvl","cop","off","ina","inc",
                "ing","int","rpy","rpu","lpy","rpu"]
@@ -68,6 +70,13 @@ amino_to_duplet = {"   ":"AA", "cut":"AC", "del":"AG", "swi":"AT",
                    "ina":"GA", "inc":"GC", "ing":"GG", "int":"GT",
                    "rpy":"TA", "rpu":"TC", "lpy":"TG", "lpu":"TT"}
 
+amino_to_fold = {          "cut": 0, "del":0,  "swi":-1,
+                 "mvr": 0, "mvl": 0, "cop":-1, "off": 1,
+                 "ina": 0, "inc":-1, "ing":-1, "int": 1,
+                 "rpy":-1, "rpu": 1, "lpy":1,  "lpu": 1}
+
+direct_to_binding = {0:"A", 1:"C", 2:"T", 3:"G"}
+
 def chunk_by_size(L,n):
     return [L[i * n:(i + 1) * n] for i in range((len(L) + n - 1) // n )]
 
@@ -75,39 +84,48 @@ def string_to_amino(S):
     duplets = chunk_by_size(S,2)
     return [duplet_to_amino[d] for d in duplets if len(d) == 2 ]
 
+def aminos_to_binding(aminos):
+    direct = -amino_to_fold[aminos[0]]
+    for a in aminos[1:]:
+        direct = (direct+amino_to_fold[a])%4
+    return direct_to_binding[direct]
+
+
 
 
 
 class ENZYME:
     
-    def __init__(self,strand,pos,instructions):
+    def __init__(self,strand,pos,aminos):
         if type(strand) != STRAND:
             raise Exception("not a valid strand")
         if type(pos) != int:
             raise Exception("pos must be an integer")
-        for i in instructions:
+        for i in aminos:
             if i not in amino_acids:
                 raise Exception(f"{i} is not a valid instruction")
         
         self.strand = strand
         self.pos = pos
-        self.instructions = instructions
+        self.aminos = aminos
         self.copy_mode = False
+        self.binding = aminos_to_binding(aminos)
         
     
     
 
 
-#def ENZYME(strand,start,instructions):
-#    copy_mode = False
+
+if __name__ == '__main__':
     
 
-gene = STRAND("GA  TTT            ",
-              "TAGATCCAGTCCACATCGA")
-
-print(gene)
-
-print(string_to_amino(gene.lower))
-
-for s in split_strand(gene):
-    print(s)
+    gene = STRAND("TAGATCCAGTCCACATCGA")
+    
+    print(gene)
+    
+    A = string_to_amino(gene.lower)
+    
+    print(aminos_to_binding(A))
+    
+    for s in split_strand(gene):
+        print(s)
