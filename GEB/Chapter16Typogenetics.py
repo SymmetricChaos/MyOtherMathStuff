@@ -257,15 +257,14 @@ if __name__ == '__main__':
     
     gene = STRAND("CAAAGAGAATCCTCTTTGAT")
     E = ENZYME(["rpy","cop","rpu","cut"])
-    
-    print(f"gene:\n{gene}\n\nenzyme:{E.aminos}")
-    
+    print(f"gene:\n{gene}\n\nenzyme:{E.aminos}\n")
     out = E.evaluate(gene,2)
     print(["".join(o.lower) for o in out])
 
+    print("\n\n\n")
 
-#    gene = STRAND("TAGATCCAGTCCATCGA")
-#    E = ENZYME(["rpu","inc","cop","mvr","mvl","swi","lpu","int"])
-#    out = E.evaluate(gene,8)
-#    for i in out:
-#        print(i)
+    gene = STRAND("TAGATCCAGTCCATCGA")
+    E = ENZYME(["rpu","inc","cop","mvr","mvl","swi","lpu","int"])
+    print(f"gene:\n{gene}\n\nenzyme:{E.aminos}\n")
+    out = E.evaluate(gene,8)
+    print(["".join(o.lower) for o in out])
