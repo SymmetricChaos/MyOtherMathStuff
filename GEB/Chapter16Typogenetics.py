@@ -70,11 +70,20 @@ class STRAND:
     def copy(self,pos):
         self.upper[pos] = complement[self.lower[pos]]
 
+    def _lower_string(self):
+        return "".join(self.lower)
+        
+    def _upper_string(self):
+        return "".join(self.upper)
+        
+    lower_string = property(_lower_string)
+    upper_string = property(_upper_string)
     
+
     
 def split_strand(strand):
-    up = "".join(strand.lower[::-1])
-    lo = "".join(strand.upper)
+    up = strand.lower_string[::-1]
+    lo = strand.upper_string
     
     U = [STRAND(s) for s in up.split(" ") if s != ""]
     L = [STRAND(s) for s in lo.split(" ") if s != ""]
@@ -106,13 +115,6 @@ amino_to_fold = {          "cut": 0, "del":0,  "swi":-1,
 
 direct_to_binding = {0:"A", 1:"C", 2:"T", 3:"G"}
 
-def chunk_by_size(L,n):
-    return [L[i * n:(i + 1) * n] for i in range((len(L) + n - 1) // n )]
-
-def string_to_amino(S):
-    duplets = chunk_by_size(S,2)
-    return [duplet_to_amino[d] for d in duplets if len(d) == 2 ]
-
 def aminos_to_binding(aminos):
     direct = 0
     for a in aminos[1:-1]:
@@ -136,6 +138,7 @@ class ENZYME:
         self.binding = aminos_to_binding(aminos)
     
     
+    
     def evaluate(self,strand,pos,show_steps=True):
         
         if type(strand) != STRAND:
@@ -143,6 +146,9 @@ class ENZYME:
         
         if type(pos) != int:
             raise Exception("pos must be an integer")
+
+        # We always start with copy mode off
+        self.copy_mode = False
 
         snips = []
         for a in self.aminos:
@@ -243,14 +249,28 @@ class ENZYME:
         if show_steps:
             print(str(strand) + "\n" + " "*pos + "^")
             
-        out = split_strand(strand)
         # seperate out everything
+        out = split_strand(strand)
         for s in snips:
             out += split_strand(s)
         return out
 
 
+def chunk_by_size(L,n):
+    return [L[i * n:(i + 1) * n] for i in range((len(L) + n - 1) // n )]
 
+def string_to_amino(S):
+    duplets = chunk_by_size(S,2)
+    return [duplet_to_amino[d] for d in duplets if len(d) == 2 ]
+
+#def strand_to_enzymes(strand):
+#    if not all([u == " " for u in strand.upper]):
+#        raise Exception("a strand with an upper attachment cannot be turned into an enzyme")
+#    
+#    s = "".join(strand.lower)
+#    
+#    return ENZYME(string_to_amino(s))
+    
 
 
 if __name__ == '__main__':
@@ -261,7 +281,8 @@ if __name__ == '__main__':
     E = ENZYME(["rpy","cop","rpu","cut"])
     print(f"gene:\n{gene}\n\nenzyme:{E.aminos}\n")
     out = E.evaluate(gene,2,show_steps=False)
-    print("results:",["".join(o.lower) for o in out])
+    print("results:",[o.lower_string for o in out])
+
 
     print("\n\n\n")
 
@@ -269,4 +290,4 @@ if __name__ == '__main__':
     E = ENZYME(["rpu","inc","cop","mvr","mvl","swi","lpu","int"])
     print(f"gene:\n{gene}\n\nenzyme:{E.aminos}\n")
     out = E.evaluate(gene,8,show_steps=False)
-    print("results:",["".join(o.lower) for o in out])
+    print("results:",[o.lower_string for o in out])
