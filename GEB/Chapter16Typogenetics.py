@@ -49,8 +49,8 @@ class STRAND:
         
     # Cut the strand at a position
     def cut(self,pos):
-        L = STRAND(self.lower[:pos],self.upper[:pos])
-        R = STRAND(self.lower[pos:],self.upper[pos:])
+        L = STRAND(self.upper[:pos],self.lower[:pos])
+        R = STRAND(self.upper[pos:],self.lower[pos:])
         return L,R
     
     # Insert a valid base or base pair at a position
@@ -70,6 +70,8 @@ class STRAND:
     def copy(self,pos):
         self.upper[pos] = complement[self.lower[pos]]
 
+    # Quick access to string representation of the upper and lower parts of the
+    # strand
     def _lower_string(self):
         return "".join(self.lower)
         
@@ -82,8 +84,8 @@ class STRAND:
 
     
 def split_strand(strand):
-    up = strand.lower_string[::-1]
-    lo = strand.upper_string
+    up = strand.upper_string[::-1]
+    lo = strand.lower_string
     
     U = [STRAND(s) for s in up.split(" ") if s != ""]
     L = [STRAND(s) for s in lo.split(" ") if s != ""]
@@ -103,10 +105,10 @@ duplet_to_amino = {"AA":"   ", "AC":"cut", "AG":"del", "AT":"swi",
                    "GA":"ina", "GC":"inc", "GG":"ing", "GT":"int",
                    "TA":"rpy", "TC":"rpu", "TG":"lpy", "TT":"lpu"}
 
-amino_to_duplet = {"   ":"AA", "cut":"AC", "del":"AG", "swi":"AT",
-                   "mvr":"CA", "mvl":"CC", "cop":"CG", "off":"CT",
-                   "ina":"GA", "inc":"GC", "ing":"GG", "int":"GT",
-                   "rpy":"TA", "rpu":"TC", "lpy":"TG", "lpu":"TT"}
+#amino_to_duplet = {"   ":"AA", "cut":"AC", "del":"AG", "swi":"AT",
+#                   "mvr":"CA", "mvl":"CC", "cop":"CG", "off":"CT",
+#                   "ina":"GA", "inc":"GC", "ing":"GG", "int":"GT",
+#                   "rpy":"TA", "rpu":"TC", "lpy":"TG", "lpu":"TT"}
 
 amino_to_fold = {          "cut": 0, "del":0,  "swi":-1,
                  "mvr": 0, "mvl": 0, "cop":-1, "off": 1,
@@ -138,7 +140,7 @@ class ENZYME:
         self.binding = aminos_to_binding(aminos)
     
     def __str__(self):
-        S = f"E({' 🡢 '.join(self.aminos)})"
+        S = f"({' 🡢 '.join(self.aminos)})"
         return S
     
     def __repr__(self):
@@ -154,12 +156,13 @@ class ENZYME:
 
         # We always start with copy mode off
         self.copy_mode = False
-
+        # Collect anything that is snipped off by 'cut'
         snips = []
+        
+        if show_steps:
+            print(str(strand) + f"  start\n" + " "*pos + "^\n")
+        
         for a in self.aminos:
-            
-            if show_steps:
-                print(str(strand) + "\n" + " "*pos + "^")
             
             # Set copy mode
             if a == "cop":
@@ -266,9 +269,9 @@ class ENZYME:
                         break
                     if self.copy_mode:
                         strand.copy(pos)
-            
-        if show_steps:
-            print(str(strand) + "\n" + " "*pos + "^")
+                        
+            if show_steps:
+                print(str(strand) + f"  {a}\n" + " "*pos + "^\n")
             
         # seperate out everything
         out = split_strand(strand)
@@ -301,32 +304,44 @@ def strand_to_enzymes(strand):
     
     return enzymes
 
+def strands_to_enzymes(strands):
+    enzymes = []
+    for s in strands:
+        enzymes += strand_to_enzymes(s)
+    return enzymes
+
+def strand_to_enzymes_cycle(strand,enzyme,pos,show_steps=False):
+
+    print(f"Starting Strand:\n{strand}\n\nStarting Enzyme:\n{enzyme}\n")
+    if show_steps:
+        print("\nEnzyme Action:\n")
+        strands = enzyme.evaluate(strand,pos,show_steps=True)
+    else:
+        strands = enzyme.evaluate(strand,pos,show_steps=False)
+    print("\nResultant Strands:")
+    for st in strands:
+        print(st)
+    print()
+    print("Resultant Enzymes:")
+    for enz in strands_to_enzymes(strands):
+        print(enz)
+
+
 
 
 
 
 if __name__ == '__main__':
     
-    gene = STRAND("CAAAGAGAATCCTCTTTGAT")
-    E = ENZYME(["rpy","cop","rpu","cut"])
-    print(f"{gene}\n\n{E}\n")
-    strands = E.evaluate(gene,2,show_steps=False)
-    print("strands:",[s.lower_string for s in strands])
-    print()
-    enzymes = []
-    for s in strands:
-        enzymes += strand_to_enzymes(s)
-    print(enzymes)
+    DNA1 = STRAND("CAAAGAGAATCCTCTTTGAT")
+    E1 = ENZYME(["rpy","cop","rpu","cut"])
+    strand_to_enzymes_cycle(DNA1,E1,2,show_steps=True)
+
 
     print("\n\n\n")
 
-    gene = STRAND("TAGATCCAGTCCATCGA")
-    E = ENZYME(["rpu","inc","cop","mvr","mvl","swi","lpu","int"])
-    print(f"{gene}\n\n{E}\n")
-    strands = E.evaluate(gene,8,show_steps=False)
-    print("strands:",[s.lower_string for s in strands])
-    print()
-    enzymes = []
-    for s in strands:
-        enzymes += strand_to_enzymes(s)
-    print(enzymes)
+    DNA2 = STRAND("TAGATCCAGTCCATCGA")
+    E2 = ENZYME(["rpu","inc","cop","mvr","mvl","swi","lpu","int"])
+    strand_to_enzymes_cycle(DNA2,E2,8,show_steps=True)
+    
+        
