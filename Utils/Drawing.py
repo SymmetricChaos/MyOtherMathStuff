@@ -1,34 +1,16 @@
 import matplotlib.pyplot as plt
-import matplotlib.collections as collections
 import matplotlib.lines as lines
 import matplotlib.patches as patches
 from Utils.PointTypes import points_to_xy
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 from matplotlib.cbook import get_sample_data
 
-def make_blank_canvas(xlim=None,ylim=None,size=[12,12],box=False):
+def make_blank_canvas(size=[12,12],box=False):
     fig = plt.figure()
     fig.set_size_inches(size[0],size[1])
-    # If no coordinate range is given fit everything into a square
-    if not xlim and not ylim:
-        ax = plt.axes()
-        ax.set_aspect("equal","datalim")
-    # If only xrange is given fit a square
-    elif not ylim:
-        ax = plt.axes(xlim=xlim,ylim=xlim)
-    # If both are given fit the rectangle
-    else:
-        ax = plt.axes(xlim=xlim,ylim=ylim)
-        
-    if box == False:
-        ax.axis('off')
-        
-    ax.set_xticks([])
-    ax.set_yticks([])
-    return fig,ax
+    return fig
 
-
-def make_blank_subplot(a,b,p,xlim=None,ylim=None,box=True,bg='white'):
+def make_blank_plot(a=1,b=1,p=1,xlim=None,ylim=None,box=True,bg='white'):
     ax = plt.subplot(a,b,p)
     
     # If no coordinate range is given fit everything into a square
@@ -328,7 +310,8 @@ if __name__ == '__main__':
     
     ## SIMPLE PLOT ## 
     
-    make_blank_canvas([-5,5],[-5,5])
+    make_blank_canvas()
+    make_blank_plot(xlim=[-5,5])
     draw_curve_xy([1,2,3],[1,2,1])
     draw_closed_curve_xy([1,2,3],[0,1,0],color="green")
     horizontal_line(-2)
@@ -346,7 +329,7 @@ if __name__ == '__main__':
     make_blank_canvas()
     
     # Make and use a subplot
-    sp1 = make_blank_subplot(2,2,1,[-3,3])
+    sp1 = make_blank_plot(2,2,1,[-3,3])
     
     # mbline takes ylim and xlim from axes to automatically appear infinite
     mbline(-.5,0)
@@ -355,19 +338,19 @@ if __name__ == '__main__':
     mblines(slopes,[0]*20,xlim=[-2,2],ylim=[-2,2],color='red')
     
     # Subplots of different layouts can coexist
-    sp2 = make_blank_subplot(4,4,4,[-2,2],bg='yellow')
+    sp2 = make_blank_plot(4,4,4,[-2,2],bg='yellow')
     draw_closed_curve_xy([1,2,3],[0,1,0])
     # Create an mbline on the most recently created axes
     mbline(1,1)
     
     # Plots can be created out of order
     # When subplots are not square shapes are warped
-    sp3 = make_blank_subplot(2,2,4,[-3,3],[-5,5])
+    sp3 = make_blank_plot(2,2,4,[-3,3],[-5,5])
     draw_circle_xy(1.5,-.5,1,fc='white',ec='black')
     text(-.8,3.5,"Shapes and lines on this plot are skewed\nbut not text\nthat's a circle down there",ha="center")
     
     # Show automatic xlim and ylim settings
-    sp4 = make_blank_subplot(4,4,7)
+    sp4 = make_blank_plot(4,4,7)
     x = np.random.uniform(-2,2,200)
     y = x+np.random.uniform(-2,2,200),
     draw_dots_xy(x,y,alpha=.5,color='limegreen')
