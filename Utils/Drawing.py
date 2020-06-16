@@ -191,14 +191,20 @@ def draw_closed_curve_c(P,ax=None,**kwargs):
 
 
 # Draw scatterplot from
-def draw_dots_xy(x,y,**kwargs):
+def draw_dots_xy(x,y,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
     plt.scatter(x,y,**kwargs)
 
-def draw_dots_p(P,**kwargs):
+def draw_dots_p(P,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
     x,y = points_to_xy(P)
     plt.scatter(x,y,**kwargs)
 
-def draw_dots_c(C,**kwargs):
+def draw_dots_c(C,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
     x,y = complex_to_xy(C)
     plt.scatter(x,y,**kwargs)
 
@@ -283,7 +289,7 @@ def text(x,y,t,ax=None,**kwargs):
     ax.text(x,y,t,**kwargs)
     
 # Convinence for inserting images within the plot
-def plot_image(path,x,y,ax=None):
+def image(path,x,y,ax=None):
     if ax == None:
         ax = plt.gca()
         
@@ -391,6 +397,6 @@ if __name__ == '__main__':
     
     cur_dir = os.getcwd()
     tree_pic = cur_dir+"\\tree.png"
-    plot_image(tree_pic,2,-2,ax=sp1)
-    
+#    image(tree_pic,1,-2,ax=sp1)
+    draw_dots_xy([2],[-2],sp3,color='limegreen')
     show_now()
