@@ -194,19 +194,19 @@ def draw_closed_curve_c(P,ax=None,**kwargs):
 def draw_dots_xy(x,y,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
-    plt.scatter(x,y,**kwargs)
+    ax.scatter(x,y,**kwargs)
 
 def draw_dots_p(P,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
     x,y = points_to_xy(P)
-    plt.scatter(x,y,**kwargs)
+    ax.scatter(x,y,**kwargs)
 
 def draw_dots_c(C,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
     x,y = complex_to_xy(C)
-    plt.scatter(x,y,**kwargs)
+    ax.scatter(x,y,**kwargs)
 
 
 # Connect points A and B, complex version provided, xy version doesn't make much sense
@@ -289,7 +289,7 @@ def text(x,y,t,ax=None,**kwargs):
     ax.text(x,y,t,**kwargs)
     
 # Convinence for inserting images within the plot
-def image(path,x,y,ax=None):
+def image_box(path,x,y,pad=0.5,ax=None):
     if ax == None:
         ax = plt.gca()
         
@@ -303,8 +303,8 @@ def image(path,x,y,ax=None):
                         xybox=(0,0),
                         xycoords='data',
                         boxcoords="offset points",
-                        pad=0.5)
-    
+                        pad=pad)
+
     ax.add_artist(ab)
     
         
@@ -397,6 +397,6 @@ if __name__ == '__main__':
     
     cur_dir = os.getcwd()
     tree_pic = cur_dir+"\\tree.png"
-#    image(tree_pic,1,-2,ax=sp1)
-    draw_dots_xy([2],[-2],sp3,color='limegreen')
+    image_box(tree_pic,0,2.2,ax=sp1)
+    draw_dots_xy(0,0,sp1,zorder=5,color='black',s=100)
     show_now()
