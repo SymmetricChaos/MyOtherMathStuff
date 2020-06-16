@@ -5,9 +5,10 @@ from Utils.PointTypes import points_to_xy
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 from matplotlib.cbook import get_sample_data
 
-def make_blank_canvas(size=[12,12],box=False):
+def make_blank_canvas(size=[12,12],box=False,bg="white"):
     fig = plt.figure()
     fig.set_size_inches(size[0],size[1])
+    fig.set_facecolor(bg)
     return fig
 
 def make_blank_plot(a=1,b=1,p=1,xlim=None,ylim=None,box=True,bg='white'):
@@ -31,6 +32,7 @@ def make_blank_plot(a=1,b=1,p=1,xlim=None,ylim=None,box=True,bg='white'):
     ax.set_xticks([])
     ax.set_yticks([])
     ax.set_facecolor(bg)
+    
     return ax
 
 
@@ -308,25 +310,8 @@ if __name__ == '__main__':
     import numpy as np
     import os
     
-    ## SIMPLE PLOT ## 
-    
-    make_blank_canvas()
-    make_blank_plot(xlim=[-5,5])
-    draw_curve_xy([1,2,3],[1,2,1])
-    draw_closed_curve_xy([1,2,3],[0,1,0],color="green")
-    horizontal_line(-2)
-    vertical_line(1,color='brown')
-    
-    
-    ## PLOTS AND SUBPLOTS ##
-    
-    # Make a circle
-    # Then make a circle with exactly half the radius
-    draw_circle_xy(-1.5,.8,2,ec='black',linewidth=3)
-    draw_circle_xy(-.5,.8,1,fc='salmon')
-    
     # Subplots example
-    make_blank_canvas()
+    make_blank_canvas([12,12],bg="lightgray",box=True)
     
     # Make and use a subplot
     sp1 = make_blank_plot(2,2,1,[-3,3])
@@ -370,4 +355,5 @@ if __name__ == '__main__':
     tree_pic = cur_dir+"\\tree.png"
     image_box(tree_pic,0,2.2,ax=sp1)
     draw_dots_xy(0,0,sp1,zorder=5,color='black',s=100)
+    
     show_now()
