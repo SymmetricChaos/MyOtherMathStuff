@@ -25,11 +25,10 @@ def make_blank_canvas(xlim=None,ylim=None,size=[12,12],box=False):
         
     ax.set_xticks([])
     ax.set_yticks([])
-    
     return fig,ax
 
 
-def make_blank_subplot(a,b,p,xlim=None,ylim=None,box=True):
+def make_blank_subplot(a,b,p,xlim=None,ylim=None,box=True,bg='white'):
     ax = plt.subplot(a,b,p)
     
     # If no coordinate range is given fit everything into a square
@@ -49,7 +48,7 @@ def make_blank_subplot(a,b,p,xlim=None,ylim=None,box=True):
         
     ax.set_xticks([])
     ax.set_yticks([])
-    
+    ax.set_facecolor(bg)
     return ax
 
 
@@ -149,7 +148,6 @@ def horizontal_line(ypos=0,xlim=[],ax=None,**kwargs):
 # Draw a curve from:
 #   seperate lists of x and y coordinates
 #   a list of (x,y) points
-#   a list of complex numbers
 def draw_curve_xy(x,y,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
@@ -192,13 +190,18 @@ def draw_dots_p(P,ax=None,**kwargs):
     ax.scatter(x,y,**kwargs)
 
 
-# Connect points A and B, complex version provided, xy version doesn't make much sense
+# Connect points A and B
 def connect_p(A,B,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
-    line = lines.Line2D([A[0],B[0]], [A[1],B[1]], axes=ax,**kwargs)
+    line = lines.Line2D([A[0],A[1]], [B[0],B[1]], axes=ax,**kwargs)
     ax.add_line(line)
 
+def connect_xy(X,Y,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
+    line = lines.Line2D([X[0],Y[0]], [X[1],Y[1]], axes=ax,**kwargs)
+    ax.add_line(line)
 
 # Convenience functions for titles
 def title(text="",ax=None,**kwargs):
@@ -220,18 +223,24 @@ def canvas_title(text="",fig=None,**kwargs):
 def draw_circles_xy(X,Y,R,ax=None, **kwargs):
     if ax == None:
         ax = plt.gca()
-    circles = [plt.Circle((x,y), radius=r, **kwargs) for x,y,r in zip(X,Y,R)]
-    C = collections.PatchCollection(circles)
-    ax.add_collection(C)
-    return C
+        
+    circles = []
+    for x,y,r in zip(X,Y,R):  
+        C = plt.Circle((x,y), radius=r, **kwargs)
+        ax.add_patch(C)
+        circles.append(C)
+    return circles
 
 def draw_circles_p(P,R,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
-    circles = [plt.Circle(p, radius=r, **kwargs) for p,r in zip(P,R)]
-    C = collections.PatchCollection(circles)
-    ax.add_collection(C)
-    return C
+        
+    circles = []
+    for p,r in zip(P,R):  
+        C = plt.Circle(p, radius=r, **kwargs)
+        ax.add_patch(C)
+        circles.append(C)
+    return circles
 
 
 # Convenient function for a single circle, can be used for finer control of
@@ -264,9 +273,11 @@ def text(x,y,t,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
     ax.text(x,y,t,**kwargs)
+
     
 # Convinence for inserting images within the plot
-def image_box(path,x,y,pad=0.5,ax=None):
+# This definite isn't the best way to do this
+def image_box(path,x,y,ax=None,pad=0.5):
     if ax == None:
         ax = plt.gca()
         
@@ -344,7 +355,7 @@ if __name__ == '__main__':
     mblines(slopes,[0]*20,xlim=[-2,2],ylim=[-2,2],color='red')
     
     # Subplots of different layouts can coexist
-    sp2 = make_blank_subplot(4,4,4,[-2,2])
+    sp2 = make_blank_subplot(4,4,4,[-2,2],bg='yellow')
     draw_closed_curve_xy([1,2,3],[0,1,0])
     # Create an mbline on the most recently created axes
     mbline(1,1)
@@ -366,7 +377,7 @@ if __name__ == '__main__':
     mblines([1,2,3],[0,0,0],ax=sp3)
     
     # Make some circles
-    draw_circles_xy([0,1,2],[0,0,0],[.5,.3,1],sp2,fc='green')
+    draw_circles_xy([0,1,2],[0,0,0],[.5,.3,1],sp2,ec='black',fc='green')
     
     # Title on selected axis
     title(r'We can use LaTeX $\sum_{n=1}^\infty\frac{-e^{i\pi}}{2^n}$',ax=sp1,size=16,pad=20)
