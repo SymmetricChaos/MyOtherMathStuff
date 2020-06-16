@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import matplotlib.collections as collections
 import matplotlib.lines as lines
 import matplotlib.patches as patches
-from Utils.PointTypes import complex_to_xy, points_to_xy
+from Utils.PointTypes import points_to_xy
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 from matplotlib.cbook import get_sample_data
 
@@ -163,13 +163,6 @@ def draw_curve_p(P,ax=None,**kwargs):
     line = lines.Line2D(x,y, axes=ax,**kwargs)
     ax.add_line(line)
 
-def draw_curve_c(C,ax=None,**kwargs):
-    if ax == None:
-        ax = plt.gca()
-    x,y = complex_to_xy(C)
-    line = lines.Line2D(x,y, axes=ax,**kwargs)
-    ax.add_line(line)
-
 
 # Draw a curve that attaches the start to the end. Same options
 def draw_closed_curve_xy(x,y,ax=None,**kwargs):
@@ -183,10 +176,6 @@ def draw_closed_curve_xy(x,y,ax=None,**kwargs):
     
 def draw_closed_curve_p(P,ax=None,**kwargs):
     x,y = points_to_xy(P)
-    draw_closed_curve_xy(x,y,ax,**kwargs)
-    
-def draw_closed_curve_c(P,ax=None,**kwargs):
-    x,y = complex_to_xy(P)
     draw_closed_curve_xy(x,y,ax,**kwargs)
 
 
@@ -202,24 +191,12 @@ def draw_dots_p(P,ax=None,**kwargs):
     x,y = points_to_xy(P)
     ax.scatter(x,y,**kwargs)
 
-def draw_dots_c(C,ax=None,**kwargs):
-    if ax == None:
-        ax = plt.gca()
-    x,y = complex_to_xy(C)
-    ax.scatter(x,y,**kwargs)
-
 
 # Connect points A and B, complex version provided, xy version doesn't make much sense
 def connect_p(A,B,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
     line = lines.Line2D([A[0],B[0]], [A[1],B[1]], axes=ax,**kwargs)
-    ax.add_line(line)
-
-def connect_c(A,B,ax=None,**kwargs):
-    if ax == None:
-        ax = plt.gca()
-    line = lines.Line2D([A.real,B.real], [A.imag,B.imag], axes=ax,**kwargs)
     ax.add_line(line)
 
 
