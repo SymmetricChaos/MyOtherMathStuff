@@ -3,6 +3,8 @@ import matplotlib.collections as collections
 import matplotlib.lines as lines
 import matplotlib.patches as patches
 from Utils.PointTypes import complex_to_xy, points_to_xy
+from matplotlib.offsetbox import OffsetImage, AnnotationBbox
+from matplotlib.cbook import get_sample_data
 
 def make_blank_canvas(xlim=None,ylim=None,size=[12,12],box=False):
     fig = plt.figure()
@@ -279,10 +281,33 @@ def text(x,y,t,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
     ax.text(x,y,t,**kwargs)
-
+    
+# Convinence for inserting images within the plot
+def plot_image(path,x,y,ax=None):
+    if ax == None:
+        ax = plt.gca()
+        
+    with get_sample_data(path) as file:
+        arr_img = plt.imread(file, format='png')
+        
+    imagebox = OffsetImage(arr_img, zoom=0.2)
+    imagebox.image.axes = ax
+    
+    ab = AnnotationBbox(imagebox, [x,y],
+                        xybox=(0,0),
+                        xycoords='data',
+                        boxcoords="offset points",
+                        pad=0.5)
+    
+    ax.add_artist(ab)
+    
+        
 #Convenience to force show without directly importing matplotlib
 def show_now():
     plt.show()
+
+
+
 
 # Quick histogram drawer with option for showing percentiles
 # Something about this doesn't work. Might have to rebuild from primitives.
@@ -305,6 +330,7 @@ def histoplot(L,bins,percentiles=[],size=[13,6],title=""):
 if __name__ == '__main__':
     
     import numpy as np
+    import os
     
     ## SIMPLE PLOT ## 
     
@@ -362,4 +388,9 @@ if __name__ == '__main__':
     # Title on selected axis
     title(r'We can use LaTeX $\sum_{n=1}^\infty\frac{-e^{i\pi}}{2^n}$',ax=sp1,size=16,pad=20)
     canvas_title("A Title for the whole Canvas")
+    
+    cur_dir = os.getcwd()
+    tree_pic = cur_dir+"\\tree.png"
+    plot_image(tree_pic,2,-2,ax=sp1)
+    
     show_now()
