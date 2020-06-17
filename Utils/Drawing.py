@@ -15,7 +15,7 @@ def make_blank_plot(a=1,b=1,p=1,xlim=None,ylim=None,box=True,bg='white'):
     
     # If no coordinate range is given fit everything into a square
     if not xlim and not ylim:
-        ax.set_aspect("equal","datalim")
+        pass
     # If only xrange is given fit a square
     elif not ylim:
         ax.set_xlim(xlim)
@@ -31,7 +31,27 @@ def make_blank_plot(a=1,b=1,p=1,xlim=None,ylim=None,box=True,bg='white'):
     ax.set_xticks([])
     ax.set_yticks([])
     ax.set_facecolor(bg)
+    return ax
+
+def make_plot(a=1,b=1,p=1,xlim=None,ylim=None,box=True,bg='white'):
+    ax = plt.subplot(a,b,p)
     
+    # If no coordinate range is given fit everything into a square
+    if not xlim and not ylim:
+        pass
+    # If only xrange is given fit a square
+    elif not ylim:
+        ax.set_xlim(xlim)
+        ax.set_ylim(xlim)
+    # If both are given fix the rectangle
+    else:
+        ax.set_xlim(xlim)
+        ax.set_ylim(ylim)
+    
+    if box == False:
+        ax.axis('off')
+
+    ax.set_facecolor(bg)
     return ax
 
 
@@ -284,23 +304,16 @@ def show_now():
 
 # Quick histogram drawer with option for showing percentiles
 # Something about this doesn't work. Might have to rebuild from primitives.
-#def histogram(L,bins,ax=None):
-#    if ax == None:
-#        ax = plt.gca()
-#    make_blank_canvas()
-#    plt.hist(L,bins=bins)
-#    plt.xticks(bins)
-#    plt.title(title,size=20)
-#    if percentiles:
-#        percentile_vals = np.nanpercentile(L,np.asarray(percentiles))
-#        for x in percentile_vals:
-#            plt.axvline(x,color='black',linewidth=3)
-#        percentile_legend = []
-#        for i,j in zip(percentiles,percentile_vals):
-#             percentile_legend.append(f"{i}th Percentile: {j:.1f}")
-#        plt.legend(percentile_legend)
+def histogram(L,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
+    return ax.hist(L,**kwargs)
 
-
+def pie_chart(L,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
+    return ax.pie(L,**kwargs)
+    
 
 if __name__ == '__main__':
     
@@ -351,5 +364,14 @@ if __name__ == '__main__':
     cur_dir = os.getcwd()
     tree_pic = cur_dir+"\\Tree.png"
     image(tree_pic,2,-1,scale=.3,ax=sp1)
+    
+    sp5 = make_plot(4,4,9)
+    H = histogram(np.random.gamma(9,3,900),fc="orange",ec="black")
+    title("Histogram")
+    
+    sp6 = make_blank_plot(4,4,10)
+    pie_chart([1,1,2,2,3])
+    title("Pie Chart")
+    
     
     show_now()
