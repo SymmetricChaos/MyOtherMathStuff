@@ -261,21 +261,19 @@ def text(x,y,t,ax=None,**kwargs):
     
 # Convinence for inserting images within the plot
 # This definite isn't the best way to do this
-def image_box(path,x,y,ax=None,pad=0.5):
+def image(path,x=0,y=0,scale=1,ax=None):
     if ax == None:
         ax = plt.gca()
         
     with get_sample_data(path) as file:
         arr_img = plt.imread(file, format='png')
-        
-    imagebox = OffsetImage(arr_img, zoom=0.2)
-    imagebox.image.axes = ax
+    
+    imagebox = OffsetImage(arr_img, zoom=scale)
     
     ab = AnnotationBbox(imagebox, [x,y],
-                        xybox=(0,0),
                         xycoords='data',
                         boxcoords="offset points",
-                        pad=pad)
+                        frameon=False)
 
     ax.add_artist(ab)
     
@@ -289,19 +287,21 @@ def show_now():
 
 # Quick histogram drawer with option for showing percentiles
 # Something about this doesn't work. Might have to rebuild from primitives.
-def histoplot(L,bins,percentiles=[],size=[13,6],title=""):
-    make_blank_canvas()
-    plt.hist(L,bins=bins)
-    plt.xticks(bins)
-    plt.title(title,size=20)
-    if percentiles:
-        percentile_vals = np.nanpercentile(L,np.asarray(percentiles))
-        for x in percentile_vals:
-            plt.axvline(x,color='black',linewidth=3)
-        percentile_legend = []
-        for i,j in zip(percentiles,percentile_vals):
-             percentile_legend.append(f"{i}th Percentile: {j:.1f}")
-        plt.legend(percentile_legend)
+#def histogram(L,bins,ax=None):
+#    if ax == None:
+#        ax = plt.gca()
+#    make_blank_canvas()
+#    plt.hist(L,bins=bins)
+#    plt.xticks(bins)
+#    plt.title(title,size=20)
+#    if percentiles:
+#        percentile_vals = np.nanpercentile(L,np.asarray(percentiles))
+#        for x in percentile_vals:
+#            plt.axvline(x,color='black',linewidth=3)
+#        percentile_legend = []
+#        for i,j in zip(percentiles,percentile_vals):
+#             percentile_legend.append(f"{i}th Percentile: {j:.1f}")
+#        plt.legend(percentile_legend)
 
 
 
@@ -352,8 +352,7 @@ if __name__ == '__main__':
     canvas_title("A Title for the whole Canvas")
     
     cur_dir = os.getcwd()
-    tree_pic = cur_dir+"\\tree.png"
-    image_box(tree_pic,0,2.2,ax=sp1)
-    draw_dots_xy(0,0,sp1,zorder=5,color='black',s=100)
+    tree_pic = cur_dir+"\\Tree.png"
+    image(tree_pic,2,-1,scale=.3,ax=sp1)
     
     show_now()
