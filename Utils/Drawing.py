@@ -33,7 +33,7 @@ def make_blank_plot(a=1,b=1,p=1,xlim=None,ylim=None,box=True,bg='white'):
     ax.set_facecolor(bg)
     return ax
 
-def make_plot(a=1,b=1,p=1,xlim=None,ylim=None,box=True,bg='white'):
+def make_plot(a=1,b=1,p=1,xlim=None,ylim=None,bg='white'):
     ax = plt.subplot(a,b,p)
     
     # If no coordinate range is given fit everything into a square
@@ -47,9 +47,6 @@ def make_plot(a=1,b=1,p=1,xlim=None,ylim=None,box=True,bg='white'):
     else:
         ax.set_xlim(xlim)
         ax.set_ylim(ylim)
-    
-    if box == False:
-        ax.axis('off')
 
     ax.set_facecolor(bg)
     return ax
@@ -301,9 +298,7 @@ def show_now():
 
 
 
-
-# Quick histogram drawer with option for showing percentiles
-# Something about this doesn't work. Might have to rebuild from primitives.
+# Statistical plots
 def histogram(L,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
@@ -313,6 +308,11 @@ def pie_chart(L,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
     return ax.pie(L,**kwargs)
+
+def boxplot(L,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
+    return ax.boxplot(L,**kwargs)
     
 
 if __name__ == '__main__':
@@ -361,17 +361,24 @@ if __name__ == '__main__':
     title(r'We can use LaTeX $\sum_{n=1}^\infty\frac{-e^{i\pi}}{2^n}$',ax=sp1,size=16,pad=20)
     canvas_title("A Title for the whole Canvas")
     
+    # Show how to put an image into a plot
     cur_dir = os.getcwd()
     tree_pic = cur_dir+"\\Tree.png"
     image(tree_pic,2,-1,scale=.3,ax=sp1)
     
+    # Statistical plots
     sp5 = make_plot(4,4,9)
     H = histogram(np.random.gamma(9,3,900),fc="orange",ec="black")
     title("Histogram")
     
     sp6 = make_blank_plot(4,4,10)
-    pie_chart([1,1,2,2,3])
+    PC = pie_chart([1,1,2,2,5],explode=[0,.1,0,0,.05],frame=True,radius=.3,center=(.5,.5))
     title("Pie Chart")
     
+    sp7 = make_blank_plot(4,4,13)
+    PC = boxplot([np.random.exponential(1,50),
+                  np.random.exponential(2,50),
+                  np.random.standard_normal(50)])
+    title("Boxplot")
     
     show_now()
