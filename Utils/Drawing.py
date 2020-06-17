@@ -10,8 +10,8 @@ def make_blank_canvas(size=[12,12],**kwargs):
     fig.set_size_inches(size[0],size[1])
     return fig
 
-def make_blank_plot(a=1,b=1,p=1,xlim=None,ylim=None,box=True,bg='white'):
-    ax = plt.subplot(a,b,p)
+def make_blank_plot(a=1,b=1,p=1,xlim=None,ylim=None,box=True,**kwargs):
+    ax = plt.subplot(a,b,p,**kwargs)
     
     # If no coordinate range is given fit everything into a square
     if not xlim and not ylim:
@@ -30,11 +30,10 @@ def make_blank_plot(a=1,b=1,p=1,xlim=None,ylim=None,box=True,bg='white'):
         
     ax.set_xticks([])
     ax.set_yticks([])
-    ax.set_facecolor(bg)
     return ax
 
-def make_plot(a=1,b=1,p=1,xlim=None,ylim=None,bg='white'):
-    ax = plt.subplot(a,b,p)
+def make_plot(a=1,b=1,p=1,xlim=None,ylim=None,**kwargs):
+    ax = plt.subplot(a,b,p,**kwargs)
     
     # If no coordinate range is given fit everything into a square
     if not xlim and not ylim:
@@ -48,7 +47,6 @@ def make_plot(a=1,b=1,p=1,xlim=None,ylim=None,bg='white'):
         ax.set_xlim(xlim)
         ax.set_ylim(ylim)
 
-    ax.set_facecolor(bg)
     return ax
 
 
@@ -321,7 +319,7 @@ if __name__ == '__main__':
     import os
     
     # Subplots example
-    make_blank_canvas([12,12],facecolor="lightgray")
+    canvas = make_blank_canvas([15,15],facecolor="lightgray")
     
     # Make and use a subplot
     sp1 = make_blank_plot(2,2,1,[-3,3])
@@ -333,8 +331,8 @@ if __name__ == '__main__':
     mblines(slopes,[0]*20,xlim=[-2,2],ylim=[-2,2],color='red')
     
     # Subplots of different layouts can coexist
-    sp2 = make_blank_plot(4,4,4,[-2,2],bg='yellow')
-    draw_closed_curve_xy([1,2,3],[0,1,0])
+    sp2 = make_blank_plot(4,4,4,[-2,2],facecolor='yellow')
+    draw_closed_curve_xy([1,2,3],[0,1,0],color='salmon')
     # Create an mbline on the most recently created axes
     mbline(1,1)
     
@@ -371,6 +369,8 @@ if __name__ == '__main__':
     H = histogram(np.random.gamma(9,3,900),fc="orange",ec="black")
     title("Histogram")
     
+    # For some reason a pie chart with automatically supress the frame of the 
+    # plot that contains it
     sp6 = make_blank_plot(4,4,10)
     PC = pie_chart([1,1,2,2,5],explode=[0,.1,0,0,.05],frame=True,radius=.3,center=(.5,.5))
     title("Pie Chart")
@@ -380,5 +380,7 @@ if __name__ == '__main__':
                   np.random.exponential(2,50),
                   np.random.standard_normal(50)])
     title("Boxplot")
-    
+#    plt.tight_layout()
     show_now()
+    
+    canvas.savefig('fig.png',bbox_inches='tight')
