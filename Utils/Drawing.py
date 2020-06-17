@@ -311,7 +311,11 @@ def boxplot(L,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
     return ax.boxplot(L,**kwargs)
-    
+
+def violin_plot(L,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
+    return ax.violinplot(L,**kwargs)
 
 if __name__ == '__main__':
     
@@ -380,7 +384,13 @@ if __name__ == '__main__':
                   np.random.exponential(2,50),
                   np.random.standard_normal(50)])
     title("Boxplot")
-#    plt.tight_layout()
+    
+    sp8 = make_blank_plot(4,4,14)
+    PC = violin_plot([np.random.exponential(1,50),
+                      np.random.exponential(2,50),
+                      np.random.standard_normal(50)])
+    title("Violin Plot")
+    
     show_now()
     
     canvas.savefig('fig.png',bbox_inches='tight')
