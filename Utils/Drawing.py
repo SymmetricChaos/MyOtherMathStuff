@@ -5,10 +5,9 @@ from Utils.PointTypes import points_to_xy
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 from matplotlib.cbook import get_sample_data
 
-def make_blank_canvas(size=[12,12],box=False,bg="white"):
-    fig = plt.figure()
+def make_blank_canvas(size=[12,12],**kwargs):
+    fig = plt.figure(**kwargs)
     fig.set_size_inches(size[0],size[1])
-    fig.set_facecolor(bg)
     return fig
 
 def make_blank_plot(a=1,b=1,p=1,xlim=None,ylim=None,box=True,bg='white'):
@@ -207,7 +206,6 @@ def canvas_title(text="",fig=None,**kwargs):
 def draw_circles_xy(X,Y,R,ax=None, **kwargs):
     if ax == None:
         ax = plt.gca()
-        
     circles = []
     for x,y,r in zip(X,Y,R):  
         C = plt.Circle((x,y), radius=r, **kwargs)
@@ -218,7 +216,6 @@ def draw_circles_xy(X,Y,R,ax=None, **kwargs):
 def draw_circles_p(P,R,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
-        
     circles = []
     for p,r in zip(P,R):  
         C = plt.Circle(p, radius=r, **kwargs)
@@ -260,7 +257,7 @@ def text(x,y,t,ax=None,**kwargs):
 
     
 # Convinence for inserting images within the plot
-# This definite isn't the best way to do this
+# This definitely isn't the best way to do this
 def image(path,x=0,y=0,scale=1,ax=None):
     if ax == None:
         ax = plt.gca()
@@ -311,7 +308,7 @@ if __name__ == '__main__':
     import os
     
     # Subplots example
-    make_blank_canvas([12,12],bg="lightgray",box=True)
+    make_blank_canvas([12,12],facecolor="lightgray")
     
     # Make and use a subplot
     sp1 = make_blank_plot(2,2,1,[-3,3])
