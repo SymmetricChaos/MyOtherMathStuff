@@ -329,10 +329,21 @@ def boxplot(L,ax=None,**kwargs):
         ax = plt.gca()
     return ax.boxplot(L,**kwargs)
 
-def violin_plot(L,ax=None,**kwargs):
+def violin_plot(L,ax=None,positions=[],labels=[],vert=True,**kwargs):
     if ax == None:
         ax = plt.gca()
-    return ax.violinplot(L,**kwargs)
+        
+    if positions == []:
+        positions = [i for i in range(len(L))]
+
+    if labels != []:        
+        if vert:
+            ax.set_xticks(positions)
+            ax.set_xticklabels(labels)
+        else:
+            ax.set_yticks(positions)
+            ax.set_yticklabels(labels)
+    return ax.violinplot(L,positions=positions,vert=vert,**kwargs)
 
 
 
@@ -400,17 +411,20 @@ if __name__ == '__main__':
     sp6 = make_blank_plot(4,4,10)
     PC = pie_chart([1,1,2,2,5],explode=[0,.1,0,0,.05],frame=True,radius=.3,center=(.5,.5))
     title("Pie Chart")
+
+    fake_data = [np.random.exponential(1,50),
+                  np.random.exponential(2,50),
+                  np.random.standard_normal(50)]
     
     sp7 = make_plot(4,4,13)
-    PC = boxplot([np.random.exponential(1,50),
-                  np.random.exponential(2,50),
-                  np.random.standard_normal(50)])
+    PC = boxplot(fake_data,labels=["A","B","C"])
     title("Boxplot")
     
+    
+    
     sp8 = make_blank_plot(4,4,14)
-    PC = violin_plot([np.random.exponential(1,50),
-                      np.random.exponential(2,50),
-                      np.random.standard_normal(50)])
+    
+    PC = violin_plot(fake_data,labels=["A","B","C"],vert=False)
     title("Violin Plot")
     
     show_now()
