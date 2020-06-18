@@ -289,11 +289,28 @@ def image(path,x=0,y=0,scale=1,ax=None):
 
     ax.add_artist(ab)
     
+
+def image_box(path,x=0,y=0,scale=1,pad=0,ax=None):
+    if ax == None:
+        ax = plt.gca()
+        
+    with get_sample_data(path) as file:
+        arr_img = plt.imread(file, format='png')
+    
+    imagebox = OffsetImage(arr_img, zoom=scale)
+    
+    ab = AnnotationBbox(imagebox, [x,y],
+                        xycoords='data',
+                        boxcoords="offset points",
+                        frameon=True,
+                        pad=pad)
+
+    ax.add_artist(ab)
+    
         
 #Convenience to force show without directly importing matplotlib
 def show_now():
     plt.show()
-
 
 
 # Statistical plots
@@ -317,6 +334,10 @@ def violin_plot(L,ax=None,**kwargs):
         ax = plt.gca()
     return ax.violinplot(L,**kwargs)
 
+
+
+
+
 if __name__ == '__main__':
     
     import numpy as np
@@ -330,9 +351,9 @@ if __name__ == '__main__':
     
     # mbline takes ylim and xlim from axes to automatically appear infinite
     mbline(-.5,0)
-    # mbline can be manually limited
+    # mbline or mblines can be manually limited
     slopes = np.linspace(0,5,10)
-    mblines(slopes,[0]*20,xlim=[-2,2],ylim=[-2,2],color='red')
+    mblines(slopes,[0]*20,xlim=[-2,1],ylim=[-2,1],color='red')
     
     # Subplots of different layouts can coexist
     sp2 = make_blank_plot(4,4,4,[-2,2],facecolor='yellow')
@@ -366,7 +387,8 @@ if __name__ == '__main__':
     # Show how to put an image into a plot
     cur_dir = os.getcwd()
     tree_pic = cur_dir+"\\Tree.png"
-    image(tree_pic,2,-1,scale=.3,ax=sp1)
+    image(tree_pic,-2,1,scale=.3,ax=sp1)
+    image_box(tree_pic,2,-1,scale=.3,ax=sp1)
     
     # Statistical plots
     sp5 = make_plot(4,4,9)
@@ -379,7 +401,7 @@ if __name__ == '__main__':
     PC = pie_chart([1,1,2,2,5],explode=[0,.1,0,0,.05],frame=True,radius=.3,center=(.5,.5))
     title("Pie Chart")
     
-    sp7 = make_blank_plot(4,4,13)
+    sp7 = make_plot(4,4,13)
     PC = boxplot([np.random.exponential(1,50),
                   np.random.exponential(2,50),
                   np.random.standard_normal(50)])
