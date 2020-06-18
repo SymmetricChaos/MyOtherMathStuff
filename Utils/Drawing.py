@@ -10,8 +10,35 @@ def make_blank_canvas(size=[12,12],**kwargs):
     fig.set_size_inches(size[0],size[1])
     return fig
 
-def make_blank_plot(a=1,b=1,p=1,xlim=None,ylim=None,box=True,**kwargs):
-    ax = plt.subplot(a,b,p,**kwargs)
+def make_plot(a=1,b=1,p=1,xlim=None,ylim=None,fig=None,**kwargs):
+    
+    if fig == None:
+        fig = plt.gcf()
+        
+    ax = fig.add_subplot(a,b,p,**kwargs)
+    
+    # If no coordinate range is given fit everything into a square
+    if not xlim and not ylim:
+        pass
+    # If only xrange is given fit a square
+    elif not ylim:
+        ax.set_xlim(xlim)
+        ax.set_ylim(xlim)
+    # If both are given fix the rectangle
+    else:
+        ax.set_xlim(xlim)
+        ax.set_ylim(ylim)
+
+    return ax
+
+
+def make_blank_plot(a=1,b=1,p=1,xlim=None,ylim=None,box=True,fig=None,**kwargs):
+
+    if fig == None:
+        fig = plt.gcf()
+        
+    ax = fig.add_subplot(a,b,p,**kwargs)
+    
     
     # If no coordinate range is given fit everything into a square
     if not xlim and not ylim:
@@ -32,22 +59,7 @@ def make_blank_plot(a=1,b=1,p=1,xlim=None,ylim=None,box=True,**kwargs):
     ax.set_yticks([])
     return ax
 
-def make_plot(a=1,b=1,p=1,xlim=None,ylim=None,**kwargs):
-    ax = plt.subplot(a,b,p,**kwargs)
-    
-    # If no coordinate range is given fit everything into a square
-    if not xlim and not ylim:
-        pass
-    # If only xrange is given fit a square
-    elif not ylim:
-        ax.set_xlim(xlim)
-        ax.set_ylim(xlim)
-    # If both are given fix the rectangle
-    else:
-        ax.set_xlim(xlim)
-        ax.set_ylim(ylim)
 
-    return ax
 
 
 # Convenience function for solving mbline equations
@@ -264,12 +276,21 @@ def draw_rect_xy(x0,y0,x1,y1,ax=None,**kwargs):
     return rect
 
 
-# Convenience for writing text
+# Text
 def text(x,y,t,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
     ax.text(x,y,t,**kwargs)
+    
+#def annotate(x,y,t,ax=None,**kwargs):
+#    if ax == None:
+#        ax = plt.gca()
+#    ax.text(x,y,t,**kwargs)
 
+#def table(x,y,t,ax=None,**kwargs):
+#    if ax == None:
+#        ax = plt.gca()
+#    ax.text(x,y,t,**kwargs)
     
 # Convinence for inserting images within the plot
 # This definitely isn't the best way to do this
@@ -324,15 +345,20 @@ def pie_chart(L,ax=None,**kwargs):
         ax = plt.gca()
     return ax.pie(L,**kwargs)
 
-def boxplot(L,ax=None,**kwargs):
+def boxplot(L,ax=None,positions=[],labels=[],vert=True,**kwargs):
     if ax == None:
         ax = plt.gca()
-    return ax.boxplot(L,**kwargs)
+    
+    if positions == []:
+        positions = [i for i in range(len(L))]
+    
+    return ax.boxplot(L,positions=positions,labels=labels,vert=True,**kwargs)
 
 def violin_plot(L,ax=None,positions=[],labels=[],vert=True,**kwargs):
     if ax == None:
         ax = plt.gca()
-        
+    
+    # MPL doesn't support this by default like it does for boxplots
     if positions == []:
         positions = [i for i in range(len(L))]
 
@@ -343,6 +369,7 @@ def violin_plot(L,ax=None,positions=[],labels=[],vert=True,**kwargs):
         else:
             ax.set_yticks(positions)
             ax.set_yticklabels(labels)
+    
     return ax.violinplot(L,positions=positions,vert=vert,**kwargs)
 
 
@@ -355,7 +382,7 @@ if __name__ == '__main__':
     import os
     
     # Subplots example
-    canvas = make_blank_canvas([15,15],facecolor="lightgray")
+    canvas1 = make_blank_canvas([15,15],facecolor="lightgray")
     
     # Make and use a subplot
     sp1 = make_blank_plot(2,2,1,[-3,3])
@@ -401,32 +428,35 @@ if __name__ == '__main__':
     image(tree_pic,-2,1,scale=.3,ax=sp1)
     image_box(tree_pic,2,-1,scale=.3,ax=sp1)
     
-    # Statistical plots
-    sp5 = make_plot(4,4,9)
-    H = histogram(np.random.gamma(9,3,900),fc="orange",ec="black")
+    canvas1.savefig('fig1.png',bbox_inches='tight')
+    
+    
+    
+    canvas2 = make_blank_canvas([12,12])
+    canvas_title("Some Satistical Plots",size=25)
+    
+    #Statistical plots
+    make_plot(2,2,1)
+    histogram(np.random.gamma(9,3,900),fc="orange",ec="black")
     title("Histogram")
     
-    # For some reason a pie chart with automatically supress the frame of the 
+    # For some reason a pie chart will automatically supress the frame of the 
     # plot that contains it
-    sp6 = make_blank_plot(4,4,10)
-    PC = pie_chart([1,1,2,2,5],explode=[0,.1,0,0,.05],frame=True,radius=.3,center=(.5,.5))
+    make_blank_plot(2,2,2)
+    pie_chart([1,1,2,2,5],explode=[0,.1,0,0,.05],frame=True,
+              radius=.3,center=(.5,.5))
     title("Pie Chart")
 
     fake_data = [np.random.exponential(1,50),
                   np.random.exponential(2,50),
                   np.random.standard_normal(50)]
     
-    sp7 = make_plot(4,4,13)
-    PC = boxplot(fake_data,labels=["A","B","C"])
+    make_plot(2,2,3)
+    boxplot(fake_data,labels=["A","B","C"])
     title("Boxplot")
-    
-    
-    
-    sp8 = make_blank_plot(4,4,14)
-    
-    PC = violin_plot(fake_data,labels=["A","B","C"],vert=False)
+
+    make_blank_plot(2,2,4)
+    violin_plot(fake_data,labels=["A","B","C"],vert=False)
     title("Violin Plot")
     
-    show_now()
-    
-    canvas.savefig('fig.png',bbox_inches='tight')
+    canvas2.savefig('fig2.png',bbox_inches='tight')
