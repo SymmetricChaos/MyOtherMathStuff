@@ -1,9 +1,11 @@
+
 import matplotlib.pyplot as plt
 import matplotlib.lines as lines
 import matplotlib.patches as patches
 from Utils.PointTypes import points_to_xy
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 from matplotlib.cbook import get_sample_data
+from matplotlib.table import table as mpltable
 
 def make_blank_canvas(size=[12,12],**kwargs):
     fig = plt.figure(**kwargs)
@@ -287,10 +289,14 @@ def text(x,y,t,ax=None,**kwargs):
 #        ax = plt.gca()
 #    ax.text(x,y,t,**kwargs)
 
-#def table(x,y,t,ax=None,**kwargs):
-#    if ax == None:
-#        ax = plt.gca()
-#    ax.text(x,y,t,**kwargs)
+def table(cell_text,yscale=1,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
+        
+    T = mpltable(cellText = cell_text,ax=ax,**kwargs)
+    T.scale(1,yscale)
+    
+    return ax.add_table(T)
     
 # Convinence for inserting images within the plot
 # This definitely isn't the best way to do this
@@ -381,7 +387,7 @@ if __name__ == '__main__':
     import numpy as np
     import os
     
-    # Subplots example
+    ### Subplots example ###
     canvas1 = make_blank_canvas([15,15],facecolor="lightgray")
     
     # Make and use a subplot
@@ -428,21 +434,31 @@ if __name__ == '__main__':
     image(tree_pic,-2,1,scale=.3,ax=sp1)
     image_box(tree_pic,2,-1,scale=.3,ax=sp1)
     
-    canvas1.savefig('fig1.png',bbox_inches='tight')
+    sp5 = make_blank_plot(4,4,9)
+    table([["A","B","C"],
+           ["1","2","3"],
+           ["x","y","z"],
+           ["{}"," ","NULL"]],
+          loc='center',colWidths=[.2,.2,.2],yscale=2)
+
+    
+    canvas1.savefig('fig1.png', dpi=canvas1.dpi)
     
     
     
+    
+    
+    ### Statistical plots ###
     canvas2 = make_blank_canvas([12,12])
     canvas_title("Some Satistical Plots",size=25)
     
-    #Statistical plots
-    make_plot(2,2,1)
+    make_plot(3,3,1)
     histogram(np.random.gamma(9,3,900),fc="orange",ec="black")
     title("Histogram")
     
     # For some reason a pie chart will automatically supress the frame of the 
     # plot that contains it
-    make_blank_plot(2,2,2)
+    make_blank_plot(3,3,2)
     pie_chart([1,1,2,2,5],explode=[0,.1,0,0,.05],frame=True,
               radius=.3,center=(.5,.5))
     title("Pie Chart")
@@ -451,12 +467,12 @@ if __name__ == '__main__':
                   np.random.exponential(2,50),
                   np.random.standard_normal(50)]
     
-    make_plot(2,2,3)
+    make_plot(3,3,3)
     boxplot(fake_data,labels=["A","B","C"])
     title("Boxplot")
 
-    make_blank_plot(2,2,4)
+    make_blank_plot(3,3,4)
     violin_plot(fake_data,labels=["A","B","C"],vert=False)
     title("Violin Plot")
     
-    canvas2.savefig('fig2.png',bbox_inches='tight')
+    canvas2.savefig('fig2.png', dpi=canvas2.dpi, pad=0)
