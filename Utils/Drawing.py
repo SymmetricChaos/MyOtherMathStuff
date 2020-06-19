@@ -378,6 +378,12 @@ def violin_plot(L,ax=None,positions=[],labels=[],vert=True,**kwargs):
     
     return ax.violinplot(L,positions=positions,vert=vert,**kwargs)
 
+def quiver_plot(X,Y,U,V,ax=None,positions=[],labels=[],vert=True,**kwargs):
+    if ax == None:
+        ax = plt.gca()
+        
+    return ax.quiver(X,Y,U,V)
+    
 
 
 
@@ -441,7 +447,6 @@ if __name__ == '__main__':
            ["{}"," ","NULL"]],
           loc='center',colWidths=[.2,.2,.2],yscale=2)
 
-    
     canvas1.savefig('fig1.png', dpi=canvas1.dpi)
     
     
@@ -449,7 +454,7 @@ if __name__ == '__main__':
     
     
     ### Statistical plots ###
-    canvas2 = make_blank_canvas([12,12])
+    canvas2 = make_blank_canvas([15,15])
     canvas_title("Some Satistical Plots",size=25)
     
     make_plot(3,3,1)
@@ -474,5 +479,14 @@ if __name__ == '__main__':
     make_blank_plot(3,3,4)
     violin_plot(fake_data,labels=["A","B","C"],vert=False)
     title("Violin Plot")
+    
+    X, Y = np.meshgrid(np.arange(0, 2 * np.pi, .2), np.arange(0, 2 * np.pi, .2))
+    U = np.cos(X)
+    V = np.sin(Y)
+    
+    make_blank_plot(3,3,5)
+    quiver_plot(X,Y,U,V)
+    title("Quiver Plot")
+    
     
     canvas2.savefig('fig2.png', dpi=canvas2.dpi, pad=0)
