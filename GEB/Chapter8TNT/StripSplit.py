@@ -5,12 +5,12 @@ from Utils.StringManip import left_string
 
 # Functions for splitting strings to be used for checking well formedness
 def split_add_mul(x):
-    L,lo,hi = left_string(x,"(","⋅+")
+    L,lo,hi = left_string(x,"(","⋅+",inner=True)
     R = x[hi+2:-1]
     return L,R
 
 def split_logical(x):
-    L,lo,hi = left_string(x,"<","∧∨⊃")
+    L,lo,hi = left_string(x,"<","∧∨⊃",inner=True)
     R = x[hi+2:-1]
     return L,R
 

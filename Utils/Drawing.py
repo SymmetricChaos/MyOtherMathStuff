@@ -488,5 +488,4 @@ if __name__ == '__main__':
     quiver_plot(X,Y,U,V)
     title("Quiver Plot")
     
-    
     canvas2.savefig('fig2.png', dpi=canvas2.dpi, pad=0)

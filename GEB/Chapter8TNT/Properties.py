@@ -56,7 +56,7 @@ def is_pure_num(x):
 # Variables and numbers are terms as are negations and arithmetic of them
 def is_term(x):
     x = strip_neg(x)
-    if is_var(x) or is_num(x):
+    if is_num(x):
         return True
     else:
         # Before splitting we strip out S from the left
@@ -153,6 +153,53 @@ def is_closed(x):
 
 
 if __name__ == '__main__':
-    theorems = ["∀b:(d+Sb)=S(d+b)"]
-    for i in theorems:
-        print(f"is {i} well-formed? {is_well_formed(i)}")
+    
+    bool_string = lambda x: "False" if x == 0 else "True"
+    
+    def test_vars():
+        var = ["a","b","a''","7","~a","'a"]
+        print("\nCheck if a string is a variable")
+        for i in var:
+            print(f"{bool_string(is_var(i)):<5}  {i}")
+            
+    def test_nums():
+        var = ["a","b","a''","0","S0","SSa'","~a","'a"]
+        print("\nTest if a string is a number")
+        for i in var:
+            print(f"{bool_string(is_num(i)):<5}  {i}")
+     
+    def test_pure_nums():
+        var = ["0","S0","S","SSa'","~a","'a"]
+        print("\nTest if a string is a number")
+        for i in var:
+            print(f"{bool_string(is_pure_num(i)):<5}  {i}")
+    
+    def test_terms():
+        var = ["b","0","Sc''","~a","(a+a)","S"]
+        print("\nTest if a string is a term")
+        for i in var:
+            print(f"{bool_string(is_term(i)):<5}  {i}")
+    
+    
+    test_vars()
+    test_nums()
+    test_pure_nums()
+    test_terms()
+    
+    terms = ["0","b","SSa'","(S0⋅(SS0+c))","S(Sa⋅(Sb⋅Sc))"]
+    atoms = ["S0=0","(SS0+SS0)=SSSS0","S(b+c)=(S(c⋅d)⋅e)"]
+    compounds = ["<S0=0⊃S0=0>"]
+
+    parts_list = [terms,atoms,compounds]
+    check_list = [is_term,is_atom,is_compound]
+    name_list = ["Terms","Atoms","Compound Formulas"]
+    
+    print("\n\n\nChecking well-formedness\nAll should be well-formed (but may be false)")
+    for parts,check,name in zip(parts_list,check_list,name_list):
+        print(f"\n{name}")
+        l = max([len(p) for p in parts])
+        for p in parts:
+            if check(p):
+                print(f"{p:<{l}} is valid")
+            else:
+                print(f"{p:<{l}} ERROR")

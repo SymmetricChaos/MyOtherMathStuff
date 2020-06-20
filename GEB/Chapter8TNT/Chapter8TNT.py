@@ -229,25 +229,6 @@ if __name__ == '__main__':
     print(f"Free variables {get_free_vars(open_formula)}")
     
 
-    terms = ["0","b","SSa'","(S0⋅(SS0+c))","S(Sa⋅(Sb⋅Sc))"]
-    atoms = ["S0=0","(SS0+SS0)=SSSS0","S(b+c)=(S(c⋅d)⋅e)"]
-    compounds = ["<S0=0⊃∀c:~∃b:(b+b)=c>"]
-
-    parts_list = [terms,atoms,compounds]
-    check_list = [is_term,is_atom,is_compound]
-    name_list = ["Terms","Atoms","Compound Formulas"]
-    
-    print("\n\n\nChecking well-formedness\nAll should be well-formed (but may be false)")
-    for parts,check,name in zip(parts_list,check_list,name_list):
-        print(f"\n{name}")
-        l = max([len(p) for p in parts])
-        for p in parts:
-            if check(p):
-                print(f"{p:<{l}} {translate(p)}")
-            else:
-                print(f"{p:<{l}} ERROR")
-    
-    
     print("\n\n\nTranslated Axioms of Peano Arithmetic")
     for i in PeanoAxioms:
         print(f"{i}\n{translate(i)}\n")
@@ -287,73 +268,73 @@ if __name__ == '__main__':
     print(f"{transitivity(trans_example1,trans_example2)}")
 
 
-    print("\n\n\nDeduction of Commutativity")
-    T = Deduction(PeanoAxioms[2])
-    T.specify(1,'a','d')
-    T.specify(2,'b','Sc')
-    T.specify(1,'a','Sd')
-    T.specify(4,'b','c')
-    T.symmetry(5)
-    
-    F = T.fantasy("∀d:(d+Sc)=(Sd+c)")
-    F.specify(1,'d','d')
-    F.successor(2)
-    F.add_premise(T[3])
-    F.transitivity(4,3)
-    F.add_premise(T[6])
-    F.transitivity(5,6)
-    F.generalize(7,'d')
-    F.implication()
-    
-    T.generalize(8,'c')
-    T.specify(2,'b','0')
-    T.add_premise(PeanoAxioms[1])
-    T.specify(11,'a','d')
-    T.successor(12)
-    T.transitivity(10,13)
-    T.specify(11,'a','Sd')
-    T.symmetry(15)
-    T.transitivity(14,16)
-    T.generalize(17,'d')
-    T.induction("∀d:(d+Sc)=(Sd+c)",'c',9,18)
-    T.specify(1,'a','c')
-    T.specify(20,'b','d')
-    T.specify(1,'a','d')
-    T.specify(22,'b','c')
-    T.symmetry(23)
-    T.specify(19,'c','c')
-    T.specify(25,'d','d')
-    
-    G = T.fantasy("∀c:(c+d)=(d+c)")
-    G.specify(1,'c','c')
-    G.successor(2)
-    G.add_premise(T[21])
-    G.transitivity(4,3)
-    G.add_premise(T[24])
-    G.transitivity(5,6)
-    G.add_premise(T[26])
-    G.transitivity(7,8)
-    G.generalize(9,'c')
-    G.implication()
-    
-    T.generalize(28,'d')
-    T.specify(11,'a','c')
-    T.specify(1,'a','0')
-    T.specify(31,'b','b')
-    
-    H = T.fantasy("(0+b)=b")
-    H.successor(1)
-    H.add_premise(T[32])
-    H.transitivity(3,2)
-    H.implication()
-    
-    T.generalize(34,'b')
-    T.specify(11,'a','0')
-    T.induction("(0+b)=b",'b',35,36)
-    T.specify(37,'b','c')
-    T.symmetry(38)
-    T.transitivity(30,39)
-    T.generalize(40,'c')
-    T.induction("∀c:(c+d)=(d+c)",'d',29,41)
-    
-    print(T.write_theorems_and_descriptions())
+#    print("\n\n\nDeduction of Commutativity")
+#    T = Deduction(PeanoAxioms[2])
+#    T.specify(1,'a','d')
+#    T.specify(2,'b','Sc')
+#    T.specify(1,'a','Sd')
+#    T.specify(4,'b','c')
+#    T.symmetry(5)
+#    
+#    F = T.fantasy("∀d:(d+Sc)=(Sd+c)")
+#    F.specify(1,'d','d')
+#    F.successor(2)
+#    F.add_premise(T[3])
+#    F.transitivity(4,3)
+#    F.add_premise(T[6])
+#    F.transitivity(5,6)
+#    F.generalize(7,'d')
+#    F.implication()
+#    
+#    T.generalize(8,'c')
+#    T.specify(2,'b','0')
+#    T.add_premise(PeanoAxioms[1])
+#    T.specify(11,'a','d')
+#    T.successor(12)
+#    T.transitivity(10,13)
+#    T.specify(11,'a','Sd')
+#    T.symmetry(15)
+#    T.transitivity(14,16)
+#    T.generalize(17,'d')
+#    T.induction("∀d:(d+Sc)=(Sd+c)",'c',9,18)
+#    T.specify(1,'a','c')
+#    T.specify(20,'b','d')
+#    T.specify(1,'a','d')
+#    T.specify(22,'b','c')
+#    T.symmetry(23)
+#    T.specify(19,'c','c')
+#    T.specify(25,'d','d')
+#    
+#    G = T.fantasy("∀c:(c+d)=(d+c)")
+#    G.specify(1,'c','c')
+#    G.successor(2)
+#    G.add_premise(T[21])
+#    G.transitivity(4,3)
+#    G.add_premise(T[24])
+#    G.transitivity(5,6)
+#    G.add_premise(T[26])
+#    G.transitivity(7,8)
+#    G.generalize(9,'c')
+#    G.implication()
+#    
+#    T.generalize(28,'d')
+#    T.specify(11,'a','c')
+#    T.specify(1,'a','0')
+#    T.specify(31,'b','b')
+#    
+#    H = T.fantasy("(0+b)=b")
+#    H.successor(1)
+#    H.add_premise(T[32])
+#    H.transitivity(3,2)
+#    H.implication()
+#    
+#    T.generalize(34,'b')
+#    T.specify(11,'a','0')
+#    T.induction("(0+b)=b",'b',35,36)
+#    T.specify(37,'b','c')
+#    T.symmetry(38)
+#    T.transitivity(30,39)
+#    T.generalize(40,'c')
+#    T.induction("∀c:(c+d)=(d+c)",'d',29,41)
+#    
+#    print(T.write_theorems_and_descriptions())
