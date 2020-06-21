@@ -186,6 +186,22 @@ class Deduction:
         else:
             raise Exception(f"{T} is not well-formed") 
 
+    def interchange_AE(self,n,u):
+        T = interchange_AE(self.theorems[n-1],u)
+        if is_well_formed(T):
+            self.theorems.append(T)
+            self.descriptions.append(f"change universal to existential")
+        else:
+            raise Exception(f"{T} is not well-formed") 
+            
+    def interchange_EA(self,n,u):
+        T = interchange_EA(self.theorems[n-1],u)
+        if is_well_formed(T):
+            self.theorems.append(T)
+            self.descriptions.append(f"change existential to universal")
+        else:
+            raise Exception(f"{T} is not well-formed") 
+
 
 
 
@@ -236,7 +252,6 @@ if __name__ == '__main__':
     print("\n\nArithmetized Axioms of Peano Arithmetic")
     for i in AusterePeanoAxioms:
         print(f"{i}\n{translate_arithmetic(i)}\n")
-    
     
 
     print("\n\n\nDeduction of Commutativity")

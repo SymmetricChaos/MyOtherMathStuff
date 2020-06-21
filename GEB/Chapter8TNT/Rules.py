@@ -171,8 +171,11 @@ def induction(x,u,T):
         return f"∀{u}:{x}"
     else:
         raise Exception(f"Theorems do not allow induction on {x}")
-        
-        
+
+
+
+
+
 if __name__ == '__main__':
     
     print("\n\nRule of Specification")
