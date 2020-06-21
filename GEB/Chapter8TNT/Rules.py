@@ -49,7 +49,10 @@ def MUL(x,y):
 def EQ(x,y):
 	return f"{x}={y}"
 
-### Rules of Production ###
+###############################
+##### Rules of Production #####
+###############################
+
 # Change a general statement into a specifice assertion
 def specify(x,u,s):
     if f"∀{u}:" in x:
@@ -80,18 +83,25 @@ def generalize(x,u):
         raise Exception(f"{u} is not free in {x}")
 
 
-# MAKE THESE INTO ONE FUNCTION WITH SOME OPTIONS
+# How to pick a specific instance
 # Rephrase the existential quantifier as a universal quantifer
 def interchange_EA(x,u):
-    E = f"~∃{u}:"
-    A = f"∀{u}:~"
-    return x.replace(E,A)
+    if is_var(u):
+        E = f"~∃{u}:"
+        A = f"∀{u}:~"
+        return x.replace(E,A,1)
+    else:
+        raise Exception(f"must quantify a variable")
+
 
 # Rephrase the universal quantifier as an existential quantifer
 def interchange_AE(x,u):
-    E = f"~∃{u}:"
-    A = f"∀{u}:~"
-    return x.replace(A,E)
+    if is_var(u):
+        E = f"~∃{u}:"
+        A = f"∀{u}:~"
+        return x.replace(A,E,1)
+    else:
+        raise Exception(f"must quantify a variable")
 
 
 # CHECK HOW THESE INTERACT WITH NEGATIONS
@@ -161,3 +171,35 @@ def induction(x,u,T):
         return f"∀{u}:{x}"
     else:
         raise Exception(f"Theorems do not allow induction on {x}")
+        
+        
+if __name__ == '__main__':
+    
+    print("\n\nRule of Specification")
+    print(f"{PeanoAxioms[1]} ⟹ {specify(PeanoAxioms[1],'a','(c+d)')}")
+    print(f"{PeanoAxioms[3]} ⟹ {specify(PeanoAxioms[3],'a','(S0⋅0)')}")
+    print(f"{PeanoAxioms[4]} ⟹ {specify(PeanoAxioms[4],'b','(S0+b)')}")
+    
+    
+    print("\n\n\nRules of Successorship")
+    succ_example = "SSS0=S(S0+S0)"
+    print(f"{succ_example} ⟹ {successor(succ_example)}")
+    print(f"{succ_example} ⟹ {predecessor(succ_example)}")
+    
+    
+    print("\n\n\nRule of Generalization")
+    gen_example = "~S(c+SS0)=0"
+    print(f"{gen_example} ⟹ {generalize(gen_example,'c')}")
+
+    
+    print("\n\n\nRule of Existence")
+    print(f"{PeanoAxioms[0]} ⟹ {existence(PeanoAxioms[0],'0','b')}")
+    print(f"{PeanoAxioms[2]} ⟹ {existence(PeanoAxioms[2],'Sb','c')}")
+    
+    
+    print("\n\n\nRule of Transitivity")
+    trans_example1 = "(a+b)=(a+S0)"
+    trans_example2 = "(a+S0)=S(a+0)"
+    print(f"{trans_example1}")
+    print(f"{trans_example2}")
+    print(f"{transitivity(trans_example1,trans_example2)}")
