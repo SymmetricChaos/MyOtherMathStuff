@@ -58,6 +58,53 @@ def bracket_matching(S,left="(",right=")",overlap=True,inner=False,warn=True):
     return output
 
 
+def bracket_matching_strict(S,left="(",right=")",overlap=True,inner=False,warn=True):
+    # Positions of left brackets
+    starts = []
+    # Spans covered
+    spans = []
+    
+    leftspan = len(left)
+    rightspan = len(right)
+    
+    for pos,char in enumerate(S):
+        
+        if S[pos:pos+leftspan] == left:
+            starts.append(pos)
+            continue
+        
+        if S[pos:pos+rightspan] == right:
+            # Once we find a right bracket remove the most recently added left
+            # bracket from the stack
+            # If the stack is empty we skip the next part to ensure only the
+            # tightest match is returned
+            try:
+                L = starts.pop()
+            except:
+                continue
+            # For strict matching we won't allow overlaps
+            if overlap:
+                spans.append( (L,pos+rightspan) )
+            elif len(starts) == 0:
+                spans.append( (L,pos+rightspan) )
+
+    # If there are unused left bracket something is wrong
+    if len(starts) != 0:
+        if warn:
+            print("Warning: Too many left brackets")
+
+    # output is list with the subsections and the spans
+    output = []
+    if inner:
+        for lo,hi in spans:
+            output.append((S[lo+leftspan:hi-rightspan],lo+leftspan,hi-rightspan))        
+    else:
+        for lo,hi in spans:
+            output.append((S[lo:hi],lo,hi))
+
+    return output
+
+
 # Returns the contents of the outermost leftmost matched pair
 def left_string(S,L="(",R=")",inner=False,warn=True):
     braks = bracket_matching(S,L,R,overlap=True,inner=inner,warn=warn)
@@ -98,7 +145,7 @@ def innermost(S,left="(",right=")",inner=False,warn=True):
     output = []
     if inner:
         for lo,hi in spans:
-            output.append((S[lo+1:hi],lo+1,hi-1))        
+            output.append((S[lo+1:hi],lo+1,hi))        
     else:
         for lo,hi in spans:
             output.append((S[lo:hi+1],lo,hi))
@@ -129,6 +176,15 @@ if __name__ == '__main__':
             print(i[0])
     
     
+    
+    print("\n\n\n")
+    
+    s1 = "AA(X(B(A(G)B(GA(H)))A()))"
+    braks1 = bracket_matching_strict(s1,"A(",")")
+    braks2 = bracket_matching_strict(s1,"A(",")",inner=True)
+    
+    print(braks1)
+    print(braks2)
 #    s2 = "<~<P∧~Q'>∨<~<~P∧R>⊃Q'>>"
 #    braks1 = bracket_matching(s2,"<","⊃∧∨")
 #    braks2 = bracket_matching(s2,"<","⊃∧∨",inner=True)
