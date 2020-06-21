@@ -1,7 +1,7 @@
 from GEB.Chapter8TNT.Properties import is_var, get_vars, get_free_vars, is_num, \
                                        get_bound_vars, is_term, is_atom
 from GEB.Chapter8TNT.StripSplit import split_eq, replace_var, replace_var_nth, \
-                                        split_AND
+                                       split
 
 
 # Build abitrary statements in Typographical Number Theory
@@ -56,6 +56,8 @@ def EQ(x,y):
 
 # Change a general statement into a specifice assertion
 def specify(x,u,s):
+    if not is_term(s):
+        raise Exception("Specification Error: {u} is not a term")
     if f"∀{u}:" in x:
         # Eliminate the quantifer
         x = x.replace(f"∀{u}:","")
@@ -66,12 +68,12 @@ def specify(x,u,s):
         for sv in s_vars:
             for xbv in x_b_vars:
                 if sv in xbv:
-                    raise Exception(f"{sv} is bound in {x}")
+                    raise Exception(f"Specification Error: {sv} is bound in {x}")
         
         x = replace_var(x,u,s)
         return x
     else:
-        raise Exception(f"{u} is not bound in {x}")
+        raise Exception(f"Specification Error: {u} is not bound in {x}")
 
 
 # Assert that a statement about a free variable is universally true
@@ -80,7 +82,7 @@ def generalize(x,u):
     if u in f_vars:
         return FOR_ALL(x,u)
     else:
-        raise Exception(f"{u} is not free in {x}")
+        raise Exception(f"Generalization Error: {u} is not free in {x}")
 
 
 # Rephrase the existential quantifier as a universal quantifer
@@ -90,7 +92,7 @@ def interchange_EA(x,u,n):
         A = f"∀{u}:~"
         return replace_var_nth(x,E,A,n)
     else:
-        raise Exception(f"must quantify a variable")
+        raise Exception(f"Interchange Error: {u} is not variable")
 
 
 # Rephrase the universal quantifier as an existential quantifer
@@ -100,7 +102,7 @@ def interchange_AE(x,u,n):
         A = f"∀{u}:~"
         return replace_var_nth(x,A,E,n)
     else:
-        raise Exception(f"must quantify a variable")
+        raise Exception(f"Interchange Error: {u} is not variable")
 
 
 # CHECK HOW THESE INTERACT WITH NEGATIONS
@@ -109,30 +111,30 @@ def successor(x):
         left, right = split_eq(x)
         return f"S{left}=S{right}"
     else:
-        raise Exception(f"{x} is not an equality of two terms")
+        raise Exception(f"Successor Error: {x} is not an atom")
 
 def predecessor(x):
     if is_atom(x):
         left, right = split_eq(x)
         if left[0] != "S":
-            raise Exception(f"{left} has no predecessor")
+            raise Exception(f"Predecessor Error: {left} has no predecessor")
         if right[0] != "S":
-            raise Exception(f"{right} has no predecessor")
+            raise Exception(f"Predecessor Error: {right} has no predecessor")
             
         return f"{left[1:]}={right[1:]}"
     else:
-        raise Exception(f"{x} is not an equality of two terms")
+        raise Exception(f"Predecessor Error: {x} is not an atom")
 
 
 def existence(x,u,v):
     if is_term(u):
         if v in get_bound_vars(x):
-            raise Exception(f"{v} is already bound in {x}")
+            raise Exception(f"Existence Error: {v} is already bound in {x}")
         else:
             x = replace_var(x,u,v)
             return EXISTS(x,v)
     else:
-        raise Exception(f"{u} is not a valid terms")
+        raise Exception(f"Existence Error: {u} is not a valid terms")
 
 
 def symmetry(x):
@@ -140,15 +142,15 @@ def symmetry(x):
         left, right = split_eq(x)
         return f"{right}={left}"
     else:
-        raise Exception(f"{x} is not an equality of two terms")
+        raise Exception(f"Symmetry Error: {x} is not an atom")
 
 
 def transitivity(x,y):
     # Helpful errors
     if not is_atom(x):
-        raise Exception(f"{x} is not an equality of two terms")
+        raise Exception(f"Transitivity Error: {x} is not an atom")
     if not is_atom(y):
-        raise Exception(f"{y} is not an equality of two terms")
+        raise Exception(f"Transitivity Error:  {y} is not an atom")
 
     # Split and recombine
     leftx, rightx = split_eq(x)
@@ -156,12 +158,12 @@ def transitivity(x,y):
     if rightx == lefty:
         return f"{leftx}={righty}"
     else:
-        raise Exception(f"{x} and {y} do not form a transitive statement")
+        raise Exception(f"Transitivity Error:  {x} and {y} do not form a transitive statement")
         
         
 def induction(x,u,T):
     if u not in get_free_vars(x):
-        raise Exception(f"{u} is not free in {x}")
+        raise Exception(f"Induction Error: {u} is not free in {x}")
     
     xS = replace_var(x,u,f"S{u}")
     x0 = replace_var(x,u,"0")
@@ -169,7 +171,7 @@ def induction(x,u,T):
     if f"∀{u}:<{x}⊃{xS}>" in T and f"{x0}" in T:
         return f"∀{u}:{x}"
     else:
-        raise Exception(f"Theorems do not allow induction on {x}")
+        raise Exception(f"Induction Error: Theorems do not allow induction on {x}")
 
 
 

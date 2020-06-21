@@ -11,10 +11,10 @@ def split(x,left,right):
     return L,R
 
 def split_add_mul(x):
-    return split("(","⋅+"))
+    return split(x,"(","⋅+")
 
 def split_logical(x):
-    return split("<","∧∨⊃"))
+    return split(x,"<","∧∨⊃")
 
 def split_eq(x):
     return x.split("=",maxsplit=1)
@@ -97,3 +97,5 @@ if __name__ == '__main__':
     S = "∀c:<∀d:(d+Sc)=(Sd+c)⊃∀d:(d+SSc)=(Sd+Sc)>"
     print(S)
     print(replace_var_nth(S,"∀d","z",2))
+    
+    print(split_add_mul("S(d+b)"))
