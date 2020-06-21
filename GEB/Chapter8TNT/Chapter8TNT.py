@@ -148,6 +148,9 @@ class Deduction:
 
     # Apply restriction
     def generalize(self,n,u):
+        f_vars = get_free_vars(self.theorems[0])
+        if u in f_vars:
+            raise Exception("Cannot generalize on free variables of a premise")
         T = generalize(self.theorems[n-1],u)
         if is_well_formed(T):
             self.theorems.append(T)
@@ -203,7 +206,13 @@ class Deduction:
         else:
             raise Exception(f"{T} is not well-formed") 
 
-
+    def AND(self,n1,n2):
+        T = AND(self.theorems[n1-1],self.theorems[n2-1])
+        if is_well_formed(T):
+            self.theorems.append(T)
+            self.descriptions.append(f"{n1} and {n2}")
+        else:
+            raise Exception(f"{T} is not well-formed") 
 
 
 

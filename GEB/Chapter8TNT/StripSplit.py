@@ -4,15 +4,17 @@ from Utils.StringManip import left_string
 # CANNOT IMPORT FROM PROPERTIES
 
 # Functions for splitting strings to be used for checking well formedness
-def split_add_mul(x):
-    L,lo,hi = left_string(x,"(","⋅+",inner=True)
+
+def split(x,left,right):
+    L,lo,hi = left_string(x,left,right,inner=True)
     R = x[hi+2:-1]
     return L,R
 
+def split_add_mul(x):
+    return split("(","⋅+"))
+
 def split_logical(x):
-    L,lo,hi = left_string(x,"<","∧∨⊃",inner=True)
-    R = x[hi+2:-1]
-    return L,R
+    return split("<","∧∨⊃"))
 
 def split_eq(x):
     return x.split("=",maxsplit=1)

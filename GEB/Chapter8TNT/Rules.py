@@ -1,6 +1,7 @@
 from GEB.Chapter8TNT.Properties import is_var, get_vars, get_free_vars, is_num, \
                                        get_bound_vars, is_term, is_atom
-from GEB.Chapter8TNT.StripSplit import split_eq, replace_var, replace_var_nth
+from GEB.Chapter8TNT.StripSplit import split_eq, replace_var, replace_var_nth, \
+                                        split_AND
 
 
 # Build abitrary statements in Typographical Number Theory
@@ -198,9 +199,17 @@ if __name__ == '__main__':
     print(f"{PeanoAxioms[2]} ⟹ {existence(PeanoAxioms[2],'Sb','c')}")
     
     
-    print("\n\n\nRule of Transitivity")
-    trans_example1 = "(a+b)=(a+S0)"
-    trans_example2 = "(a+S0)=S(a+0)"
-    print(f"{trans_example1}")
-    print(f"{trans_example2}")
-    print(f"{transitivity(trans_example1,trans_example2)}")
+#    print("\n\n\nRule of Transitivity")
+#    trans_example1 = "(a+b)=(a+S0)"
+#    trans_example2 = "(a+S0)=S(a+0)"
+#    trans_example3 = AND(trans_example1,trans_example2)
+#    print(f"{trans_example1}")
+#    print(f"{trans_example2}")
+#    print(f"{trans_example3}")
+#    print(f"{transitivity(trans_example3)}")
+
+
+    print("\n\n\nRule of Symmetry")
+    symm_example1 = "∀a:(a+0)=a"
+    print(f"{symm_example1}")
+    print(f"{symmetry(symm_example1)}")
