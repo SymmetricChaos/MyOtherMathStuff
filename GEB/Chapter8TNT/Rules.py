@@ -1,9 +1,9 @@
 from GEB.Chapter8TNT.Properties import is_var, get_vars, get_free_vars, is_num, \
                                        get_bound_vars, is_term, is_atom
-from GEB.Chapter8TNT.StripSplit import split_eq, replace_var
+from GEB.Chapter8TNT.StripSplit import split_eq, replace_var, replace_var_nth
 
 
-# Build statements in Typographical Number Theory
+# Build abitrary statements in Typographical Number Theory
 def EXISTS(x,a):
     if is_var(a):
         if a in get_free_vars(x):
@@ -69,7 +69,6 @@ def specify(x,u,s):
         
         x = replace_var(x,u,s)
         return x
-    
     else:
         raise Exception(f"{u} is not bound in {x}")
 
@@ -83,23 +82,22 @@ def generalize(x,u):
         raise Exception(f"{u} is not free in {x}")
 
 
-# How to pick a specific instance
 # Rephrase the existential quantifier as a universal quantifer
-def interchange_EA(x,u):
+def interchange_EA(x,u,n):
     if is_var(u):
         E = f"~∃{u}:"
         A = f"∀{u}:~"
-        return x.replace(E,A,1)
+        return replace_var_nth(x,E,A,n)
     else:
         raise Exception(f"must quantify a variable")
 
 
 # Rephrase the universal quantifier as an existential quantifer
-def interchange_AE(x,u):
+def interchange_AE(x,u,n):
     if is_var(u):
         E = f"~∃{u}:"
         A = f"∀{u}:~"
-        return x.replace(A,E,1)
+        return replace_var_nth(x,A,E,n)
     else:
         raise Exception(f"must quantify a variable")
 

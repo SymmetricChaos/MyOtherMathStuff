@@ -146,6 +146,7 @@ class Deduction:
         else:
             raise Exception(f"{T} is not well-formed")
 
+    # Apply restriction
     def generalize(self,n,u):
         T = generalize(self.theorems[n-1],u)
         if is_well_formed(T):
@@ -186,16 +187,16 @@ class Deduction:
         else:
             raise Exception(f"{T} is not well-formed") 
 
-    def interchange_AE(self,n,u):
-        T = interchange_AE(self.theorems[n-1],u)
+    def interchange_AE(self,n,u,nth):
+        T = interchange_AE(self.theorems[n-1],u,nth)
         if is_well_formed(T):
             self.theorems.append(T)
             self.descriptions.append(f"change universal to existential")
         else:
             raise Exception(f"{T} is not well-formed") 
             
-    def interchange_EA(self,n,u):
-        T = interchange_EA(self.theorems[n-1],u)
+    def interchange_EA(self,n,u,nth):
+        T = interchange_EA(self.theorems[n-1],u,nth)
         if is_well_formed(T):
             self.theorems.append(T)
             self.descriptions.append(f"change existential to universal")

@@ -44,9 +44,9 @@ def strip_qaunt(x):
 
 
 # Need this because ordinary replacement will replace the a in a'
-def replace_var(x,v,r):
+def replace_var(x,var,replacement):
     left = ""
-    f = re.search(v,x)
+    f = re.search(var,x)
 
     while f != None:
         lo,hi = f.span()
@@ -55,10 +55,43 @@ def replace_var(x,v,r):
                 left += x[:hi]
                 x = x[hi:]
             else:
-                left += x[:lo] + r
+                left += x[:lo] + replacement
                 x = x[hi:]
         else:
-            left += x[:lo] + r
+            left += x[:lo] + replacement
             x = x[hi:]
-        f = re.search(v,x)
+        f = re.search(var,x)
     return left+x
+
+
+def replace_var_nth(x,var,replacement,n):
+    left = ""
+    f = re.search(var,x)
+    ctr = 1
+
+    while f != None:
+        lo,hi = f.span()
+        if ctr == n:
+            if hi != len(x):
+                if x[hi] == "'":
+                    left += x[:hi]
+                    x = x[hi:]
+                else:
+                    left += x[:lo] + replacement
+                    x = x[hi:]
+            else:
+                left += x[:lo] + replacement
+                x = x[hi:]
+        else:
+            left += x[:hi]
+            x = x[hi:]
+        f = re.search(var,x)
+        ctr += 1
+    return left+x
+
+
+if __name__ == '__main__':
+    
+    S = "∀c:<∀d:(d+Sc)=(Sd+c)⊃∀d:(d+SSc)=(Sd+Sc)>"
+    print(S)
+    print(replace_var_nth(S,"∀d","z",2))
