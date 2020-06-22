@@ -1,4 +1,4 @@
-from random import choice, shuffle
+from random import choice, choices, shuffle
 
 class rewrite_rule:
     
@@ -38,17 +38,22 @@ def random_AB_game(S,rules,stopif):
 
 
 if __name__ == '__main__':
-    rule1 = rewrite_rule("AB","A")
-    rule2 = rewrite_rule("BA","A")
-    rule3 = rewrite_rule("AA","B")
-    rule4 = rewrite_rule("BB","B")
+    rule_set_1 = [rewrite_rule("AB","A"),
+                  rewrite_rule("BA","A"),
+                  rewrite_rule("AA","B"),
+                  rewrite_rule("BB","B")
+                 ]
+
+    rule_set_2 = [rewrite_rule("AB","BBBA"),
+                  rewrite_rule("BA","A"),
+                  rewrite_rule("AA","BBBB"),
+                  rewrite_rule("BB","B")
+                 ]
     
-    random_AB_game("ABABBBBABBAAAABA",[rule1,rule2,rule3,rule4],lambda x: len(x) == 1)
+    S = choices("AB",k=15)
+    S = "".join(S)
     
+    random_AB_game(S,rule_set_1,lambda x: len(x) == 1)
     print()
-    rule1 = rewrite_rule("AB","BBBA")
-    rule2 = rewrite_rule("BA","A")
-    rule3 = rewrite_rule("AA","BBBB")
-    rule4 = rewrite_rule("BB","B")
+    random_AB_game(S,rule_set_2,lambda x: len(x) == 1)
     
-    random_AB_game("AAAAAAABAAAAAABA",[rule1,rule2,rule3,rule4],lambda x: len(x) == 1)
