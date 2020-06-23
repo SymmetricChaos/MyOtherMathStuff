@@ -1,6 +1,6 @@
 import re
 from GEB.Chapter8TNT.StripSplit import strip_succ, strip_neg, split_add_mul, \
-                                       split_logical, strip_qaunt
+                                       split_logical, strip_neg_qaunt
 
 # Get variables
 def get_vars(x):
@@ -28,7 +28,7 @@ def get_bound_vars(x):
 def get_free_vars(x):
     var = get_vars(x)
     bvar = get_bound_vars(x)
-    return var-bvar
+    return var-bvar # using the setminus here
         
 
 
@@ -53,9 +53,8 @@ def is_pure_num(x):
 
 
 # Combined parts
-# Variables and numbers are terms as are negations and arithmetic of them
+# Variables and numbers are terms as are arithmetic of them
 def is_term(x):
-    x = strip_neg(x)
     if is_num(x):
         return True
     else:
@@ -70,6 +69,7 @@ def is_term(x):
             return False
 
 # Atoms are terms seperated by an equality
+# A negation of an atom is also an atom
 def is_atom(x):
     x = strip_neg(x)
     if "=" not in x:
@@ -89,34 +89,31 @@ def is_quantifier(x):
 
 # Check if a string starts with a quantifier
 def starts_quantifier(x):
-    x = strip_neg(x)
+    x = strip_neg_qaunt(x)
     if re.match("^[∀∃][a-z]\'*:.*",x):
         return True
     return False
 
-# Checks if a formula is a compound well-formed formula or is a valid part of
-# such. Since valid parts are not technically well-formed we will check
-# seperately for that.
+# Checks if a formula is a compound of atoms and/or terms
 def is_compound(x):
-    x = strip_qaunt(x)
-    if is_atom(x) or is_term(x) or is_quantifier(x):
+    x = strip_neg_qaunt(x)
+    if is_atom(x) or is_term(x):
         return False
     else:
         try:
             L,R = split_logical(x)
-            # Remove negatives and quantifiers
-            L = strip_neg(L)
-            L = strip_qaunt(L)
-            # Remove negatives and quantifiers
-            R = strip_neg(R)
-            R = strip_qaunt(R)
-            if is_atom(L) or is_term(L) or is_quantifier(L):
-                if is_atom(R) or is_term(R) or is_quantifier(R):
+            # Remove negatives and quantifiers from the left
+            L = strip_neg_qaunt(L)
+            # Remove negatives and quantifiers from the right
+            R = strip_neg_qaunt(R)
+            
+            if is_atom(L):
+                if is_atom(R):
                     return True
                 return is_compound(R)
             
-            if is_atom(R) or is_term(R) or is_quantifier(R):
-                if is_atom(L) or is_term(L) or is_quantifier(L):
+            if is_atom(R):
+                if is_atom(L):
                     return True
                 return is_compound(L)
                     
@@ -130,6 +127,7 @@ def is_well_formed(x):
     # Removing the leading quantifiers and negations can never change if a string
     # is well formed
     
+    # Quickly give a useful error message for a seriously malformed input
     invalid = set([])
     for char in x:
         if char not in "0S=+⋅()<>[]abcdefghijklmnopqrstuvwxyz'∧∨⊃~∃∀:":
@@ -137,13 +135,12 @@ def is_well_formed(x):
     if len(invalid) != 0:
         raise Exception(f"Formula {x} contains these invalid characters:\n{invalid}")
     
-    x = strip_qaunt(x)
     if is_compound(x) or is_atom(x):
         return True
     return False
         
 
-
+# Not checking well formedness but other properties
 def is_open(x):
     var = get_vars(x)
     quant = get_quants(x)
@@ -164,46 +161,40 @@ if __name__ == '__main__':
     
     bool_string = lambda x: "False" if x == 0 else "True"
     
+    test_strings = ["a","b","a'''",                  # variables
+                    "S0", "0", "Sq",                 # numbers
+                    "(a+b)", "(z⋅x)", "(a+(a+a))",   # terms
+                    "a=a", "Sa=b", "~z=Sx",          # atoms
+                    "<~a=b∧~a=c>","<(a+b)=0⊃<a=b∨0=S0>>",
+                    ]
+    
     def test_vars():
-        var = ["a","b","a''","7","~a","'a"]
         print("\nCheck if a string is a variable")
-        for i in var:
+        for i in test_strings:
             print(f"{bool_string(is_var(i)):<5}  {i}")
             
     def test_nums():
-        var = ["a","b","a''","0","S0","SSa'","~a","'a"]
-        print("\nTest if a string is a number")
-        for i in var:
+        print("\nTest if a string is a number (every variable is a number)")
+        for i in test_strings:
             print(f"{bool_string(is_num(i)):<5}  {i}")
-     
-    def test_pure_nums():
-        var = ["0","S0","S","SSa'","~a","'a"]
-        print("\nTest if a string is a pure number")
-        for i in var:
-            print(f"{bool_string(is_pure_num(i)):<5}  {i}")
     
     def test_terms():
-        var = ["b","0","Sc''","~a","(a+a)","S"]
-        print("\nTest if a string is a term")
-        for i in var:
+        print("\nTest if a string is a term (every variable and number is a term)")
+        for i in test_strings:
             print(f"{bool_string(is_term(i)):<5}  {i}")
             
     def test_atoms():
-        var = ["a=a","Sa=a","(b+d)=g","S=S","a=","∃a:(a+a)=b"]
         print("\nTest if a string is an atom")
-        for i in var:
+        for i in test_strings:
             print(f"{bool_string(is_atom(i)):<5}  {i}")
     
     def test_compounds():
-        var = ["<a∧a>"]
-        print("\nTest if a string is a compound of atoms and/or terms")
-        for i in var:
+        print("\nTest if a string is a compound of atoms")
+        for i in test_strings:
             print(f"{bool_string(is_compound(i)):<5}  {i}")
-    
     
     test_vars()
     test_nums()
-    test_pure_nums()
     test_terms()
     test_atoms()
     test_compounds()

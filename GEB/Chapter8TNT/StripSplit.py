@@ -6,7 +6,7 @@ from Utils.StringManip import left_string
 # Functions for splitting strings to be used for checking well formedness
 
 def split(x,left,right):
-    L,lo,hi = left_string(x,left,right,inner=True)
+    L,lo,hi = left_string(x,left,right,inner=True,warn=False)
     R = x[hi+2:-1]
     return L,R
 
@@ -33,7 +33,7 @@ def strip_succ(x):
     return x
 
 # Removes quantifiers and also strips out negatives in the chain
-def strip_qaunt(x):
+def strip_neg_qaunt(x):
     x = strip_neg(x)
     m = re.match("^[∀∃][a-z]\'*:",x)
     while m:
