@@ -129,6 +129,14 @@ def is_well_formed(x):
     # valid but they are not specifically "well-formed"
     # Removing the leading quantifiers and negations can never change if a string
     # is well formed
+    
+    invalid = set([])
+    for char in x:
+        if char not in "0S=+⋅()<>[]abcdefghijklmnopqrstuvwxyz'∧∨⊃~∃∀:":
+            invalid.add(char)
+    if len(invalid) != 0:
+        raise Exception(f"Formula {x} contains these invalid characters:\n{invalid}")
+    
     x = strip_qaunt(x)
     if is_compound(x) or is_atom(x):
         return True
@@ -179,27 +187,23 @@ if __name__ == '__main__':
         print("\nTest if a string is a term")
         for i in var:
             print(f"{bool_string(is_term(i)):<5}  {i}")
+            
+    def test_atoms():
+        var = ["a=a","Sa=a","(b+d)=g","S=S","a=","∃a:(a+a)=b"]
+        print("\nTest if a string is an atom")
+        for i in var:
+            print(f"{bool_string(is_atom(i)):<5}  {i}")
+    
+    def test_compounds():
+        var = ["<a∧a>"]
+        print("\nTest if a string is a compound of atoms and/or terms")
+        for i in var:
+            print(f"{bool_string(is_compound(i)):<5}  {i}")
     
     
     test_vars()
     test_nums()
     test_pure_nums()
     test_terms()
-    
-#    terms = ["0","b","SSa'","(S0⋅(SS0+c))","S(Sa⋅(Sb⋅Sc))"]
-#    atoms = ["S0=0","(SS0+SS0)=SSSS0","S(b+c)=(S(c⋅d)⋅e)"]
-#    compounds = ["<S0=0⊃S0=0>"]
-#
-#    parts_list = [terms,atoms,compounds]
-#    check_list = [is_term,is_atom,is_compound]
-#    name_list = ["Terms","Atoms","Compound Formulas"]
-#    
-#    print("\n\n\nChecking well-formedness\nAll should be well-formed (but may be false)")
-#    for parts,check,name in zip(parts_list,check_list,name_list):
-#        print(f"\n{name}")
-#        l = max([len(p) for p in parts])
-#        for p in parts:
-#            if check(p):
-#                print(f"{p:<{l}} is valid")
-#            else:
-#                print(f"{p:<{l}} ERROR")
+    test_atoms()
+    test_compounds()

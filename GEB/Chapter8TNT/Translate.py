@@ -137,6 +137,7 @@ def translate(s):
 
 
 
+# Hofstadter's arithmetization of TNT
 def translate_arithmetic(s,reverse=False):
 
     s = make_austere(s)
@@ -145,9 +146,9 @@ def translate_arithmetic(s,reverse=False):
         
         D = {"666":"0", "123":"S", "111":"=", "112":"+",
              "236":"⋅", "362":"(", "323":")", "212":"<",
-             "213":">", "312":"[", "262":"a", "163":"'",
-             "161":"∧", "616":"∨", "633":"⊃", "223":"~",
-             "333":"∃", "626":"∀", "636":":"}
+             "213":">", "312":"[", "313":"]", "262":"a", 
+             "163":"'", "161":"∧", "616":"∨", "633":"⊃", 
+             "223":"~", "333":"∃", "626":"∀", "636":":"}
         
         out = ""
         while s != 0:
@@ -158,14 +159,10 @@ def translate_arithmetic(s,reverse=False):
     else:
         D = {"0":"666", "S":"123", "=":"111", "+":"112",
              "⋅":"236", "(":"362", ")":"323", "<":"212",
-             ">":"213", "[":"312", "a":"262", "'":"163",
-             "∧":"161", "∨":"616", "⊃":"633", "~":"223",
-             "∃":"333", "∀":"626", ":":"636"}
-        
-        disallowed = re.findall("[b-z]",s)
-        if disallowed != []:
-            raise Exception(f"Austere TNT requires for arithmetic coding. The symbols {set(disallowed)} are disallowed.")
-        
+             ">":"213", "[":"312", "]":"313", "a":"262", 
+             "'":"163", "∧":"161", "∨":"616", "⊃":"633", 
+             "~":"223", "∃":"333", "∀":"626", ":":"636"}
+
         for sym,codon in D.items():
             s = s.replace(sym,codon)
         
