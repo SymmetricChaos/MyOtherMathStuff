@@ -1,5 +1,5 @@
 import re
-from GEB.Chapter8TNT.StripSplit import strip_succ, strip_neg, split_add_mul, \
+from GEB.Chapter8TNT.StripSplit import strip_succ, split_add_mul, \
                                        split_logical, strip_neg_qaunt
 
 # Get variables
@@ -30,9 +30,26 @@ def get_free_vars(x):
     bvar = get_bound_vars(x)
     return var-bvar # using the setminus here
         
+# Check that all variables that are quantified exist in the rest of the string
+def is_well_quantified(x):
+    V = get_vars(strip_neg_qaunt(x))
+    Q = get_quants(x)
+    Qvars = [q[1:-1] for q in Q]
+    for qv in Qvars:
+        exists = False
+        for v in V:
+            if qv == v:
+                exists = True
+                break
+        if not exists:
+            return False
+    return True
 
 
-# Simplest parts
+#####################################
+### Parts of Well-Formed Formulas ###
+#####################################
+    
 def is_var(x):
     if re.match("^[a-z]\'*$",x):
         return True
@@ -50,9 +67,6 @@ def is_pure_num(x):
         return True
     return False
 
-
-
-# Combined parts
 # Variables and numbers are terms as are arithmetic of them
 def is_term(x):
     if is_num(x):
@@ -68,10 +82,16 @@ def is_term(x):
         except:
             return False
 
+
+
+############################
+### Well-Formed Formulas ###
+############################
+
 # Atoms are terms seperated by an equality
-# A negation of an atom is also an atom
+# The negation of an atom is well-formed but it is not an atom
+# This property is handled by is_compound and is_well_formed
 def is_atom(x):
-    x = strip_neg(x)
     if "=" not in x:
         return False
     else:
@@ -81,21 +101,13 @@ def is_atom(x):
         except:
             return False
 
-def is_quantifier(x):
-    x = strip_neg(x)
-    if re.match("^[∀∃][a-z]\'*:$",x):
-        return True
-    return False
-
-# Check if a string starts with a quantifier
-def starts_quantifier(x):
-    x = strip_neg_qaunt(x)
-    if re.match("^[∀∃][a-z]\'*:.*",x):
-        return True
-    return False
 
 # Checks if a formula is a compound of atoms and/or terms
 def is_compound(x):
+    
+    if not is_well_quantified(x):
+        return False
+    
     x = strip_neg_qaunt(x)
     if is_atom(x) or is_term(x):
         return False
@@ -121,11 +133,11 @@ def is_compound(x):
         except:
             return False
 
+
+# Removing the leading quantifiers and negations can never change if a string
+# is well formed
 def is_well_formed(x):
-    # Only atoms and compounds of atoms are well-formed, smaller parts are still
-    # valid but they are not specifically "well-formed"
-    # Removing the leading quantifiers and negations can never change if a string
-    # is well formed
+
     
     # Quickly give a useful error message for a seriously malformed input
     invalid = set([])
@@ -135,6 +147,10 @@ def is_well_formed(x):
     if len(invalid) != 0:
         raise Exception(f"Formula {x} contains these invalid characters:\n{invalid}")
     
+    if not is_well_quantified(x):
+        return False
+    
+    x = strip_neg_qaunt(x)
     if is_compound(x) or is_atom(x):
         return True
     return False
@@ -161,11 +177,11 @@ if __name__ == '__main__':
     
     bool_string = lambda x: "False" if x == 0 else "True"
     
-    test_strings = ["a","b","a'''",                  # variables
-                    "S0", "0", "Sq",                 # numbers
-                    "(a+b)", "(z⋅x)", "(a+(a+a))",   # terms
-                    "a=a", "Sa=b", "~z=Sx",          # atoms
-                    "<~a=b∧~a=c>","<(a+b)=0⊃<a=b∨0=S0>>",
+    test_strings = ["a","b","a'''",                       # variables
+                    "S0", "0", "Sq",                      # numbers
+                    "(a+b)", "(z⋅x)", "(a+(a⋅a))",        # terms
+                    "a=a", "Sa=b",                        # atoms
+                    "<~a=b∧~a=c>","<(a+b)=0⊃<a=b∨0=S0>>", #compunds of atoms
                     ]
     
     def test_vars():
