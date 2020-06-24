@@ -18,14 +18,25 @@ class rewrite_rule:
         pos = choice(positions)
         return string[:pos] + self.R + string[pos+Plen:]
 
+    def apply(self,string,n=1):
+        positions = []
+        Plen = len(self.P)
+        for i in range(0,len(string)-Plen+1):
+            if string[i:i+Plen] == self.P:
+                positions.append(i)
+        pos = positions[n]
+        return string[:pos] + self.R + string[pos+Plen:]
 
 
-def random_AB_game(S,rules,stopif):
+
+def random_AB_game(S,rules):
     for n,R in enumerate(rules,1):
         print(f"Rule {n}: {R}")
     
-    print(S)
-    while not stopif(S):
+    oldS = ""
+    while not S == oldS:
+        print(S)
+        oldS = S
         shuffle(rules)
         for R in rules:
             try:
@@ -34,7 +45,7 @@ def random_AB_game(S,rules,stopif):
             except:
                 pass
                 
-        print(S)
+
 
 
 if __name__ == '__main__':
@@ -53,7 +64,7 @@ if __name__ == '__main__':
     S = choices("AB",k=15)
     S = "".join(S)
     
-    random_AB_game(S,rule_set_1,lambda x: len(x) == 1)
+    random_AB_game(S,rule_set_1)
     print()
-    random_AB_game(S,rule_set_2,lambda x: len(x) == 1)
+    random_AB_game(S,rule_set_2)
     
