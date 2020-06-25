@@ -105,7 +105,7 @@ class Deduction:
         """Begin deduction on an arbitrary premise"""
         d = Deduction(premise,self.depth+1,self)
         self.theorems.append(d)
-        self.descriptions.append("")
+        self.descriptions.append("fantasy")
         return d
     
     def add_axiom(self,axiom):
