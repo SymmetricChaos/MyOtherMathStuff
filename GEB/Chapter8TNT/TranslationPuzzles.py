@@ -8,7 +8,7 @@ greater_than = "∃c:<(a+c)=b∧~a=b>"
 prime = "∀a:~∃c:(SSa⋅SSc)=b"
 square = "∃a:(a⋅a)=b"
 square_root = "∃b:(a⋅a)=b"
-power_of_two = "<∃c:(a⋅c)=b⊃∃d:(d⋅SS0)=a>"
+power_of_two = "∀a:<∃c:(a⋅c)=b⊃∃d:(d⋅SS0)=a>"
 
 
 
