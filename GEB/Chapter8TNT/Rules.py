@@ -10,33 +10,51 @@ def EXISTS(x,a):
         if a in get_free_vars(x):
             return f"∃{a}:{x}"
         else:
-            raise Exception(f"{a} is already quantified in {x}")
+            if a in get_bound_vars(x):
+                raise Exception(f"Quantification Error: {a} is already quantified in {x}")
+            else:
+                raise Exception(f"Quantification Error: {a} does not exist in {x}")
     else:
-        raise Exception(f"Existential quantifier does not apply to {a}")
+        raise Exception(f"Quantification Error: {a} is not a variable")
 	
 def FOR_ALL(x,a):
     if is_var(a):
         if a in get_free_vars(x):
             return f"∀{a}:{x}"
         else:
-            raise Exception(f"{a} is already quantified in {x}")
+            if a in get_bound_vars(x):
+                raise Exception(f"Quantification Error: {a} is already quantified in {x}")
+            else:
+                raise Exception(f"Quantification Error: {a} does not exist in {x}")
     else:
-        raise Exception(f"Existential quantifier does not apply to {a}")
+        raise Exception(f"Quantification Error: {a} is not a variable")
 
 def AND(x,y):
-	return f"<{x}∧{y}>"
+    if not is_well_formed(x):
+        raise Exception(f"Logical Error: {x} is not a well-formed formula")
+    if not is_well_formed(y):
+        raise Exception(f"Logical Error: {y} is not a well-formed formula")
+    return f"<{x}∧{y}>"
 	
 def OR(x,y):
-	return f"<{x}∨{y}>"
+    if not is_well_formed(x):
+        raise Exception(f"Logical Error: {x} is not a well-formed formula")
+    if not is_well_formed(y):
+        raise Exception(f"Logical Error: {y} is not a well-formed formula")
+    return f"<{x}∨{y}>"
 	
 def IMPLIES(x,y):
-	return f"<{x}⊃{y}>"
+    if not is_well_formed(x):
+        raise Exception(f"Logical Error: {x} is not a well-formed formula")
+    if not is_well_formed(y):
+        raise Exception(f"Logical Error: {y} is not a well-formed formula")
+    return f"<{x}⊃{y}>"
 	
 def NOT(x,):
 	return f"~{x}"
 
 def SUCC(x):
-	if is_num(x):
+	if is_term(x):
 		return f"S{x}"
 	else:
 		raise Exception(f"Cannot have successor of {x}")
@@ -55,31 +73,30 @@ def EQ(x,y):
 ###############################
 
 # Change a general statement into a specifice assertion
-def specify(x,u,s):
-    if not is_term(s):
-        raise Exception("Specification Error: {u} is not a term")
-    if f"∀{u}:" in x:
+def specify(x,var,term):
+    if not is_term(term):
+        raise Exception("Specification Error: {term} is not a term")
+    if f"∀{var}:" in x:
         # Eliminate the quantifer
-        x = x.replace(f"∀{u}:","")
+        x = x.replace(f"∀{var}:","")
         
         # Check if replacement is allowed
         x_b_vars = get_bound_vars(x)
-        s_vars = get_vars(s)
-        for sv in s_vars:
+        term_vars = get_vars(term)
+        for tv in term_vars:
             for xbv in x_b_vars:
-                if sv in xbv:
-                    raise Exception(f"Specification Error: {sv} is bound in {x}")
+                if tv in xbv:
+                    raise Exception(f"Specification Error: {tv} is bound in {x}")
         
-        x = replace_var(x,u,s)
+        x = replace_var(x,var,term)
         return x
     else:
-        raise Exception(f"Specification Error: {u} is not bound in {x}")
+        raise Exception(f"Specification Error: {var} is not universally quantified in {x}")
 
 
 # Assert that a statement about a free variable is universally true
 def generalize(x,u):
-    f_vars = get_free_vars(x)
-    if u in f_vars:
+    if u in get_free_vars(x):
         return FOR_ALL(x,u)
     else:
         raise Exception(f"Generalization Error: {u} is not free in {x}")
@@ -105,13 +122,13 @@ def interchange_AE(x,u,n):
         raise Exception(f"Interchange Error: {u} is not variable")
 
 
-# CHECK HOW THESE INTERACT WITH NEGATIONS
 def successor(x):
     if is_atom(x):
         left, right = split_eq(x)
         return f"S{left}=S{right}"
     else:
         raise Exception(f"Successor Error: {x} is not an atom")
+
 
 def predecessor(x):
     if is_atom(x):
@@ -126,15 +143,17 @@ def predecessor(x):
         raise Exception(f"Predecessor Error: {x} is not an atom")
 
 
-def existence(x,u,v):
-    if is_term(u):
+def existence(x,term,var):
+    if not is_var(var):
+        raise Exception(f"Existence Error: {var} is not a valid variable")
+    if is_term(term):
         if v in get_bound_vars(x):
-            raise Exception(f"Existence Error: {v} is already bound in {x}")
+            raise Exception(f"Existence Error: {var} is already bound in {x}")
         else:
-            x = replace_var(x,u,v)
-            return EXISTS(x,v)
+            x = replace_var(x,term,var)
+            return EXISTS(x,var)
     else:
-        raise Exception(f"Existence Error: {u} is not a valid terms")
+        raise Exception(f"Existence Error: {term} is not a valid term")
 
 
 def symmetry(x):
@@ -146,11 +165,10 @@ def symmetry(x):
 
 
 def transitivity(x,y):
-    # Helpful errors
     if not is_atom(x):
         raise Exception(f"Transitivity Error: {x} is not an atom")
     if not is_atom(y):
-        raise Exception(f"Transitivity Error:  {y} is not an atom")
+        raise Exception(f"Transitivity Error: {y} is not an atom")
 
     # Split and recombine
     leftx, rightx = split_eq(x)
@@ -158,7 +176,7 @@ def transitivity(x,y):
     if rightx == lefty:
         return f"{leftx}={righty}"
     else:
-        raise Exception(f"Transitivity Error:  {x} and {y} do not form a transitive statement")
+        raise Exception(f"Transitivity Error: {x} and {y} do not form a transitive statement")
         
         
 def induction(x,u,T):
