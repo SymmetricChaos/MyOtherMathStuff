@@ -57,25 +57,21 @@ def is_var(x):
 
 def is_num(x):
     x = strip_succ(x)
-    if x == "0" or is_var(x):
-        return True
-    return False
-
-def is_pure_num(x):
-    x = strip_succ(x)
     if x == "0":
         return True
     return False
 
+
 # Variables and numbers are terms as are arithmetic of them
 def is_term(x):
-    if is_num(x):
+    
+    # The successor of a term is still a term
+    x = strip_succ(x)
+    
+    # All numbers and variables are terms
+    if is_num(x) or is_var(x):
         return True
     else:
-        # Before splitting we strip out S from the left
-        # This prevents an error is there is a chain of Ss outside the parentheses
-        # Removing S cannot turn a non-term into a term so there is no risk here
-        x = strip_succ(x)
         try:
             L,R = split_add_mul(x)
             return is_term(L) and is_term(R)
@@ -179,9 +175,9 @@ if __name__ == '__main__':
     
     test_strings = ["a","b","a'''",                       # variables
                     "S0", "0", "Sq",                      # numbers
-                    "(a+b)", "(z⋅x)", "(a+(a⋅a))",        # terms
+                    "(a+b)", "(z⋅x)", "(a+S(a⋅a))",        # terms
                     "a=a", "Sa=b",                        # atoms
-                    "<~a=b∧~a=c>","<(a+b)=0⊃<a=b∨0=S0>>", #compunds of atoms
+                    "<~a=b∧~a=c>","<~(a+b)=0⊃<a=b∨0=S0>>", #compunds of atoms
                     ]
     
     def test_vars():
@@ -190,22 +186,22 @@ if __name__ == '__main__':
             print(f"{bool_string(is_var(i)):<5}  {i}")
             
     def test_nums():
-        print("\nTest if a string is a number (every variable is a number)")
+        print("\nTest if a string is a numerak")
         for i in test_strings:
             print(f"{bool_string(is_num(i)):<5}  {i}")
     
     def test_terms():
-        print("\nTest if a string is a term (every variable and number is a term)")
+        print("\nTest if a string is a term (every variable and numeral is a term)")
         for i in test_strings:
             print(f"{bool_string(is_term(i)):<5}  {i}")
             
     def test_atoms():
-        print("\nTest if a string is an atom")
+        print("\nTest if a string is an atom (an equality of two terms)")
         for i in test_strings:
             print(f"{bool_string(is_atom(i)):<5}  {i}")
     
     def test_compounds():
-        print("\nTest if a string is a compound of atoms")
+        print("\nTest if a string is a compound of well-formed formulas")
         for i in test_strings:
             print(f"{bool_string(is_compound(i)):<5}  {i}")
     
