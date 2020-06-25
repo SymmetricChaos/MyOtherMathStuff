@@ -101,6 +101,8 @@ def is_atom(x):
 # Checks if a formula is a compound of atoms and/or terms
 def is_compound(x):
     
+    # If a formula is not well quantified it is not well formed and thus not
+    # a valid compound
     if not is_well_quantified(x):
         return False
     
@@ -110,11 +112,29 @@ def is_compound(x):
     else:
         try:
             L,R = split_logical(x)
+            
+            L_free_vars = get_free_vars(L)
+            L_bound_vars = get_bound_vars(L)
+            R_free_vars = get_free_vars(R)
+            R_bound_vars = get_bound_vars(R)
+            
+            for v in L_free_vars:
+                if v in R_bound_vars:
+                    return False
+                
+            for v in R_free_vars:
+                if v in L_bound_vars:
+                    return False
+            
             # Remove negatives and quantifiers from the left
             L = strip_neg_qaunt(L)
             # Remove negatives and quantifiers from the right
             R = strip_neg_qaunt(R)
             
+            # Some clever logic. If both L and R are atoms return true
+            # If only L is an atom return recur on R
+            # If only R is an atom return recur on L
+            # If neither then recur on both
             if is_atom(L):
                 if is_atom(R):
                     return True
@@ -134,8 +154,7 @@ def is_compound(x):
 # is well formed
 def is_well_formed(x):
 
-    
-    # Quickly give a useful error message for a seriously malformed input
+    # Quickly give a useful error message for a severely malformed input
     invalid = set([])
     for char in x:
         if char not in "0S=+⋅()<>[]abcdefghijklmnopqrstuvwxyz'∧∨⊃~∃∀:":
@@ -143,9 +162,12 @@ def is_well_formed(x):
     if len(invalid) != 0:
         raise Exception(f"Formula {x} contains these invalid characters:\n{invalid}")
     
+    # If quantification is invalid the formula is not well formed
     if not is_well_quantified(x):
         return False
     
+    # Otherwise get rid of negations and quantifications then check if the
+    # results is a compound or an atom
     x = strip_neg_qaunt(x)
     if is_compound(x) or is_atom(x):
         return True
@@ -177,9 +199,9 @@ if __name__ == '__main__':
                     "S0", "0", "Sq",                      # numbers
                     "(a+b)", "(z⋅x)", "(a+S(a⋅a))",        # terms
                     "a=a", "Sa=b",                        # atoms
-                    "<~a=b∧~a=c>","<~(a+b)=0⊃<a=b∨0=S0>>", #compunds of atoms
+                    "<~∃b:~a=b∧∀c:~a=c>","<~(a+b)=0⊃<a=b∨0=S0>>", #compunds of atoms
                     ]
-    
+
     def test_vars():
         print("\nCheck if a string is a variable")
         for i in test_strings:
@@ -204,9 +226,15 @@ if __name__ == '__main__':
         print("\nTest if a string is a compound of well-formed formulas")
         for i in test_strings:
             print(f"{bool_string(is_compound(i)):<5}  {i}")
+            
+    def test_well_formed():
+        print("\nTest if a string is a well-formed formulas (note that correctly formed terms are not well-formed formulas)")
+        for i in test_strings:
+            print(f"{bool_string(is_well_formed(i)):<5}  {i}")
     
     test_vars()
     test_nums()
     test_terms()
     test_atoms()
     test_compounds()
+    test_well_formed()
