@@ -26,9 +26,12 @@ class Deduction:
                 raise Exception("Must begin with an axiom of TNT")
                 
         if premise in PeanoAxioms:
-            self.descriptions = [f"axiom"]
+            self.descriptions = ["axiom"]
         else:
-            self.descriptions = [f"premise"]
+            if len(self.theorems) == 1:
+                self.descriptions = ["fantasy premise"]
+            else:
+                self.descriptions = ["premise"]
         
         self.depth = depth
         self.reality = reality
@@ -102,25 +105,31 @@ class Deduction:
         """Begin deduction on an arbitrary premise"""
         d = Deduction(premise,self.depth+1,self)
         self.theorems.append(d)
-        self.descriptions.append(f"fantasy")
+        self.descriptions.append("")
         return d
+    
+    def add_axiom(self,axiom):
+        if axiom not in PeanoAxioms:
+            raise Exception(f"{axiom} is not an axiom of TNT")
+        self.theorems.append(axiom)
+        self.descriptions.append(f"axiom")
 
     def add_premise(self,premise):
         """
-        At the lowest level we accept only axioms without justification
+        At the lowest level we accept only axioms
         At all other levels we accept only known theorems
         """
         if self.depth == 0:
-            if premise not in PeanoAxioms:
-                raise Exception(f"{premise} is not an axiom of TNT")                
+            self.add_axiom(premise)
         else:
             if premise not in self.reality.theorems:
                 raise Exception(f"{premise} does not exist at the level one step lower")
-        self.theorems.append(premise)
-        if premise in PeanoAxioms:
-            self.descriptions.append(f"axiom")
-        else:
-            self.descriptions.append(f"premise")
+        
+            self.theorems.append(premise)
+            if premise in PeanoAxioms:
+                self.descriptions.append(f"axiom")
+            else:
+                self.descriptions.append(f"theorem")
 
     def specify(self,n,u,v):
         T = specify(self.theorems[n-1],u,v)

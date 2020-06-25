@@ -1,5 +1,5 @@
 from GEB.Chapter8TNT.Properties import is_var, get_vars, get_free_vars, is_num, \
-                                       get_bound_vars, is_term, is_atom
+                                       get_bound_vars, is_term, is_atom, is_well_formed
 from GEB.Chapter8TNT.StripSplit import split_eq, replace_var, replace_var_nth, \
                                        split
 
