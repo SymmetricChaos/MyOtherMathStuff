@@ -127,9 +127,9 @@ class Deduction:
         
             self.theorems.append(premise)
             if premise in PeanoAxioms:
-                self.descriptions.append(f"axiom")
+                self.descriptions.append("axiom")
             else:
-                self.descriptions.append(f"theorem")
+                self.descriptions.append("theorem")
 
     def specify(self,n,u,v):
         T = specify(self.theorems[n-1],u,v)

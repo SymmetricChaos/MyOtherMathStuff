@@ -75,7 +75,7 @@ def EQ(x,y):
 # Change a general statement into a specifice assertion
 def specify(x,var,term):
     if not is_term(term):
-        raise Exception("Specification Error: {term} is not a term")
+        raise Exception(f"Specification Error: {term} is not a term")
     if f"∀{var}:" in x:
         # Eliminate the quantifer
         x = x.replace(f"∀{var}:","")
@@ -104,19 +104,19 @@ def generalize(x,u):
 
 # Rephrase the existential quantifier as a universal quantifer
 def interchange_EA(x,variable,n):
-    if is_var(u):
-        E = f"~∃{u}:"
-        A = f"∀{u}:~"
+    if is_var(variable):
+        E = f"~∃{variable}:"
+        A = f"∀{variable}:~"
         return replace_var_nth(x,E,A,n)
     else:
         raise Exception(f"Interchange Error: {variable} is not variable")
 
 
 # Rephrase the universal quantifier as an existential quantifer
-def interchange_AE(x,u,n):
+def interchange_AE(x,variable,n):
     if is_var(u):
-        E = f"~∃{u}:"
-        A = f"∀{u}:~"
+        E = f"~∃{variable}:"
+        A = f"∀{variable}:~"
         return replace_var_nth(x,A,E,n)
     else:
         raise Exception(f"Interchange Error: {variable} is not variable")
