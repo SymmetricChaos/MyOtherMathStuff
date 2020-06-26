@@ -46,29 +46,40 @@ def strip_neg_qaunt(x):
 
 
 # Need this because ordinary replacement will replace the a in a'
-def replace_var(x,var,replacement):
+def replace_var(x,pattern,replacement):
     left = ""
-    f = re.search(var,x)
+    pattern = re.escape(pattern)
+    f = re.search(pattern,x)
 
+    # While a possible match is found in x
     while f != None:
+        # Get the upper and lower limits of the match
         lo,hi = f.span()
+        # If the upper is not the end of the string
         if hi != len(x):
+            # If the character immediately after the match is ' (meaning we only have part of a variable)
+            # Then store the left half half and continue working with the right half
             if x[hi] == "'":
                 left += x[:hi]
                 x = x[hi:]
+            # Otherwise append the the replacement to the left half, ignoring the matched section
+            # and continue working with the right half
             else:
                 left += x[:lo] + replacement
                 x = x[hi:]
+        # If we did reach the end of the string, ignoring the matched section
+        # and continue working with the right half
         else:
             left += x[:lo] + replacement
             x = x[hi:]
-        f = re.search(var,x)
+        f = re.search(pattern,x)
     return left+x
 
 
-def replace_var_nth(x,var,replacement,n):
+def replace_var_nth(x,pattern,replacement,n):
     left = ""
-    f = re.search(var,x)
+    pattern = re.escape(pattern)
+    f = re.search(pattern,x)
     ctr = 1
 
     while f != None:
@@ -87,7 +98,7 @@ def replace_var_nth(x,var,replacement,n):
         else:
             left += x[:hi]
             x = x[hi:]
-        f = re.search(var,x)
+        f = re.search(pattern,x)
         ctr += 1
     return left+x
 

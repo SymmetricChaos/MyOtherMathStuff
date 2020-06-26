@@ -103,13 +103,13 @@ def generalize(x,u):
 
 
 # Rephrase the existential quantifier as a universal quantifer
-def interchange_EA(x,u,n):
+def interchange_EA(x,variable,n):
     if is_var(u):
         E = f"~∃{u}:"
         A = f"∀{u}:~"
         return replace_var_nth(x,E,A,n)
     else:
-        raise Exception(f"Interchange Error: {u} is not variable")
+        raise Exception(f"Interchange Error: {variable} is not variable")
 
 
 # Rephrase the universal quantifier as an existential quantifer
@@ -119,7 +119,7 @@ def interchange_AE(x,u,n):
         A = f"∀{u}:~"
         return replace_var_nth(x,A,E,n)
     else:
-        raise Exception(f"Interchange Error: {u} is not variable")
+        raise Exception(f"Interchange Error: {variable} is not variable")
 
 
 def successor(x):
@@ -147,7 +147,7 @@ def existence(x,term,var):
     if not is_var(var):
         raise Exception(f"Existence Error: {var} is not a valid variable")
     if is_term(term):
-        if v in get_bound_vars(x):
+        if var in get_bound_vars(x):
             raise Exception(f"Existence Error: {var} is already bound in {x}")
         else:
             x = replace_var(x,term,var)

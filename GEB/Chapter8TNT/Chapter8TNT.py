@@ -87,7 +87,7 @@ class Deduction:
             else:
                 s += f"\n{' '*(self.depth*2+2)}{line_number:<4} {t:<{max_length}} {d}"
         s += f"\n{' '*self.depth*2}]"
-        return s
+        return s[1:]
     
     # Force one-based indexing since this make more sense when counting steps
     def __getitem__(self,n):
@@ -147,8 +147,8 @@ class Deduction:
         else:
             raise Exception(f"{T} is not well-formed")
 
-    def existence(self,n,u,v):
-        T = existence(self.theorems[n-1],u,v)
+    def existence(self,n,term,var):
+        T = existence(self.theorems[n-1],term,var)
         if is_well_formed(T):
             self.theorems.append(T)
             self.descriptions.append(f"existence of {n}")
@@ -203,7 +203,7 @@ class Deduction:
         T = interchange_AE(self.theorems[n-1],u,nth)
         if is_well_formed(T):
             self.theorems.append(T)
-            self.descriptions.append(f"change universal to existential")
+            self.descriptions.append(f"change universal to existential in {n}")
         else:
             raise Exception(f"{T} is not well-formed") 
             
@@ -211,7 +211,7 @@ class Deduction:
         T = interchange_EA(self.theorems[n-1],u,nth)
         if is_well_formed(T):
             self.theorems.append(T)
-            self.descriptions.append(f"change existential to universal")
+            self.descriptions.append(f"change existential to universal in {n}")
         else:
             raise Exception(f"{T} is not well-formed") 
 
