@@ -46,7 +46,7 @@ print(translate(D[5]))
 
 print("\n\nProve 2⋅2=4")
 E = Deduction(PeanoAxioms[4])
-E.specify(1,'b','b')
-E.specify(2,'a','a')
+E.specify(1,'b')
+E.specify(2,'a')
 
 print(E.theorems_and_descriptions)

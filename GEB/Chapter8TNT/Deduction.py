@@ -131,7 +131,9 @@ class Deduction:
             else:
                 self.descriptions.append("theorem"+comment)
 
-    def specify(self,n,var,replacement,comment=""):
+    def specify(self,n,var,replacement=None,comment=""):
+        if replacement == None:
+            replacement = var
         T = specify(self.theorems[n-1],var,replacement)
         if is_well_formed(T):
             self.theorems.append(T)
