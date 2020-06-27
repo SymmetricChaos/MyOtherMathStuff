@@ -36,7 +36,7 @@ class Deduction:
         self.depth = depth
         self.reality = reality
         
-    def write_theorems(self):
+    def _pretty_theorems(self):
         """
         Write out the deduction with lines numbered from 1
         Fantasies are indented relative to their depth
@@ -51,9 +51,9 @@ class Deduction:
             else:
                 s += f"\n{' '*(self.depth*2+2)}{line_number:>4} {t}"
         s += f"\n{' '*self.depth*2}]"
-        return s
+        return s[1:]
     
-    def write_descriptions(self):
+    def _pretty_descriptions(self):
         """
         Write out the descriptions of each line
         """
@@ -61,13 +61,13 @@ class Deduction:
         for line,(d,t) in enumerate(zip(self.descriptions,self.theorems),1):
             line_number = f"({line})"
             if type(t) == Deduction:
-                s += f"{t.write_descriptions()}"
+                s += f"{t.descriptions()}"
             else:
                 s += f"\n{' '*(self.depth*2+2)}{line_number:>4} {d}"
         s += f"\n{' '*self.depth*2}]"
-        return s
+        return s[1:]
     
-    def write_theorems_and_descriptions(self):
+    def _theorems_and_descriptions(self):
         """
         Write out the theorems and their descriptions together
         """
@@ -83,7 +83,7 @@ class Deduction:
             line_number = f"({line})"
             
             if type(t) == Deduction:
-                s += f"{t.write_theorems_and_descriptions()}"
+                s += f"{t.theorems_and_descriptions}"
             else:
                 s += f"\n{' '*(self.depth*2+2)}{line_number:<4} {t:<{max_length}} {d}"
         s += f"\n{' '*self.depth*2}]"
@@ -131,8 +131,8 @@ class Deduction:
             else:
                 self.descriptions.append("theorem")
 
-    def specify(self,n,u,v):
-        T = specify(self.theorems[n-1],u,v)
+    def specify(self,n,var,replacement):
+        T = specify(self.theorems[n-1],var,replacement)
         if is_well_formed(T):
             self.theorems.append(T)
             self.descriptions.append(f"specification of {n}")
@@ -156,11 +156,11 @@ class Deduction:
             raise Exception(f"{T} is not well-formed")
 
     # Apply restriction
-    def generalize(self,n,u):
+    def generalize(self,n,var):
         f_vars = get_free_vars(self.theorems[0])
-        if u in f_vars:
+        if var in f_vars:
             raise Exception("Cannot generalize on free variables of a premise")
-        T = generalize(self.theorems[n-1],u)
+        T = generalize(self.theorems[n-1],var)
         if is_well_formed(T):
             self.theorems.append(T)
             self.descriptions.append(f"generalization of {n}")
@@ -199,16 +199,16 @@ class Deduction:
         else:
             raise Exception(f"{T} is not well-formed") 
 
-    def interchange_AE(self,n,u,nth):
-        T = interchange_AE(self.theorems[n-1],u,nth)
+    def interchange_AE(self,n,var,nth):
+        T = interchange_AE(self.theorems[n-1],var,nth)
         if is_well_formed(T):
             self.theorems.append(T)
             self.descriptions.append(f"change universal to existential in {n}")
         else:
             raise Exception(f"{T} is not well-formed") 
             
-    def interchange_EA(self,n,u,nth):
-        T = interchange_EA(self.theorems[n-1],u,nth)
+    def interchange_EA(self,n,var,nth):
+        T = interchange_EA(self.theorems[n-1],var,nth)
         if is_well_formed(T):
             self.theorems.append(T)
             self.descriptions.append(f"change existential to universal in {n}")
@@ -222,6 +222,10 @@ class Deduction:
             self.descriptions.append(f"{n1} and {n2}")
         else:
             raise Exception(f"{T} is not well-formed") 
+ 
+    pretty_descriptions = property(_pretty_descriptions)
+    pretty_theorems = property(_pretty_theorems)
+    theorems_and_descriptions = property(_theorems_and_descriptions)
 
 
 
@@ -342,4 +346,4 @@ if __name__ == '__main__':
     T.generalize(40,'c')
     T.induction("∀c:(c+d)=(d+c)",'d',29,41)
     
-    print(T.write_theorems_and_descriptions())
+    print(T.theorems_and_descriptions)

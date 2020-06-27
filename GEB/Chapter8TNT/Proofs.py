@@ -9,7 +9,7 @@ print("\n\nProve 0 is a Natural Number")
 A = Deduction(PeanoAxioms[1])
 A.specify(1,'a','0')
 A.existence(2,'(0+0)','a')
-print(A.write_theorems_and_descriptions())
+print(A.theorems_and_descriptions)
 print(translate(A[3]))
 
 
@@ -18,7 +18,7 @@ B = Deduction(PeanoAxioms[1])
 B.specify(1,'a','0')
 B.symmetry(2)
 B.transitivity(3,2)
-print(B.write_theorems_and_descriptions())
+print(B.theorems_and_descriptions)
 print(translate(B[4]))
 
 
@@ -30,7 +30,7 @@ C.add_axiom(PeanoAxioms[1])
 C.specify(4,'a','S0')
 C.successor(5)
 C.transitivity(3,6)
-print(C.write_theorems_and_descriptions())
+print(C.theorems_and_descriptions)
 print(translate(C[7]))
 
 
@@ -40,5 +40,11 @@ D.specify(1,'a','a')
 D.successor(2)
 D.existence(3,'S(a+0)','b')
 D.generalize(4,'a')
-print(D.write_theorems_and_descriptions())
+print(D.theorems_and_descriptions)
 print(translate(D[5]))
+
+
+#print("\n\nProve 5 is Prime")
+#E = Deduction(PeanoAxioms[0])
+#E.interchange_EA(1,'a',0)
+#print(E.theorems_and_descriptions)

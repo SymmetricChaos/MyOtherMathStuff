@@ -95,31 +95,31 @@ def specify(x,var,term):
 
 
 # Assert that a statement about a free variable is universally true
-def generalize(x,u):
-    if u in get_free_vars(x):
-        return FOR_ALL(x,u)
+def generalize(x,var):
+    if var in get_free_vars(x):
+        return FOR_ALL(x,var)
     else:
-        raise Exception(f"Generalization Error: {u} is not free in {x}")
+        raise Exception(f"Generalization Error: {var} is not free in {x}")
 
 
 # Rephrase the existential quantifier as a universal quantifer
-def interchange_EA(x,variable,n):
-    if is_var(variable):
-        E = f"~∃{variable}:"
-        A = f"∀{variable}:~"
+def interchange_EA(x,var,n):
+    if is_var(var):
+        E = f"~∃{var}:"
+        A = f"∀{var}:~"
         return replace_var_nth(x,E,A,n)
     else:
-        raise Exception(f"Interchange Error: {variable} is not variable")
+        raise Exception(f"Interchange Error: {var} is not variable")
 
 
 # Rephrase the universal quantifier as an existential quantifer
-def interchange_AE(x,variable,n):
-    if is_var(u):
-        E = f"~∃{variable}:"
-        A = f"∀{variable}:~"
+def interchange_AE(x,var,n):
+    if is_var(var):
+        E = f"~∃{var}:"
+        A = f"∀{var}:~"
         return replace_var_nth(x,A,E,n)
     else:
-        raise Exception(f"Interchange Error: {variable} is not variable")
+        raise Exception(f"Interchange Error: {var} is not variable")
 
 
 def successor(x):
