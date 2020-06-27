@@ -44,7 +44,9 @@ print(D.theorems_and_descriptions)
 print(translate(D[5]))
 
 
-#print("\n\nProve 5 is Prime")
-#E = Deduction(PeanoAxioms[0])
-#E.interchange_EA(1,'a',0)
-#print(E.theorems_and_descriptions)
+print("\n\nProve 2⋅2=4")
+E = Deduction(PeanoAxioms[4])
+E.specify(1,'b','b')
+E.specify(2,'a','a')
+
+print(E.theorems_and_descriptions)
