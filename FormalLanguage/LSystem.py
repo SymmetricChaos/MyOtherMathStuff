@@ -28,44 +28,33 @@ class LSystem:
         for r in self.rules:
             if r.variable not in alphabet:
                 raise Exception(f"The rule {r} does not act on the alphabet {alphabet}")
-            
-    def _variables(self):
-        V = []
-        for r in self.rules:
-            V.append(r.variable)
-        return V
-            
-    def _constants(self):
-        C = []
-        V = self.variables
-        for char in self.alphabet:
-            if char not in V:
-                C.append(char)
-        return C
+        
+        self.variables = [r.variable for r in self.rules]
+        self.constants = [a for a in alphabet if a not in self.variables]
     
     def describe(self):
         V = self.variables
         C = self.constants
-        print(self.alphabet)
-        for n,R in enumerate(self.rules,1):
-            print(f"Rule {n}: {R}")
         print(f"Variables: {' '.join(V)}")
         print(f"Constants: {' '.join(C)}")
+        for n,R in enumerate(self.rules,1):
+            print(f"Rule {n}: {R}")
+
         
         
     def __call__(self,string):
         out = []
         for char in string:
-            for r in self.rules:
-                try:
-                    out.append(r(char))
-                except:
-                    continue
-                
+            if char in self.constants:
+                out.append(char)
+            else:
+                for r in self.rules:
+                    try:
+                        out.append(r(char))
+                    except:
+                        continue
+                    
         return "".join(out)
-
-    variables = property(_variables)
-    constants = property(_constants)
 
 
 
@@ -89,4 +78,16 @@ if __name__ == '__main__':
     for i in range(5):
         print(S)
         S = L(S)
+
+
+    print("\n\n\n")
+    r1 = rewrite_rule("X","X+YF+")
+    r2 = rewrite_rule("Y","-FX-Y")
+    L = LSystem([r1,r2],"XYF+-")
+    L.describe()
+    S = "FX"
+    for i in range(4):
+        print(S)
+        S = L(S)
+    
     
