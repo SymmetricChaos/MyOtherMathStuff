@@ -1,4 +1,3 @@
-
 import matplotlib.pyplot as plt
 import matplotlib.lines as lines
 import matplotlib.patches as patches
@@ -203,16 +202,17 @@ def draw_dots_p(P,ax=None,**kwargs):
 
 
 # Connect points A and B
+# Yes the MPL code to make this work is weird, that's why you made this dummy
 def connect_p(A,B,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
-    line = lines.Line2D([A[0],A[1]], [B[0],B[1]], axes=ax,**kwargs)
+    line = lines.Line2D([A[0],B[0]], [A[1],B[1]], axes=ax,**kwargs)
     ax.add_line(line)
 
 def connect_xy(X,Y,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
-    line = lines.Line2D([X[0],Y[0]], [X[1],Y[1]], axes=ax,**kwargs)
+    line = lines.Line2D([X[0],X[1]], [Y[0],Y[1]], axes=ax,**kwargs)
     ax.add_line(line)
 
 # Convenience functions for titles
