@@ -110,7 +110,7 @@ if __name__ == '__main__':
     L = LSystem([r1,r2],"01[]")
     L.describe()
     S = "0"
-    for i in range(5):
+    for i in range(4):
         print(S)
         S = L(S)
 
