@@ -3,7 +3,7 @@ import Utils.MatPlotTurtle as mplt
 import LSystem as LS
 
 
-def dragon_curve(n):
+def dragon_curve(n,ax):
     r1 = LS.rewrite_rule("X","X+YF+")
     r2 = LS.rewrite_rule("Y","-FX-Y")
     dragon = LS.LSystem([r1,r2],"XYF+-")
@@ -11,13 +11,8 @@ def dragon_curve(n):
     for i in range(n):
         S = dragon(S)
     
-    Drawing.make_blank_canvas()
-    ax = Drawing.make_blank_plot(xlim=[-50,50])
-    turt = mplt.mplTurtle()
-    maxx = 0
-    minx = 0
-    maxy = 0
-    miny = 0
+    turt = mplt.mplTurtle(ax=ax)
+    P = []
     for char in S:
         if char == "F":
             turt.forward(1)
@@ -25,15 +20,10 @@ def dragon_curve(n):
             turt.left(90)
         if char == "+":
             turt.right(90)
-        maxx = max(turt.pos[0],maxx)
-        minx = min(turt.pos[0],minx)
-        maxy = max(turt.pos[1],maxy)
-        miny = min(turt.pos[1],miny)
+        P.append(turt.pos)
+    Drawing.draw_dots_p(P,ax=ax,color='white',zorder=-1)
+    ax.set_aspect('equal','datalim')
     
-    true_max = max(maxx,maxy)
-    true_min = min(minx,miny)
-    ax.set_xlim((true_min-1,true_max+1))
-    ax.set_ylim((true_min-1,true_max+1))
     
 def sierpinski_curve(n,ax=None):
     r1 = LS.rewrite_rule("A","B-A-B")
@@ -43,9 +33,10 @@ def sierpinski_curve(n,ax=None):
     for i in range(n):
         S = sierpinski(S)
     
-    turt = mplt.mplTurtle(angle=30,ax=ax)
+    tilt = lambda n: 90 if n%2 == 0 else 30
+    
+    turt = mplt.mplTurtle(angle=tilt(n),ax=ax)
     P = []
-    turt.draw = False
     for char in S:
         if char in ("A","B"):
             turt.forward(1)
@@ -57,8 +48,15 @@ def sierpinski_curve(n,ax=None):
     Drawing.draw_dots_p(P,ax=ax,color='white',zorder=-1)
     ax.set_aspect('equal','datalim')
 
-#dragon_curve(8)
-Drawing.make_blank_canvas()
-for i in range(1,5):
-    ax = Drawing.make_blank_plot(2,2,i)
+
+Drawing.make_blank_canvas([15,15])
+Drawing.canvas_title("Dragon Curves",size=25)
+for i in range(1,10):
+    ax = Drawing.make_blank_plot(3,3,i)
+    dragon_curve(i,ax)
+    
+Drawing.make_blank_canvas([16,10])
+Drawing.canvas_title("Sierpinski Curves",size=25)
+for i in range(1,7):
+    ax = Drawing.make_blank_plot(2,3,i)
     sierpinski_curve(i,ax)
