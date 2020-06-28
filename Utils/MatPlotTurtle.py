@@ -16,24 +16,17 @@ class mplTurtle:
     def right(self,n):
         self.angle = (self.angle-n)%360
         
-    def pen_up(self):
-        self.draw = False
-    
-    def pen_down(self):
-        self.draw = True
-        
     def move_to(self,pos):
         if self.draw:
             Drawing.connect_p(self.pos,pos,self.ax,**self.kwargs)
-        else:
-            self.pos = pos
+        self.pos = pos
         
     def forward(self,n):
         a = math.radians(self.angle)
         h = math.sin(a)*n
         w = math.cos(a)*n
         newpos = (self.pos[0]+h,self.pos[1]+w)
-        if self.draw:        
+        if self.draw:
             Drawing.connect_p(self.pos,newpos,self.ax,**self.kwargs)
         self.pos = newpos
         

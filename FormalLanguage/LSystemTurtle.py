@@ -16,11 +16,11 @@ def dragon_curve(n,ax,**kwargs):
     for char in S:
         if char == "F":
             turt.forward(1)
+            P.append(turt.pos)
         if char == "-":
             turt.left(90)
         if char == "+":
             turt.right(90)
-        P.append(turt.pos)
     Drawing.draw_dots_p(P,ax=ax,color='white',zorder=-1)
     ax.set_aspect('equal','datalim')
     
@@ -40,11 +40,12 @@ def sierpinski_curve(n,ax=None,**kwargs):
     for char in S:
         if char in ("A","B"):
             turt.forward(1)
-        if char == "-":
+            P.append(turt.pos)
+        elif char == "-":
             turt.left(60)
-        if char == "+":
+        elif char == "+":
             turt.right(60)
-        P.append(turt.pos)
+
     Drawing.draw_dots_p(P,ax=ax,color='white',zorder=-1)
     ax.set_aspect('equal','datalim')
 
