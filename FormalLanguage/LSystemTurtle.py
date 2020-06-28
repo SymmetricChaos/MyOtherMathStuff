@@ -50,14 +50,46 @@ def sierpinski_curve(n,ax=None,**kwargs):
     ax.set_aspect('equal','datalim')
 
 
+def barnsley_ferm(n,ax=None,**kwargs):
+    r1 = LS.rewrite_rule("X","F+[[X]-X]-F[-FX]+X")
+    r2 = LS.rewrite_rule("F","FF")
+    barnsley = LS.LSystem([r1,r2],"XF+-[]")
+    S = "X"
+    for i in range(n):
+        S = barnsley(S)
+    
+    turt = mplt.mplTurtle(angle=25,ax=ax,**kwargs)
+    P = []
+    stack = []
+    for char in S:
+        if char == "F":
+            turt.forward(1)
+            P.append(turt.pos)
+        elif char == "-":
+            turt.left(25)
+        elif char == "+":
+            turt.right(25)
+        elif char == "[":
+            stack.append((turt.pos,turt.angle))
+        elif char == "]":
+            turt.pos, turt.angle = stack.pop()
+
+    Drawing.draw_dots_p(P,ax=ax,color='white',zorder=-1)
+    ax.set_aspect('equal','datalim')
+
 #Drawing.make_blank_canvas([15,15])
 #Drawing.canvas_title("Dragon Curves",size=25)
 #for i in range(1,10):
 #    ax = Drawing.make_blank_plot(3,3,i)
 #    dragon_curve(i,ax,color='red')
     
-Drawing.make_blank_canvas([16,10])
-Drawing.canvas_title("Sierpinski Curves",size=25)
-for i in range(1,7):
-    ax = Drawing.make_blank_plot(2,3,i)
-    sierpinski_curve(i,ax)
+#Drawing.make_blank_canvas([16,10])
+#Drawing.canvas_title("Sierpinski Curves",size=25)
+#for i in range(1,7):
+#    ax = Drawing.make_blank_plot(2,3,i)
+#    sierpinski_curve(i,ax)
+    
+Drawing.make_blank_canvas([12,12])
+Drawing.canvas_title("\nBarnsley Fern",size=25)
+ax = Drawing.make_blank_plot()
+barnsley_ferm(7,ax,color='green')
