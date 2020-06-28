@@ -1,3 +1,5 @@
+from random import choice
+
 class rewrite_rule:
     
     def __init__(self,variable,replacement):
@@ -5,18 +7,50 @@ class rewrite_rule:
             raise Exception("L-System rules apply only to single symbols")
         self.variable = variable
         self.replacement = replacement
+
     
     def __str__(self):
         return f"{self.variable} 🡪 {self.replacement}"
 
+
     def __repr__(self):
         return f"{self.variable} 🡪 {self.replacement}"
+
 
     def __call__(self,string):
         if string == self.variable:
             return self.replacement
         else:
             raise Exception("Rule does not apply.")
+
+
+
+class random_rewrite_rule:
+    
+    def __init__(self,variable,replacements,probs):
+        if len(variable) != 1:
+            raise Exception("L-System rules apply only to single symbols")
+        if len(replacements) != len(probs):
+            raise Exception("replacements and probs must have the same length")
+        self.variable = variable
+        self.replacements = replacements
+        self.probs = probs
+
+    
+#    def __str__(self):
+#        return f"{self.variable} 🡪 {self.replacement}"
+#
+#
+#    def __repr__(self):
+#        return f"{self.variable} 🡪 {self.replacement}"
+
+
+    def __call__(self,string):
+        if string == self.variable:
+            return choice(self.replacement,self.probs)
+        else:
+            raise Exception("Rule does not apply.")
+
 
 
 class LSystem:
@@ -32,6 +66,7 @@ class LSystem:
         self.variables = [r.variable for r in self.rules]
         self.constants = [a for a in alphabet if a not in self.variables]
     
+
     def describe(self):
         V = self.variables
         C = self.constants
@@ -40,8 +75,7 @@ class LSystem:
         for n,R in enumerate(self.rules,1):
             print(f"Rule {n}: {R}")
 
-        
-        
+
     def __call__(self,string):
         out = []
         for char in string:
@@ -51,6 +85,7 @@ class LSystem:
                 for r in self.rules:
                     try:
                         out.append(r(char))
+                        break
                     except:
                         continue
                     
@@ -89,5 +124,4 @@ if __name__ == '__main__':
     for i in range(4):
         print(S)
         S = L(S)
-    
     
