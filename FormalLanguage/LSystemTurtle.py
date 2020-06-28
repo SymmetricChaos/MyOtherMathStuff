@@ -3,7 +3,7 @@ import Utils.MatPlotTurtle as mplt
 import LSystem as LS
 
 
-def dragon_curve(n,ax):
+def dragon_curve(n,ax,**kwargs):
     r1 = LS.rewrite_rule("X","X+YF+")
     r2 = LS.rewrite_rule("Y","-FX-Y")
     dragon = LS.LSystem([r1,r2],"XYF+-")
@@ -11,7 +11,7 @@ def dragon_curve(n,ax):
     for i in range(n):
         S = dragon(S)
     
-    turt = mplt.mplTurtle(ax=ax)
+    turt = mplt.mplTurtle(ax=ax,**kwargs)
     P = []
     for char in S:
         if char == "F":
@@ -25,7 +25,7 @@ def dragon_curve(n,ax):
     ax.set_aspect('equal','datalim')
     
     
-def sierpinski_curve(n,ax=None):
+def sierpinski_curve(n,ax=None,**kwargs):
     r1 = LS.rewrite_rule("A","B-A-B")
     r2 = LS.rewrite_rule("B","A+B+A")
     sierpinski = LS.LSystem([r1,r2],"AB+-")
@@ -35,7 +35,7 @@ def sierpinski_curve(n,ax=None):
     
     tilt = lambda n: 90 if n%2 == 0 else 30
     
-    turt = mplt.mplTurtle(angle=tilt(n),ax=ax)
+    turt = mplt.mplTurtle(angle=tilt(n),ax=ax,**kwargs)
     P = []
     for char in S:
         if char in ("A","B"):
@@ -49,11 +49,11 @@ def sierpinski_curve(n,ax=None):
     ax.set_aspect('equal','datalim')
 
 
-Drawing.make_blank_canvas([15,15])
-Drawing.canvas_title("Dragon Curves",size=25)
-for i in range(1,10):
-    ax = Drawing.make_blank_plot(3,3,i)
-    dragon_curve(i,ax)
+#Drawing.make_blank_canvas([15,15])
+#Drawing.canvas_title("Dragon Curves",size=25)
+#for i in range(1,10):
+#    ax = Drawing.make_blank_plot(3,3,i)
+#    dragon_curve(i,ax,color='red')
     
 Drawing.make_blank_canvas([16,10])
 Drawing.canvas_title("Sierpinski Curves",size=25)
