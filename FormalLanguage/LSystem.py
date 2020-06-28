@@ -21,16 +21,24 @@ class LSystem:
     def __init__(self,rules,alphabet):
         self.rules = rules
         self.alphabet = alphabet
+        
+        for r in self.rules:
+            if r.variable not in alphabet:
+                raise Exception(f"The rule {r} does not act on the alphabet {alphabet}")
     
     def show_rules(self):
         for n,R in enumerate(self.rules,1):
             print(f"Rule {n}: {R}")
             
-    def show_variables(self):
-        pass
+    def variables(self):
+        V = []
+        for r in self.rules:
+            V.append(r.variable)
+        return V
+            
     
-    def show_constants(self):
-        pass
+    def constants(self):
+        pass 
     
     def __call__(self,string):
         out = []
@@ -50,25 +58,19 @@ class LSystem:
 if __name__ == '__main__':
     r1 = rewrite_rule("A","AB")
     r2 = rewrite_rule("B","A")
-    
-    L = LSystem([r1,r2])
-    
+    L = LSystem([r1,r2],"AB")
     L.show_rules()
-    
     S = "B"
     for i in range(10):
         print(S)
         S = L(S)
     
     
-    
+    print("\n\n\n")
     r1 = rewrite_rule("0","1[0]0")
     r2 = rewrite_rule("1","11")
-    
-    L = LSystem([r1,r2])
-    
+    L = LSystem([r1,r2],"01[]")
     L.show_rules()
-    
     S = "0"
     for i in range(5):
         print(S)
