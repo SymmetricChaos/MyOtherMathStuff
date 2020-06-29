@@ -3,12 +3,13 @@ import math
 
 class mplTurtle:
     
-    def __init__(self,pos=(0,0),angle=0,draw=True,ax=None,**kwargs):
+    def __init__(self,pos=(0,0),angle=0,draw=True,ax=None,
+                 color='blue'):
         self.pos = pos
         self.angle = angle%360
         self.draw = draw
         self.ax = ax
-        self.kwargs = kwargs
+        self.color = color
         
     def left(self,n):
         self.angle = (self.angle+n)%360
@@ -18,7 +19,7 @@ class mplTurtle:
         
     def move_to(self,pos):
         if self.draw:
-            Drawing.connect_p(self.pos,pos,self.ax,**self.kwargs)
+            Drawing.connect_p(self.pos,pos,self.ax,color=self.color)
         self.pos = pos
         
     def forward(self,n):
@@ -27,7 +28,7 @@ class mplTurtle:
         w = math.cos(a)*n
         newpos = (self.pos[0]+h,self.pos[1]+w)
         if self.draw:
-            Drawing.connect_p(self.pos,newpos,self.ax,**self.kwargs)
+            Drawing.connect_p(self.pos,newpos,self.ax,color=self.color)
         self.pos = newpos
         
     def backward(self,n):
@@ -36,5 +37,5 @@ class mplTurtle:
         w = math.cos(a)*n
         newpos = (self.pos[0]-h,self.pos[1]-w)
         if self.draw:        
-            Drawing.connect_p(self.pos,newpos,self.ax,**self.kwargs)
+            Drawing.connect_p(self.pos,newpos,self.ax,color=self.color)
         self.pos = newpos

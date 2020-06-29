@@ -37,12 +37,12 @@ class random_rewrite_rule:
         self.probs = probs
 
     
-#    def __str__(self):
-#        return f"{self.variable} 🡪 {self.replacement}"
-#
-#
-#    def __repr__(self):
-#        return f"{self.variable} 🡪 {self.replacement}"
+    def __str__(self):
+        return f"{self.variable} 🡪 {self.replacements}"
+
+
+    def __repr__(self):
+        return f"{self.variable} 🡪 {self.replacements}"
 
 
     def __call__(self,string):

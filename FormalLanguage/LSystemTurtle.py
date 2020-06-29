@@ -77,6 +77,41 @@ def barnsley_ferm(n,ax=None,**kwargs):
     Drawing.draw_dots_p(P,ax=ax,color='white',zorder=-1)
     ax.set_aspect('equal','datalim')
 
+
+def binary_tree(n,ax,color='brown'):
+    r1 = LS.rewrite_rule("0","1[0]0")
+    r2 = LS.rewrite_rule("1","11")
+    tree = LS.LSystem([r1,r2],"01[]")
+    S = "0"
+    for i in range(n):
+        S = tree(S)
+    
+    turt = mplt.mplTurtle(ax=ax,color=color)
+    P = []
+    stack = []
+    dist = 0
+    for char in S:
+        if dist > 248:
+            turt.color = 'green'
+        else:
+            turt.color = 'brown'
+        P.append(turt.pos)
+        if char in "1":
+            dist += 1
+            turt.forward(1)
+        if char in "0":
+            turt.forward(1)       
+        elif char == "[":
+            stack.append((turt.pos,turt.angle,dist))
+            turt.left(45)
+        elif char == "]":
+            turt.pos, turt.angle, dist = stack.pop()
+            turt.right(45)
+
+    Drawing.draw_dots_p(P,ax=ax,color='white',zorder=-1)
+    ax.set_aspect('equal','datalim')
+    
+    
 #Drawing.make_blank_canvas([15,15])
 #Drawing.canvas_title("Dragon Curves",size=25)
 #for i in range(1,10):
@@ -89,7 +124,12 @@ def barnsley_ferm(n,ax=None,**kwargs):
 #    ax = Drawing.make_blank_plot(2,3,i)
 #    sierpinski_curve(i,ax)
     
+#Drawing.make_blank_canvas([12,12])
+#Drawing.canvas_title("\nBarnsley Fern",size=25)
+#ax = Drawing.make_blank_plot()
+#barnsley_ferm(7,ax,color='green')
+
 Drawing.make_blank_canvas([12,12])
-Drawing.canvas_title("\nBarnsley Fern",size=25)
+Drawing.canvas_title("Tree",size=25)
 ax = Drawing.make_blank_plot()
-barnsley_ferm(7,ax,color='green')
+binary_tree(8,ax)
