@@ -112,8 +112,8 @@ def binary_tree(n,ax,color='brown'):
     ax.set_aspect('equal','datalim')
     
 
-def custom_tree(n,ax,color='salmon'):
-    r1 = LS.rewrite_rule("0","1[0[0]]0")
+def custom_tree(n,ax,color='goldenrod'):
+    r1 = LS.random_rewrite_rule("0",["1[0[0]]0","1[[0]0]0"],[1,1])
     r2 = LS.random_rewrite_rule("1",["11","1"],[1,1])
     tree = LS.LSystem([r1,r2],"01[]")
     S = "0"
@@ -143,23 +143,23 @@ def custom_tree(n,ax,color='salmon'):
     
     
 #Drawing.make_blank_canvas([15,15])
-#Drawing.canvas_title("Dragon Curves",size=25)
+#Drawing.canvas_title("Dragon Curves",size=25,y=.91)
 #for i in range(1,10):
 #    ax = Drawing.make_blank_plot(3,3,i)
 #    dragon_curve(i,ax,color='red')
     
 #Drawing.make_blank_canvas([16,10])
-#Drawing.canvas_title("Sierpinski Curves",size=25)
+#Drawing.canvas_title("Sierpinski Curves",size=25,y=.91)
 #for i in range(1,7):
 #    ax = Drawing.make_blank_plot(2,3,i)
 #    sierpinski_curve(i,ax)
     
 #Drawing.make_blank_canvas([12,12])
-#Drawing.canvas_title("\nBarnsley Fern",size=25)
+#Drawing.canvas_title("\nBarnsley Fern",size=25,y=.91)
 #ax = Drawing.make_blank_plot()
 #barnsley_ferm(7,ax,color='green')
 
 Drawing.make_blank_canvas([12,12])
-Drawing.canvas_title("Tree",size=25)
+Drawing.canvas_title("Wheat",size=25,y=.91)
 ax = Drawing.make_blank_plot()
 custom_tree(6,ax)
