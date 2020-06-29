@@ -112,7 +112,7 @@ def binary_tree(n,ax,color='brown'):
     ax.set_aspect('equal','datalim')
     
 
-def custom_tree(n,ax,color='goldenrod'):
+def custom_tree(n,ax):
     r1 = LS.random_rewrite_rule("0",["1[0[0]]0","1[[0]0]0"],[1,1])
     r2 = LS.random_rewrite_rule("1",["11","1"],[1,1])
     tree = LS.LSystem([r1,r2],"01[]")
@@ -120,7 +120,7 @@ def custom_tree(n,ax,color='goldenrod'):
     for i in range(n):
         S = tree(S)
     
-    turt = mplt.mplTurtle(ax=ax,color=color)
+    turt = mplt.mplTurtle(ax=ax,color='goldenrod')
     P = []
     stack = []
     dist = 0
@@ -130,7 +130,8 @@ def custom_tree(n,ax,color='goldenrod'):
             dist += 1
             turt.forward(1)
         if char in "0":
-            turt.forward(1)       
+            turt.forward(1)
+            turt.stamp(color='forestgreen',alpha=.3)
         elif char == "[":
             stack.append((turt.pos,turt.angle,dist))
             turt.left(20)
@@ -160,6 +161,6 @@ def custom_tree(n,ax,color='goldenrod'):
 #barnsley_ferm(7,ax,color='green')
 
 Drawing.make_blank_canvas([12,12])
-Drawing.canvas_title("Wheat",size=25,y=.91)
+Drawing.canvas_title("My Tree",size=25,y=.91)
 ax = Drawing.make_blank_plot()
-custom_tree(6,ax)
+custom_tree(7,ax)
