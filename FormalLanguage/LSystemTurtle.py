@@ -113,30 +113,31 @@ def binary_tree(n,ax,color='brown'):
     
 
 def custom_tree(n,ax):
-    r1 = LS.random_rewrite_rule("0",["1[0[0]]0","1[[0]0]0"],[1,1])
+    r1 = LS.random_rewrite_rule("0",["1[0[0]]0","1[[0]0]0","1[0]0"],[1,1,1])
     r2 = LS.random_rewrite_rule("1",["11","1"],[1,1])
     tree = LS.LSystem([r1,r2],"01[]")
     S = "0"
     for i in range(n):
         S = tree(S)
-    
-    turt = mplt.mplTurtle(ax=ax,color='goldenrod')
+            
+    turt = mplt.mplTurtle(angle=90,ax=ax,color='brown',linewidth=1.5)
     P = []
     stack = []
-    dist = 0
+    depth = 0
     for char in S:
         P.append(turt.pos)
+        turt.linewidth = max(1,25-depth)
         if char in "1":
-            dist += 1
+            depth += 1
             turt.forward(1)
         if char in "0":
             turt.forward(1)
-            turt.stamp(color='forestgreen',alpha=.3)
+            turt.stamp(r=.5,color='forestgreen',alpha=.65)
         elif char == "[":
-            stack.append((turt.pos,turt.angle,dist))
+            stack.append((turt.pos,turt.angle,depth))
             turt.left(20)
         elif char == "]":
-            turt.pos, turt.angle, dist = stack.pop()
+            turt.pos, turt.angle, depth = stack.pop()
             turt.right(20)
 
     Drawing.draw_dots_p(P,ax=ax,color='white',zorder=-1)

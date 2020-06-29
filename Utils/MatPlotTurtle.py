@@ -31,7 +31,7 @@ class mplTurtle:
         a = math.radians(self.angle)
         h = math.sin(a)*n
         w = math.cos(a)*n
-        newpos = (self.pos[0]+h,self.pos[1]+w)
+        newpos = (self.pos[0]+w,self.pos[1]+h)
         if self.draw:
             Drawing.connect_p(self.pos,newpos,self.ax,
                               color=self.color,alpha=self.alpha,
@@ -42,7 +42,7 @@ class mplTurtle:
         a = math.radians(self.angle)
         h = math.sin(a)*n
         w = math.cos(a)*n
-        newpos = (self.pos[0]-h,self.pos[1]-w)
+        newpos = (self.pos[0]-w,self.pos[1]-h)
         if self.draw:        
             Drawing.connect_p(self.pos,newpos,self.ax,
                               color=self.color,alpha=self.alpha,
