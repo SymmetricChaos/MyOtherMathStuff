@@ -1,4 +1,4 @@
-from random import choice
+import random
 
 class rewrite_rule:
     
@@ -47,7 +47,7 @@ class random_rewrite_rule:
 
     def __call__(self,string):
         if string == self.variable:
-            return choice(self.replacement,self.probs)
+            return random.choices(self.replacements,self.probs)[0]
         else:
             raise Exception("Rule does not apply.")
 
