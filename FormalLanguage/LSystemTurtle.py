@@ -112,7 +112,7 @@ def binary_tree(n,ax,color='brown'):
     ax.set_aspect('equal','datalim')
     
 
-def custom_tree(n,ax,color='brown'):
+def custom_tree(n,ax,color='salmon'):
     r1 = LS.rewrite_rule("0","1[0[0]]0")
     r2 = LS.random_rewrite_rule("1",["11","1"],[1,1])
     tree = LS.LSystem([r1,r2],"01[]")
@@ -125,10 +125,6 @@ def custom_tree(n,ax,color='brown'):
     stack = []
     dist = 0
     for char in S:
-        if dist > 248:
-            turt.color = 'green'
-        else:
-            turt.color = 'brown'
         P.append(turt.pos)
         if char in "1":
             dist += 1
