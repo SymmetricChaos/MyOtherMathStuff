@@ -1,6 +1,9 @@
 from Drawing import *
+from MatPlotTurtle import mplTurtle
 import numpy as np
 import os
+import random
+from PointManip import midpoint
 
 ### Subplots example ###
 canvas1 = make_blank_canvas([15,15],facecolor="lightgray")
@@ -56,7 +59,7 @@ table([["A","B","C"],
        ["{}"," ","NULL"]],
       loc='center',colWidths=[.2,.2,.2],yscale=2)
 
-canvas1.savefig('fig1.png', dpi=canvas1.dpi)
+#canvas1.savefig('fig1.png', dpi=canvas1.dpi)
 
 
 
@@ -97,4 +100,29 @@ make_blank_plot(3,3,5)
 quiver_plot(X,Y,U,V)
 title("Quiver Plot")
 
-canvas2.savefig('fig2.png', dpi=canvas2.dpi, pad=0)
+#canvas2.savefig('fig2.png', dpi=canvas2.dpi, pad=0)
+
+
+
+
+### Turtle Plots ###
+canvas3 = make_blank_canvas([15,15])
+canvas_title("Turtle Graphics",size=25)
+make_plot(2,2,2,xlim=[-5,5])
+
+turtle1 = mplTurtle(linewidth=2)
+for i in range(40):
+    turtle1.forward(.5+.02*i)
+    turtle1.left(33)
+    turtle1.stamp(r=.1,color='red')
+
+
+make_plot(2,2,3,xlim=[-5,5])
+P = [(-4,-4),(4,-4),(4,4),(-4,4)]
+
+turtle2 = mplTurtle(alpha=.2)
+for i in range(1500):
+    
+    newpos = midpoint(turtle2.pos,random.choice(P))
+    turtle2.move_to(newpos)
+    

@@ -383,8 +383,3 @@ def quiver_plot(X,Y,U,V,ax=None,positions=[],labels=[],vert=True,**kwargs):
         ax = plt.gca()
         
     return ax.quiver(X,Y,U,V)
-    
-
-
-
-

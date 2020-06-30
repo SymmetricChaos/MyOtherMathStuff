@@ -1,4 +1,5 @@
 import Utils.Drawing as Drawing
+import matplotlib.pyplot as plt
 import math
 
 class mplTurtle:
@@ -8,7 +9,10 @@ class mplTurtle:
         self.pos = pos
         self.angle = angle%360
         self.draw = draw
-        self.ax = ax
+        if ax == None:
+            self.ax = plt.gca()
+        else:
+            self.ax = ax
         self.color = color
         self.alpha = alpha
         self.linewidth = linewidth
