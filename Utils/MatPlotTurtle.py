@@ -4,7 +4,7 @@ import math
 class mplTurtle:
     
     def __init__(self,pos=(0,0),angle=0,draw=True,ax=None,
-                 color='blue',alpha=1,linewidth=1,zorder=0):
+                 color='black',alpha=1,linewidth=1,zorder=0):
         self.pos = pos
         self.angle = angle%360
         self.draw = draw
