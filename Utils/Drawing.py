@@ -231,6 +231,7 @@ def arrow_xy(X,Y,ax=None,**kwargs):
     dy = Y[1]-Y[0]
     ax.arrow(X[0],Y[0],dx,dy,**kwargs)
 
+
 # Convenience functions for titles
 def title(text="",ax=None,**kwargs):
     if ax == None:

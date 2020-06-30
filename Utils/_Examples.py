@@ -112,11 +112,10 @@ canvas3 = make_blank_canvas([15,15])
 canvas_title("Turtle Graphics",size=25)
 make_plot(2,2,2,xlim=[-5,5])
 
-turtle1 = mplTurtle(linewidth=2)
+turtle1 = mplTurtle(linewidth=2,arrow_headwidth=.2)
 for i in range(40):
     turtle1.forward(.5+.02*i)
     turtle1.left(33)
-    turtle1.stamp(r=.1,color='red')
 
 
 make_plot(2,2,3,xlim=[-5,5])
