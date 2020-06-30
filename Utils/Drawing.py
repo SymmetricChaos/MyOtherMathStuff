@@ -215,6 +215,22 @@ def connect_xy(X,Y,ax=None,**kwargs):
     line = lines.Line2D([X[0],X[1]], [Y[0],Y[1]], axes=ax,**kwargs)
     ax.add_line(line)
 
+# With arrows
+# For some reason arrows are defined in MPL by a position and an offset
+def arrow_p(A,B,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
+    dx = B[0]-A[0]
+    dy = B[1]-A[1]
+    ax.arrow(A[0],A[1],dx,dy,**kwargs)
+
+def arrow_xy(X,Y,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
+    dx = X[1]-X[0]
+    dy = Y[1]-Y[0]
+    ax.arrow(X[0],Y[0],dx,dy,**kwargs)
+
 # Convenience functions for titles
 def title(text="",ax=None,**kwargs):
     if ax == None:

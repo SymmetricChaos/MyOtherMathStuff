@@ -59,6 +59,8 @@ table([["A","B","C"],
        ["{}"," ","NULL"]],
       loc='center',colWidths=[.2,.2,.2],yscale=2)
 
+arrow_p([0,0],[.5,-.5],head_width=.1,ax=sp3)
+
 #canvas1.savefig('fig1.png', dpi=canvas1.dpi)
 
 
@@ -118,19 +120,20 @@ for i in range(40):
 
 
 make_plot(2,2,3,xlim=[-5,5])
-P = [(-4,-4),(4,-4),(4,4),(-4,4)]
+P = [(-4,-4),(4,-4),(0,4)]
 
-turtle2 = mplTurtle(alpha=.2)
-for i in range(1000):
+turtle2 = mplTurtle(draw=False)
+for i in range(2000):
     newpos = midpoint(turtle2.pos,random.choice(P))
     turtle2.move_to(newpos)
+    turtle2.stamp(.03,alpha=.6)
     
 
 make_plot(2,2,4,xlim=[-5,5])
 P = [(-4,-4),(4,-4),(4,4),(-4,4)]
 
 turtle3 = mplTurtle(color='green')
-for i in range(50):
+for i in range(500):
     target = random.choice(P)
     turtle3.point_to(target)
     turtle3.forward(1)
