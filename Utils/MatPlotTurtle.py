@@ -1,6 +1,7 @@
 import Utils.Drawing as Drawing
 import matplotlib.pyplot as plt
 import math
+import numpy as np
 
 class mplTurtle:
     
@@ -30,6 +31,10 @@ class mplTurtle:
                               color=self.color,alpha=self.alpha,
                               linewidth=self.linewidth,zorder=self.zorder)
         self.pos = pos
+        
+    def point_to(self,pos):
+        self.angle = math.degrees(math.atan2(pos[1]-self.pos[1],pos[0]-self.pos[0]))%360
+
         
     def forward(self,n):
         a = math.radians(self.angle)
