@@ -59,7 +59,7 @@ table([["A","B","C"],
        ["{}"," ","NULL"]],
       loc='center',colWidths=[.2,.2,.2],yscale=2)
 
-arrow_p([0,0],[.5,-.5],head_width=.1,ax=sp3)
+arrow_p([0,0],[.5,-.5],head_width=.2,ax=sp3)
 
 #canvas1.savefig('fig1.png', dpi=canvas1.dpi)
 

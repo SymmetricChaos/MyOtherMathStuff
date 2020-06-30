@@ -217,12 +217,12 @@ def connect_xy(X,Y,ax=None,**kwargs):
 
 # With arrows
 # For some reason arrows are defined in MPL by a position and an offset
-def arrow_p(A,B,ax=None,**kwargs):
+def arrow_p(A,B,ax=None,facecolor="black",edgecolor="black",**kwargs):
     if ax == None:
         ax = plt.gca()
     dx = B[0]-A[0]
     dy = B[1]-A[1]
-    ax.arrow(A[0],A[1],dx,dy,**kwargs)
+    ax.arrow(A[0],A[1],dx,dy,facecolor=facecolor,edgecolor=edgecolor,**kwargs)
 
 def arrow_xy(X,Y,ax=None,**kwargs):
     if ax == None:
