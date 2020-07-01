@@ -112,8 +112,34 @@ title("Quiver Plot")
 ### Turtle Plots ###
 canvas3 = make_blank_canvas([15,15])
 canvas_title("Turtle Graphics",size=25)
-make_plot(2,2,2,xlim=[-5,5])
 
+
+make_blank_plot(2,2,1,xlim=[-12,12])
+title("A Cesaro Tree")
+def my_tree(turt,level):
+    turt.linewidth = level
+    turt.left(45)
+    turt.forward(level/4)
+    
+    if level > 0:
+        my_tree(turt,level-1)
+    turt.linewidth = level
+    turt.backward(level/4)
+    turt.right(90)
+    turt.forward(level/4)
+
+    if level > 0:
+        my_tree(turt,level-1)
+    turt.linewidth = level
+    turt.backward(level/4)
+    turt.left(45)
+
+my_turtle = mplTurtle(color='brown',angle=90,alpha=.5)
+my_tree(my_turtle,10)
+
+
+make_plot(2,2,2,xlim=[-5,5])
+title("Change Lines to Arrows")
 turtle1 = mplTurtle(linewidth=2,arrow_headwidth=.2)
 for i in range(40):
     turtle1.forward(.5+.03*i)
@@ -121,16 +147,18 @@ for i in range(40):
 
 
 make_plot(2,2,3,xlim=[-5,5])
+title("Stamps Only\nNo Lines")
 P = [(-4,-4),(4,-4),(0,4)]
 
 turtle2 = mplTurtle(draw=False,color="gray")
-for i in range(3000):
+for i in range(1000):
     newpos = midpoint(turtle2.pos,random.choice(P))
     turtle2.move_to(newpos)
-    turtle2.stamp(.01)
+    turtle2.stamp(.02)
     
 
 make_plot(2,2,4,xlim=[-5,5])
+title("Bounded in a Nutshell")
 P = [(-4,-4),(4,-4),(4,4),(-4,4)]
 
 turtle3 = mplTurtle(color='green')
