@@ -11,6 +11,7 @@ def make_blank_canvas(size=[12,12],**kwargs):
     fig.set_size_inches(size[0],size[1])
     return fig
 
+
 def make_plot(a=1,b=1,p=1,xlim=None,ylim=None,fig=None,**kwargs):
     
     if fig == None:
@@ -62,6 +63,7 @@ def make_blank_plot(a=1,b=1,p=1,xlim=None,ylim=None,box=True,fig=None,**kwargs):
 
 
 
+### STRAIGHT LINES ###
 # Convenience function for solving mbline equations
 def calc_y(m,x,b):
     return m*x+b
@@ -69,7 +71,7 @@ def calc_y(m,x,b):
 def calc_x(m,y,b):
     return (y-b)/m
 
-# Draw an infinite slope-intercept line
+# Draw a line based on its slope-intercept form
 def mbline(m,b,xlim=[],ylim=[],ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
@@ -125,7 +127,7 @@ def mblines(M,B,xlim=[],ylim=[],ax=None,**kwargs):
     return out
 
 
-# Draw an infinite line through a given point with a given line
+# Draw an line given the point-slope form
 def point_slope_line(P,m,xlim=[],ylim=[],ax=None,**kwargs):    
     b = m*P[1]+P[0]
     return mbline(m,b,xlim,ylim,ax,**kwargs)
@@ -136,7 +138,6 @@ def point_slope_lines(P,M,xlim=[],ylim=[],ax=None,**kwargs):
     return mblines(M,B,xlim,ylim,ax,**kwargs)
     
 
-# Vertical and horizontal lines
 def vertical_line(xpos=0,ylim=[],ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
@@ -155,53 +156,8 @@ def horizontal_line(ypos=0,xlim=[],ax=None,**kwargs):
     ax.add_line(line)
     return [xlim,[ypos,ypos]],line
 
-# Draw a curve from:
-#   seperate lists of x and y coordinates
-#   a list of (x,y) points
-def draw_curve_xy(x,y,ax=None,**kwargs):
-    if ax == None:
-        ax = plt.gca()
-    line = lines.Line2D(x,y, axes=ax,**kwargs)
-    ax.add_line(line)
 
-def draw_curve_p(P,ax=None,**kwargs):
-    if ax == None:
-        ax = plt.gca()
-    x,y = points_to_xy(P)
-    line = lines.Line2D(x,y, axes=ax,**kwargs)
-    ax.add_line(line)
-
-
-# Draw a curve that attaches the start to the end. Same options
-def draw_closed_curve_xy(x,y,ax=None,**kwargs):
-    if ax == None:
-        ax = plt.gca()
-    # Convert to list because an np.array doesn't play nice
-    X = list(x) + [x[0]]
-    Y = list(y) + [y[0]]
-    line = lines.Line2D(X,Y, axes=ax,**kwargs)
-    ax.add_line(line)
-    
-def draw_closed_curve_p(P,ax=None,**kwargs):
-    x,y = points_to_xy(P)
-    draw_closed_curve_xy(x,y,ax,**kwargs)
-
-
-# Draw scatterplots
-def draw_dots_xy(x,y,ax=None,**kwargs):
-    if ax == None:
-        ax = plt.gca()
-    ax.scatter(x,y,**kwargs)
-
-def draw_dots_p(P,ax=None,**kwargs):
-    if ax == None:
-        ax = plt.gca()
-    x,y = points_to_xy(P)
-    ax.scatter(x,y,**kwargs)
-
-
-# Connect points A and B
-# Yes the MPL code to make this work is weird, that's why you made this dummy
+# Straight line connecting two points
 def connect_p(A,B,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
@@ -214,8 +170,7 @@ def connect_xy(X,Y,ax=None,**kwargs):
     line = lines.Line2D([X[0],X[1]], [Y[0],Y[1]], axes=ax,**kwargs)
     ax.add_line(line)
 
-# With arrows
-# For some reason arrows are defined in MPL by a position and an offset
+# Straight arrow connecting two points
 def arrow_p(A,B,ax=None,facecolor="black",edgecolor="black",**kwargs):
     if ax == None:
         ax = plt.gca()
@@ -231,74 +186,62 @@ def arrow_xy(X,Y,ax=None,**kwargs):
     ax.arrow(X[0],Y[0],dx,dy,**kwargs)
 
 
-# Convenience functions for titles
+
+
+
+### CURVES ###
+# Draw an open curve
+def draw_curve_xy(x,y,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
+    line = lines.Line2D(x,y, axes=ax,**kwargs)
+    ax.add_line(line)
+
+def draw_curve_p(P,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
+    x,y = points_to_xy(P)
+    line = lines.Line2D(x,y, axes=ax,**kwargs)
+    ax.add_line(line)
+
+
+# Draw a closed curve that attaches the start to the end
+def draw_closed_curve_xy(x,y,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
+    # Convert to list because an np.array doesn't play nice
+    X = list(x) + [x[0]]
+    Y = list(y) + [y[0]]
+    line = lines.Line2D(X,Y, axes=ax,**kwargs)
+    ax.add_line(line)
+    
+def draw_closed_curve_p(P,ax=None,**kwargs):
+    x,y = points_to_xy(P)
+    draw_closed_curve_xy(x,y,ax,**kwargs)
+
+
+
+
+
+### TEXT ###
 def title(text="",ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
     ax.set_title(text,**kwargs)
 
+
 def canvas_title(text="",fig=None,**kwargs):
     if fig == None:
         fig = plt.gcf()
     fig.suptitle(text,**kwargs)
-
-
-# Creates circles with more control than draw_dots, created a PatchCollection
-# Can use setters to change all elements of the collection at once
-# Accepts single **kwargs for args other than X,Y,and R, these are reused for
-# all of the circles
-def draw_circles_xy(X,Y,R,ax=None, **kwargs):
-    if ax == None:
-        ax = plt.gca()
-    circles = []
-    for x,y,r in zip(X,Y,R):  
-        C = plt.Circle((x,y), radius=r, **kwargs)
-        ax.add_patch(C)
-        circles.append(C)
-    return circles
-
-def draw_circles_p(P,R,ax=None,**kwargs):
-    if ax == None:
-        ax = plt.gca()
-    circles = []
-    for p,r in zip(P,R):  
-        C = plt.Circle(p, radius=r, **kwargs)
-        ax.add_patch(C)
-        circles.append(C)
-    return circles
-
-
-# Convenient function for a single circle, can be used for finer control of
-# lots of different circles
-def draw_circle_xy(X,Y,R,ax=None,**kwargs):
-    if ax == None:
-        ax = plt.gca()
-    circle = plt.Circle((X,Y), radius=R, **kwargs)
-    ax.add_patch(circle)
-    return circle
-
-def draw_circle_p(P,R,ax=None,**kwargs):
-    if ax == None:
-        ax = plt.gca()
-    circle = plt.Circle(P, radius=R, **kwargs)
-    ax.add_patch(circle)
-    return circle
-
-
-def draw_rect_xy(x0,y0,x1,y1,ax=None,**kwargs):
-    if ax == None:
-        ax = plt.gca()
-    rect = patches.Rectangle([x0,y0],x1-x0,y1-y0,**kwargs)
-    ax.add_patch(rect)
-    return rect
-
-
-# Text
+    
+    
 def text_xy(x,y,t,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
     ax.text(x,y,t,**kwargs)
-    
+
+
 def text_p(P,t,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
@@ -315,8 +258,62 @@ def table(cell_text,yscale=1,ax=None,**kwargs):
     return ax.add_table(T)
 
 
-# Convinence for inserting images within the plot
-# This definitely isn't the best way to do this
+
+
+
+### CIRCLES ###
+def draw_circle_xy(X,Y,R,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
+    circle = plt.Circle((X,Y), radius=R, **kwargs)
+    ax.add_patch(circle)
+    return circle
+
+def draw_circle_p(P,R,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
+    circle = plt.Circle(P, radius=R, **kwargs)
+    ax.add_patch(circle)
+    return circle
+
+
+# Convenience for drawing many circles with varying position and size but
+# identical for all other arguments
+def draw_circles_xy(X,Y,R,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
+    circles = []
+    for x,y,r in zip(X,Y,R):  
+        C = draw_circle_xy(X,Y,R,ax,**kwargs)
+        circles.append(C)
+    return circles
+
+def draw_circles_p(P,R,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
+    circles = []
+    for p,r in zip(P,R):  
+        C = draw_circle_p(P,R,ax,**kwargs)
+        circles.append(C)
+    return circles
+
+
+
+
+
+### RECTANGLE ###
+def draw_rect_xy(x0,y0,x1,y1,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
+    rect = patches.Rectangle([x0,y0],x1-x0,y1-y0,**kwargs)
+    ax.add_patch(rect)
+    return rect
+
+
+
+
+
+### IMAGES ###
 def image(path,x=0,y=0,scale=1,ax=None):
     if ax == None:
         ax = plt.gca()
@@ -350,23 +347,44 @@ def image_box(path,x=0,y=0,scale=1,pad=0,ax=None):
                         pad=pad)
 
     ax.add_artist(ab)
-    
-        
-#Convenience to force show without directly importing matplotlib
+
+
+
+
+
+### SHOW ###
 def show_now():
     plt.show()
 
 
-# Statistical plots
+
+
+
+### MATHEMATICAL PLOTS ###
+# Scatter plots
+def draw_dots_xy(x,y,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
+    ax.scatter(x,y,**kwargs)
+
+def draw_dots_p(P,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
+    x,y = points_to_xy(P)
+    ax.scatter(x,y,**kwargs)
+
+    
 def histogram(L,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
     return ax.hist(L,**kwargs)
 
+
 def pie_chart(L,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
     return ax.pie(L,**kwargs)
+
 
 def boxplot(L,ax=None,positions=[],labels=[],vert=True,**kwargs):
     if ax == None:
@@ -376,6 +394,7 @@ def boxplot(L,ax=None,positions=[],labels=[],vert=True,**kwargs):
         positions = [i for i in range(len(L))]
     
     return ax.boxplot(L,positions=positions,labels=labels,vert=True,**kwargs)
+
 
 def violin_plot(L,ax=None,positions=[],labels=[],vert=True,**kwargs):
     if ax == None:
@@ -394,6 +413,7 @@ def violin_plot(L,ax=None,positions=[],labels=[],vert=True,**kwargs):
             ax.set_yticklabels(labels)
     
     return ax.violinplot(L,positions=positions,vert=vert,**kwargs)
+
 
 def quiver_plot(X,Y,U,V,ax=None,positions=[],labels=[],vert=True,**kwargs):
     if ax == None:
