@@ -6,6 +6,9 @@ from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 from matplotlib.cbook import get_sample_data
 from matplotlib.table import table as mpltable
 
+
+
+### DRAWING SURFACES ###
 def make_blank_canvas(size=[12,12],**kwargs):
     fig = plt.figure(**kwargs)
     fig.set_size_inches(size[0],size[1])
@@ -169,6 +172,7 @@ def connect_xy(X,Y,ax=None,**kwargs):
         ax = plt.gca()
     line = lines.Line2D([X[0],X[1]], [Y[0],Y[1]], axes=ax,**kwargs)
     ax.add_line(line)
+
 
 # Straight arrow connecting two points
 def arrow_p(A,B,ax=None,facecolor="black",edgecolor="black",**kwargs):
