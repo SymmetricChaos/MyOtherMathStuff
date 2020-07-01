@@ -27,7 +27,8 @@ mbline(1,1)
 # When subplots are not square shapes are warped
 sp3 = make_blank_plot(2,2,4,[-3,3],[-5,5])
 draw_circle_xy(1.5,-.5,1,fc='white',ec='black')
-text(-.8,3.5,"Shapes and lines on this plot are skewed\nbut not text\nthat's a circle down there",ha="center")
+text_xy(-.8,3.5,"Shapes and lines on this plot are skewed\nbut not text\nthat's a circle down there",
+        ha="center")
 
 # Show automatic xlim and ylim settings
 sp4 = make_blank_plot(4,4,7)
@@ -114,18 +115,18 @@ make_plot(2,2,2,xlim=[-5,5])
 
 turtle1 = mplTurtle(linewidth=2,arrow_headwidth=.2)
 for i in range(40):
-    turtle1.forward(.5+.02*i)
+    turtle1.forward(.5+.03*i)
     turtle1.left(33)
 
 
 make_plot(2,2,3,xlim=[-5,5])
 P = [(-4,-4),(4,-4),(0,4)]
 
-turtle2 = mplTurtle(draw=False)
-for i in range(2000):
+turtle2 = mplTurtle(draw=False,color="gray")
+for i in range(3000):
     newpos = midpoint(turtle2.pos,random.choice(P))
     turtle2.move_to(newpos)
-    turtle2.stamp(.03,alpha=.6)
+    turtle2.stamp(.01)
     
 
 make_plot(2,2,4,xlim=[-5,5])

@@ -296,15 +296,16 @@ def draw_rect_xy(x0,y0,x1,y1,ax=None,**kwargs):
 
 
 # Text
-def text(x,y,t,ax=None,**kwargs):
+def text_xy(x,y,t,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
     ax.text(x,y,t,**kwargs)
     
-#def annotate(x,y,t,ax=None,**kwargs):
-#    if ax == None:
-#        ax = plt.gca()
-#    ax.text(x,y,t,**kwargs)
+def text_p(P,t,ax=None,**kwargs):
+    if ax == None:
+        ax = plt.gca()
+    ax.text(P[0],P[1],t,**kwargs)
+        
 
 def table(cell_text,yscale=1,ax=None,**kwargs):
     if ax == None:
