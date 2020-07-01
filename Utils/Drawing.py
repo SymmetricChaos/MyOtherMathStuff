@@ -67,7 +67,7 @@ def make_blank_plot(a=1,b=1,p=1,xlim=None,ylim=None,box=True,fig=None,**kwargs):
 
 
 ### STRAIGHT LINES ###
-# Convenience function for solving mbline equations
+# Convenience functions for solving mbline equations
 def calc_y(m,x,b):
     return m*x+b
 
@@ -288,7 +288,7 @@ def draw_circles_xy(X,Y,R,ax=None,**kwargs):
         ax = plt.gca()
     circles = []
     for x,y,r in zip(X,Y,R):  
-        C = draw_circle_xy(X,Y,R,ax,**kwargs)
+        C = draw_circle_xy(x,y,r,ax,**kwargs)
         circles.append(C)
     return circles
 
@@ -297,7 +297,7 @@ def draw_circles_p(P,R,ax=None,**kwargs):
         ax = plt.gca()
     circles = []
     for p,r in zip(P,R):  
-        C = draw_circle_p(P,R,ax,**kwargs)
+        C = draw_circle_p(p,r,ax,**kwargs)
         circles.append(C)
     return circles
 
@@ -397,7 +397,7 @@ def boxplot(L,ax=None,positions=[],labels=[],vert=True,**kwargs):
     if positions == []:
         positions = [i for i in range(len(L))]
     
-    return ax.boxplot(L,positions=positions,labels=labels,vert=True,**kwargs)
+    return ax.boxplot(L,positions=positions,labels=labels,vert=vert,**kwargs)
 
 
 def violin_plot(L,ax=None,positions=[],labels=[],vert=True,**kwargs):
@@ -419,7 +419,7 @@ def violin_plot(L,ax=None,positions=[],labels=[],vert=True,**kwargs):
     return ax.violinplot(L,positions=positions,vert=vert,**kwargs)
 
 
-def quiver_plot(X,Y,U,V,ax=None,positions=[],labels=[],vert=True,**kwargs):
+def quiver_plot(X,Y,U,V,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
         
