@@ -40,7 +40,6 @@ def make_blank_plot(a=1,b=1,p=1,xlim=None,ylim=None,box=True,fig=None,**kwargs):
         
     ax = fig.add_subplot(a,b,p,**kwargs)
     
-    
     # If no coordinate range is given fit everything into a square
     if not xlim and not ylim:
         pass
@@ -188,7 +187,7 @@ def draw_closed_curve_p(P,ax=None,**kwargs):
     draw_closed_curve_xy(x,y,ax,**kwargs)
 
 
-# Draw scatterplot from
+# Draw scatterplots
 def draw_dots_xy(x,y,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
@@ -248,7 +247,6 @@ def canvas_title(text="",fig=None,**kwargs):
 # Can use setters to change all elements of the collection at once
 # Accepts single **kwargs for args other than X,Y,and R, these are reused for
 # all of the circles
-# KWARGS IS BUGGED
 def draw_circles_xy(X,Y,R,ax=None, **kwargs):
     if ax == None:
         ax = plt.gca()
@@ -315,7 +313,8 @@ def table(cell_text,yscale=1,ax=None,**kwargs):
     T.scale(1,yscale)
     
     return ax.add_table(T)
-    
+
+
 # Convinence for inserting images within the plot
 # This definitely isn't the best way to do this
 def image(path,x=0,y=0,scale=1,ax=None):
