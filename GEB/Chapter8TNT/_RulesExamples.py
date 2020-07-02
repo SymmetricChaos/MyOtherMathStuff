@@ -1,5 +1,27 @@
-from Rules import specify, successor, predecessor, generalize, existence, transitivity, symmetry
+from Rules import specify, successor, predecessor, generalize, existence, \
+                  transitivity, symmetry, SUCC, MUL, EQ, EXISTS, NOT
 from Deduction import PeanoAxioms
+
+
+
+print("Build some statements of Typographical Number Theory")
+zero = "0"
+one = SUCC(zero)
+two = SUCC(one)
+b = "b"
+sq = MUL(b,b)
+sq_2 = EQ(sq,two)
+ex_sq_2 = EXISTS(sq_2,b)
+not_ex_sq_2 = NOT(ex_sq_2)
+print(zero)
+print(one)
+print(two)
+print(b)
+print(sq)
+print(sq_2)
+print(ex_sq_2)
+print(not_ex_sq_2)
+
 
 print("\n\nRule of Specification")
 print(f"{PeanoAxioms[1]} ⟹ {specify(PeanoAxioms[1],'a','Sa')}")

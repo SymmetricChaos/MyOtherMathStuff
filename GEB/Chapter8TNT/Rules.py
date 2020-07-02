@@ -73,7 +73,11 @@ def MUL(x,y):
     return f"({x}⋅{y})"
 
 def EQ(x,y):
-	return f"{x}={y}"
+    if not is_term(x):
+        raise Exception(f"Arithmetic Error: {x} is not a term so it cannot be part of an equality")
+    if not is_term(y):
+        raise Exception(f"Arithmetic Error: {y} is not a term so it cannot be part of an equality")
+    return f"{x}={y}"
 
 ###############################
 ##### Rules of Production #####
@@ -168,7 +172,7 @@ def existence(x,term,var):
 def symmetry(atom):
     if is_atom(atom):
         left, right = split_eq(atom)
-        return f"{right}={left}"
+        return EQ(right,left)
     else:
         raise Exception(f"Symmetry Error: {atom} is not an atom")
 
@@ -183,7 +187,7 @@ def transitivity(atom1,atom2):
     leftx, rightx = split_eq(atom1)
     lefty, righty = split_eq(atom2)
     if rightx == lefty:
-        return f"{leftx}={righty}"
+        return EQ(leftx,righty)
     else:
         raise Exception(f"Transitivity Error: {atom1} and {atom2} do not form a transitive statement")
         

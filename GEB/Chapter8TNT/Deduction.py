@@ -51,7 +51,7 @@ class Deduction:
             else:
                 s += f"\n{' '*(self.depth*2+2)}{line_number:>4} {t}"
         s += f"\n{' '*self.depth*2}]"
-        return s[1:]
+        return s
     
     def _pretty_descriptions(self):
         """
@@ -65,7 +65,7 @@ class Deduction:
             else:
                 s += f"\n{' '*(self.depth*2+2)}{line_number:>4} {d}"
         s += f"\n{' '*self.depth*2}]"
-        return s[1:]
+        return s
     
     def _theorems_and_descriptions(self):
         """
@@ -87,7 +87,7 @@ class Deduction:
             else:
                 s += f"\n{' '*(self.depth*2+2)}{line_number:<4} {t:<{max_length}} {d}"
         s += f"\n{' '*self.depth*2}]"
-        return s[1:]
+        return s
     
     # Force one-based indexing since this make more sense when counting steps
     def __getitem__(self,n):
