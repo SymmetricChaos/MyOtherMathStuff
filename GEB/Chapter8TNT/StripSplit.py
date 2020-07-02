@@ -47,6 +47,10 @@ def strip_neg_qaunt(x):
 
 # Need this because ordinary replacement will replace the a in a'
 def replace_var(x,pattern,replacement):
+    
+    if pattern not in x:
+        raise Exception(f"Replacement Error: {pattern} not in {x}")
+    
     left = ""
     pattern = re.escape(pattern)
     f = re.search(pattern,x)
@@ -77,12 +81,19 @@ def replace_var(x,pattern,replacement):
 
 
 def replace_var_nth(x,pattern,replacement,n):
+    
+    if pattern not in x:
+        raise Exception(f"Replacement Error: {pattern} not in {x}")
+    
     left = ""
-    pattern = re.escape(pattern)
-    f = re.search(pattern,x)
+    pattern_esc = re.escape(pattern)
+    f = re.search(pattern_esc,x)
     ctr = 1
 
     while f != None:
+        
+            
+        
         lo,hi = f.span()
         if ctr == n:
             if hi != len(x):
@@ -95,19 +106,21 @@ def replace_var_nth(x,pattern,replacement,n):
             else:
                 left += x[:lo] + replacement
                 x = x[hi:]
-            break
+            return left+x
         else:
             left += x[:hi]
             x = x[hi:]
-        f = re.search(pattern,x)
+        f = re.search(pattern_esc,x)
         ctr += 1
-    return left+x
+    
+    raise Exception(f"Replacement Error: {pattern} does not appear {n} times in {x}")
+    
 
 
 if __name__ == '__main__':
     
     S = "∀c:<∀d:(d+Sc)=(Sd+c)⊃∀d:(d+SSc)=(Sd+Sc)>"
     print(S)
-    print(replace_var_nth(S,"∀d","z",2))
+    print(replace_var(S,"∀d","∀z"))
     
     print(split_add_mul("S(d+b)"))
