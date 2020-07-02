@@ -138,7 +138,7 @@ def interchange_AE(x,var,n):
 def successor(atom):
     if is_atom(atom):
         left, right = split_eq(atom)
-        return f"S{left}=S{right}"
+        return EQ(SUCC(left),SUCC(right))
     else:
         raise Exception(f"Successor Error: {atom} is not an atom")
 
@@ -151,7 +151,7 @@ def predecessor(atom):
         if right[0] != "S":
             raise Exception(f"Predecessor Error: {right} has no predecessor")
             
-        return f"{left[1:]}={right[1:]}"
+        return EQ(left[1:],right[1:])
     else:
         raise Exception(f"Predecessor Error: {atom} is not an atom")
 
@@ -200,7 +200,7 @@ def induction(x,var,T):
     x0 = replace_var(x,var,"0")
     
     if f"∀{var}:<{x}⊃{xS}>" in T and f"{x0}" in T:
-        return f"∀{var}:{x}"
+        return FOR_ALL(x,var)
     else:
         raise Exception(f"Induction Error: Theorems do not allow induction on {x}")
 
