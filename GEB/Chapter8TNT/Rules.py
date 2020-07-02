@@ -51,7 +51,9 @@ def IMPLIES(x,y):
     return f"<{x}⊃{y}>"
 	
 def NOT(x):
-	return f"~{x}"
+    if not is_well_formed(x):
+        raise Exception(f"Logical Error: {x} is not a well-formed formula")
+    return f"~{x}"
 
 def SUCC(x):
     if not is_term(x):
@@ -188,7 +190,6 @@ def transitivity(atom1,atom2):
     if not is_atom(atom2):
         raise Exception(f"Transitivity Error: {atom2} is not an atom")
 
-    # Split and recombine
     leftx, rightx = split_eq(atom1)
     lefty, righty = split_eq(atom2)
     if rightx == lefty:
