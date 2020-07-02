@@ -114,13 +114,3 @@ def replace_var_nth(x,pattern,replacement,n):
         ctr += 1
     
     raise Exception(f"Replacement Error: {pattern} does not appear {n} times in {x}")
-    
-
-
-if __name__ == '__main__':
-    
-    S = "∀c:<∀d:(d+Sc)=(Sd+c)⊃∀d:(d+SSc)=(Sd+Sc)>"
-    print(S)
-    print(replace_var(S,"∀d","∀z"))
-    
-    print(split_add_mul("S(d+b)"))
