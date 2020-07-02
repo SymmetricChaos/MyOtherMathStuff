@@ -95,6 +95,7 @@ def replace_var_nth(x,pattern,replacement,n):
             else:
                 left += x[:lo] + replacement
                 x = x[hi:]
+            break
         else:
             left += x[:hi]
             x = x[hi:]

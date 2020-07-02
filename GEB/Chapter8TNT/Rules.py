@@ -120,6 +120,9 @@ def interchange_EA(x,var,n):
     if is_var(var):
         E = f"~∃{var}:"
         A = f"∀{var}:~"
+        if E not in x:
+            raise Exception(f"Interchange Error: the string ~∃{var}: does not exist in {x}")
+
         return replace_var_nth(x,E,A,n)
     else:
         raise Exception(f"Interchange Error: {var} is not variable")
@@ -130,6 +133,8 @@ def interchange_AE(x,var,n):
     if is_var(var):
         E = f"~∃{var}:"
         A = f"∀{var}:~"
+        if A not in x:
+            raise Exception(f"Interchange Error: the string ~∃{var}: does not exist in {x}")
         return replace_var_nth(x,A,E,n)
     else:
         raise Exception(f"Interchange Error: {var} is not variable")

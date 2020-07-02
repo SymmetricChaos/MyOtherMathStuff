@@ -1,5 +1,6 @@
 from Rules import specify, successor, predecessor, generalize, existence, \
-                  transitivity, symmetry, SUCC, MUL, EQ, EXISTS, NOT
+                  transitivity, symmetry, interchange_AE, interchange_EA, \
+                  SUCC, MUL, EQ, EXISTS, NOT
 from Deduction import PeanoAxioms
 
 
@@ -57,3 +58,8 @@ print("\n\n\nRule of Symmetry")
 symm_example1 = "(a+0)=a"
 print(f"{symm_example1}")
 print(f"{symmetry(symm_example1)}")
+
+
+print("\n\n\nRule of Interchange")
+interchange_example1 = "∀a:~∃b:Sa=b"
+print(f"{interchange_example1} ⟹ {interchange_AE(interchange_example1,'b',1)}")
