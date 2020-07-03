@@ -41,7 +41,26 @@ def is_free_var(var,x):
         if i == var:
             return True
     return False
-        
+
+
+def var_in_string(x,var):
+    if len(x) <= len(var):
+        return False
+    
+    else:
+        # Check chunk by chunk
+        for i in range(len(x)-len(var)+1):
+            # If we've reached the end of the string then any match is fine
+            if i+len(var) == len(x):
+                if x[i:i+len(var)] == var:
+                    return True
+            # Otherwise only match if the next symbol is not '
+            elif x[i+len(var)] != "'":
+                if x[i:i+len(var)] == var:
+                    return True
+    return False
+
+
 # Check that all variables that are quantified exist in the rest of the string
 def is_well_quantified(x):
     V = get_vars(strip_neg_qaunt(x))

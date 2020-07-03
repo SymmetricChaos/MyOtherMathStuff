@@ -1,6 +1,7 @@
 from GEB.Chapter8TNT.Properties import is_var, get_vars, get_free_vars, is_num, \
                                        get_bound_vars, is_term, is_atom, \
-                                       is_well_formed, is_bound_var, is_free_var
+                                       is_well_formed, is_bound_var, is_free_var, \
+                                       var_in_string
 from GEB.Chapter8TNT.StripSplit import split_eq, replace_var, replace_var_nth, \
                                        split
 
@@ -113,6 +114,11 @@ def specify(x,var,term):
 
 # Assert that a statement about a free variable is universally true
 def generalize(x,var):
+    if not is_var(var):
+        raise Exception(f"Generalization Error: {var} is not a variable")
+    if not var_in_string(x,var):
+
+        raise Exception(f"Generalization Error: {var} does not exist in {x}")
     if is_free_var(x,var):
         return FOR_ALL(x,var)
     else:
@@ -125,7 +131,7 @@ def interchange_EA(x,var,n):
         E = f"~∃{var}:"
         A = f"∀{var}:~"
         if E not in x:
-            raise Exception(f"Interchange Error: the string ~∃{var}: does not exist in {x}")
+            raise Exception(f"Interchange Error: the string {E} does not exist in {x}")
 
         return replace_var_nth(x,E,A,n)
     else:
@@ -138,7 +144,7 @@ def interchange_AE(x,var,n):
         E = f"~∃{var}:"
         A = f"∀{var}:~"
         if A not in x:
-            raise Exception(f"Interchange Error: the string ∀{var}:~ does not exist in {x}")
+            raise Exception(f"Interchange Error: the string {A} does not exist in {x}")
         return replace_var_nth(x,A,E,n)
     else:
         raise Exception(f"Interchange Error: {var} is not variable")

@@ -24,7 +24,7 @@ print("\n")
 S2 = "∀a:~Sa=b"
 _show_err_message(generalize,S2,"a")
 _show_err_message(generalize,S2,"c")
-
+_show_err_message(generalize,S2,"S")
 
 print("\n") 
 S3 = "~∃b:∀a:~Sa=b"
