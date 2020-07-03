@@ -202,8 +202,10 @@ def transitivity(atom1,atom2):
     lefty, righty = split_eq(atom2)
     if rightx == lefty:
         return EQ(leftx,righty)
+    if leftx == righty:
+        return EQ(lefty,rightx)
     else:
-        raise Exception(f"Transitivity Error: {atom1} and {atom2} do not form a transitive statement")
+        raise Exception(f"Transitivity Error: {atom1} and {atom2} are not transitive")
         
         
 def induction(x,var,T):

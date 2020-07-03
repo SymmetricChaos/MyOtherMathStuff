@@ -51,3 +51,11 @@ _show_err_message(existence,S5,"(b+c')","c'")
 print("\n") 
 S6 = "∀a:Sa=a"
 _show_err_message(symmetry,S6)
+
+
+print("\n") 
+S7a = "a=Sb"
+S7b = "Sa=c"
+S7c = "∀a:Sa=a"
+_show_err_message(transitivity,S7a,S7b)
+_show_err_message(transitivity,S7a,S7c)
