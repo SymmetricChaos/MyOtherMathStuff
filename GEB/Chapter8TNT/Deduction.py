@@ -1,9 +1,8 @@
 from GEB.Chapter8TNT.Properties import is_well_formed, get_free_vars
-from GEB.Chapter8TNT.Rules import IMPLIES, AND, specify, symmetry, existence, \
+from GEB.Chapter8TNT.Rules import IMPLIES, AND, OR, specify, symmetry, existence, \
                                   successor, predecessor, transitivity, \
                                   induction, interchange_AE, interchange_EA, \
                                   generalize
-
 
 PeanoAxioms = ["∀a:~Sa=0","∀a:(a+0)=a",
                "∀a:∀b:(a+Sb)=S(a+b)",
@@ -201,7 +200,7 @@ class Deduction:
             raise Exception(f"{T} is not well-formed") 
 
     def interchange_AE(self,n,var,nth,comment=""):
-        T = interchange_AE(self.theorems[n-1],var,nth)
+        T = interchange_AE(self.theorems[n-1],var,nth=1)
         if is_well_formed(T):
             self.theorems.append(T)
             self.descriptions.append(f"change universal to existential in {n}"+comment)
@@ -209,7 +208,7 @@ class Deduction:
             raise Exception(f"{T} is not well-formed") 
             
     def interchange_EA(self,n,var,nth,comment=""):
-        T = interchange_EA(self.theorems[n-1],var,nth)
+        T = interchange_EA(self.theorems[n-1],var,nth=1)
         if is_well_formed(T):
             self.theorems.append(T)
             self.descriptions.append(f"change existential to universal in {n}"+comment)
@@ -218,6 +217,14 @@ class Deduction:
 
     def AND(self,n1,n2,comment=""):
         T = AND(self.theorems[n1-1],self.theorems[n2-1])
+        if is_well_formed(T):
+            self.theorems.append(T)
+            self.descriptions.append(f"{n1} and {n2}"+comment)
+        else:
+            raise Exception(f"{T} is not well-formed") 
+    
+    def OR(self,n1,n2,comment=""):
+        T = OR(self.theorems[n1-1],self.theorems[n2-1])
         if is_well_formed(T):
             self.theorems.append(T)
             self.descriptions.append(f"{n1} and {n2}"+comment)

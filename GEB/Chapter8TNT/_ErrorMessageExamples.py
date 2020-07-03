@@ -1,6 +1,5 @@
 from Rules import specify, successor, predecessor, generalize, existence, \
                   transitivity, symmetry, interchange_AE, interchange_EA
-from Deduction import PeanoAxioms
 
 def _show_err_message(func,*args):
     try:
@@ -11,8 +10,6 @@ def _show_err_message(func,*args):
     print("NO ERROR OCCURED")
     
 
-#for i in PeanoAxioms:
-#    print(i)
        
 S1 = "∀b:∀a:~Sa=b"
 _show_err_message(specify,S1,"a","b=b")
