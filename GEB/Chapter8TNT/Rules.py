@@ -11,9 +11,9 @@ def EXISTS(x,var):
 
     if not is_var(var):
         raise Exception(f"Quantification Error: {var} is not a variable")
-    if is_bound_var(var,x):
+    if is_bound_var(x,var):
         raise Exception(f"Quantification Error: {var} is already quantified in {x}")
-    if is_free_var(var,x):
+    if is_free_var(x,var):
         return f"∃{var}:{x}"
     else:
         raise Exception(f"Quantification Error: {var} does not exist in {x}")
@@ -22,10 +22,10 @@ def EXISTS(x,var):
 	
 def FOR_ALL(x,var):
     if is_var(var):
-        if is_free_var(var,x):
+        if is_free_var(x,var):
             return f"∀{var}:{x}"
         else:
-            if is_bound_var(var,x):
+            if is_bound_var(x,var):
                 raise Exception(f"Quantification Error: {var} is already quantified in {x}")
             else:
                 raise Exception(f"Quantification Error: {var} does not exist in {x}")
@@ -117,8 +117,8 @@ def generalize(x,var):
     if not is_var(var):
         raise Exception(f"Generalization Error: {var} is not a variable")
     if not var_in_string(x,var):
-
         raise Exception(f"Generalization Error: {var} does not exist in {x}")
+    
     if is_free_var(x,var):
         return FOR_ALL(x,var)
     else:
@@ -175,7 +175,7 @@ def existence(x,term,var):
     if not is_var(var):
         raise Exception(f"Existence Error: {var} is not a variable")
     if is_term(term):
-        if is_bound_var(var,x):
+        if is_bound_var(x,var):
             raise Exception(f"Existence Error: {var} is already bound in {x}")
         else:
             x = replace_var(x,term,var)
@@ -209,7 +209,7 @@ def transitivity(atom1,atom2):
         
         
 def induction(x,var,T):
-    if not is_free_var(var,x):
+    if not is_free_var(x,var):
         raise Exception(f"Induction Error: {var} is not free in {x}")
     
     xS = replace_var(x,var,f"S{var}")

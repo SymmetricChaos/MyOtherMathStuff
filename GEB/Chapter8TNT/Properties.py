@@ -24,7 +24,7 @@ def get_bound_vars(x):
                 break
     return bound
 
-def is_bound_var(var,x):
+def is_bound_var(x,var):
     for i in get_bound_vars(x):
         if i == var:
             return True
@@ -36,7 +36,7 @@ def get_free_vars(x):
     bvar = get_bound_vars(x)
     return var-bvar # using the setminus here
 
-def is_free_var(var,x):
+def is_free_var(x,var):
     for i in get_free_vars(x):
         if i == var:
             return True
