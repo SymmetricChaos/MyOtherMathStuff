@@ -45,7 +45,7 @@ S5 = "∀c':Sa=(b+c')"
 _show_err_message(existence,S5,"Sb","d")
 _show_err_message(existence,S5,"Sa=b","c")
 _show_err_message(existence,S5,"b","SS0")
-_show_err_message(existence,S5,"(b+c')","c")
+_show_err_message(existence,S5,"(b+c')","c'")
 
 
 print("\n") 

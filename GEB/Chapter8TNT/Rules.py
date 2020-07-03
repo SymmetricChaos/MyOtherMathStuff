@@ -7,23 +7,24 @@ from GEB.Chapter8TNT.StripSplit import split_eq, replace_var, replace_var_nth, \
 
 # Build abitrary statements in Typographical Number Theory
 def EXISTS(x,var):
-    if is_var(var):
-        if var in get_free_vars(x):
-            return f"∃{var}:{x}"
-        else:
-            if is_bound_var(x,var):
-                raise Exception(f"Quantification Error: {var} is already quantified in {x}")
-            else:
-                raise Exception(f"Quantification Error: {var} does not exist in {x}")
-    else:
+
+    if not is_var(var):
         raise Exception(f"Quantification Error: {var} is not a variable")
+    if is_bound_var(var,x):
+        raise Exception(f"Quantification Error: {var} is already quantified in {x}")
+    if is_free_var(var,x):
+        return f"∃{var}:{x}"
+    else:
+        raise Exception(f"Quantification Error: {var} does not exist in {x}")
+
+        
 	
 def FOR_ALL(x,var):
     if is_var(var):
-        if var in get_free_vars(x):
+        if is_free_var(var,x):
             return f"∀{var}:{x}"
         else:
-            if is_bound_var(x,var):
+            if is_bound_var(var,x):
                 raise Exception(f"Quantification Error: {var} is already quantified in {x}")
             else:
                 raise Exception(f"Quantification Error: {var} does not exist in {x}")
@@ -168,7 +169,7 @@ def existence(x,term,var):
     if not is_var(var):
         raise Exception(f"Existence Error: {var} is not a variable")
     if is_term(term):
-        if is_bound_var(x,var):
+        if is_bound_var(var,x):
             raise Exception(f"Existence Error: {var} is already bound in {x}")
         else:
             x = replace_var(x,term,var)
@@ -200,7 +201,7 @@ def transitivity(atom1,atom2):
         
         
 def induction(x,var,T):
-    if not is_free_var(x,var):
+    if not is_free_var(var,x):
         raise Exception(f"Induction Error: {var} is not free in {x}")
     
     xS = replace_var(x,var,f"S{var}")
