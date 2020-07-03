@@ -24,11 +24,23 @@ def get_bound_vars(x):
                 break
     return bound
 
+def is_bound_var(var,x):
+    for i in get_bound_vars(x):
+        if i == var:
+            return True
+    return False
+
 # Return all variables that don't appear in quantifications
 def get_free_vars(x):
     var = get_vars(x)
     bvar = get_bound_vars(x)
     return var-bvar # using the setminus here
+
+def is_free_var(var,x):
+    for i in get_free_vars(x):
+        if i == var:
+            return True
+    return False
         
 # Check that all variables that are quantified exist in the rest of the string
 def is_well_quantified(x):

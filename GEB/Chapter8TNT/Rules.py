@@ -1,5 +1,6 @@
 from GEB.Chapter8TNT.Properties import is_var, get_vars, get_free_vars, is_num, \
-                                       get_bound_vars, is_term, is_atom, is_well_formed
+                                       get_bound_vars, is_term, is_atom, \
+                                       is_well_formed, is_bound_var, is_free_var
 from GEB.Chapter8TNT.StripSplit import split_eq, replace_var, replace_var_nth, \
                                        split
 
@@ -10,7 +11,7 @@ def EXISTS(x,var):
         if var in get_free_vars(x):
             return f"∃{var}:{x}"
         else:
-            if var in get_bound_vars(x):
+            if is_bound_var(x,var):
                 raise Exception(f"Quantification Error: {var} is already quantified in {x}")
             else:
                 raise Exception(f"Quantification Error: {var} does not exist in {x}")
@@ -22,7 +23,7 @@ def FOR_ALL(x,var):
         if var in get_free_vars(x):
             return f"∀{var}:{x}"
         else:
-            if var in get_bound_vars(x):
+            if is_bound_var(x,var):
                 raise Exception(f"Quantification Error: {var} is already quantified in {x}")
             else:
                 raise Exception(f"Quantification Error: {var} does not exist in {x}")
@@ -90,7 +91,7 @@ def specify(x,var,term):
     if not is_term(term):
         raise Exception(f"Specification Error: {term} is not a term")
     if not is_var(var):
-        raise Exception(f"Specification Error: {var} is not a vaiable")
+        raise Exception(f"Specification Error: {var} is not a variable")
     if f"∀{var}:" in x:
         # Eliminate the quantifer
         x = x.replace(f"∀{var}:","")
@@ -100,8 +101,8 @@ def specify(x,var,term):
         term_vars = get_vars(term)
         for tv in term_vars:
             for xbv in x_b_vars:
-                if tv in xbv:
-                    raise Exception(f"Specification Error: {tv} is bound in {x}")
+                if xbv == tv:
+                    raise Exception(f"Specification Error: {tv} is still bound in {x}")
         
         x = replace_var(x,var,term)
         return x
@@ -111,7 +112,7 @@ def specify(x,var,term):
 
 # Assert that a statement about a free variable is universally true
 def generalize(x,var):
-    if var in get_free_vars(x):
+    if is_free_var(x,var):
         return FOR_ALL(x,var)
     else:
         raise Exception(f"Generalization Error: {var} is not free in {x}")
@@ -167,7 +168,7 @@ def existence(x,term,var):
     if not is_var(var):
         raise Exception(f"Existence Error: {var} is not a variable")
     if is_term(term):
-        if var in get_bound_vars(x):
+        if is_bound_var(x,var):
             raise Exception(f"Existence Error: {var} is already bound in {x}")
         else:
             x = replace_var(x,term,var)
@@ -199,7 +200,7 @@ def transitivity(atom1,atom2):
         
         
 def induction(x,var,T):
-    if var not in get_free_vars(x):
+    if not is_free_var(x,var):
         raise Exception(f"Induction Error: {var} is not free in {x}")
     
     xS = replace_var(x,var,f"S{var}")

@@ -92,8 +92,6 @@ def replace_var_nth(x,pattern,replacement,n):
 
     while f != None:
         
-            
-        
         lo,hi = f.span()
         if ctr == n:
             if hi != len(x):

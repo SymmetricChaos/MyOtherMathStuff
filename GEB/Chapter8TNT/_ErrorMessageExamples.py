@@ -14,9 +14,9 @@ def _show_err_message(func,*args):
 #for i in PeanoAxioms:
 #    print(i)
        
-S1 = "∀a:~Sa=0"
+S1 = "∀b:∀a:~Sa=b"
 _show_err_message(specify,S1,"a","b=b")
-_show_err_message(specify,S1,"b","a")
+_show_err_message(specify,S1,"a","b")
 _show_err_message(specify,S1,"0","a")
 
 
@@ -41,8 +41,13 @@ _show_err_message(predecessor,S4b)
 
 
 print("\n") 
-S5 = "∀c:Sa=b+c"
+S5 = "∀c':Sa=(b+c')"
 _show_err_message(existence,S5,"Sb","d")
 _show_err_message(existence,S5,"Sa=b","c")
 _show_err_message(existence,S5,"b","SS0")
-_show_err_message(existence,S5,"(b+c)","c")
+_show_err_message(existence,S5,"(b+c')","c")
+
+
+print("\n") 
+S6 = "∀a:Sa=a"
+_show_err_message(symmetry,S6)
