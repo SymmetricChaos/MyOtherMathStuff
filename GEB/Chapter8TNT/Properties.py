@@ -77,7 +77,7 @@ def is_num(x):
 # Variables and numbers are terms as are arithmetic of them
 def is_term(x):
     
-    if x[0] not in "0(Sabcdefghijklmnopqrstuvwyz":
+    if x[0] not in "0(Sabcdefghijklmnopqrstuvwxyz":
         return False
     
     # The successor of a term is still a term
