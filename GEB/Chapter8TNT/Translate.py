@@ -46,15 +46,15 @@ def translate(s):
             elif right[0] == "~":
                 s = f"{left} for all {inside} it is false that {right[1:]} "
             else:
-                s = f"{left} for all {inside} it is the case that {right} "
+                s = f"{left} for all {inside}, it is the case that {right} "
                 
         if Q.group()[0] == "∃":
             if right[0] == "∀":
-                s = f"{left} there exists {inside} such that {right} "
+                s = f"{left} there exists {inside}, such that {right} "
             elif right[0] == "∃":
                 s = f"{left} there exists {inside} and {right} "
             else:
-                s = f"{left} there exists {inside} such that {right} " 
+                s = f"{left} there exists {inside}, such that {right} " 
         Q = re.search("[∀∃][a-z]\'*:",s)
     
     # Translate natural numbers
@@ -139,8 +139,14 @@ def translate(s):
 
 # Hofstadter's arithmetization of TNT
 def translate_arithmetic(s,reverse=False):
-
-    s = make_austere(s)
+    """
+    Convert a string of TNT to its arithmetic coding
+    If the string uses variables that aren't in austere 
+    """
+    
+    for letter in "bcdefghijklmnopqrstuvwxyz":
+        if letter in s:
+            raise Exception("Only austere TNT can be made arithmetic by this function")
     
     if reverse == True:
         

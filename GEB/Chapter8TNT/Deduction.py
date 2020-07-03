@@ -46,7 +46,7 @@ class Deduction:
         for line,t in enumerate(self.theorems,1):
             line_number = f"({line})"
             if type(t) == Deduction:
-                s += f"{t.write_theorems()}"
+                s += f"{t.pretty_theorems}"
             else:
                 s += f"\n{' '*(self.depth*2+2)}{line_number:>4} {t}"
         s += f"\n{' '*self.depth*2}]"
@@ -60,7 +60,7 @@ class Deduction:
         for line,(d,t) in enumerate(zip(self.descriptions,self.theorems),1):
             line_number = f"({line})"
             if type(t) == Deduction:
-                s += f"{t.descriptions()}"
+                s += f"{t.descriptions}"
             else:
                 s += f"\n{' '*(self.depth*2+2)}{line_number:>4} {d}"
         s += f"\n{' '*self.depth*2}]"
