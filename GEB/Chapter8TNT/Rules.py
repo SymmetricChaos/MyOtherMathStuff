@@ -165,7 +165,7 @@ def predecessor(atom):
 
 def existence(x,term,var):
     if not is_var(var):
-        raise Exception(f"Existence Error: {var} is not a valid variable")
+        raise Exception(f"Existence Error: {var} is not a variable")
     if is_term(term):
         if var in get_bound_vars(x):
             raise Exception(f"Existence Error: {var} is already bound in {x}")
@@ -173,7 +173,7 @@ def existence(x,term,var):
             x = replace_var(x,term,var)
             return EXISTS(x,var)
     else:
-        raise Exception(f"Existence Error: {term} is not a valid term")
+        raise Exception(f"Existence Error: {term} is not a term")
 
 
 def symmetry(atom):
