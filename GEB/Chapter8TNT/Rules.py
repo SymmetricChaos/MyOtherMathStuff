@@ -6,20 +6,23 @@ from GEB.Chapter8TNT.StripSplit import split_eq, replace_var, replace_var_nth, \
                                        split
 
 
-# Build abitrary statements in Typographical Number Theory
+####################################
+##### String Builder Functions #####
+####################################
+                                       
 def EXISTS(x,var):
-
-    if not is_var(var):
-        raise Exception(f"Quantification Error: {var} is not a variable")
-    if is_bound_var(x,var):
-        raise Exception(f"Quantification Error: {var} is already quantified in {x}")
-    if is_free_var(x,var):
-        return f"∃{var}:{x}"
+    if is_var(var):
+        if is_free_var(x,var):
+            return f"∃{var}:{x}"
+        else:
+            if is_bound_var(x,var):
+                raise Exception(f"Quantification Error: {var} is already quantified in {x}")
+            else:
+                raise Exception(f"Quantification Error: {var} does not exist in {x}")
     else:
-        raise Exception(f"Quantification Error: {var} does not exist in {x}")
+        raise Exception(f"Quantification Error: {var} is not a variable")
 
         
-	
 def FOR_ALL(x,var):
     if is_var(var):
         if is_free_var(x,var):
@@ -32,6 +35,7 @@ def FOR_ALL(x,var):
     else:
         raise Exception(f"Quantification Error: {var} is not a variable")
 
+
 def AND(x,y):
     if not is_well_formed(x):
         raise Exception(f"Logical Error: {x} is not a well-formed formula")
@@ -39,6 +43,7 @@ def AND(x,y):
         raise Exception(f"Logical Error: {y} is not a well-formed formula")
     return f"<{x}∧{y}>"
 	
+
 def OR(x,y):
     if not is_well_formed(x):
         raise Exception(f"Logical Error: {x} is not a well-formed formula")
@@ -46,6 +51,7 @@ def OR(x,y):
         raise Exception(f"Logical Error: {y} is not a well-formed formula")
     return f"<{x}∨{y}>"
 	
+
 def IMPLIES(x,y):
     if not is_well_formed(x):
         raise Exception(f"Logical Error: {x} is not a well-formed formula")
@@ -53,22 +59,26 @@ def IMPLIES(x,y):
         raise Exception(f"Logical Error: {y} is not a well-formed formula")
     return f"<{x}⊃{y}>"
 	
+
 def NOT(x):
     if not is_well_formed(x):
         raise Exception(f"Logical Error: {x} is not a well-formed formula")
     return f"~{x}"
+
 
 def SUCC(x):
     if not is_term(x):
         raise Exception(f"Successor Error: Cannot have successor of {x}")
     return f"S{x}"
   
+    
 def ADD(x,y):
     if not is_term(x):
         raise Exception(f"Arithmetic Error: {x} is not a term so it cannot be added")
     if not is_term(y):
         raise Exception(f"Arithmetic Error: {y} is not a term so it cannot be added")
     return f"({x}+{y})"
+
 
 def MUL(x,y):
     if not is_term(x):
@@ -77,12 +87,17 @@ def MUL(x,y):
         raise Exception(f"Arithmetic Error: {y} is not a term so it cannot be multiplied")
     return f"({x}⋅{y})"
 
+
 def EQ(x,y):
     if not is_term(x):
         raise Exception(f"Arithmetic Error: {x} is not a term so it cannot be part of an equality")
     if not is_term(y):
         raise Exception(f"Arithmetic Error: {y} is not a term so it cannot be part of an equality")
     return f"{x}={y}"
+
+
+
+
 
 ###############################
 ##### Rules of Production #####
@@ -219,4 +234,3 @@ def induction(x,var,T):
         return FOR_ALL(x,var)
     else:
         raise Exception(f"Induction Error: Theorems do not allow induction on {x}")
-
