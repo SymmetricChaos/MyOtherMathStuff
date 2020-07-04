@@ -14,16 +14,27 @@ AusterePeanoAxioms = ["∀a:~Sa=0","∀a:(a+0)=a",
 # Need to create a hierarchical structure
 class Deduction:
     
-    def __init__(self,premise,depth=0,reality=None):
-        """
-        Force deduction from reality to start with an axiom
-        Otherwise any premise is allowed
-        """
+    def __init__(self,premise,title="",depth=0,reality=None):
+        
+        # Simple traits
+        # The user never needs to set depth or reality, they are derived from
+        # the lower level
+        self.depth = depth
+        self.reality = reality
+        self.title = title
+        
+        # Starting premises must be axioms at depth zero otherwise any
+        # well-formed formula is allowed
         self.theorems = [premise]
         if depth == 0:
             if premise not in PeanoAxioms:
                 raise Exception("Must begin with an axiom of TNT")
-                
+        else:
+            if not is_well_formed(premise):
+                raise Exception(f"The premise {premise} is not a well-formed formula")
+        
+        # Describe the premise as either an axiom, a starting premise for a
+        # fantasy, or a premise taken from the level below
         if premise in PeanoAxioms:
             self.descriptions = ["axiom"]
         else:
@@ -31,10 +42,8 @@ class Deduction:
                 self.descriptions = ["fantasy premise"]
             else:
                 self.descriptions = ["premise"]
-        
-        self.depth = depth
-        self.reality = reality
-        
+                
+    
     def _pretty_theorems(self):
         """
         Write out the deduction with lines numbered from 1
@@ -42,41 +51,43 @@ class Deduction:
         The fantasy will count its own steps and the reality below it only 
         counts one step in the form of implication
         """
-        s = f"\n{' '*self.depth*2}["
+        dent = ' '*self.depth*2
+        
+        if self.title == "":
+            s = f"\n{dent}["
+        else:
+            s = f"\n{dent}{self.title}\n{dent}["
+            
         for line,t in enumerate(self.theorems,1):
             line_number = f"({line})"
             if type(t) == Deduction:
                 s += f"{t.pretty_theorems}"
             else:
-                s += f"\n{' '*(self.depth*2+2)}{line_number:>4} {t}"
-        s += f"\n{' '*self.depth*2}]"
+                s += f"\n{dent}  {line_number:>4} {t}"
+        
+        s += f"\n{dent}]"
         return s
-    
-    def _pretty_descriptions(self):
-        """
-        Write out the descriptions of each line
-        """
-        s = f"\n{' '*self.depth*2}["
-        for line,(d,t) in enumerate(zip(self.descriptions,self.theorems),1):
-            line_number = f"({line})"
-            if type(t) == Deduction:
-                s += f"{t.descriptions}"
-            else:
-                s += f"\n{' '*(self.depth*2+2)}{line_number:>4} {d}"
-        s += f"\n{' '*self.depth*2}]"
-        return s
-    
+
+
     def _theorems_and_descriptions(self):
         """
-        Write out the theorems and their descriptions together
+        Write out the theorems and their descriptions together otherwise the same as pretty_theorems
         """
+        # Find the longest theorem and use that to space the theorems and descriptions
+
+        dent = ' '*self.depth*2
+        
         max_length = 0
         for t in self.theorems:
             if type(t) == Deduction:
                 continue
             max_length = max(max_length,len(t))
             
-        s = f"\n{' '*self.depth*2}["
+        if self.title == "":
+            s = f"\n{dent}["
+        else:
+            s = f"\n{dent}{self.title}\n{dent}["
+        
         for line,(d,t) in enumerate(zip(self.descriptions,self.theorems),1):
             
             line_number = f"({line})"
@@ -84,25 +95,32 @@ class Deduction:
             if type(t) == Deduction:
                 s += f"{t.theorems_and_descriptions}"
             else:
-                s += f"\n{' '*(self.depth*2+2)}{line_number:<4} {t:<{max_length}} {d}"
-        s += f"\n{' '*self.depth*2}]"
+                s += f"\n{dent}  {line_number:<4} {t:<{max_length}} {d}"
+        
+        s += f"\n{dent}]"
         return s
-    
+
+
     # Force one-based indexing since this make more sense when counting steps
     def __getitem__(self,n):
         return self.theorems[n-1]
     
+    
+    ### Implement the actions allowed for inference in TNT ###
+    
     def implication(self,comment=""):
-        """Implication of a fantasy"""
+        # Implication of a fantasy
         if self.reality == None:
             raise Exception("Implication rule only applies within a fantasy")
         else:
             self.reality.theorems.append(IMPLIES(self.theorems[0],self.theorems[-1]))
             self.reality.descriptions.append(f"implication"+comment)
 
-    def fantasy(self,premise,comment=""):
-        """Begin deduction on an arbitrary premise"""
-        d = Deduction(premise,self.depth+1,self)
+    def fantasy(self,premise,title=""):
+        # Begin deduction on an arbitrary premise
+        # It is one level higher than the Deduction that produces it and can
+        # find that Deduction by checking for reality.
+        d = Deduction(premise,title,self.depth+1,self)
         self.theorems.append(d)
         self.descriptions.append("fantasy")
         return d
@@ -114,17 +132,15 @@ class Deduction:
         self.descriptions.append(f"axiom"+comment)
 
     def add_premise(self,premise,comment=""):
-        """
-        At the lowest level we accept only axioms
-        At all other levels we accept only known theorems
-        """
+        #At the lowest level we accept only axioms
+        #At all other levels we accept only known theorems
         if self.depth == 0:
             self.add_axiom(premise)
         else:
             if premise not in self.reality.theorems:
                 raise Exception(f"{premise} does not exist at the level one step lower")
-        
             self.theorems.append(premise)
+            
             if premise in PeanoAxioms:
                 self.descriptions.append("axiom"+comment)
             else:
@@ -215,6 +231,7 @@ class Deduction:
         else:
             raise Exception(f"{T} is not well-formed") 
 
+    # Not one of Hofstader's rules of production but always produces a valid theorem
     def AND(self,n1,n2,comment=""):
         T = AND(self.theorems[n1-1],self.theorems[n2-1])
         if is_well_formed(T):
@@ -223,6 +240,8 @@ class Deduction:
         else:
             raise Exception(f"{T} is not well-formed") 
     
+    # Not one of Hofstader's rules of production but always produces a valid theorem
+    # Note that this is the logical inculsive OR
     def OR(self,n1,n2,comment=""):
         T = OR(self.theorems[n1-1],self.theorems[n2-1])
         if is_well_formed(T):
@@ -231,7 +250,6 @@ class Deduction:
         else:
             raise Exception(f"{T} is not well-formed") 
  
-    pretty_descriptions = property(_pretty_descriptions)
     pretty_theorems = property(_pretty_theorems)
     theorems_and_descriptions = property(_theorems_and_descriptions)
 
