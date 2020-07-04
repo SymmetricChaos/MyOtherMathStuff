@@ -198,15 +198,13 @@ class Deduction:
         else:
             raise Exception(f"{T} is not well-formed")      
 
-
-    def induction(self,t,u,n_base,n_implication,comment=""):
-        T = induction(t,u,self.theorems[n_base-1],self.theorems[n_implication-1])
+    def induction(self,theorem,var,n_base,n_implication,comment=""):
+        T = induction(theorem,var,self.theorems[n_base-1],self.theorems[n_implication-1])
         if is_well_formed(T):
             self.theorems.append(T)
             self.descriptions.append(f"induction on {n_base} and {n_implication}"+comment)
         else:
             raise Exception(f"{T} is not well-formed") 
-
 
     def interchange_AE(self,n,var,nth,comment=""):
         T = interchange_AE(self.theorems[n-1],var,nth=1)
