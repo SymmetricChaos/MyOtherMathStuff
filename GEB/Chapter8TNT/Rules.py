@@ -223,14 +223,16 @@ def transitivity(atom1,atom2):
         raise Exception(f"Transitivity Error: {atom1} and {atom2} are not transitive")
         
         
-def induction(x,var,T):
-    if not is_free_var(x,var):
-        raise Exception(f"Induction Error: {var} is not free in {x}")
+def induction(theorem,var,base_case,general_case):
+    if not is_free_var(theorem,var):
+        raise Exception(f"Induction Error: {var} is not free in {theorem}")
+        
+    xS = replace_var(theorem,var,f"S{var}")
+    x0 = replace_var(theorem,var,"0")
     
-    xS = replace_var(x,var,f"S{var}")
-    x0 = replace_var(x,var,"0")
-    
-    if f"∀{var}:<{x}⊃{xS}>" in T and f"{x0}" in T:
-        return FOR_ALL(x,var)
-    else:
-        raise Exception(f"Induction Error: Theorems do not allow induction on {x}")
+    if f"{x0}" != base_case:
+        raise Exception(f"Induction Error: Base case must be {x0}")
+    if f"∀{var}:<{theorem}⊃{xS}>" != general_case:
+        raise Exception(f"Induction Error: General case must be ∀{var}:<{theorem}⊃{xS}>")
+    return FOR_ALL(theorem,var)
+

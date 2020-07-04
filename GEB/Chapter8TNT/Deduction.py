@@ -68,7 +68,7 @@ class Deduction:
             max_length = max(max_length,len(t))
             
         if self.depth == 0:
-            s = f"\n{dent}{self.title}\n{dent}["
+            s = f"{self.title}\n["
         else:
             s = f"\n{dent}["
         
@@ -166,7 +166,7 @@ class Deduction:
     def generalize(self,n,var,comment=""):
         f_vars = get_free_vars(self.theorems[0])
         if var in f_vars:
-            raise Exception("Cannot generalize on free variables of a premise")
+            raise Exception("Cannot generalize on free variables of a fantasy premise")
         T = generalize(self.theorems[n-1],var)
         if is_well_formed(T):
             self.theorems.append(T)
@@ -198,13 +198,15 @@ class Deduction:
         else:
             raise Exception(f"{T} is not well-formed")      
 
-    def induction(self,t,u,n1,n2,comment=""):
-        T = induction(t,u,[self.theorems[n1-1],self.theorems[n2-1]])
+
+    def induction(self,t,u,n_base,n_implication,comment=""):
+        T = induction(t,u,self.theorems[n_base-1],self.theorems[n_implication-1])
         if is_well_formed(T):
             self.theorems.append(T)
-            self.descriptions.append(f"induction on {n1} and {n2}"+comment)
+            self.descriptions.append(f"induction on {n_base} and {n_implication}"+comment)
         else:
             raise Exception(f"{T} is not well-formed") 
+
 
     def interchange_AE(self,n,var,nth,comment=""):
         T = interchange_AE(self.theorems[n-1],var,nth=1)
