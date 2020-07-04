@@ -1,14 +1,15 @@
 from Deduction import Deduction, PeanoAxioms
 
 
-T = Deduction(PeanoAxioms[2],title="Deduction of Commutativity")
+T = Deduction(title="Deduction of Commutativity")
+T.add_premise(PeanoAxioms[2])
 T.specify(1,'a','d')
 T.specify(2,'b','Sc')
 T.specify(1,'a','Sd')
 T.specify(4,'b','c')
 T.symmetry(5)
 
-F = T.fantasy("∀d:(d+Sc)=(Sd+c)",title="Does the successor operation commute?")
+F = T.fantasy("∀d:(d+Sc)=(Sd+c)","Fantasy1")
 F.specify(1,'d','d')
 F.successor(2)
 F.add_premise(T[3])
@@ -37,7 +38,7 @@ T.symmetry(23)
 T.specify(19,'c','c')
 T.specify(25,'d','d')
 
-G = T.fantasy("∀c:(c+d)=(d+c)")
+G = T.fantasy("∀c:(c+d)=(d+c)","Fantasy2")
 G.specify(1,'c','c')
 G.successor(2)
 G.add_premise(T[21])
@@ -54,7 +55,7 @@ T.specify(11,'a','c')
 T.specify(1,'a','0')
 T.specify(31,'b','b')
 
-H = T.fantasy("(0+b)=b")
+H = T.fantasy("(0+b)=b","Fantasy3")
 H.successor(1)
 H.add_premise(T[32])
 H.transitivity(3,2)

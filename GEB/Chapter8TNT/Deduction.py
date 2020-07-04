@@ -14,35 +14,19 @@ AusterePeanoAxioms = ["∀a:~Sa=0","∀a:(a+0)=a",
 # Need to create a hierarchical structure
 class Deduction:
     
-    def __init__(self,premise,title="",depth=0,reality=None):
+    def __init__(self,title="Deduction"):
         
         # Simple traits
         # The user never needs to set depth or reality, they are derived from
         # the lower level
-        self.depth = depth
-        self.reality = reality
+        self.depth = 0
+        self.reality = None
         self.title = title
+        self.theorems = []
+        self.descriptions = []
         
-        # Starting premises must be axioms at depth zero otherwise any
-        # well-formed formula is allowed
-        self.theorems = [premise]
-        if depth == 0:
-            if premise not in PeanoAxioms:
-                raise Exception("Must begin with an axiom of TNT")
-        else:
-            if not is_well_formed(premise):
-                raise Exception(f"The premise {premise} is not a well-formed formula")
-        
-        # Describe the premise as either an axiom, a starting premise for a
-        # fantasy, or a premise taken from the level below
-        if premise in PeanoAxioms:
-            self.descriptions = ["axiom"]
-        else:
-            if len(self.theorems) == 1:
-                self.descriptions = ["fantasy premise"]
-            else:
-                self.descriptions = ["premise"]
-                
+    def __str__(self):
+        return self.title
     
     def _pretty_theorems(self):
         """
@@ -83,10 +67,10 @@ class Deduction:
                 continue
             max_length = max(max_length,len(t))
             
-        if self.title == "":
-            s = f"\n{dent}["
-        else:
+        if self.depth == 0:
             s = f"\n{dent}{self.title}\n{dent}["
+        else:
+            s = f"\n{dent}["
         
         for line,(d,t) in enumerate(zip(self.descriptions,self.theorems),1):
             
@@ -116,35 +100,42 @@ class Deduction:
             self.reality.theorems.append(IMPLIES(self.theorems[0],self.theorems[-1]))
             self.reality.descriptions.append(f"implication"+comment)
 
-    def fantasy(self,premise,title=""):
+    def fantasy(self,premise,title="Fantasy",comment=""):
         # Begin deduction on an arbitrary premise
         # It is one level higher than the Deduction that produces it and can
         # find that Deduction by checking for reality.
-        d = Deduction(premise,title,self.depth+1,self)
+        d = Deduction(title)
+        d.depth = self.depth+1
+        d.reality = self
+        d.add_premise(premise,comment)
         self.theorems.append(d)
         self.descriptions.append("fantasy")
         return d
-    
-    def add_axiom(self,axiom,comment=""):
-        if axiom not in PeanoAxioms:
-            raise Exception(f"{axiom} is not an axiom of TNT")
-        self.theorems.append(axiom)
-        self.descriptions.append(f"axiom"+comment)
 
     def add_premise(self,premise,comment=""):
         #At the lowest level we accept only axioms
-        #At all other levels we accept only known theorems
         if self.depth == 0:
-            self.add_axiom(premise)
-        else:
-            if premise not in self.reality.theorems:
-                raise Exception(f"{premise} does not exist at the level one step lower")
+            if premise not in PeanoAxioms:
+                raise Exception("Must begin with an axiom of TNT")
             self.theorems.append(premise)
+            self.descriptions.append(f"axiom"+comment)
+        else:
+            # At all other levels we instead must filter hour misformed formulas
+            if not is_well_formed(premise):
+                raise Exception(f"The premise {premise} is not a well-formed formula")
+                
+            # Then we check if this is the first premise of a deduction
+            # Any well-formed formula can be the first premise of a fantasy
             
-            if premise in PeanoAxioms:
-                self.descriptions.append("axiom"+comment)
+            if len(self.theorems) == 0:
+                self.theorems.append(premise)
+                self.descriptions.append(f"fantasy premise"+comment)
             else:
-                self.descriptions.append("theorem"+comment)
+                if premise not in self.reality.theorems:
+                    raise Exception(f"{premise} does not exist at the level one step lower")
+                self.theorems.append(premise)
+                self.descriptions.append(f"premise"+comment)
+                
 
     def specify(self,n,var,replacement=None,comment=""):
         if replacement == None:
