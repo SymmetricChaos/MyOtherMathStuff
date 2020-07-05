@@ -1,10 +1,9 @@
-from GEB.Chapter8TNT.Properties import get_vars, get_free_vars, \
-                                       get_bound_vars, get_quants
+from GEB.Chapter8TNT.Properties import is_well_formed
 from GEB.Chapter8TNT.Translate import translate, translate_arithmetic
 from GEB.Chapter8TNT.Deduction import PeanoAxioms, AusterePeanoAxioms
 
 
-print("\nTranslation puzzles from GEB\n")
+print("\n### Translation puzzles from GEB ###\n")
 for i in ["~∀c:∃b:(SS0⋅b)=c",
           "∀c:~∃b:(SS0⋅b)=c",
           "∀c:∃b:~(SS0⋅b)=c",
@@ -14,18 +13,31 @@ for i in ["~∀c:∃b:(SS0⋅b)=c",
     print(f"{i}\n{translate(i)}\n")
 
 
-open_formula = "<∀b:d'-b∧~c=c>"
-print(f"\n\nVariables and quantifiers extracted from {open_formula}")
-print(f"Variables used {get_vars(open_formula)}")
-print(f"Quantifications used {get_quants(open_formula)}")
-print(f"Bound variables {get_bound_vars(open_formula)}")
-print(f"Free variables {get_free_vars(open_formula)}")
+print("\n\n### Example Sentences from GEB ### \n")
+english_form = ["5 is prime",
+                "2 is not square",
+                "35 is the sum of two cubes",
+                "Not sum of positive cubes is a cube",
+                "There are infinitely many primes"
+               ]
+TNT_form = ["~∃a:∃b:(SSa⋅SSb)=SSSSS0",
+            "~∃b:(b⋅b)=SS0",
+            "∃b:∃c:((b⋅(b⋅b))+(c⋅(c⋅c)))=SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS0",
+            "~∀b:∀c:(a⋅(a⋅a))=((Sb⋅(Sb⋅Sb))+(Sc⋅(Sc⋅Sc)))",
+            "∀a:∃b:∃c:<(a+Sc)=b∧~∃d:∃e:(SSd⋅SSe)=b>"
+           ]
+for e,t in zip(english_form,TNT_form):
+    if not is_well_formed(i):
+        print(f"{t} is not a well-formed formula")
+    else:
+        print(f"{e}\n{t}\n{translate(t)}\n\n")
 
 
-print("\n\n\nTranslated Axioms of Peano Arithmetic")
+
+print("\n\n\n### Translated Axioms of Peano Arithmetic ###")
 for i in PeanoAxioms:
     print(f"{i}\n{translate(i)}\n")
    
-print("\n\nArithmetized Axioms of Peano Arithmetic")
+print("\n\n### Arithmetized Axioms of Peano Arithmetic ###")
 for i in AusterePeanoAxioms:
     print(f"{i}\n{translate_arithmetic(i)}\n")

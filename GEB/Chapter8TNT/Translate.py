@@ -59,9 +59,9 @@ def translate(s):
             # Chains of existentials use "and"
             elif right[0] == "∃":
                 s = f"{left} there exists {inside} and {right} "
-            # If the next statement is a negation translate to "it is false that"
+            # If the next statement is a negation translate to "such that it is false that"
             elif right[0] == "~":
-                s = f"{left} there exists {inside}, it is false that {right[1:]} "
+                s = f"{left} there exists {inside}, such that it is false that {right[1:]} "
             # Otherwise use "such that"
             else:
                 s = f"{left} there exists {inside}, such that {right} " 
