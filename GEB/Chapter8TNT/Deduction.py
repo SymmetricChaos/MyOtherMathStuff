@@ -87,7 +87,9 @@ class Deduction:
 
     # Force one-based indexing since this make more sense when counting steps
     def __getitem__(self,n):
-        return self.theorems[n-1]
+        if n > 0:
+            return self.theorems[n-1]
+        return self.theorems[n]
     
     
     ### Implement the actions allowed for inference in TNT ###

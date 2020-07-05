@@ -39,22 +39,33 @@ def translate(s):
         right = s[hi:]
         
         if Q.group()[0] == "∀":
+            # Chains of univerals use "and"
             if right[0] == "∀":
                 s = f"{left} for all {inside} and {right} "
+            # Universal followed by existential just needs a space
             elif right[0] == "∃":
                 s = f"{left} for all {inside} {right} "
+            # If the next statement is a negation translate to "it is false that"
             elif right[0] == "~":
-                s = f"{left} for all {inside} it is false that {right[1:]} "
+                s = f"{left} for all {inside}, it is false that {right[1:]} "
+            # Otherwise just a comma
             else:
-                s = f"{left} for all {inside}, it is the case that {right} "
+                s = f"{left} for all {inside}, {right} "
                 
         if Q.group()[0] == "∃":
+            # Existential followed by universal use "such that"
             if right[0] == "∀":
                 s = f"{left} there exists {inside}, such that {right} "
+            # Chains of existentials use "and"
             elif right[0] == "∃":
                 s = f"{left} there exists {inside} and {right} "
+            # If the next statement is a negation translate to "it is false that"
+            elif right[0] == "~":
+                s = f"{left} there exists {inside}, it is false that {right[1:]} "
+            # Otherwise use "such that"
             else:
                 s = f"{left} there exists {inside}, such that {right} " 
+                
         Q = re.search("[∀∃][a-z]\'*:",s)
     
     # Translate natural numbers
