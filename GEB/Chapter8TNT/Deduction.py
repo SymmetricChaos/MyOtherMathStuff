@@ -79,7 +79,7 @@ class Deduction:
             if type(t) == Deduction:
                 s += f"{t.theorems_and_descriptions}"
             else:
-                s += f"\n{dent}  {line_number:<4} {t:<{max_length}} {d}"
+                s += f"\n{dent}  {line_number:<4} {t:<{max_length}}  {d}"
         
         s += f"\n{dent}]"
         return s
