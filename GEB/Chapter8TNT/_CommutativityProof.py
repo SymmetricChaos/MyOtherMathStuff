@@ -58,7 +58,7 @@ T.specify(31,'b','b')
 H = T.fantasy("(0+b)=b","Fantasy3")
 H.successor(1)
 H.add_premise(T[32])
-H.transitivity(3,2)
+H.transitivity(2,3)
 H.implication()
 
 T.generalize(34,'b')

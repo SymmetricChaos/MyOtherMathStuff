@@ -24,10 +24,10 @@ class Deduction:
         self.title = title
         self.theorems = []
         self.descriptions = []
-        
+
     def __str__(self):
         return self.title
-    
+
     def _pretty_theorems(self):
         """
         Write out the deduction with lines numbered from 1
@@ -58,7 +58,7 @@ class Deduction:
         Write out the theorems and their descriptions together otherwise the same as pretty_theorems
         """
         # Find the longest theorem and use that to space the theorems and descriptions
-
+        
         dent = ' '*self.depth*2
         
         max_length = 0
@@ -90,10 +90,10 @@ class Deduction:
         if n > 0:
             return self.theorems[n-1]
         return self.theorems[n]
-    
-    
+
+
     ### Implement the actions allowed for inference in TNT ###
-    
+
     def implication(self,comment=""):
         # Implication of a fantasy
         if self.reality == None:
@@ -200,11 +200,11 @@ class Deduction:
         else:
             raise Exception(f"{T} is not well-formed")      
 
-    def induction(self,theorem,var,n_base,n_implication,comment=""):
-        T = induction(theorem,var,self.theorems[n_base-1],self.theorems[n_implication-1])
+    def induction(self,theorem,var,n_base_case,n_general_case,comment=""):
+        T = induction(theorem,var,self.theorems[n_base_case-1],self.theorems[n_general_case-1])
         if is_well_formed(T):
             self.theorems.append(T)
-            self.descriptions.append(f"induction on {n_base} and {n_implication}"+comment)
+            self.descriptions.append(f"induction on {n_base_case} and {n_general_case}"+comment)
         else:
             raise Exception(f"{T} is not well-formed") 
 
@@ -215,7 +215,7 @@ class Deduction:
             self.descriptions.append(f"change universal to existential in {n}"+comment)
         else:
             raise Exception(f"{T} is not well-formed") 
-            
+
     def interchange_EA(self,n,var,nth,comment=""):
         T = interchange_EA(self.theorems[n-1],var,nth=1)
         if is_well_formed(T):
@@ -232,7 +232,7 @@ class Deduction:
             self.descriptions.append(f"{n1} and {n2}"+comment)
         else:
             raise Exception(f"{T} is not well-formed") 
-    
+
     # Not one of Hofstader's rules of production but always produces a valid theorem
     # Note that this is the logical inculsive OR
     def OR(self,n1,n2,comment=""):
@@ -242,7 +242,7 @@ class Deduction:
             self.descriptions.append(f"{n1} and {n2}"+comment)
         else:
             raise Exception(f"{T} is not well-formed") 
- 
+
     pretty_theorems = property(_pretty_theorems)
     theorems_and_descriptions = property(_theorems_and_descriptions)
 

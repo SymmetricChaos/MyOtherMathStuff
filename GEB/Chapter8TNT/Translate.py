@@ -107,10 +107,10 @@ def translate(s):
             if i[1] == span[1]-1:
                 num, lo, hi = i
                 break
-
+            
         left = s[:lo]
         right = s[hi:]
-
+        
         ctr = 0
         if left != "":
             while left[-1] == "S":
@@ -118,10 +118,10 @@ def translate(s):
                 left = left[:-1]
                 if left == "":
                     break
-
+                
         s = f"{left}({num} + {ctr}{right}"
         N = re.search("S+\(",s)
-
+        
     # Simple translations
     symbol = ["~","+","⋅","=","⊃","∨","∧","<",">"]
     translation = [" it is false that ",
@@ -179,7 +179,7 @@ def translate_arithmetic(s,reverse=False):
              ">":"213", "[":"312", "]":"313", "a":"262", 
              "'":"163", "∧":"161", "∨":"616", "⊃":"633", 
              "~":"223", "∃":"333", "∀":"626", ":":"636"}
-
+        
         for sym,codon in D.items():
             s = s.replace(sym,codon)
         
@@ -191,10 +191,10 @@ def translate_arithmetic(s,reverse=False):
 
 if __name__ == '__main__':
     # Quick tests
-    strings = ["~S0=0","SSSc'=d''",
-               "∀e:<<e+0=0∧0+b=0>∨y⋅0=0>",
+    strings = ["~S0=0","SSSa=a'",
+               "∀a:<<a+0=0∧0+a'=0>∨a''⋅0=0>",
                "∀a:∃a':(a+Sa')=S(a+a')",
-               "~∀a:∃b:<a=b⊃0=1>",
-               "∀a:~∃b:<a=0∧1=b>",]
+               "~∀a:∃a:<a=a'⊃0=1>",
+               "∀a:~∃a'':<a=0∧1=a'>",]
     for s in strings:
         print(f"{s}\n{translate(s)}\n{translate_arithmetic(s)}\n")

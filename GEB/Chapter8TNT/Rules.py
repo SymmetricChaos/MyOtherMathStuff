@@ -1,10 +1,8 @@
-from GEB.Chapter8TNT.Properties import is_var, get_vars, get_free_vars, is_num, \
-                                       get_bound_vars, is_term, is_atom, \
-                                       is_well_formed, is_bound_var, is_free_var, \
+from GEB.Chapter8TNT.Properties import is_var, get_vars, get_bound_vars, \
+                                       is_term, is_atom, is_well_formed, \
+                                       is_bound_var, is_free_var, \
                                        var_in_string
-from GEB.Chapter8TNT.StripSplit import split_eq, replace_var, replace_var_nth, \
-                                       split
-
+from GEB.Chapter8TNT.StripSplit import split_eq, replace_var, replace_var_nth
 
 ####################################
 ##### String Builder Functions #####
@@ -42,7 +40,7 @@ def AND(x,y):
     if not is_well_formed(y):
         raise Exception(f"Logical Error: {y} is not a well-formed formula")
     return f"<{x}∧{y}>"
-	
+
 
 def OR(x,y):
     if not is_well_formed(x):
@@ -50,7 +48,7 @@ def OR(x,y):
     if not is_well_formed(y):
         raise Exception(f"Logical Error: {y} is not a well-formed formula")
     return f"<{x}∨{y}>"
-	
+
 
 def IMPLIES(x,y):
     if not is_well_formed(x):
@@ -58,7 +56,7 @@ def IMPLIES(x,y):
     if not is_well_formed(y):
         raise Exception(f"Logical Error: {y} is not a well-formed formula")
     return f"<{x}⊃{y}>"
-	
+
 
 def NOT(x):
     if not is_well_formed(x):
@@ -70,8 +68,8 @@ def SUCC(x):
     if not is_term(x):
         raise Exception(f"Successor Error: Cannot have successor of {x}")
     return f"S{x}"
-  
-    
+
+
 def ADD(x,y):
     if not is_term(x):
         raise Exception(f"Arithmetic Error: {x} is not a term so it cannot be added")
@@ -133,7 +131,6 @@ def generalize(x,var):
         raise Exception(f"Generalization Error: {var} is not a variable")
     if not var_in_string(x,var):
         raise Exception(f"Generalization Error: {var} does not exist in {x}")
-    
     if is_free_var(x,var):
         return FOR_ALL(x,var)
     else:
@@ -147,7 +144,6 @@ def interchange_EA(x,var,n):
         A = f"∀{var}:~"
         if E not in x:
             raise Exception(f"Interchange Error: the string {E} does not exist in {x}")
-
         return replace_var_nth(x,E,A,n)
     else:
         raise Exception(f"Interchange Error: {var} is not variable")
@@ -180,7 +176,6 @@ def predecessor(atom):
             raise Exception(f"Predecessor Error: {left} has no predecessor")
         if right[0] != "S":
             raise Exception(f"Predecessor Error: {right} has no predecessor")
-            
         return EQ(left[1:],right[1:])
     else:
         raise Exception(f"Predecessor Error: {atom} is not an atom")
@@ -212,27 +207,28 @@ def transitivity(atom1,atom2):
         raise Exception(f"Transitivity Error: {atom1} is not an atom")
     if not is_atom(atom2):
         raise Exception(f"Transitivity Error: {atom2} is not an atom")
-
+    
     leftx, rightx = split_eq(atom1)
     lefty, righty = split_eq(atom2)
+    
     if rightx == lefty:
         return EQ(leftx,righty)
     if leftx == righty:
         return EQ(lefty,rightx)
     else:
         raise Exception(f"Transitivity Error: {atom1} and {atom2} are not transitive")
-        
-        
+
+
 def induction(theorem,var,base_case,general_case):
     if not is_free_var(theorem,var):
         raise Exception(f"Induction Error: {var} is not free in {theorem}")
-        
+    
     xS = replace_var(theorem,var,f"S{var}")
     x0 = replace_var(theorem,var,"0")
     
-    if f"{x0}" != base_case:
+    if base_case != f"{x0}":
         raise Exception(f"Induction Error: Base case must be {x0}")
-    if f"∀{var}:<{theorem}⊃{xS}>" != general_case:
+    if general_case != f"∀{var}:<{theorem}⊃{xS}>":
         raise Exception(f"Induction Error: General case must be ∀{var}:<{theorem}⊃{xS}>")
     return FOR_ALL(theorem,var)
 

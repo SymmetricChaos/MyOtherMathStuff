@@ -1,4 +1,3 @@
-from GEB.Chapter8TNT.Rules import *
 from GEB.Chapter8TNT.Translate import translate
 from GEB.Chapter8TNT.Properties import is_well_formed
 

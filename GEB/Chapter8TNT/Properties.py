@@ -46,7 +46,6 @@ def is_free_var(x,var):
 def var_in_string(x,var):
     if len(x) <= len(var):
         return False
-    
     else:
         # Check chunk by chunk
         for i in range(len(x)-len(var)+1):
@@ -80,7 +79,7 @@ def is_well_quantified(x):
 #####################################
 ### Parts of Well-Formed Formulas ###
 #####################################
-    
+
 def is_var(x):
     if re.match("^[a-z]\'*$",x):
         return True
@@ -226,7 +225,7 @@ def is_closed(x):
 
 
 if __name__ == '__main__':
-    
+
     bool_string = lambda x: "False" if x == 0 else "True"
     
     test_strings = ["a","b","a'''",                       # variables
@@ -265,7 +264,7 @@ if __name__ == '__main__':
         print("\nTest if a string is a well-formed formulas (note that correctly formed terms are not well-formed formulas)")
         for i in test_strings:
             print(f"{bool_string(is_well_formed(i)):<5}  {i}")
-    
+
     test_vars()
     test_nums()
     test_terms()
