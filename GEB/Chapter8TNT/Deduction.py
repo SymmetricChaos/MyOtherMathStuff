@@ -26,7 +26,10 @@ class Deduction:
         self.descriptions = []
 
     def __str__(self):
-        return self.title
+        return f"Deduction Object: {self.title}"
+
+    def __repr__(self):
+        return f"Deduction Object: {self.title}"
 
     def _pretty_theorems(self):
         """
@@ -100,7 +103,7 @@ class Deduction:
             raise Exception("Implication rule only applies within a fantasy")
         else:
             self.reality.theorems.append(IMPLIES(self.theorems[0],self.theorems[-1]))
-            self.reality.descriptions.append(f"implication"+comment)
+            self.reality.descriptions.append("implication"+comment)
 
     def fantasy(self,premise,title="Fantasy",comment=""):
         # Begin deduction on an arbitrary premise
@@ -120,7 +123,7 @@ class Deduction:
             if premise not in PeanoAxioms:
                 raise Exception("Must begin with an axiom of TNT")
             self.theorems.append(premise)
-            self.descriptions.append(f"axiom"+comment)
+            self.descriptions.append("axiom"+comment)
         else:
             # At all other levels we instead must filter hour misformed formulas
             if not is_well_formed(premise):
@@ -131,12 +134,12 @@ class Deduction:
             
             if len(self.theorems) == 0:
                 self.theorems.append(premise)
-                self.descriptions.append(f"fantasy premise"+comment)
+                self.descriptions.append("fantasy premise"+comment)
             else:
                 if premise not in self.reality.theorems:
                     raise Exception(f"{premise} does not exist at the level one step lower")
                 self.theorems.append(premise)
-                self.descriptions.append(f"premise"+comment)
+                self.descriptions.append("premise"+comment)
                 
 
     def specify(self,n,var,replacement=None,comment=""):
