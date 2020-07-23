@@ -1,7 +1,8 @@
 import sys
 
+
 # A prefix tree is a list of the form
-# [prefix,[prefix trees or "" terminator]]
+# [dict:[dict or "" terminator]]
 def prefix_trees(words):
     prefix_dict = {}
     for word in words:
@@ -24,21 +25,43 @@ def words_in_tree(tree,prefix=""):
         if v == {}:
             L.append(new_prefix)
         else:
-            L += words_in_tree(tree[k],new_prefix)
+            L += words_in_tree(v,new_prefix)
     return L
 
-word_list = ["the","thee","there","three",
+def prefix_match(word,tree):
+    inner_dict = tree
+    for l in word:
+        try:
+            inner_dict = inner_dict[l]
+        except:
+            raise KeyError(f"'{word}' is not a prefix")
+    return words_in_tree(inner_dict,word)
+
+def show_tree(tree,prefix="",spacer=0):
+    for k,v in tree.items():
+        new_prefix = prefix+k
+        if k == '':
+            continue
+        print(f"{' '*spacer}{new_prefix}")
+        show_tree(v,new_prefix,spacer=spacer+1)
+
+
+word_list = ["the","thee","there","three","taco",
              "that","then","than","tower",
              "tree","trunk","taste","tasteful",
              "tasty","tastefully","thank","thanks",
-             "thankful","thankfully",
-             "track","trail","train","trip","training"]
+             "thankful","thankfully","threat",
+             "track","trail","train","trip","training",
+             "thou","boost","boots","booster"]
 
 
 tree = prefix_trees(word_list)
+print(word_list)
 print(tree)
-print(words_in_tree(tree))
+for i in words_in_tree(tree):
+    print(i)
 
+print()
 
-print(sys.getsizeof(word_list))
-print(sys.getsizeof(tree))
+print(f"Words that start with 'tr': {prefix_match('tr',tree)}")
+show_tree(tree)
