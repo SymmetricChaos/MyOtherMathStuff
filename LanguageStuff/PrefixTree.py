@@ -1,9 +1,10 @@
 
 # A prefix tree is a list of the form
-# [dict:[dict or "" terminator]]
+# [dict:[dicts or '' terminator]]
 def prefix_tree(words):
     words = sorted(words)
     prefix_dict = {}
+    # Make a single step in building the tree
     for word in words:
         if len(word) == 0:
             prefix_dict[''] = None
@@ -12,6 +13,7 @@ def prefix_tree(words):
             prefix_dict[word[0]].append(word[1:])
         else:
             prefix_dict[word[0]] = [word[1:]]
+    # Recursively consume the dictionaries to make the tree
     for pre,suf in prefix_dict.items():
         if suf != None:
             prefix_dict[pre] = prefix_tree(suf)
@@ -52,11 +54,12 @@ def show_tree(tree,prefix="",spacer=0):
 
 word_list = ["the","thee","there","three","taco",
              "that","then","than","tower","trainer",
-             "tree","trunk","taste","tasteful",
+             "tree","trunk","taste","tasteful","thankfulness",
              "tasty","tastefully","thank","thanks",
              "thankful","thankfully","threat",
              "track","trail","train","trip","training",
-             "thou","boost","boots","booster"]
+             "thou","them","themselves","theater","theaters",
+             "theatric","theatrics","theatrical","theatricality"]
 
 
 tree = prefix_tree(word_list)
@@ -68,7 +71,7 @@ print(words_in_tree(tree))
 
 print()
 
-print(f"Words that start with 'tr': {prefix_match('tr',tree)}")
+print(f"Words that start with 'the': {prefix_match('the',tree)}")
 
 print()
 
