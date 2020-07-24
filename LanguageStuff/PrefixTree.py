@@ -1,18 +1,20 @@
 
 # A prefix tree is a list of the form
 # [dict:[dict or "" terminator]]
-def prefix_trees(words):
+def prefix_tree(words):
+    words = sorted(words)
     prefix_dict = {}
     for word in words:
         if len(word) == 0:
-            prefix_dict[''] = {}
+            prefix_dict[''] = None
             continue
         if word[0] in prefix_dict:
             prefix_dict[word[0]].append(word[1:])
         else:
             prefix_dict[word[0]] = [word[1:]]
     for pre,suf in prefix_dict.items():
-        prefix_dict[pre] = prefix_trees(suf)
+        if suf != None:
+            prefix_dict[pre] = prefix_tree(suf)
     
     return prefix_dict
 
@@ -21,7 +23,7 @@ def words_in_tree(tree,prefix=""):
     L = []
     for k,v in tree.items():
         new_prefix = prefix+k
-        if v == {}:
+        if k == '':
             L.append(new_prefix)
         else:
             L += words_in_tree(v,new_prefix)
@@ -43,11 +45,13 @@ def show_tree(tree,prefix="",spacer=0):
         new_prefix = prefix+k
         if k == '':
             print(f"{' '*spacer}{new_prefix}")
-        show_tree(v,new_prefix,spacer=spacer+1)
+            spacer += 1
+        else:
+            show_tree(v,new_prefix,spacer=spacer)
 
 
 word_list = ["the","thee","there","three","taco",
-             "that","then","than","tower",
+             "that","then","than","tower","trainer",
              "tree","trunk","taste","tasteful",
              "tasty","tastefully","thank","thanks",
              "thankful","thankfully","threat",
@@ -55,7 +59,7 @@ word_list = ["the","thee","there","three","taco",
              "thou","boost","boots","booster"]
 
 
-tree = prefix_trees(word_list)
+tree = prefix_tree(word_list)
 print(tree)
 
 print()
