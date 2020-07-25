@@ -16,6 +16,7 @@ class rewrite_rule:
         return f"{self.P} 🡪 {self.R}"
     
     def apply(self,string,n=0):
+        
         """Apply to the nth occurence of the pattern, defaults to leftmost, zero indexed"""
         
         ctr = 0
@@ -30,7 +31,9 @@ class rewrite_rule:
         raise PatternMissingError(self.P,string)
     
     def apply_random(self,string):
+        
         """Find a random place where the rules applies"""
+        
         positions = []
         Plen = len(self.P)
         for i in range(0,len(string)-Plen+1):
@@ -44,8 +47,11 @@ class rewrite_rule:
         return string[:pos] + self.R + string[pos+Plen:]
         
     def apply_each(self,string):
-        """Return a generator with each valid application of the rule to the 
-        string. If there are no valid applications the generator is empty."""
+        
+        """
+        Return a generator with each valid application of the rule to the 
+        string. If there are no valid applications the generator is empty.
+        """
         
         Plen = len(self.P)
         for pos in range(0,len(string)-Plen+1):
@@ -124,22 +130,28 @@ def random_left_system(S,rules):
 
 
 
-def random_AB_game(k=15,rule_set=0):
+def random_AB_game_1(k=15):
     
     S = choices("AB",k=k)
     S = "".join(S)
     
-    if rule_set == 0:
-        rules = [rewrite_rule("AB","A"),
-                 rewrite_rule("BA","A"),
-                 rewrite_rule("AA","B"),
-                 rewrite_rule("BB","B")]
+    rules = [rewrite_rule("AB","A"),
+             rewrite_rule("BA","A"),
+             rewrite_rule("AA","B"),
+             rewrite_rule("BB","B")]
     
-    if rule_set == 1:
-        rules = [rewrite_rule("AB","BBBA"),
-                 rewrite_rule("BA","A"),
-                 rewrite_rule("AA","BBBB"),
-                 rewrite_rule("BB","B")]
+    random_system(S,rules)
+
+
+def random_AB_game_2(k=15):
+    
+    S = choices("AB",k=k)
+    S = "".join(S)
+    
+    rules = [rewrite_rule("AB","BBBA"),
+             rewrite_rule("BA","A"),
+             rewrite_rule("AA","BBBB"),
+             rewrite_rule("BB","B")]
     
     random_system(S,rules)
 
@@ -180,9 +192,9 @@ def random_CSG():
 if __name__ == '__main__':
 
     
-    random_AB_game(15,0)
+    random_AB_game_1(15)
     print()
-    random_AB_game(15,1)
+    random_AB_game_2(15)
     print()
     random_improper()
     print()
