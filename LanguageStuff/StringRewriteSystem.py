@@ -17,7 +17,7 @@ class rewrite_rule:
                 positions.append(i)
         pos = choice(positions)
         return string[:pos] + self.R + string[pos+Plen:]
-
+    
     def apply(self,string,n=1):
         positions = []
         Plen = len(self.P)
@@ -28,8 +28,8 @@ class rewrite_rule:
         return string[:pos] + self.R + string[pos+Plen:]
 
 
-
-def random_AB_game(S,rules):
+def random_system(S,rules):
+    
     for n,R in enumerate(rules,1):
         print(f"Rule {n}: {R}")
     
@@ -44,27 +44,68 @@ def random_AB_game(S,rules):
                 break
             except:
                 pass
-                
 
-
-
-if __name__ == '__main__':
-    rule_set_1 = [rewrite_rule("AB","A"),
-                  rewrite_rule("BA","A"),
-                  rewrite_rule("AA","B"),
-                  rewrite_rule("BB","B")
-                 ]
-
-    rule_set_2 = [rewrite_rule("AB","BBBA"),
-                  rewrite_rule("BA","A"),
-                  rewrite_rule("AA","BBBB"),
-                  rewrite_rule("BB","B")
-                 ]
+def random_AB_game(k=15,rule_set=0):
     
-    S = choices("AB",k=15)
+    S = choices("AB",k=k)
     S = "".join(S)
     
-    random_AB_game(S,rule_set_1)
+    if rule_set == 0:
+        rules = [rewrite_rule("AB","A"),
+                 rewrite_rule("BA","A"),
+                 rewrite_rule("AA","B"),
+                 rewrite_rule("BB","B")]
+    
+    if rule_set == 1:
+        rules = [rewrite_rule("AB","BBBA"),
+                 rewrite_rule("BA","A"),
+                 rewrite_rule("AA","BBBB"),
+                 rewrite_rule("BB","B")]
+    
+    random_system(S,rules)
+
+
+def random_improper():
+    rules = [rewrite_rule("S",""),
+             rewrite_rule("S","aSa"),
+             rewrite_rule("S","bSb"),]
+    
+    random_system("S",rules)
+
+def random_nesting():
+    rules = [rewrite_rule("S","SS"),
+             rewrite_rule("S","()"),
+             rewrite_rule("S","(S)"),
+             rewrite_rule("S","[]"),
+             rewrite_rule("S","[S]"),]
+    
+    random_system("S",rules)
+
+
+def random_CSG():
+    rules = [rewrite_rule("S","aBC"),
+             rewrite_rule("S","aSBC"),
+             rewrite_rule("CB","CZ"),
+             rewrite_rule("CZ","WZ"),
+             rewrite_rule("WZ","WC"),
+             rewrite_rule("WC","BC"),
+             rewrite_rule("aB","ab"),
+             rewrite_rule("bB","bb"),
+             rewrite_rule("bC","bc"),
+             rewrite_rule("cC","cc")]
+    
+    random_system("S",rules)
+
+if __name__ == '__main__':
+
+    
+    random_AB_game(15,0)
     print()
-    random_AB_game(S,rule_set_2)
+    random_AB_game(15,1)
+    print()
+    random_improper()
+    print()
+    random_nesting()
+    print()
+    random_CSG()
     
