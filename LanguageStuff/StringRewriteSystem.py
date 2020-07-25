@@ -10,33 +10,41 @@ class rewrite_rule:
         return f"{self.P} 🡪 {self.R}"
     
     def apply_random(self,string):
+        """Find a random place where the rules applies"""
         positions = []
         Plen = len(self.P)
         for i in range(0,len(string)-Plen+1):
             if string[i:i+Plen] == self.P:
                 positions.append(i)
+        
+        if len(positions) == 0:
+            raise Exception(f"{self.P} not in {string}")
+        
         pos = choice(positions)
         return string[:pos] + self.R + string[pos+Plen:]
     
-    def apply_left(self,string):
-        positions = []
+    def apply(self,string,n=0):
+        """Apply to the nth occurence, defaults to leftmost"""
+        ctr = 0
         Plen = len(self.P)
-        for i in range(0,len(string)-Plen+1):
-            if string[i:i+Plen] == self.P:
-                return string[:i] + self.R + string[i+Plen:]
-    
-    def apply(self,string,n=1):
-        positions = []
-        Plen = len(self.P)
-        for i in range(0,len(string)-Plen+1):
-            if string[i:i+Plen] == self.P:
-                positions.append(i)
-        pos = positions[n]
-        return string[:pos] + self.R + string[pos+Plen:]
+        for pos in range(0,len(string)-Plen+1):
+            if string[pos:pos+Plen] == self.P:
+                if ctr == n:
+                    return string[:pos] + self.R + string[pos+Plen:]
+                else:
+                    ctr += 1
+        
+        raise Exception(f"{self.P} not in {string}")
+
 
 
 
 def random_system(S,rules):
+    
+    """
+    Takes a starting string S and some rules and then applies the rules in a 
+    random order trying random positions until it is no longer possible
+    """
     
     for n,R in enumerate(rules,1):
         print(f"Rule {n}: {R}")
@@ -56,6 +64,11 @@ def random_system(S,rules):
 
 def random_left_system(S,rules):
     
+    """
+    Takes a starting string S and some rules and then applies the rules in a 
+    random order always act as far left as possible
+    """
+    
     for n,R in enumerate(rules,1):
         print(f"Rule {n}: {R}")
     
@@ -65,9 +78,11 @@ def random_left_system(S,rules):
         oldS = S
         shuffle(rules)
         for R in rules:
-            if R.apply_left(S) != None:
-                S = R.apply_left(S)
+            try:
+                S = R.apply(S)
                 break
+            except:
+                pass
 
 
 
