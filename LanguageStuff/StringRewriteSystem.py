@@ -18,6 +18,13 @@ class rewrite_rule:
         pos = choice(positions)
         return string[:pos] + self.R + string[pos+Plen:]
     
+    def apply_left(self,string):
+        positions = []
+        Plen = len(self.P)
+        for i in range(0,len(string)-Plen+1):
+            if string[i:i+Plen] == self.P:
+                return string[:i] + self.R + string[i+Plen:]
+    
     def apply(self,string,n=1):
         positions = []
         Plen = len(self.P)
@@ -26,6 +33,7 @@ class rewrite_rule:
                 positions.append(i)
         pos = positions[n]
         return string[:pos] + self.R + string[pos+Plen:]
+
 
 
 def random_system(S,rules):
@@ -44,6 +52,24 @@ def random_system(S,rules):
                 break
             except:
                 pass
+
+
+def random_left_system(S,rules):
+    
+    for n,R in enumerate(rules,1):
+        print(f"Rule {n}: {R}")
+    
+    oldS = ""
+    while not S == oldS:
+        print(S)
+        oldS = S
+        shuffle(rules)
+        for R in rules:
+            if R.apply_left(S) != None:
+                S = R.apply_left(S)
+                break
+
+
 
 def random_AB_game(k=15,rule_set=0):
     
@@ -94,7 +120,7 @@ def random_CSG():
              rewrite_rule("bC","bc"),
              rewrite_rule("cC","cc")]
     
-    random_system("S",rules)
+    random_left_system("S",rules)
 
 if __name__ == '__main__':
 
