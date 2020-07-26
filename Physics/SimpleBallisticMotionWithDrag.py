@@ -61,21 +61,21 @@ def ballistic_tables(D,x,y,dtL,digits=2):
     ang = 90-(acos( (b2+c2-a2) / (2*b*c) ) * 57.4712)
     
     #Initial Conditions
-    print(f"Initial Speed:     {round(D['V0'],digits)} m/s\n"
-          f"Angle of Release:  {round(D['th'],digits)}°\n"
-          f"Initial Height:    {round(D['y0'],digits)} m\n\n"
-          f"Projectile Mass:   {round(D['m'],digits)} kg\n"
-          f"Cross Section:     {round(D['A'],digits)} m²\n"
-          f"Projectile Mass:   {round(D['m'],digits)} kg\n"
-          f"Drag Coefficient:  {round(D['Cd'],digits)}\n"
-          f"Terminal Velocity: {round(D['Vt'],digits)} m/s\n\n"
-          f"Gravitation:       {-round(D['g'],digits)} m/s²\n"
-          f"Air Density:       {round(D['rho'],digits)} kg/m³\n\n"
-          f"Final Distance:    {round(x[-1],digits)} m\n"
-          f"Max Height:        {round(max(y),digits)} m\n"
-          f"Final Speed:       {round(c/dtL[-1],digits)} m/s\n"
-          f"Time of Flight:    {round(D['tof'],digits)} s\n"
-          f"Impact Angle:      {round(ang,digits)}°"
+    print(f"Initial Speed:      {round(D['V0'],digits)} m/s\n"
+          f"Angle of Release:   {round(D['th'],digits)}°\n"
+          f"Initial Height:     {round(D['y0'],digits)} m\n\n"
+          f"Projectile Mass:    {round(D['m'],digits)} kg\n"
+          f"Cross Section:      {round(D['A'],digits)} m²\n"
+          f"Projectile Mass:    {round(D['m'],digits)} kg\n"
+          f"Drag Coefficient:   {round(D['Cd'],digits)}\n"
+          f"Terminal Velocity:  {round(D['Vt'],digits)} m/s\n\n"
+          f"Gravitation:        {-round(D['g'],digits)} m/s²\n"
+          f"Air Density:        {round(D['rho'],digits)} kg/m³\n\n"
+          f"Final Distance:     {round(x[-1],digits)} m\n"
+          f"Max Height:         {round(max(y),digits)} m\n"
+          f"Final Speed:        {round(c/dtL[-1],digits)} m/s\n"
+          f"Time of Flight:     {round(D['tof'],digits)} s\n"
+          f"Impact Angle:       {round(ang,digits)}°"
         )
 
 def quick_ballistic_stats(V0,th,m,A,Cd=.5,x0=0,y0=0,g=9.86,rho=1.27,dt=1/32,title=""):
@@ -91,7 +91,7 @@ if __name__ == '__main__':
     # G1 bullet model has nominal Cd .5
     # G7 bullet model has nominal Cd .25
     
-    quick_ballistic_stats(500,35,8.4,0.005,Cd=.25,dt=1/32,
+    quick_ballistic_stats(500,15,8.4,0.005,Cd=.5,dt=1/32,
                           title="British 18-Pounder Field Gun (1914)")
 
     
