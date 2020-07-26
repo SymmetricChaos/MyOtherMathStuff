@@ -24,29 +24,6 @@ def pairs(m=0):
         ctr += 1
 
 
-def inds_where(L,val):
-    """All indices of list L that equal val"""
-    return [i for i in range(len(L)) if L[i] == val]
-
-
-def first_where(L,val):
-    """First index of list L that equals val"""
-    for pos,l in enumerate(L):
-        if l == val:
-            return pos
-    return None
-
-
-def sort_by_nth(L,n,func=None):
-    """Sort a list of lists by the nth element of each sublist"""
-    if func == None:
-        f = lambda x: x[n]
-        return sorted(L,key=f)
-    else:
-        f = lambda x: func(x[n])
-        return sorted(L,key=f)
-
-
 def cantor_pair(x,y):
     """A unique positive integer that represents the order pair (x,y), x and y positive"""
     if type(x) != int or type(y) != int:

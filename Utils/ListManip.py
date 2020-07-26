@@ -33,8 +33,8 @@ def equal_spacing_grid(L,w,justify="right"):
     """Print a list of iterables into a grid"""
     for r in L:
         equal_spacing(r,w,justify)
-        
-        
+
+
 def lists_to_tuples(*args):
     """Convert lists to a list of tuples"""
     L = []
@@ -73,3 +73,26 @@ def list_to_infix(L,operator="+"):
 
 def chunk_size(L,n):
     return [L[i * n:(i + 1) * n] for i in range((len(L) + n - 1) // n )]
+
+
+def inds_where(L,val):
+    """All indices of list L that equal val"""
+    return [i for i in range(len(L)) if L[i] == val]
+
+
+def first_where(L,val):
+    """First index of list L that equals val"""
+    for pos,l in enumerate(L):
+        if l == val:
+            return pos
+    return None
+
+
+def sort_by_nth(L,n,func=None):
+    """Sort a list of lists by the nth element of each sublist"""
+    if func == None:
+        f = lambda x: x[n]
+        return sorted(L,key=f)
+    else:
+        f = lambda x: func(x[n])
+        return sorted(L,key=f)
