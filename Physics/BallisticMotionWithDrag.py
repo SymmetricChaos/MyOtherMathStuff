@@ -5,9 +5,10 @@ from reportlab.graphics.charts.lineplots import LinePlot
 from reportlab.graphics.shapes import Drawing
 from math import sqrt, sin, cos, exp, acos
 
-def ballistic_motion(V0,th,x0,y0,m,A,Cd,g,rho,dt):
+def ballistic_motion(V0,th,m,A,Cd=.5,x0=0,y0=0,g=9.86,rho=1.27,dt=1/32):
 
     Vt = sqrt((2*m*g)/(rho*A*Cd))
+    BC = m/(Cd*A)
     t = 0
     
     # Convert agle in degrees to radians
@@ -46,38 +47,39 @@ def ballistic_motion(V0,th,x0,y0,m,A,Cd,g,rho,dt):
             "m" : m,
             "A" : A,
             "Cd" : Cd,
+            "BC" : BC,
             "rho" : rho,
             "Vt" : Vt,
             "tof" : tof}, x, y, dtL
 
 
-def ballistic_tables(D,x,y,dtL):
+def ballistic_tables(D,x,y,dtL,digits=2):
     
     #Initial Conditions
-    conditions = [[f"Initial Speed:     {round(D['V0'],2)} m/s"],
-                  [f"Angle of Release:  {round(D['th'],2)}°"],
-                  [f"Initial Height:    {round(D['y0'],2)} m"]
+    conditions = [[f"Initial Speed:     {round(D['V0'],digits)} m/s"],
+                  [f"Angle of Release:  {round(D['th'],digits)}°"],
+                  [f"Initial Height:    {round(D['y0'],digits)} m"]
                  ]
     
     conditions_tab = Table(conditions,colWidths=210,
                      style=[("BOX",(0,0),(-1,-1),2,colors.gray),
                             ("FONTNAME",(0,0),(-1,-1),"Courier")])
-
-    props = [[f"Projectile Mass:   {round(D['m'],2)} kg"],
-             [f"Cross Section:     {round(D['A'],2)} m²"],
-             [f"Drag Coefficient:  {round(D['Cd'],2)}"],
-             [f"Terminal Velocity: {round(D['Vt'],2)} m/s"]
-            ]
     
     # Object properties
+    props = [[f"Projectile Mass:       {round(D['m'],digits)} kg"],
+             [f"Cross Section:         {round(D['A'],digits)} m²"],
+             [f"Drag Coefficient:      {round(D['Cd'],digits)}"],
+             [f"Ballistic Coefficient: {round(D['BC'],digits)}"],
+             [f"Terminal Velocity:     {round(D['Vt'],digits)} m/s"]
+            ]
+    
     props_tab = Table(props,colWidths=210,
                      style=[("BOX",(0,0),(-1,-1),2,colors.gray),
                             ("FONTNAME",(0,0),(-1,-1),"Courier")])
-
     
     #Environmental conditions
-    environs = [[f"Gravitation:       {-round(D['g'],2)} m/s²"],
-                [f"Air Density:       {round(D['rho'],2)} kg/m³"]
+    environs = [[f"Gravitation:       {-round(D['g'],digits)} m/s²"],
+                [f"Air Density:       {round(D['rho'],digits)} kg/m³"]
                ]
     
     environs_tab = Table(environs,colWidths=210,
@@ -96,11 +98,11 @@ def ballistic_tables(D,x,y,dtL):
     # Subtract from 90 to get angle relative to ground
     ang = 90-(acos( (b2+c2-a2) / (2*b*c) ) * 57.4712)
     
-    outcomes = [[f"Final Distance:    {round(x[-1],2)} m"],
-                [f"Max Height:        {round(max(y),2)} m"],
-                [f"Final Speed:       {round(c/dtL[-1],2)} m/s"],
-                [f"Time of Flight:    {round(D['tof'],2)} s"],
-                [f"Impact Angle:      {round(ang,2)}°"]
+    outcomes = [[f"Final Distance:    {round(x[-1],digits)} m"],
+                [f"Max Height:        {round(max(y),digits)} m"],
+                [f"Final Speed:       {round(c/dtL[-1],digits)} m/s"],
+                [f"Time of Flight:    {round(D['tof'],digits)} s"],
+                [f"Impact Angle:      {round(ang,digits)}°"]
                ]
     
     outcomes_tab = Table(outcomes,colWidths=210,
@@ -199,7 +201,7 @@ def line_plot_compare(X,Y):
     return drawing
 
 
-def ballistic_pdf(V0,th,y0,m,A,Cd,g=9.8,rho=1.27,dt=1/30,title="BallisticMotion"):
+def ballistic_pdf(V0,th,m,A,Cd=.5,x0=0,y0=0,g=9.86,rho=1.27,dt=1/32,title="BallisticMotion"):
     if abs(th) > 90:
         raise Exception("Angle must be between -90 and 90 degrees")
     
@@ -208,7 +210,7 @@ def ballistic_pdf(V0,th,y0,m,A,Cd,g=9.8,rho=1.27,dt=1/30,title="BallisticMotion"
             raise Exception(f"{name} must be non-negative")
 
     
-    data, x, y, dtL = ballistic_motion(V0,th,0,y0,m,A,Cd,g,rho,dt)
+    data, x, y, dtL = ballistic_motion(V0,th,m,A,Cd,x0,y0,g,rho,dt)
     datatabs = ballistic_tables(data,x,y,dtL)
     doc = SimpleDocTemplate(f"{title}.pdf", pagesize=letter)
 
@@ -226,7 +228,7 @@ def ballistic_pdf(V0,th,y0,m,A,Cd,g=9.8,rho=1.27,dt=1/30,title="BallisticMotion"
     return data, x, y, dtL
 
 
-def ballistic_pdf_compare(V0,th,x0,y0,m,A,Cd,g=[9.8],rho=[1.2],dt=[1/30],title="BallisticMotionCompare"):
+def ballistic_pdf_compare(V0,th,m,A,Cd=[.5],x0=[0],y0=[0],g=[9.86],rho=[1.27],dt=[1/32],title="BallisticMotionCompare"):
         
     longest = max(len(V0),len(th),len(x0),len(y0),len(m),len(A),len(Cd),len(g),len(rho),len(dt))
     
@@ -301,11 +303,11 @@ def ballistic_pdf_compare(V0,th,x0,y0,m,A,Cd,g=[9.8],rho=[1.2],dt=[1/30],title="
 
 if __name__ == '__main__':
 
-#    ballistic_pdf(V0=100,  th=25,
-#                  y0=50,   m=20,
-#                  A=.7,    Cd=.2,  
-#                  g=9.8,   rho=1.27,
-#                  dt=1/32)
+    # ballistic_pdf(V0=100,  th=25,
+    #               y0=50,   m=20,
+    #               A=.7,    Cd=.2,  
+    #               g=9.8,   rho=1.27,
+    #               dt=1/32)
 
     ballistic_pdf_compare(V0 = [100,108,126,165], 
                           th = [35,45,55,65],
