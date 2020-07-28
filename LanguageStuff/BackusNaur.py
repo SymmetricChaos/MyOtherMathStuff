@@ -12,7 +12,7 @@ class BNF_name:
             for i,j in zip(args,[BNF_personal,BNF_name]):
                 if type(i) != j:
                     raise Exception("Not a valid name")
-            self.S = f"{args[0]} {args[1]}\n"
+            self.S = f"{args[0]} {args[1]}"
         
         else:
             raise Exception("Not a valid name")
