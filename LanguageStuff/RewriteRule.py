@@ -1,10 +1,11 @@
-from random import choice, choices, shuffle
+from random import choice, shuffle, sample
 
 class PatternMissingError(Exception):
     
     def __init__(self,pattern,string):
         self.errtext = f"{pattern} not in {string}"
         super().__init__(self.errtext)
+
 
 class rewrite_rule:
     
@@ -59,6 +60,7 @@ class rewrite_rule:
                 yield string[:pos] + self.R + string[pos+Plen:]
     
     def apply_all(self,string):
+        
         """
         Go through the string left to right and apply the rule whenever the
         pattern is found. Returns an unchanged string if the pattern is not
@@ -83,19 +85,47 @@ class rewrite_rule:
 
 
 
-def random_system(S,rules,show_intermediate=True,lim=0):
+class rewrite_system:
+    
+    def __init__(self,rules,terminals=[],nonterminals=[]):
+        self.rules = rules
+        self.terminals = terminals
+        self.nonterminals = nonterminals
+    
+    def __str__(self):
+        out = []
+        for n,R in enumerate(self.rules,1):
+            out.append(f"Rule {n}: {R}")
+        return "\n".join(out)
+    
+    def apply_random(self,string):
+        shuff_rules = sample(self.rules,len(self.rules))
+        for R in shuff_rules:
+            try:
+                return R.apply_random(string)
+            except PatternMissingError:
+                pass
+        return string
+
+
+
+
+
+def random_system_example(S,rules,show_intermediate=True,lim=0):
     
     """
     Takes a starting string S and some rules and then applies the rules in a 
     random order trying random positions until it is no longer possible
     """
     
-    for n,R in enumerate(rules,1):
-        print(f"Rule {n}: {R}")
+    system = rewrite_system(rules)
+    
+    print(system)
     
     if not show_intermediate:
         print(S)
-    
+        
+    lim = lim+1
     oldS = ""
     ctr = 1
     while not S == oldS:
@@ -103,37 +133,9 @@ def random_system(S,rules,show_intermediate=True,lim=0):
         if show_intermediate:
             print(S)
         oldS = S
-        shuffle(rules) # Have to shuffle to that system always terminates
-        for R in rules:
-            try:
-                S = R.apply_random(S)
-                break
-            except PatternMissingError:
-                pass
+        S = system.apply_random(S)
         if ctr == lim:
             break
+    
     if not show_intermediate:
         print(S)
-
-
-def random_left_system(S,rules):
-    
-    """
-    Takes a starting string S and some rules and then applies the rules in a 
-    random order always act as far left as possible
-    """
-    
-    for n,R in enumerate(rules,1):
-        print(f"Rule {n}: {R}")
-    
-    oldS = ""
-    while not S == oldS:
-        print(S)
-        oldS = S
-        shuffle(rules)
-        for R in rules:
-            try:
-                S = R.apply(S)
-                break
-            except PatternMissingError:
-                pass

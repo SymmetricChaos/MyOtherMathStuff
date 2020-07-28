@@ -1,6 +1,6 @@
-from RewriteRule import rewrite_rule, random_system, random_left_system
+from RewriteRule import rewrite_rule, rewrite_system, random_system_example
 
-def decimal_string():
+def binary_decimals():
     
     rules = [rewrite_rule("S","-A"),
              rewrite_rule("S","A"),
@@ -16,7 +16,7 @@ def decimal_string():
              rewrite_rule("D","1D"),
              rewrite_rule("D",""),]
     
-    random_system("S",rules)
+    random_system_example("S",rules)
 
 
-decimal_string()
+binary_decimals()
