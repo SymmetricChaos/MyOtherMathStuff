@@ -14,6 +14,8 @@ class rewrite_rule:
         self.R = replacement
     
     def __str__(self):
+        if self.R == "":
+            return f"{self.P} 🡪 ε"
         return f"{self.P} 🡪 {self.R}"
     
     def apply(self,string,n=0):

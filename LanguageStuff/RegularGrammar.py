@@ -2,8 +2,9 @@ from RewriteRule import rewrite_rule, rewrite_system, random_system_example
 
 def binary_decimals():
     
-    rules = [rewrite_rule("S","-A"),
-             rewrite_rule("S","A"),
+    rules = [rewrite_rule("S","-1A"),
+             rewrite_rule("S","1A"),
+             rewrite_rule("S","0.C"),
              rewrite_rule("A","0B"),
              rewrite_rule("A","1B"),
              rewrite_rule("B","0B"),
@@ -14,7 +15,7 @@ def binary_decimals():
              rewrite_rule("C","1D"),
              rewrite_rule("D","0D"),
              rewrite_rule("D","1D"),
-             rewrite_rule("D",""),]
+             rewrite_rule("D","")]
     
     random_system_example("S",rules)
 

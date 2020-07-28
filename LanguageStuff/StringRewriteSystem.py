@@ -29,9 +29,9 @@ def random_AB_game_2(k=15):
 
 
 def random_improper():
-    rules = [rewrite_rule("S",""),
-             rewrite_rule("S","aSa"),
-             rewrite_rule("S","bSb"),]
+    rules = [rewrite_rule("S","aSa"),
+             rewrite_rule("S","bSb"),
+             rewrite_rule("S","")]
     
     random_system_example("S",rules)
 
@@ -43,7 +43,7 @@ def random_nesting():
              rewrite_rule("S","[]"),
              rewrite_rule("S","[S]"),
              rewrite_rule("S","{}"),
-             rewrite_rule("S","{S}"),]
+             rewrite_rule("S","{S}")]
     
     random_system_example("S",rules)
 
@@ -74,7 +74,7 @@ def random_distinct():
              rewrite_rule("U","UbV"),
              rewrite_rule("V","aVbV"),
              rewrite_rule("V","bVaV"),
-             rewrite_rule("V",""),]
+             rewrite_rule("V","")]
     
     random_system_example("S",rules,lim=20)
 
