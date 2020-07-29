@@ -3,7 +3,10 @@ import Utils.Drawing as draw
 
 
 def ballistic_motion(V0,th,m,A,Cd=.5,x0=0,y0=0,g=9.86,rho=1.27,dt=1/32):
-
+    
+    if x0 < 0 or y0 < 0:
+        raise Exception("x0 and y0 must be non-negative")
+    
     Vt = sqrt((2*m*g)/(rho*A*Cd))
     t = 0
     
@@ -47,6 +50,7 @@ def ballistic_motion(V0,th,m,A,Cd=.5,x0=0,y0=0,g=9.86,rho=1.27,dt=1/32):
             "Vt" : Vt,
             "tof" : tof}, x, y, dtL
 
+
 def ballistic_tables(D,x,y,dtL,digits=2):
     
     # Triangle side lengths
@@ -79,13 +83,9 @@ def ballistic_tables(D,x,y,dtL,digits=2):
           f"Impact Angle:       {round(ang,digits)}°"
         )
 
-def quick_ballistic_stats(V0,th,m,A,Cd=.5,x0=0,y0=0,g=9.86,rho=1.27,dt=1/32,title=""):
-    D,x,y,dtL = ballistic_motion(V0,th,m,A,Cd,x0,y0,g,rho,dt)
-    print(f"{title}\n")
-    ballistic_tables(D,x,y,dtL)
-    
-def quick_ballistic_plot(V0,th,m,A,Cd=.5,x0=0,y0=0,g=9.86,rho=1.27,dt=1/32,title=""):
-    D,x,y,dtL = ballistic_motion(V0,th,m,A,Cd,x0,y0,g,rho,dt)
+
+
+def simple_ballistic_plot(D,x,y,dtL,title):
     ballistic_tables(D,x,y,dtL)
     draw.make_blank_canvas()
     minp = min(x+y)
@@ -97,17 +97,14 @@ def quick_ballistic_plot(V0,th,m,A,Cd=.5,x0=0,y0=0,g=9.86,rho=1.27,dt=1/32,title
 
 
 
-
 if __name__ == '__main__':
     
     # G1 bullet model has nominal Cd .5
     # G7 bullet model has nominal Cd .25
     
-    quick_ballistic_plot(500,15,8.4,0.005,Cd=.5,dt=1/32,
-                          title="British 18-Pounder Field Gun (1914)")
+    D,x,y,dtL = ballistic_motion(500,15,8.4,0.005,Cd=.5)
+    
+    simple_ballistic_plot(D,x,y,dtL,title="British 18-Pounder Field Gun (1914)")
     draw.show_now()
     print()
-    quick_ballistic_stats(500,15,8.4,0.005,Cd=.5,dt=1/32,
-                          title="British 18-Pounder Field Gun (1914)")
-
-    
+    ballistic_tables(D,x,y,dtL)
