@@ -1,9 +1,10 @@
 from math import sqrt, sin, cos, exp, acos
+import Utils.Drawing as draw
+
 
 def ballistic_motion(V0,th,m,A,Cd=.5,x0=0,y0=0,g=9.86,rho=1.27,dt=1/32):
 
     Vt = sqrt((2*m*g)/(rho*A*Cd))
-    BC = m/(Cd*A)
     t = 0
     
     # Convert agle in degrees to radians
@@ -83,6 +84,17 @@ def quick_ballistic_stats(V0,th,m,A,Cd=.5,x0=0,y0=0,g=9.86,rho=1.27,dt=1/32,titl
     print(f"{title}\n")
     ballistic_tables(D,x,y,dtL)
     
+def quick_ballistic_plot(V0,th,m,A,Cd=.5,x0=0,y0=0,g=9.86,rho=1.27,dt=1/32,title=""):
+    D,x,y,dtL = ballistic_motion(V0,th,m,A,Cd,x0,y0,g,rho,dt)
+    ballistic_tables(D,x,y,dtL)
+    draw.make_blank_canvas()
+    minp = min(x+y)
+    maxp = max(x+y)
+    draw.make_plot(xlim=(minp,maxp),ylim=(minp,maxp))
+    draw.title(title,size=25)
+    draw.draw_curve_xy(x,y)
+
+
 
 
 
@@ -91,6 +103,10 @@ if __name__ == '__main__':
     # G1 bullet model has nominal Cd .5
     # G7 bullet model has nominal Cd .25
     
+    quick_ballistic_plot(500,15,8.4,0.005,Cd=.5,dt=1/32,
+                          title="British 18-Pounder Field Gun (1914)")
+    draw.show_now()
+    print()
     quick_ballistic_stats(500,15,8.4,0.005,Cd=.5,dt=1/32,
                           title="British 18-Pounder Field Gun (1914)")
 
