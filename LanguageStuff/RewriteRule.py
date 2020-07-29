@@ -1,4 +1,4 @@
-from random import choice, shuffle, sample
+from random import choice, sample
 
 class PatternMissingError(Exception):
     
@@ -123,6 +123,7 @@ def random_system_example(S,rules,show_intermediate=True,lim=0):
     system = rewrite_system(rules)
     
     print(system)
+    print()
     
     if not show_intermediate:
         print(S)

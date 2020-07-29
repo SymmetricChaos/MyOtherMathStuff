@@ -1,4 +1,4 @@
-from RewriteRule import rewrite_rule, rewrite_system, random_system_example
+from RewriteRule import rewrite_rule, random_system_example
 
 def binary_decimals():
     

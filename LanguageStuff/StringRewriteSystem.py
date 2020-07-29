@@ -28,9 +28,11 @@ def random_AB_game_2(k=15):
     random_system_example(S,rules)
 
 
-def random_improper():
+def random_palindrome():
     rules = [rewrite_rule("S","aSa"),
              rewrite_rule("S","bSb"),
+             rewrite_rule("S","a"),
+             rewrite_rule("S","b"),
              rewrite_rule("S","")]
     
     random_system_example("S",rules)
@@ -88,7 +90,7 @@ if __name__ == '__main__':
     print()
     random_AB_game_2(15)
     print()
-    random_improper()
+    random_palindrome()
     print()
     random_nesting()
     print()
