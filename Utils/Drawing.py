@@ -15,7 +15,7 @@ def make_blank_canvas(size=[12,12],**kwargs):
     return fig
 
 
-def make_plot(a=1,b=1,p=1,xlim=None,ylim=None,fig=None,**kwargs):
+def make_plot(a=1,b=1,p=1,xlim=None,ylim=None,aspect_ratio=None,fig=None,**kwargs):
     
     if fig == None:
         fig = plt.gcf()
@@ -33,11 +33,14 @@ def make_plot(a=1,b=1,p=1,xlim=None,ylim=None,fig=None,**kwargs):
     else:
         ax.set_xlim(xlim)
         ax.set_ylim(ylim)
-    
+        
+    if aspect_ratio != None:
+        ax.set_aspect(aspect_ratio)
+        
     return ax
 
 
-def make_blank_plot(a=1,b=1,p=1,xlim=None,ylim=None,box=True,fig=None,**kwargs):
+def make_blank_plot(a=1,b=1,p=1,xlim=None,ylim=None,box=True,aspect_ratio=None,fig=None,**kwargs):
 
     if fig == None:
         fig = plt.gcf()
@@ -61,6 +64,10 @@ def make_blank_plot(a=1,b=1,p=1,xlim=None,ylim=None,box=True,fig=None,**kwargs):
     
     ax.set_xticks([])
     ax.set_yticks([])
+    
+    if aspect_ratio != None:
+        ax.set_aspect(aspect_ratio)
+    
     return ax
 
 

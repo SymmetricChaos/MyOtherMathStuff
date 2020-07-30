@@ -89,10 +89,9 @@ def simple_ballistic_plot(D,x,y,dtL,title):
     fig = draw.make_blank_canvas()
     max_x = max(x)
     max_y = max(y)*1.5
-    plt = draw.make_plot(xlim=(0,max_x),ylim=(0,max_y))
+    plt = draw.make_plot(xlim=(0,max_x),ylim=(0,max_y),aspect_ratio='equal')
     draw.title(title,size=25)
     draw.curve_xy(x,y)
-    plt.set_aspect('equal')
     plt.grid()
     return fig,plt
 

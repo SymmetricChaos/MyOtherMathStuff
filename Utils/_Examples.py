@@ -138,7 +138,7 @@ def turtle_plots(save=False):
         turt.left(45)
     
     my_turtle = mplTurtle(color='brown',angle=90,alpha=.4)
-    my_tree(my_turtle,10)
+    my_tree(my_turtle,9)
     
     
     draw.make_plot(2,2,2,xlim=[-5,5])
@@ -154,10 +154,10 @@ def turtle_plots(save=False):
     P = [(-4,-4),(4,-4),(0,4)]
     
     turtle2 = mplTurtle(draw=False,color="gray")
-    for i in range(1000):
+    for i in range(600):
         newpos = midpoint(turtle2.pos,random.choice(P))
         turtle2.move_to(newpos)
-        turtle2.stamp(.02)
+        turtle2.stamp(.04)
         
     
     draw.make_plot(2,2,4,xlim=[-5,5])
