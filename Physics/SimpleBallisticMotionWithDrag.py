@@ -86,14 +86,15 @@ def ballistic_tables(D,x,y,dtL,digits=2):
 
 def simple_ballistic_plot(D,x,y,dtL,title):
     
-    ballistic_tables(D,x,y,dtL)
-    draw.make_blank_canvas()
-    minp = min(x+y)
-    maxp = max(x+y)
-    draw.make_plot()#xlim=(minp,maxp),ylim=(minp,maxp))
+    fig = draw.make_blank_canvas()
+    max_x = max(x)
+    max_y = max(y)*1.5
+    plt = draw.make_plot(xlim=(0,max_x),ylim=(0,max_y))
     draw.title(title,size=25)
     draw.curve_xy(x,y)
-    draw.dots_xy(x,y)
+    plt.set_aspect('equal')
+    plt.grid()
+    return fig,plt
 
 
 
@@ -107,6 +108,6 @@ if __name__ == '__main__':
     D,x,y,dtL = ballistic_motion(500,15,8.4,0.005,Cd=.5)
     
     simple_ballistic_plot(D,x,y,dtL,title="British 18-Pounder Field Gun (1914)")
-    draw.show_now()
+    draw.now()
     print()
     ballistic_tables(D,x,y,dtL)

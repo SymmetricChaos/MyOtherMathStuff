@@ -421,5 +421,4 @@ def violin_plot(L,ax=None,positions=[],labels=[],vert=True,**kwargs):
 def quiver_plot(X,Y,U,V,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
-        
     return ax.quiver(X,Y,U,V)
