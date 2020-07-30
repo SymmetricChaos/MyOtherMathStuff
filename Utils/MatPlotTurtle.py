@@ -1,15 +1,15 @@
-import Utils.Drawing as Drawing
+import Utils.Drawing as draw
 import matplotlib.pyplot as plt
 import math
 
 def _draw_helper(turtle,pos):
     if turtle.arrow_headwidth != 0:
-        Drawing.arrow_p(turtle.pos,pos,turtle.ax,
+        draw.arrow_p(turtle.pos,pos,turtle.ax,
                         color=turtle.color,alpha=turtle.alpha,
                         linewidth=turtle.linewidth,zorder=turtle.zorder,
                         head_width=turtle.arrow_headwidth,length_includes_head=True)
     else:
-        Drawing.connect_p(turtle.pos,pos,turtle.ax,
+        draw.connection_p(turtle.pos,pos,turtle.ax,
                           color=turtle.color,alpha=turtle.alpha,
                           linewidth=turtle.linewidth,zorder=turtle.zorder)
 
@@ -71,5 +71,5 @@ class mplTurtle:
             alpha = self.alpha
         if zorder == None:
             zorder = self.zorder
-        Drawing.draw_circle_p(self.pos,r,ax=self.ax,
+        draw.circle_p(self.pos,r,ax=self.ax,
                               color=color,alpha=alpha)

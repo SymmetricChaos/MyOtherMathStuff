@@ -84,15 +84,17 @@ def ballistic_tables(D,x,y,dtL,digits=2):
         )
 
 
-
 def simple_ballistic_plot(D,x,y,dtL,title):
+    
     ballistic_tables(D,x,y,dtL)
     draw.make_blank_canvas()
     minp = min(x+y)
     maxp = max(x+y)
-    draw.make_plot(xlim=(minp,maxp),ylim=(minp,maxp))
+    draw.make_plot()#xlim=(minp,maxp),ylim=(minp,maxp))
     draw.title(title,size=25)
-    draw.draw_curve_xy(x,y)
+    draw.curve_xy(x,y)
+    draw.dots_xy(x,y)
+
 
 
 
