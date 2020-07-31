@@ -2,7 +2,7 @@ from math import sqrt, sin, cos, exp, acos
 import Utils.Drawing as draw
 
 
-def ballistic_motion(V0,th,m,A,Cd=.5,x0=0,y0=0,g=9.86,rho=1.27,dt=1/32):
+def ballistic_motion(V0,th,m,A,Cd=.5,x0=0,y0=0,g=9.86,rho=1.27,dt=1/16):
     
     if x0 < 0 or y0 < 0:
         raise Exception("x0 and y0 must be non-negative")

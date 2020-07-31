@@ -10,6 +10,7 @@ from matplotlib.table import table as mpltable
 
 ### DRAWING SURFACES ###
 def make_blank_canvas(size=[12,12],**kwargs):
+    
     fig = plt.figure(**kwargs)
     fig.set_size_inches(size[0],size[1])
     return fig
@@ -41,7 +42,7 @@ def make_plot(a=1,b=1,p=1,xlim=None,ylim=None,aspect_ratio=None,fig=None,**kwarg
 
 
 def make_blank_plot(a=1,b=1,p=1,xlim=None,ylim=None,box=True,aspect_ratio=None,fig=None,**kwargs):
-
+    
     if fig == None:
         fig = plt.gcf()
         
@@ -413,8 +414,8 @@ def violin_plot(L,ax=None,positions=[],labels=[],vert=True,**kwargs):
     # MPL doesn't support this by default like it does for boxplots
     if positions == []:
         positions = [i for i in range(len(L))]
-
-    if labels != []:        
+    
+    if labels != []:
         if vert:
             ax.set_xticks(positions)
             ax.set_xticklabels(labels)

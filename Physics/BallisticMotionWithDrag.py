@@ -1,14 +1,16 @@
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Table, Spacer, PageBreak
+from reportlab.platypus import SimpleDocTemplate, Table, Spacer, PageBreak, Paragraph
 from reportlab.graphics.charts.lineplots import LinePlot
 from reportlab.graphics.shapes import Drawing
 from math import sqrt, sin, cos, exp, acos
 
-def ballistic_motion(V0,th,m,A,Cd=.5,x0=0,y0=0,g=9.86,rho=1.27,dt=1/32):
-
+def ballistic_motion(V0,th,m,A,Cd=.5,x0=0,y0=0,g=9.86,rho=1.27,dt=1/16):
+    
+    if x0 < 0 or y0 < 0:
+        raise Exception("x0 and y0 must be non-negative")
+    
     Vt = sqrt((2*m*g)/(rho*A*Cd))
-    BC = m/(Cd*A)
     t = 0
     
     # Convert agle in degrees to radians
@@ -47,7 +49,6 @@ def ballistic_motion(V0,th,m,A,Cd=.5,x0=0,y0=0,g=9.86,rho=1.27,dt=1/32):
             "m" : m,
             "A" : A,
             "Cd" : Cd,
-            "BC" : BC,
             "rho" : rho,
             "Vt" : Vt,
             "tof" : tof}, x, y, dtL
@@ -69,7 +70,6 @@ def ballistic_tables(D,x,y,dtL,digits=2):
     props = [[f"Projectile Mass:       {round(D['m'],digits)} kg"],
              [f"Cross Section:         {round(D['A'],digits)} m²"],
              [f"Drag Coefficient:      {round(D['Cd'],digits)}"],
-             [f"Ballistic Coefficient: {round(D['BC'],digits)}"],
              [f"Terminal Velocity:     {round(D['Vt'],digits)} m/s"]
             ]
     
@@ -125,7 +125,7 @@ def list_to_intervals(L,n):
     return out
 
 
-def line_plot(x,y):
+def line_plot(x,y,title):
     drawing = Drawing(400, 300)
     
     data = [(a,b) for a,b in zip(x,y)]
@@ -135,7 +135,7 @@ def line_plot(x,y):
     lp.height = 300
     lp.x = 80
     lp.y = 30
- 
+    
     lp.lineLabels.fontSize = 6
     lp.lineLabels.boxStrokeWidth = 0.5
     lp.lineLabels.visible = 1
@@ -147,7 +147,7 @@ def line_plot(x,y):
     
     lp.xValueAxis.valueMin = 0
     lp.xValueAxis.valueMax = max(max(x),max(y))
- 
+    
     lp.yValueAxis.valueMin = 0
     lp.yValueAxis.valueMax = max(max(x),max(y))
     
@@ -172,17 +172,17 @@ def line_plot_compare(X,Y):
     lp.height = 400
     lp.x = 20
     lp.y = -100
- 
+    
     lp.lines.strokeWidth = 1.5
-
+    
     lp.xValueAxis.valueMin = 0
     lp.xValueAxis.valueMax = max(maxW,maxH)
- 
+    
     lp.yValueAxis.valueMin = 0
     lp.yValueAxis.valueMax = max(maxW,maxH)
     
     lp.data = data
-
+    
     cls = [colors.HexColor("#000000"),  #Black
            colors.HexColor("#E69F00"),  #Orange
            colors.HexColor("#56B4E9"),  #Sky Blue
@@ -195,40 +195,38 @@ def line_plot_compare(X,Y):
     
     for i in range(len(data)):
         lp.lines[i].strokeColor = cls[i%8]
-
+    
     drawing.add(lp)
     
     return drawing
 
 
-def ballistic_pdf(V0,th,m,A,Cd=.5,x0=0,y0=0,g=9.86,rho=1.27,dt=1/32,title="BallisticMotion"):
+def ballistic_pdf(V0,th,m,A,Cd=.5,x0=0,y0=0,g=9.86,rho=1.27,dt=1/16,title="BallisticMotion"):
     if abs(th) > 90:
         raise Exception("Angle must be between -90 and 90 degrees")
     
     for var,name in zip([V0,y0,m,A,Cd,g,rho,dt],["V0","y0","m","A","Cd","g","rho","dt"]):
         if var < 0:
             raise Exception(f"{name} must be non-negative")
-
+    
     
     data, x, y, dtL = ballistic_motion(V0,th,m,A,Cd,x0,y0,g,rho,dt)
     datatabs = ballistic_tables(data,x,y,dtL)
     doc = SimpleDocTemplate(f"{title}.pdf", pagesize=letter)
-
+    
     elements = []
     
-    draw = line_plot(x,y)
+    draw = line_plot(x,y,title)
     elements.append(draw)
-
-    for t in datatabs:
-        elements.append(Spacer(1, 20))
-        elements.append(t)
+    
+    elements.append(datatabs)
     
     doc.build(elements)
     
     return data, x, y, dtL
 
 
-def ballistic_pdf_compare(V0,th,m,A,Cd=[.5],x0=[0],y0=[0],g=[9.86],rho=[1.27],dt=[1/32],title="BallisticMotionCompare"):
+def ballistic_pdf_compare(V0,th,m,A,Cd=[.5],x0=[0],y0=[0],g=[9.86],rho=[1.27],dt=[1/16],title="BallisticMotionCompare"):
         
     longest = max(len(V0),len(th),len(x0),len(y0),len(m),len(A),len(Cd),len(g),len(rho),len(dt))
     
@@ -249,15 +247,15 @@ def ballistic_pdf_compare(V0,th,m,A,Cd=[.5],x0=[0],y0=[0],g=[9.86],rho=[1.27],dt
     if len(g) == 1:
         g = g*longest
     if len(rho) == 1:
-        rho = rho*longest        
+        rho = rho*longest
     if len(dt) == 1:
-        dt = dt*longest 
+        dt = dt*longest
     
     X, Y = [], []
     tabs = []
     all_data = []
     all_dtL = []
-    for info in zip(V0,th,x0,y0,m,A,Cd,g,rho,dt):
+    for info in zip(V0,th,m,A,Cd,x0,y0,g,rho,dt):
         data, x, y, dtL = ballistic_motion(*info)
         tabs.append(ballistic_tables(data,x,y,dtL))
         X.append(x)
@@ -279,7 +277,7 @@ def ballistic_pdf_compare(V0,th,m,A,Cd=[.5],x0=[0],y0=[0],g=[9.86],rho=[1.27],dt
             elements.append(Table([temp]))
             elements.append(Spacer(1, 15))
             temp = []
-
+        
         if ctr % 4 == 0 and ctr > 0:
             elements.append(PageBreak())
             
@@ -292,9 +290,9 @@ def ballistic_pdf_compare(V0,th,m,A,Cd=[.5],x0=[0],y0=[0],g=[9.86],rho=[1.27],dt
         elements.append(PageBreak())
     
     doc = SimpleDocTemplate(f"{title}.pdf", pagesize=letter)
-
+    
     doc.build(elements)
-
+    
     return all_data, X, Y, all_dtL
 
 
@@ -302,18 +300,14 @@ def ballistic_pdf_compare(V0,th,m,A,Cd=[.5],x0=[0],y0=[0],g=[9.86],rho=[1.27],dt
 
 
 if __name__ == '__main__':
-
-    # ballistic_pdf(V0=100,  th=25,
-    #               y0=50,   m=20,
-    #               A=.7,    Cd=.2,  
-    #               g=9.8,   rho=1.27,
-    #               dt=1/32)
-
-    ballistic_pdf_compare(V0 = [100,108,126,165], 
-                          th = [35,45,55,65],
-                          x0 = [0],
-                          y0 = [0],  
-                          m  = [20],   
-                          A  = [.7],
-                          Cd = [.2],
-                          dt = [1/32])
+    
+    ballistic_pdf(V0=500,  th=15,
+                  y0=0,    m=8.4,
+                  A=0.005, Cd=.5,
+                  g=9.8,   rho=1.27,
+                  dt=1/16)
+    
+    ballistic_pdf_compare(V0 = [500,500,500,500], 
+                          th = [5,10,15,20],
+                          m  = [8.4],   
+                          A  = [0.005])
