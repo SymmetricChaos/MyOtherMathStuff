@@ -5,6 +5,7 @@ def binary_decimals():
     rules = [rewrite_rule("S","-1A"),
              rewrite_rule("S","1A"),
              rewrite_rule("S","0.C"),
+             rewrite_rule("S","-0.C"),
              rewrite_rule("A","0B"),
              rewrite_rule("A","1B"),
              rewrite_rule("B","0B"),
