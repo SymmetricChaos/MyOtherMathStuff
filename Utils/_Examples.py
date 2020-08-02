@@ -142,7 +142,7 @@ def turtle_plots(save=False):
     
     
     draw.make_plot(2,2,2,xlim=[-5,5])
-    draw.title("Change Lines to Arrows")
+    draw.title("Arrows Instead of Lines")
     turtle1 = mplTurtle(linewidth=2,arrow_headwidth=.2)
     for i in range(40):
         turtle1.forward(.5+.03*i)

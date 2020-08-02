@@ -20,7 +20,7 @@ def make_plot(a=1,b=1,p=1,xlim=None,ylim=None,aspect_ratio=None,fig=None,**kwarg
     
     if fig == None:
         fig = plt.gcf()
-        
+    
     ax = fig.add_subplot(a,b,p,**kwargs)
     
     # If no coordinate range is given fit everything into a square
@@ -34,10 +34,10 @@ def make_plot(a=1,b=1,p=1,xlim=None,ylim=None,aspect_ratio=None,fig=None,**kwarg
     else:
         ax.set_xlim(xlim)
         ax.set_ylim(ylim)
-        
+    
     if aspect_ratio != None:
         ax.set_aspect(aspect_ratio)
-        
+    
     return ax
 
 
@@ -84,16 +84,16 @@ def calc_x(m,y,b):
     return (y-b)/m
 
 # Draw a line based on its slope-intercept form
-def mbline(m,b,xlim=[],ylim=[],ax=None,**kwargs):
+def mbline(m,b,xlim=None,ylim=None,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
     
-    if xlim == []:
+    if xlim == None:
         xlim = ax.get_xlim()
         
-    if ylim == []:
+    if ylim == None:
         ylim = ax.get_ylim()
-           
+    
     x_lo = xlim[0]
     y_lo = ylim[0]
     
@@ -109,7 +109,7 @@ def mbline(m,b,xlim=[],ylim=[],ax=None,**kwargs):
     elif y0 > y_hi:
         x0 = calc_x(m,y_hi,b)
         y0 = y_hi
-            
+    
     x1 = x_hi
     y1 = calc_y(m,x_hi,b)
     if y1 > y_hi:
@@ -118,19 +118,19 @@ def mbline(m,b,xlim=[],ylim=[],ax=None,**kwargs):
     elif y1 < y_lo:
         x1 = calc_x(m,y_lo,b)
         y1 = y_lo
-
+    
     line = lines.Line2D([x0,x1], [y0,y1], axes=ax,**kwargs)
     ax.add_line(line)
     
     return [[x0,y0],[x1,y1]],line
 
 # Draw multiple slope-intercept lines
-def mblines(M,B,xlim=[],ylim=[],ax=None,**kwargs):
+def mblines(M,B,xlim=None,ylim=None,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
-    if xlim == []:
+    if xlim == None:
         xlim = ax.get_xlim()
-    if ylim == []:
+    if ylim == None:
         ylim = ax.get_ylim()
     out = []
     for m,b in zip(M,B):
@@ -140,7 +140,7 @@ def mblines(M,B,xlim=[],ylim=[],ax=None,**kwargs):
 
 
 # Draw an line given the point-slope form
-def point_slope_line(P,m,xlim=[],ylim=[],ax=None,**kwargs):    
+def point_slope_line(P,m,xlim=None,ylim=None,ax=None,**kwargs):    
     b = m*P[1]+P[0]
     return mbline(m,b,xlim,ylim,ax,**kwargs)
 
@@ -148,21 +148,21 @@ def point_slope_line(P,m,xlim=[],ylim=[],ax=None,**kwargs):
 def point_slope_lines(P,M,xlim=[],ylim=[],ax=None,**kwargs):    
     B = [m*p[0]+p[1] for m,p in zip(M,P)]
     return mblines(M,B,xlim,ylim,ax,**kwargs)
-    
 
-def vertical_line(xpos=0,ylim=[],ax=None,**kwargs):
+
+def vertical_line(xpos=0,ylim=None,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
-    if ylim == []:
+    if ylim == None:
         ylim = ax.get_ylim()
     line = lines.Line2D([xpos,xpos],ylim, axes=ax,**kwargs)
     ax.add_line(line)
     return [[xpos,xpos],ylim],line
     
-def horizontal_line(ypos=0,xlim=[],ax=None,**kwargs):
+def horizontal_line(ypos=0,xlim=None,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
-    if xlim == []:
+    if xlim == None:
         xlim = ax.get_xlim()
     line = lines.Line2D(xlim,[ypos,ypos], axes=ax,**kwargs)
     ax.add_line(line)
@@ -294,7 +294,7 @@ def circles_xy(X,Y,R,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
     circles = []
-    for x,y,r in zip(X,Y,R):  
+    for x,y,r in zip(X,Y,R):
         C = circle_xy(x,y,r,ax,**kwargs)
         circles.append(C)
     return circles
@@ -303,7 +303,7 @@ def circles_p(P,R,ax=None,**kwargs):
     if ax == None:
         ax = plt.gca()
     circles = []
-    for p,r in zip(P,R):  
+    for p,r in zip(P,R):
         C = circle_p(p,r,ax,**kwargs)
         circles.append(C)
     return circles
@@ -328,7 +328,7 @@ def rect_xy(x0,y0,x1,y1,ax=None,**kwargs):
 def image(path,x=0,y=0,scale=1,ax=None):
     if ax == None:
         ax = plt.gca()
-        
+    
     with get_sample_data(path) as file:
         arr_img = plt.imread(file, format='png')
     
@@ -345,7 +345,7 @@ def image(path,x=0,y=0,scale=1,ax=None):
 def image_box(path,x=0,y=0,scale=1,pad=0,ax=None):
     if ax == None:
         ax = plt.gca()
-        
+    
     with get_sample_data(path) as file:
         arr_img = plt.imread(file, format='png')
     
@@ -397,25 +397,25 @@ def pie_chart(L,ax=None,**kwargs):
     return ax.pie(L,**kwargs)
 
 
-def boxplot(L,ax=None,positions=[],labels=[],vert=True,**kwargs):
+def boxplot(L,ax=None,positions=None,labels=None,vert=True,**kwargs):
     if ax == None:
         ax = plt.gca()
     
-    if positions == []:
+    if positions == None:
         positions = [i for i in range(len(L))]
     
     return ax.boxplot(L,positions=positions,labels=labels,vert=vert,**kwargs)
 
 
-def violin_plot(L,ax=None,positions=[],labels=[],vert=True,**kwargs):
+def violin_plot(L,ax=None,positions=None,labels=None,vert=True,**kwargs):
     if ax == None:
         ax = plt.gca()
     
     # MPL doesn't support this by default like it does for boxplots
-    if positions == []:
+    if positions == None:
         positions = [i for i in range(len(L))]
     
-    if labels != []:
+    if labels != None:
         if vert:
             ax.set_xticks(positions)
             ax.set_xticklabels(labels)
