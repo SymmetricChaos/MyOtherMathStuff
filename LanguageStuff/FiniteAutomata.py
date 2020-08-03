@@ -49,8 +49,8 @@ class NFA:
     
     def language(self,length=1):
         
-        def DFA_language(DFA,cur_state,string,depth):
-            if cur_state in DFA.accept:
+        def NFA_language(NFA,cur_state,string,depth):
+            if cur_state in NFA.accept:
                 L = [string]
             else:
                 L = []
@@ -58,48 +58,48 @@ class NFA:
             if len(string) == depth:
                 return L
             
-            for symbol,state in DFA.transition.items():
-                L += DFA_language(DFA,state[cur_state],string+symbol,depth)
+            for symbol,state in NFA.transition.items():
+                L += NFA_language(NFA,state[cur_state],string+symbol,depth)
             
             return L
         
-        return DFA_language(self,self.start,"",length)
+        return NFA_language(self,self.start,"",length)
 
 
 
 
 
-T = {"0": [1,0],
-     "1": [0,1]
-    }
-
-
-mynfa = NFA(2,"01",T,0,[0])
-
-
-for string in ["0001001011111"]:
-    print(string,mynfa(string))
-
-print("\nWords from the language with up to five letters")
-print(mynfa.language(5))
-
-
-#          0 1 2 3 4
-T = {"M": [1,2,2,2,2],
-     "m": [2,3,2,3,2],
-     "R": [1,2,2,2,2],
-     "r": [2,3,2,3,2],
-     "S": [1,2,2,2,2],
-     "s": [2,3,2,3,2],
-     "D": [1,2,2,2,2],
-     "d": [2,3,2,3,2],
-     ".": [2,2,2,4,2],
-    }
-
-
-mynfa2 = NFA(5,"MmRrSsDd.",T,0,[4])
-
-
-
-print("\nGenerate words from a language that looks like abbreviated titles")
-print(mynfa2.language(4))
+if __name__ == '__main__':
+    
+    T = {"0": [1,0],
+         "1": [0,1]
+        }
+    
+    
+    mynfa = NFA(2,"01",T,0,[0])
+    
+    
+    for string in ["0001001011111"]:
+        print(string,mynfa(string))
+    
+    print("\nWords from the language with up to five letters")
+    print(mynfa.language(5))
+    
+    
+    #          0 1 2 3 4
+    T = {"M": [1,2,2,2,2],
+         "m": [2,3,2,3,2],
+         "R": [1,2,2,2,2],
+         "r": [2,3,2,3,2],
+         "S": [1,2,2,2,2],
+         "s": [2,3,2,3,2],
+         "D": [1,2,2,2,2],
+         "d": [2,3,2,3,2],
+         ".": [2,2,2,4,2],
+        }
+    
+    
+    mynfa2 = NFA(5,"MmRrSsDd.",T,0,[4])
+    
+    print("\nGenerate words from a language that looks like abbreviated titles")
+    print(mynfa2.language(4))
