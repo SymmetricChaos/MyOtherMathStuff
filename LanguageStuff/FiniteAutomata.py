@@ -1,5 +1,5 @@
-# Deterministic Finite Automata
-class DFA:
+# Nondeterministic Finite Automata
+class NFA:
     
     def __init__(self,states,alphabet,transition,start,accept):
         
@@ -64,12 +64,9 @@ class DFA:
             return L
         
         return DFA_language(self,self.start,"",length)
-    
 
 
 
-# Non-Deterministic Finite Automata
-# class DFA
 
 
 T = {"0": [1,0],
@@ -77,14 +74,14 @@ T = {"0": [1,0],
     }
 
 
-mydfa = DFA(2,"01",T,0,[0])
+mynfa = NFA(2,"01",T,0,[0])
 
 
 for string in ["0001001011111"]:
-    print(string,mydfa(string))
+    print(string,mynfa(string))
 
 print("\nWords from the language with up to five letters")
-print(mydfa.language(5))
+print(mynfa.language(5))
 
 
 #          0 1 2 3 4
@@ -100,9 +97,9 @@ T = {"M": [1,2,2,2,2],
     }
 
 
-mydfa2 = DFA(5,"MmRrSsDd.",T,0,[4])
+mynfa2 = NFA(5,"MmRrSsDd.",T,0,[4])
 
 
 
 print("\nGenerate words from a language that looks like abbreviated titles")
-print(mydfa2.language(4))
+print(mynfa2.language(4))
