@@ -85,3 +85,24 @@ for string in ["0001001011111"]:
 
 print("\nWords from the language with up to five letters")
 print(mydfa.language(5))
+
+
+#          0 1 2 3 4
+T = {"M": [1,2,2,2,2],
+     "m": [2,3,2,3,2],
+     "R": [1,2,2,2,2],
+     "r": [2,3,2,3,2],
+     "S": [1,2,2,2,2],
+     "s": [2,3,2,3,2],
+     "D": [1,2,2,2,2],
+     "d": [2,3,2,3,2],
+     ".": [2,2,2,4,2],
+    }
+
+
+mydfa2 = DFA(5,"MmRrSsDd.",T,0,[4])
+
+
+
+print("\nGenerate words from a language that looks like abbreviated titles")
+print(mydfa2.language(4))
