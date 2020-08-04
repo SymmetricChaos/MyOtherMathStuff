@@ -1,4 +1,4 @@
-from RewriteRule import rewrite_rule, random_system_example
+from RewriteRule import rewrite_rule, rewrite_system, random_system_example
 from random import choices
 
 
@@ -12,7 +12,8 @@ def random_AB_game_1(k=15):
              rewrite_rule("AA","B"),
              rewrite_rule("BB","B")]
     
-    random_system_example(S,rules)
+    sys = rewrite_system(rules)
+    random_system_example("S",sys)
 
 
 def random_AB_game_2(k=15):
@@ -25,7 +26,8 @@ def random_AB_game_2(k=15):
              rewrite_rule("AA","BBBB"),
              rewrite_rule("BB","B")]
     
-    random_system_example(S,rules)
+    sys = rewrite_system(rules)
+    random_system_example("S",sys)
 
 
 def random_palindrome():
@@ -35,7 +37,8 @@ def random_palindrome():
              rewrite_rule("S","b"),
              rewrite_rule("S","")]
     
-    random_system_example("S",rules)
+    sys = rewrite_system(rules)
+    random_system_example("S",sys)
 
 
 def random_nesting():
@@ -47,7 +50,8 @@ def random_nesting():
              rewrite_rule("S","{}"),
              rewrite_rule("S","{S}")]
     
-    random_system_example("S",rules)
+    sys = rewrite_system(rules)
+    random_system_example("SSS",sys)
 
 
 def random_CSG():
@@ -62,7 +66,8 @@ def random_CSG():
              rewrite_rule("bC","bc"),
              rewrite_rule("cC","cc")]
     
-    random_system_example("S",rules)
+    sys = rewrite_system(rules)
+    random_system_example("S",sys)
 
 
 def random_distinct():
@@ -78,7 +83,8 @@ def random_distinct():
              rewrite_rule("V","bVaV"),
              rewrite_rule("V","")]
     
-    random_system_example("S",rules,lim=20)
+    sys = rewrite_system(rules)
+    random_system_example("S",sys,lim=20)
 
 
 

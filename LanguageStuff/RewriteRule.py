@@ -10,44 +10,44 @@ class PatternMissingError(Exception):
 class rewrite_rule:
     
     def __init__(self,pattern,replacement):
-        self.P = pattern
-        self.R = replacement
+        self.pattern = pattern
+        self.replacement = replacement
     
     def __str__(self):
-        if self.R == "":
-            return f"{self.P} 🡪 ε"
-        return f"{self.P} 🡪 {self.R}"
+        if self.replacement == "":
+            return f"{self.pattern} 🡪 ε"
+        return f"{self.pattern} 🡪 {self.replacement}"
     
     def apply(self,string,n=0):
         
         """Apply to the nth occurence of the pattern, defaults to leftmost, zero indexed"""
         
         ctr = 0
-        Plen = len(self.P)
+        Plen = len(self.pattern)
         for pos in range(0,len(string)-Plen+1):
-            if string[pos:pos+Plen] == self.P:
+            if string[pos:pos+Plen] == self.pattern:
                 if ctr == n:
-                    return string[:pos] + self.R + string[pos+Plen:]
+                    return string[:pos] + self.replacement + string[pos+Plen:]
                 else:
                     ctr += 1
         
-        raise PatternMissingError(self.P,string)
+        raise PatternMissingError(self.pattern,string)
     
     def apply_random(self,string):
         
         """Find a random place where the rules applies"""
         
         positions = []
-        Plen = len(self.P)
+        Plen = len(self.pattern)
         for i in range(0,len(string)-Plen+1):
-            if string[i:i+Plen] == self.P:
+            if string[i:i+Plen] == self.pattern:
                 positions.append(i)
         
         if len(positions) == 0:
-            raise PatternMissingError(self.P,string)
+            raise PatternMissingError(self.pattern,string)
         
         pos = choice(positions)
-        return string[:pos] + self.R + string[pos+Plen:]
+        return string[:pos] + self.replacement + string[pos+Plen:]
         
     def apply_each(self,string):
         
@@ -56,10 +56,10 @@ class rewrite_rule:
         string. If there are no valid applications the generator is empty.
         """
         
-        Plen = len(self.P)
+        Plen = len(self.pattern)
         for pos in range(0,len(string)-Plen+1):
-            if string[pos:pos+Plen] == self.P:
-                yield string[:pos] + self.R + string[pos+Plen:]
+            if string[pos:pos+Plen] == self.pattern:
+                yield string[:pos] + self.replacement + string[pos+Plen:]
     
     def apply_all(self,string):
         
@@ -69,15 +69,15 @@ class rewrite_rule:
         present.
         """
         
-        Plen = len(self.P)
-        Rlen = len(self.R)
+        Plen = len(self.pattern)
+        Rlen = len(self.replacement)
         left = ""
         right = string
         while True:
             if len(right) < Plen:
                 return left + right
-            if right[:Plen] == self.P:
-                left += self.R
+            if right[:Plen] == self.pattern:
+                left += self.replacement
                 right = right[Rlen+1:]
             else:
                 left += right[0]
@@ -89,10 +89,16 @@ class rewrite_rule:
 
 class rewrite_system:
     
-    def __init__(self,rules,terminals=[],nonterminals=[]):
+    def __init__(self,rules,terminals=None,nonterminals=None):
         self.rules = rules
-        self.terminals = terminals
-        self.nonterminals = nonterminals
+        if terminals == None:
+            self.terminals = ""
+        elif type(terminals) != str:
+            raise TypeError("Terminals must be a string")
+        if nonterminals == None:
+            self.nonterminals = ""
+        elif type(terminals) != str:
+            raise TypeError("Nonterminals must be a string")
     
     def __str__(self):
         out = []
@@ -113,14 +119,32 @@ class rewrite_system:
 
 
 
-def random_system_example(S,rules,show_intermediate=True,lim=0):
+# Extended Regular Grammar
+class XRG(rewrite_system):
+    
+    def __init__(self,rules,terminals,nonterminals):
+        for R in rules:
+            if R.pattern not in nonterminals:
+                raise Exception(f"{R} is an invlaid rule for this Extended Regular Grammar")
+            if R.replacement == "":
+                continue
+            if R.replacement[-1] not in terminals+nonterminals:
+                raise Exception(f"{R} is an invlaid rule for this Extended Regular Grammar")
+            for symbol in R.replacement[:-1]:
+                if symbol not in terminals:
+                    raise Exception(f"{R} is an invlaid rule for this Extended Regular Grammar")
+        super().__init__(rules,terminals,nonterminals)
+
+
+
+
+
+def random_system_example(S,system,show_intermediate=True,lim=0):
     
     """
     Takes a starting string S and some rules and then applies the rules in a 
     random order trying random positions until it is no longer possible
     """
-    
-    system = rewrite_system(rules)
     
     print(system)
     print()

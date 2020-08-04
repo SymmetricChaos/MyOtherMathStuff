@@ -1,4 +1,4 @@
-from RewriteRule import rewrite_rule, random_system_example
+from RewriteRule import rewrite_rule, XRG, random_system_example
 
 def binary_decimals():
     
@@ -19,7 +19,9 @@ def binary_decimals():
              rewrite_rule("D","1D"),
              rewrite_rule("D","1")]
     
-    random_system_example("S",rules)
+    grammar = XRG(rules,"-.01","SABCD")
+    
+    random_system_example("S",grammar)
 
 
 binary_decimals()
