@@ -1,4 +1,4 @@
-from RewriteRule import rewrite_rule, rewrite_system, random_system_example
+from RewriteRule import rewrite_rule, rewrite_system, random_system_example, CFG
 from random import choices
 
 
@@ -54,6 +54,7 @@ def random_nesting():
     random_system_example("SSS",sys)
 
 
+# Context sensitive grammar
 def random_CSG():
     rules = [rewrite_rule("S","aBC"),
              rewrite_rule("S","aSBC"),
@@ -67,7 +68,13 @@ def random_CSG():
              rewrite_rule("cC","cc")]
     
     sys = rewrite_system(rules)
-    random_system_example("S",sys)
+    string = sys.apply_ordered("aaaBCBCBC")
+    print(sys)
+    print()
+    print(string)
+    for i in range(17):
+        string = sys.apply_ordered(string)
+        print(string)
 
 
 def random_distinct():
@@ -84,7 +91,7 @@ def random_distinct():
              rewrite_rule("V","")]
     
     sys = rewrite_system(rules)
-    random_system_example("S",sys,lim=20)
+    random_system_example("S",sys,lim=10)
 
 
 

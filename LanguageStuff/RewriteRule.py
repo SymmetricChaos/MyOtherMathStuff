@@ -87,6 +87,7 @@ class rewrite_rule:
 
 
 
+# Unrestricted Grammar (used as the base for others)
 class rewrite_system:
     
     def __init__(self,rules,terminals=None,nonterminals=None):
@@ -107,6 +108,7 @@ class rewrite_system:
         return "\n".join(out)
     
     def apply_random(self,string):
+        """In a random order try each rule until one has a position that works"""
         shuff_rules = sample(self.rules,len(self.rules))
         for R in shuff_rules:
             try:
@@ -114,12 +116,18 @@ class rewrite_system:
             except PatternMissingError:
                 pass
         return string
+    
+    def apply_ordered(self,string):
+        """Apply the rules sequentially until one works always choosing leftmost position"""
+        for R in self.rules:
+            try:
+                return R.apply(string)
+            except PatternMissingError:
+                pass
+        return string
 
 
-
-
-
-# Extended Regular Grammar
+# Extended (Right) Regular Grammar
 class XRG(rewrite_system):
     
     def __init__(self,rules,terminals,nonterminals):
@@ -136,6 +144,21 @@ class XRG(rewrite_system):
         super().__init__(rules,terminals,nonterminals)
 
 
+
+# Context Free Grammar
+class CFG(rewrite_system):
+    
+    def __init__(self,rules,terminals,nonterminals):
+        for R in rules:
+            if len(R.pattern) != 1:
+                raise Exception(f"{R} is an invlaid for for a Context Free Grammar")
+            if R.pattern not in nonterminals:
+                raise Exception(f"{R} is an invlaid for for this Context Free Grammar")
+            for r in R.replacement:
+                if r not in terminals:
+                    raise Exception(f"{R} is an invlaid for for this Context Free Grammar")
+            
+        super().__init__(rules,terminals,nonterminals)
 
 
 
