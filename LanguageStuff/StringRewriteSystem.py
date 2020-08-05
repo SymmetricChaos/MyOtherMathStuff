@@ -10,6 +10,8 @@ def random_palindrome():
              rewrite_rule("S","")]
     
     sys = CFG(rules,"ab","S")
+    print(sys)
+    print()
     random_system_example("S",sys)
 
 
@@ -23,6 +25,8 @@ def random_nesting():
              rewrite_rule("S","{S}")]
     
     sys = CFG(rules,"()[]{}","S")
+    print(sys)
+    print()
     random_system_example("SSS",sys)
 
 
@@ -40,6 +44,8 @@ def random_distinct():
              rewrite_rule("V","")]
     
     sys = CFG(rules,"ab","STUV")
+    print(sys.compact_rules())
+    print()
     random_system_example("S",sys,lim=20)
 
 
@@ -54,6 +60,8 @@ def random_AB_game_1(k=15):
              rewrite_rule("BB","B")]
     
     sys = rewrite_system(rules)
+    print(sys.rules)
+    print()
     random_system_example(S,sys)
 
 
@@ -68,6 +76,8 @@ def random_AB_game_2(k=15):
              rewrite_rule("BB","B")]
     
     sys = rewrite_system(rules)
+    print(sys)
+    print()
     random_system_example(S,sys)
 
 

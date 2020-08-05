@@ -18,6 +18,9 @@ class rewrite_rule:
             return f"{self.pattern} 🡪 ε"
         return f"{self.pattern} 🡪 {self.replacement}"
     
+    def __repr__(self):
+        return str(self)
+    
     def apply(self,string,n=0):
         
         """Apply to the nth occurence of the pattern, defaults to leftmost, zero indexed"""
@@ -107,6 +110,26 @@ class rewrite_system:
             out.append(f"Rule {n}: {R}")
         return "\n".join(out)
     
+    def compact_rules(self):
+        compacts = {}
+        for R in self.rules:
+            if R.pattern in compacts:
+                if R.replacement == "":
+                    compacts[R.pattern] += f" | ε"
+                else:
+                    compacts[R.pattern] += f" | {R.replacement}"
+            else:
+                if R.replacement == "":
+                    compacts[R.pattern] += "ε"
+                else:
+                    compacts[R.pattern] = R.replacement
+        
+        out = []
+        for k,v in compacts.items():
+            out.append(f"{k} 🡪 {v}")
+            
+        return "\n".join(out)
+    
     def apply_random(self,string):
         """In a random order try each rule until one has a position that works"""
         shuff_rules = sample(self.rules,len(self.rules))
@@ -157,6 +180,9 @@ class CFG(rewrite_system):
             for r in R.replacement:
                 if r not in terminals+nonterminals:
                     raise Exception(f"{R} is an invlaid for for this Context Free Grammar")
+            self.rules = rules
+            self.terminals = terminals
+            self.nonterminals = nonterminals
         super().__init__(rules,terminals,nonterminals)
 
 
@@ -167,9 +193,6 @@ def random_system_example(S,system,show_intermediate=True,lim=0):
     Takes a starting string S and some rules and then applies the rules in a 
     random order trying random positions until it is no longer possible
     """
-    
-    print(system)
-    print()
     
     if not show_intermediate:
         print(S)
