@@ -155,9 +155,8 @@ class CFG(rewrite_system):
             if R.pattern not in nonterminals:
                 raise Exception(f"{R} is an invlaid for for this Context Free Grammar")
             for r in R.replacement:
-                if r not in terminals:
+                if r not in terminals+nonterminals:
                     raise Exception(f"{R} is an invlaid for for this Context Free Grammar")
-            
         super().__init__(rules,terminals,nonterminals)
 
 

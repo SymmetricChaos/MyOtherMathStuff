@@ -2,6 +2,47 @@ from RewriteRule import rewrite_rule, rewrite_system, random_system_example, CFG
 from random import choices
 
 
+def random_palindrome():
+    rules = [rewrite_rule("S","aSa"),
+             rewrite_rule("S","bSb"),
+             rewrite_rule("S","a"),
+             rewrite_rule("S","b"),
+             rewrite_rule("S","")]
+    
+    sys = CFG(rules,"ab","S")
+    random_system_example("S",sys)
+
+
+def random_nesting():
+    rules = [rewrite_rule("S","SS"),
+             rewrite_rule("S","()"),
+             rewrite_rule("S","(S)"),
+             rewrite_rule("S","[]"),
+             rewrite_rule("S","[S]"),
+             rewrite_rule("S","{}"),
+             rewrite_rule("S","{S}")]
+    
+    sys = CFG(rules,"()[]{}","S")
+    random_system_example("SSS",sys)
+
+
+def random_distinct():
+    rules = [rewrite_rule("S","T"),
+             rewrite_rule("S","U"),
+             rewrite_rule("T","VaT"),
+             rewrite_rule("T","VaV"),
+             rewrite_rule("T","TaV"),
+             rewrite_rule("U","VbU"),
+             rewrite_rule("U","VbV"),
+             rewrite_rule("U","UbV"),
+             rewrite_rule("V","aVbV"),
+             rewrite_rule("V","bVaV"),
+             rewrite_rule("V","")]
+    
+    sys = CFG(rules,"ab","STUV")
+    random_system_example("S",sys,lim=20)
+
+
 def random_AB_game_1(k=15):
     
     S = choices("AB",k=k)
@@ -13,7 +54,7 @@ def random_AB_game_1(k=15):
              rewrite_rule("BB","B")]
     
     sys = rewrite_system(rules)
-    random_system_example("S",sys)
+    random_system_example(S,sys)
 
 
 def random_AB_game_2(k=15):
@@ -27,31 +68,7 @@ def random_AB_game_2(k=15):
              rewrite_rule("BB","B")]
     
     sys = rewrite_system(rules)
-    random_system_example("S",sys)
-
-
-def random_palindrome():
-    rules = [rewrite_rule("S","aSa"),
-             rewrite_rule("S","bSb"),
-             rewrite_rule("S","a"),
-             rewrite_rule("S","b"),
-             rewrite_rule("S","")]
-    
-    sys = rewrite_system(rules)
-    random_system_example("S",sys)
-
-
-def random_nesting():
-    rules = [rewrite_rule("S","SS"),
-             rewrite_rule("S","()"),
-             rewrite_rule("S","(S)"),
-             rewrite_rule("S","[]"),
-             rewrite_rule("S","[S]"),
-             rewrite_rule("S","{}"),
-             rewrite_rule("S","{S}")]
-    
-    sys = rewrite_system(rules)
-    random_system_example("SSS",sys)
+    random_system_example(S,sys)
 
 
 # Context sensitive grammar
@@ -77,36 +94,19 @@ def random_CSG():
         print(string)
 
 
-def random_distinct():
-    rules = [rewrite_rule("S","T"),
-             rewrite_rule("S","U"),
-             rewrite_rule("T","VaT"),
-             rewrite_rule("T","VaV"),
-             rewrite_rule("T","TaV"),
-             rewrite_rule("U","VbU"),
-             rewrite_rule("U","VbV"),
-             rewrite_rule("U","UbV"),
-             rewrite_rule("V","aVbV"),
-             rewrite_rule("V","bVaV"),
-             rewrite_rule("V","")]
-    
-    sys = rewrite_system(rules)
-    random_system_example("S",sys,lim=10)
-
-
 
 
 
 if __name__ == '__main__':
     
-    random_AB_game_1(15)
-    print()
-    random_AB_game_2(15)
-    print()
     random_palindrome()
     print()
     random_nesting()
     print()
-    random_CSG()
-    print()
     random_distinct()
+    print()
+    random_AB_game_1(10)
+    print()
+    random_AB_game_2(10)
+    print()
+    random_CSG()
