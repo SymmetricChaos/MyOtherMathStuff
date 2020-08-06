@@ -1,4 +1,4 @@
-from RewriteRule import rewrite_rule, rewrite_system, random_system_example, CFG
+from RewriteRule import rewrite_rule, random_system_example, CFG, SRS
 from random import choices
 
 
@@ -59,7 +59,7 @@ def random_AB_game_1(k=15):
              rewrite_rule("AA","B"),
              rewrite_rule("BB","B")]
     
-    sys = rewrite_system(rules)
+    sys = SRS(rules,"AB")
     print(sys.rules)
     print()
     random_system_example(S,sys)
@@ -75,7 +75,7 @@ def random_AB_game_2(k=15):
              rewrite_rule("AA","BBBB"),
              rewrite_rule("BB","B")]
     
-    sys = rewrite_system(rules)
+    sys = SRS(rules,"AB")
     print(sys)
     print()
     random_system_example(S,sys)
@@ -94,7 +94,7 @@ def random_CSG():
              rewrite_rule("bC","bc"),
              rewrite_rule("cC","cc")]
     
-    sys = rewrite_system(rules)
+    sys = SRS(rules,"abcSBCWZ")
     string = sys.apply_ordered("aaaBCBCBC")
     print(sys)
     print()

@@ -90,19 +90,13 @@ class rewrite_rule:
 
 
 
-# Unrestricted Grammar (used as the base for others)
+# Barebones system with only the ability to apply rules
 class rewrite_system:
     
-    def __init__(self,rules,terminals=None,nonterminals=None):
+    def __init__(self,rules):
+        
         self.rules = rules
-        if terminals == None:
-            self.terminals = ""
-        elif type(terminals) != str:
-            raise TypeError("Terminals must be a string")
-        if nonterminals == None:
-            self.nonterminals = ""
-        elif type(terminals) != str:
-            raise TypeError("Nonterminals must be a string")
+    
     
     def __str__(self):
         out = []
@@ -110,12 +104,19 @@ class rewrite_system:
             out.append(f"Rule {n}: {R}")
         return "\n".join(out)
     
+    
     def compact_rules(self):
+        
+        """
+        Show rules using the | symbol for or cannot be the default because
+        options for applying the rules in the order stored exist
+        """
+        
         compacts = {}
         for R in self.rules:
             if R.pattern in compacts:
                 if R.replacement == "":
-                    compacts[R.pattern] += f" | ε"
+                    compacts[R.pattern] += " | ε"
                 else:
                     compacts[R.pattern] += f" | {R.replacement}"
             else:
@@ -130,8 +131,22 @@ class rewrite_system:
             
         return "\n".join(out)
     
+    
+    def apply_nth(self,string,n):
+        
+        """Apply the nth rule to the leftmost position"""
+        
+        try:
+            return self.rules[n].apply(string)
+        except PatternMissingError:
+            pass
+        return string
+    
+    
     def apply_random(self,string):
+        
         """In a random order try each rule until one has a position that works"""
+        
         shuff_rules = sample(self.rules,len(self.rules))
         for R in shuff_rules:
             try:
@@ -140,14 +155,41 @@ class rewrite_system:
                 pass
         return string
     
+    
     def apply_ordered(self,string):
+        
         """Apply the rules sequentially until one works always choosing leftmost position"""
+        
         for R in self.rules:
             try:
                 return R.apply(string)
             except PatternMissingError:
                 pass
         return string
+
+
+# String Rewrite System aka Semi-Thue System aka Unrestricted Grammar
+class SRS(rewrite_system):
+    
+    def __init__(self,rules,alphabet):
+        for R in rules:
+            for p in R.pattern:
+                if p not in alphabet:
+                    raise Exception(f"{R} uses symbols outside of the alphabet")
+            for r in R.pattern:
+                if r not in alphabet:
+                    raise Exception(f"{R} uses symbols outside of the alphabet")
+            if R.replacement == "":
+                continue
+            
+        if type(alphabet) != str:
+            raise TypeError("Alphabet must be a string")
+        if "ε" in alphabet:
+            raise ValueError("The symbol ε is reserved as a metasymbol meaning the empty string")
+        
+        self.alphabet = alphabet
+        super().__init__(rules)
+
 
 
 # Extended (Right) Regular Grammar
@@ -164,7 +206,15 @@ class XRG(rewrite_system):
             for symbol in R.replacement[:-1]:
                 if symbol not in terminals:
                     raise Exception(f"{R} is an invlaid rule for this Extended Regular Grammar")
-        super().__init__(rules,terminals,nonterminals)
+        if type(terminals) != str:
+            raise TypeError("Terminals must be a string")
+        if type(terminals) != str:
+            raise TypeError("Nonterminals must be a string")
+        if "ε" in terminals+nonterminals:
+            raise ValueError("The symbol ε is reserved as a metasymbol meaning the empty string")
+        self.terminals = terminals
+        self.nonterminals = nonterminals
+        super().__init__(rules)
 
 
 
@@ -180,10 +230,15 @@ class CFG(rewrite_system):
             for r in R.replacement:
                 if r not in terminals+nonterminals:
                     raise Exception(f"{R} is an invlaid for for this Context Free Grammar")
-            self.rules = rules
-            self.terminals = terminals
-            self.nonterminals = nonterminals
-        super().__init__(rules,terminals,nonterminals)
+        if type(terminals) != str:
+            raise TypeError("Terminals must be a string")
+        if type(terminals) != str:
+            raise TypeError("Nonterminals must be a string")
+        if "ε" in terminals+nonterminals:
+            raise ValueError("The symbol ε is reserved as a metasymbol meaning the empty string")
+        self.terminals = terminals
+        self.nonterminals = nonterminals
+        super().__init__(rules)
 
 
 
