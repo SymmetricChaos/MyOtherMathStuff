@@ -14,7 +14,9 @@ class NFA:
         if type(accept) not in (list,set):
             raise TypeError("Accept must be a list or a set")
         
+        lengths = set([])
         for k,v in transition.items():
+            lengths.add(len(v))
             if k not in alphabet:
                 raise ValueError(f"The transition table includes {k} which is not in the alphabet")
             if len(v) != states:
@@ -26,6 +28,9 @@ class NFA:
                     raise ValueError(f"Transition on symbol {k} involves state {s} which does not exist")
             if k not in alphabet:
                 raise ValueError(f"The symbol {k} has a transition but is not in the alphabet")
+        
+        if len(lengths) != 1:
+            raise Exception("All rows of the transition table must be the same length")
         
         for symbol in alphabet:
             if symbol not in transition:
@@ -76,21 +81,21 @@ class NFA:
 
 if __name__ == '__main__':
     
-    T = {"0": [1,0],
+    T1 = {"0": [1,0],
          "1": [0,1]
         }
     
-    mynfa = NFA(2,"01",T,0,[0])
+    mynfa1 = NFA(2,"01",T1,0,[0])
     
     for string in ["0001001011111"]:
-        print(string,mynfa(string))
+        print(string,mynfa1(string))
     
     print("\nBitstrings with an even number of zeroes. (Up to five characters)")
-    print(mynfa.language(5))
+    print(mynfa1.language(5))
     
     # Make the failure state the last state
     #          0 1 2 3 4
-    T = {"M": [1,4,4,4,4],
+    T2 = {"M": [1,4,4,4,4],
          "R": [1,4,4,4,4],
          "D": [1,4,4,4,4],
          "S": [1,4,4,4,4],
@@ -100,10 +105,21 @@ if __name__ == '__main__':
         }
     
     print("\nWords in the style of title abbreviations.")
-    mynfa2 = NFA(5,"MRrSsD.",T,0,[3])
+    mynfa2 = NFA(5,"MRSDrs.",T2,0,[3])
     
     for string in ["Mr.","Dr.","Mrs.","Sr.","Xx."]:
         print(string,mynfa2(string))
     
     print("\nGenerate words up to four characters.")
     print(mynfa2.language(4))
+    
+    
+    print("\nBOO with at least two and not more than 5 Os")
+    #          0 1 2 3 4 5 6
+    T3 = {"B": [1,7,7,7,7,7,7,7],
+         "O": [6,2,3,4,5,6,7,7]
+        }
+    
+    mynfa3 = NFA(8,"BO",T3,0,[3,4,5])
+    
+    print([i for i in mynfa3.language(7)])

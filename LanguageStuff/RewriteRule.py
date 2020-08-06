@@ -168,6 +168,7 @@ class rewrite_system:
         return string
 
 
+
 # String Rewrite System aka Semi-Thue System aka Unrestricted Grammar
 class SRS(rewrite_system):
     
@@ -181,7 +182,7 @@ class SRS(rewrite_system):
                     raise Exception(f"{R} uses symbols outside of the alphabet")
             if R.replacement == "":
                 continue
-            
+        
         if type(alphabet) != str:
             raise TypeError("Alphabet must be a string")
         if "ε" in alphabet:
@@ -206,6 +207,7 @@ class XRG(rewrite_system):
             for symbol in R.replacement[:-1]:
                 if symbol not in terminals:
                     raise Exception(f"{R} is an invlaid rule for this Extended Regular Grammar")
+        
         if type(terminals) != str:
             raise TypeError("Terminals must be a string")
         if type(terminals) != str:
@@ -230,6 +232,7 @@ class CFG(rewrite_system):
             for r in R.replacement:
                 if r not in terminals+nonterminals:
                     raise Exception(f"{R} is an invlaid for for this Context Free Grammar")
+        
         if type(terminals) != str:
             raise TypeError("Terminals must be a string")
         if type(terminals) != str:

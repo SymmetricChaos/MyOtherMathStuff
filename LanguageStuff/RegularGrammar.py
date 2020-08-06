@@ -1,27 +1,23 @@
 from RewriteRule import rewrite_rule, XRG, random_system_example
 
-def binary_decimals():
-    
-    rules = [rewrite_rule("S","1A"),
-             rewrite_rule("S","-1A"),
-             rewrite_rule("S","0.C"),
-             rewrite_rule("S","-0.C"),
-             rewrite_rule("A","0B"),
-             rewrite_rule("A","1B"),
-             rewrite_rule("B","0B"),
-             rewrite_rule("B","1B"),
-             rewrite_rule("B","C"),
-             rewrite_rule("B",".C"),
-             rewrite_rule("C","1"),
-             rewrite_rule("C","0D"),
-             rewrite_rule("C","1D"),
-             rewrite_rule("D","0D"),
-             rewrite_rule("D","1D"),
-             rewrite_rule("D","1")]
-    
-    grammar = XRG(rules,"-.01","SABCD")
-    
-    random_system_example("S",grammar)
 
+rules = [rewrite_rule("S","1A"),
+         rewrite_rule("S","-1A"),
+         rewrite_rule("S","-0.B"),
+         rewrite_rule("S","0.B"),
+         rewrite_rule("S","0"),
+         rewrite_rule("A","0A"),
+         rewrite_rule("A","1A"),
+         rewrite_rule("A",".B"),
+         rewrite_rule("A",""),
+         rewrite_rule("B","0B"),
+         rewrite_rule("B","1B"),
+         rewrite_rule("B","1"),]
 
-binary_decimals()
+binarydec = XRG(rules,"-.01","SABCD")
+
+print(binarydec.compact_rules())
+print()
+
+random_system_example("S",binarydec)
+
