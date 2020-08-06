@@ -95,7 +95,9 @@ class rewrite_system:
     
     def __init__(self,rules):
         
-        self.rules = rules
+        self.rules = []
+        for R in rules:
+            self.rules.append(rewrite_rule(R[0],R[1]))
     
     
     def __str__(self):
@@ -174,13 +176,13 @@ class SRS(rewrite_system):
     
     def __init__(self,rules,alphabet):
         for R in rules:
-            for p in R.pattern:
+            for p in R[0]:
                 if p not in alphabet:
                     raise Exception(f"{R} uses symbols outside of the alphabet")
-            for r in R.pattern:
+            for r in R[0]:
                 if r not in alphabet:
                     raise Exception(f"{R} uses symbols outside of the alphabet")
-            if R.replacement == "":
+            if R[1] == "":
                 continue
         
         if type(alphabet) != str:
@@ -198,13 +200,13 @@ class XRG(rewrite_system):
     
     def __init__(self,rules,terminals,nonterminals):
         for R in rules:
-            if R.pattern not in nonterminals:
+            if R[0] not in nonterminals:
                 raise Exception(f"{R} is an invlaid rule for this Extended Regular Grammar")
-            if R.replacement == "":
+            if R[1] == "":
                 continue
-            if R.replacement[-1] not in terminals+nonterminals:
+            if R[1][-1] not in terminals+nonterminals:
                 raise Exception(f"{R} is an invlaid rule for this Extended Regular Grammar")
-            for symbol in R.replacement[:-1]:
+            for symbol in R[1][:-1]:
                 if symbol not in terminals:
                     raise Exception(f"{R} is an invlaid rule for this Extended Regular Grammar")
         
@@ -214,6 +216,7 @@ class XRG(rewrite_system):
             raise TypeError("Nonterminals must be a string")
         if "ε" in terminals+nonterminals:
             raise ValueError("The symbol ε is reserved as a metasymbol meaning the empty string")
+        
         self.terminals = terminals
         self.nonterminals = nonterminals
         super().__init__(rules)
@@ -225,11 +228,11 @@ class CFG(rewrite_system):
     
     def __init__(self,rules,terminals,nonterminals):
         for R in rules:
-            if len(R.pattern) != 1:
+            if len(R[0]) != 1:
                 raise Exception(f"{R} is an invlaid for for a Context Free Grammar")
-            if R.pattern not in nonterminals:
+            if R[0] not in nonterminals:
                 raise Exception(f"{R} is an invlaid for for this Context Free Grammar")
-            for r in R.replacement:
+            for r in R[1]:
                 if r not in terminals+nonterminals:
                     raise Exception(f"{R} is an invlaid for for this Context Free Grammar")
         
@@ -239,6 +242,7 @@ class CFG(rewrite_system):
             raise TypeError("Nonterminals must be a string")
         if "ε" in terminals+nonterminals:
             raise ValueError("The symbol ε is reserved as a metasymbol meaning the empty string")
+        
         self.terminals = terminals
         self.nonterminals = nonterminals
         super().__init__(rules)

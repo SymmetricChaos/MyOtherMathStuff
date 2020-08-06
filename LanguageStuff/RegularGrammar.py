@@ -1,18 +1,18 @@
-from RewriteRule import rewrite_rule, XRG, random_system_example
+from RewriteRule import XRG, random_system_example
 
 
-rules = [rewrite_rule("S","1A"),
-         rewrite_rule("S","-1A"),
-         rewrite_rule("S","-0.B"),
-         rewrite_rule("S","0.B"),
-         rewrite_rule("S","0"),
-         rewrite_rule("A","0A"),
-         rewrite_rule("A","1A"),
-         rewrite_rule("A",".B"),
-         rewrite_rule("A",""),
-         rewrite_rule("B","0B"),
-         rewrite_rule("B","1B"),
-         rewrite_rule("B","1"),]
+rules = [("S","1A"),
+         ("S","-1A"),
+         ("S","-0.B"),
+         ("S","0.B"),
+         ("S","0"),
+         ("A","0A"),
+         ("A","1A"),
+         ("A",".B"),
+         ("A",""),
+         ("B","0B"),
+         ("B","1B"),
+         ("B","1"),]
 
 binarydec = XRG(rules,"-.01","SABCD")
 
