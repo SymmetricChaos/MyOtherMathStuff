@@ -23,4 +23,21 @@ random_system_example("S",binarydec)
 
 print()
 
-print(binarydec.language(5))
+print(binarydec.language(5,"S"))
+
+
+
+rules = [("S","1A"),
+         ("A","2B"),
+         ("A",""),
+         ("B","3C"),
+         ("B",""),
+         ("C","4"),
+         ("C",""),]
+
+counter = XRG(rules,"1234","SABC")
+
+for n,i in enumerate(counter.full_language("S")):
+    if n > 20:
+        break
+    print(i)

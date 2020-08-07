@@ -69,9 +69,9 @@ class LL1_Parser:
 
 
 if __name__ == '__main__':
-    rules = [rewrite_rule("S","F"),
-             rewrite_rule("S","(S+F)"),
-             rewrite_rule("F","a")]
+    rules = [("S","F"),
+             ("S","(S+F)"),
+             ("F","a")]
     
     gram = CFG(rules,"()a+","SF")
     

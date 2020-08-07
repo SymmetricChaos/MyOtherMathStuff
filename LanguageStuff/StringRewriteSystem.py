@@ -15,6 +15,7 @@ def random_palindrome():
     random_system_example("S",sys)
 
 
+
 def random_nesting():
     rules = [("S","SS"),
              ("S","()"),

@@ -193,6 +193,49 @@ class SRS(rewrite_system):
         
         self.alphabet = alphabet
         super().__init__(rules)
+    
+    
+    def language(self,n,start):
+        old = set([start])
+        new = set([])
+        full = set([])
+        for i in range(n):
+            N = []
+            for S in old:
+                for R in self.rules:
+                    N += [s for s in R.apply_each(S)]
+            for n in N:
+                new.add(n)
+            full = full | new
+            old = new
+            new = set([])
+        
+        L = [o for o in full]
+        return sorted(L,key=len)
+    
+    
+    def full_language(self,start):
+        old = set([start])
+        new = set([])
+        known = set([])
+        # Apply each rule to each string in each possible position
+        # If the result is all terminals check if its been an output and yield 
+        # it if it has not
+        # If there are nonterminals in the string put it in the new list to
+        # try in the next round
+        while True:
+            for S in old:
+                for R in self.rules:
+                    for s in R.apply_each(S):
+                        if s not in known:
+                            new.add(s)
+                            known.add(s)
+                            yield s
+            # If all strings consist of terminals break and finish
+            if old == new:
+                break
+            old = new
+            new = set([])
 
 
 
@@ -223,18 +266,51 @@ class XRG(rewrite_system):
         super().__init__(rules)
     
     
-    def language(self,n):
-        O = set(["S"])
+    def language(self,n,start):
+        old = set([start])
+        new = set([])
+        full = set([])
         for i in range(n):
             N = []
-            for S in O:
+            for S in old:
                 for R in self.rules:
                     N += [s for s in R.apply_each(S)]
             for n in N:
-                O.add(n)
-            
-        L = [o for o in O if all_from(o,self.terminals)]
+                new.add(n)
+            full = full | new
+            old = new
+            new = set([])
+        
+        L = [o for o in full if all_from(o,self.terminals)]
         return sorted(L,key=len)
+    
+    
+    def full_language(self,start):
+        old = set([start])
+        new = set([])
+        known = set([])
+        # Apply each rule to each string in each possible position
+        # If the result is all terminals check if its been an output and yield 
+        # it if it has not
+        # If there are nonterminals in the string put it in the new list to
+        # try in the next round
+        while True:
+            for S in old:
+                for R in self.rules:
+                    for s in R.apply_each(S):
+                        if all_from(s,self.terminals):
+                            if s not in known:
+                                known.add(s)
+                                yield s
+                            else:
+                                continue
+                        else:
+                            new.add(s)
+            # If all strings consist of terminals break and finish
+            if old == new:
+                break
+            old = new
+            new = set([])
 
 
 
@@ -261,6 +337,53 @@ class CFG(rewrite_system):
         self.terminals = terminals
         self.nonterminals = nonterminals
         super().__init__(rules)
+    
+    
+    def language(self,n,start):
+        old = set([start])
+        new = set([])
+        full = set([])
+        for i in range(n):
+            N = []
+            for S in old:
+                for R in self.rules:
+                    N += [s for s in R.apply_each(S)]
+            for n in N:
+                new.add(n)
+            full = full | new
+            old = new
+            new = set([])
+        
+        L = [o for o in full if all_from(o,self.terminals)]
+        return sorted(L,key=len)
+    
+    
+    def full_language(self,start):
+        old = set([start])
+        new = set([])
+        known = set([])
+        # Apply each rule to each string in each possible position
+        # If the result is all terminals check if its been an output and yield 
+        # it if it has not
+        # If there are nonterminals in the string put it in the new list to
+        # try in the next round
+        while True:
+            for S in old:
+                for R in self.rules:
+                    for s in R.apply_each(S):
+                        if all_from(s,self.terminals):
+                            if s not in known:
+                                known.add(s)
+                                yield s
+                            else:
+                                continue
+                        else:
+                            new.add(s)
+            # If all strings consist of terminals break and finish
+            if old == new:
+                break
+            old = new
+            new = set([])
 
 
 
