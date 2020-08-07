@@ -1,3 +1,19 @@
+def all_from(A,B):
+    """Are all elements of A elements of B?"""
+    for i in A:
+        if i not in B:
+            return False
+    return True
+
+
+def any_from(A,B):
+    """Are any elements of A elements of B?"""
+    for i in A:
+        if i in B:
+            return True
+    return False
+
+
 def flatten(L):
     """Turn a list of iterables and non-iterables into a single list of their elements"""
     flat = []

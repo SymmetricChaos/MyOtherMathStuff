@@ -14,10 +14,13 @@ rules = [("S","1A"),
          ("B","1B"),
          ("B","1"),]
 
-binarydec = XRG(rules,"-.01","SABCD")
+binarydec = XRG(rules,"-.01","SAB")
 
 print(binarydec.compact_rules())
 print()
 
 random_system_example("S",binarydec)
 
+print()
+
+print(binarydec.language(5))

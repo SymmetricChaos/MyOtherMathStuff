@@ -1,4 +1,5 @@
 from random import choice, sample
+from Utils import all_from
 
 class PatternMissingError(Exception):
     
@@ -220,6 +221,20 @@ class XRG(rewrite_system):
         self.terminals = terminals
         self.nonterminals = nonterminals
         super().__init__(rules)
+    
+    
+    def language(self,n):
+        O = set(["S"])
+        for i in range(n):
+            N = []
+            for S in O:
+                for R in self.rules:
+                    N += [s for s in R.apply_each(S)]
+            for n in N:
+                O.add(n)
+            
+        L = [o for o in O if all_from(o,self.terminals)]
+        return sorted(L,key=len)
 
 
 
