@@ -29,7 +29,7 @@ class LL1_Parser:
     def __call__(self,string):
         
         if "$" in string:
-            raise ValueError("TIn this parser $ is reserved as a metasymbol")
+            raise ValueError("In this parser $ is reserved as a metasymbol")
         
         stack = ["$","S"]
         string += "$"
@@ -68,6 +68,7 @@ class LL1_Parser:
 
 
 
+
 if __name__ == '__main__':
     rules = [("S","F"),
              ("S","(S+F)"),
@@ -81,5 +82,6 @@ if __name__ == '__main__':
     P = LL1_Parser(gram,table)
     print(P.pretty_table)
     print()
-    print(P("(a+a)"))
+    s = "(a+a)"
+    print(s,P(s))
 
