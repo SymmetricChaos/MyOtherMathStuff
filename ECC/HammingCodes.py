@@ -1,5 +1,13 @@
 from functools import reduce
+from itertools import zip_longest
 import operator as op
+
+def grouper(iterable, n, fillvalue=None):
+    "Collect data into fixed-length chunks or blocks"
+    # grouper('ABCDEFG', 3, 'x') --> ABC DEF Gxx"
+    args = [iter(iterable)] * n
+    return zip_longest(*args, fillvalue=fillvalue)
+
 
 def parity(D):
     return reduce(op.xor,D)
@@ -26,6 +34,7 @@ def check_hamming(D):
         if p:
             D[0] = op.xor(D[0],1)
 
+
 def make_hamming_block(D,n):
     
     B = [0]
@@ -48,6 +57,18 @@ def make_hamming_block(D,n):
     return B
 
 
+def make_hamming_blocks(D,n):
+    
+    l = 2**n-(n+1)
+    Bs = []
+    G = grouper(D,l)
+    
+    for i in G:
+        Bs.append(make_hamming_block(i,n))
+    
+    return Bs
+
+
 def extract_hamming_data(D,n):
     
     B = []
@@ -64,11 +85,6 @@ def extract_hamming_data(D,n):
 def bitstring(D,sep=""):
     return sep.join([str(i) for i in D])
 
-# P H H D
-# H D D D
-# H D D D
-# D D D D
-
 
 
 
@@ -83,7 +99,6 @@ if __name__ == '__main__':
     check_hamming(D)
     
     M2 = extract_hamming_data(D,4)
-    
     
     print(bitstring(M1))
     print(bitstring(M2))
