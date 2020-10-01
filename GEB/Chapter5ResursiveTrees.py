@@ -15,11 +15,11 @@ def G_graph(root,scale=0,ax=None):
     leaf1 = [ root[0]+5*s , root[1]+2 ]
     leaf2 = [ root[0]-5*s , root[1]+1 ]
     
-    draw.draw_circle_p(node1,R=.1,ax=ax)
-    draw.draw_circle_p(node2,R=.1,ax=ax)
-    draw.connect_p(node1,leaf2)
-    draw.connect_p(node1,node2)
-    draw.connect_p(node2,leaf1)
+    draw.circle_p(node1,r=.1,ax=ax)
+    draw.circle_p(node2,r=.1,ax=ax)
+    draw.connection_p(node1,leaf2)
+    draw.connection_p(node1,node2)
+    draw.connection_p(node2,leaf1)
 
     return leaf1,leaf2
 
@@ -33,10 +33,11 @@ def G_graph_recur(root,levels=1,scale=0,ax=None):
         G_graph_recur(leaf2,levels,scale+1,ax)
 
 def G_graph_example():
-    draw.make_blank_canvas([-10,10],[-5,15],[14,14])
+    draw.make_blank_canvas([14,14])
+    draw.make_blank_plot(xlim=[-10,10],ylim=[-5,15])
     G_graph_recur([0,0],5)
     draw.title("G(n) = n-G(G(n-1))",size=22)
-    draw.draw_rect_xy(1,11.5,3,14.5,ec='black',fc='white',zorder=-1)
+    draw.rect_xy(1,11.5,3,14.5,ec='black',fc='white',zorder=-1)
     G_graph([2,12],3)
 
 
@@ -57,12 +58,12 @@ def H_graph(root,scale=0,ax=None):
     leaf1 = [ root[0]+5*s , root[1]+3 ]
     leaf2 = [ root[0]-5*s , root[1]+1 ]
     
-    draw.draw_circle_p(node1,R=.1,ax=ax)
-    draw.draw_circle_p(node2,R=.1,ax=ax)
-    draw.draw_circle_p(node3,R=.1,ax=ax)
-    draw.connect_p(node1,leaf2)
-    draw.connect_p(node1,node2)
-    draw.connect_p(node2,leaf1)
+    draw.circle_p(node1,r=.1,ax=ax)
+    draw.circle_p(node2,r=.1,ax=ax)
+    draw.circle_p(node3,r=.1,ax=ax)
+    draw.connection_p(node1,leaf2)
+    draw.connection_p(node1,node2)
+    draw.connection_p(node2,leaf1)
 
     return leaf1,leaf2
 
@@ -76,10 +77,11 @@ def H_graph_recur(root,levels=1,scale=0,ax=None):
         H_graph_recur(leaf2,levels,scale+1,ax)
         
 def H_graph_example():
-    draw.make_blank_canvas([-10,10],[-5,15],[14,14])
+    draw.make_blank_canvas([14,14])
+    draw.make_blank_plot(xlim=[-10,10],ylim=[-5,15])
     H_graph_recur([0,-3],5)
     draw.title("H(n) = n-H(H(H(n-1)))",size=22)
-    draw.draw_rect_xy(1,10.5,3,14.5,ec='black',fc='white',zorder=-1)
+    draw.rect_xy(1,10.5,3,14.5,ec='black',fc='white',zorder=-1)
     H_graph([2,11],3)
 
 
@@ -106,11 +108,11 @@ def F_graph1(root,scale=0,ax=None):
     leaf1 = [ root[0]+5*s , root[1]+1 ]
     leaf2 = [ root[0]-5*s , root[1]+2 ]
     
-    draw.draw_circle_p(node1,R=.1,ax=ax)
-    draw.draw_circle_p(node2,R=.1,ax=ax)
-    draw.connect_p(node1,node2)
-    draw.connect_p(node2,leaf2)
-    draw.connect_p(node1,leaf1)
+    draw.circle_p(node1,r=.1,ax=ax)
+    draw.circle_p(node2,r=.1,ax=ax)
+    draw.connection_p(node1,node2)
+    draw.connection_p(node2,leaf2)
+    draw.connection_p(node1,leaf1)
 
     return leaf1,leaf2
 
@@ -121,11 +123,11 @@ def F_graph2(root,scale=0,ax=None):
     leaf1 = [ root[0]-5*s , root[1]+1 ]
     leaf2 = [ root[0]+5*s , root[1]+2 ]
     
-    draw.draw_circle_p(node1,R=.1,ax=ax)
-    draw.draw_circle_p(node2,R=.1,ax=ax)
-    draw.connect_p(node1,node2)
-    draw.connect_p(node1,leaf1)
-    draw.connect_p(node2,leaf2)
+    draw.circle_p(node1,r=.1,ax=ax)
+    draw.circle_p(node2,r=.1,ax=ax)
+    draw.connection_p(node1,node2)
+    draw.connection_p(node1,leaf1)
+    draw.connection_p(node2,leaf2)
 
     return leaf1,leaf2
 
@@ -148,11 +150,12 @@ def F_graph_recur2(root,levels=1,scale=0,ax=None):
         F_graph_recur2(leaf2,levels,scale+1,ax)
         
 def F_graph_example():
-    draw.make_blank_canvas([-10,10],[-5,15],[14,14])
+    draw.make_blank_canvas([14,14])
+    draw.make_blank_plot(xlim=[-10,10],ylim=[-5,15])
     F_graph_recur1([0,0],5)
-    draw.draw_rect_xy(-3,11.5,-1,14.5,ec='black',fc='white',zorder=-1)
+    draw.rect_xy(-3,11.5,-1,14.5,ec='black',fc='white',zorder=-1)
     F_graph1([-2,12],3)
-    draw.draw_rect_xy(1,11.5,3,14.5,ec='black',fc='white',zorder=-1)
+    draw.rect_xy(1,11.5,3,14.5,ec='black',fc='white',zorder=-1)
     F_graph2([2,12],3)
     draw.title("F(n) = n-M(F(n-1))), F(0) = 1\nM(n) = n-F(M(n-1))), M(0) = 0",size=22)
 
@@ -207,14 +210,14 @@ def INT_level_2():
         hi = 1/denom
         x1 = np.linspace(lo,hi,100)
         y1 = [1-INT_range(i,lo,hi) for i in x1]
-        draw.draw_dots_xy(x1,y1,s=.5,color='black')
+        draw.dots_xy(x1,y1,s=.5,color='black')
         
     for denom in [2,4,8,16,32,64,128,256,512,1024]:
         lo = (denom-1)/denom
         hi = (denom*2-1)/(denom*2)
         x1 = np.linspace(lo,hi,100)
         y1 = [1-INT_range(i,lo,hi) for i in x1]
-        draw.draw_dots_xy(x1,y1,s=.5,color='black')
+        draw.dots_xy(x1,y1,s=.5,color='black')
 
 
 
@@ -230,7 +233,7 @@ if __name__ == '__main__':
     for i in range(25):
         print(f"{G(i):>2}",end=" ")
     G_graph_example()
-    draw.show_now()
+    draw.now()
     
     
     print("\n\n\nH(n) = n-H(H(H(n-1))), H(0) = 0")
@@ -241,7 +244,7 @@ if __name__ == '__main__':
     for i in range(25):
         print(f"{H(i):>2}",end=" ")
     H_graph_example()
-    draw.show_now()
+    draw.now()
     
     
     print("\n\n\nF(n) = n-M(F(n-1)), F(0) = 1\nM(n) = n-F(M(n-1)), M(0) = 0")
@@ -255,7 +258,7 @@ if __name__ == '__main__':
     for i in range(25):
         print(f"{M(i):>2}",end=" ")
     F_graph_example()
-    draw.show_now()
+    draw.now()
  
     
     print("\n\n\nWhile the recusive functions above have regular structure shown by the trees the function below apparently does not.")
@@ -268,6 +271,7 @@ if __name__ == '__main__':
         print(f"{Q(i):>2}",end=" ")
         
     print("\n\n\n")
-    draw.make_blank_canvas([0,1],[0,1],[16,16])
+    draw.make_blank_canvas([16,16])
+    draw.make_blank_plot(xlim=[0,1],ylim=[0,1])
     INT_level_2()
     draw.title("Adapatation of INT from GEB\nNote that this isn't a function on x since there are slight overlaps\nProbably while Hofstader's function bends",size=22)
