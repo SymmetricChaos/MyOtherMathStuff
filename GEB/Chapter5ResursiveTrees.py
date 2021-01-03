@@ -274,4 +274,4 @@ if __name__ == '__main__':
     draw.make_blank_canvas([16,16])
     draw.make_blank_plot(xlim=[0,1],ylim=[0,1])
     INT_level_2()
-    draw.title("Adapatation of INT from GEB\nNote that this isn't a function on x since there are slight overlaps\nProbably while Hofstader's function bends",size=22)
+    draw.title("Adapatation of INT from GEB\nNote that this isn't a function on x since there are slight overlaps\nProbably why Hofstader's function bends",size=22)

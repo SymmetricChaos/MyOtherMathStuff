@@ -1,10 +1,18 @@
 import matplotlib.pyplot as plt
 import matplotlib.lines as lines
 import matplotlib.patches as patches
-from Utils.PointTypes import points_to_xy
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 from matplotlib.cbook import get_sample_data
 from matplotlib.table import table as mpltable
+
+# Basic utils to switch between a list of points and a list of x with a list of y
+def points_to_xy(P):
+    return [p[0] for p in P], [p[1] for p in P]
+
+def xy_to_points(x,y):
+    return [(a,b) for a,b in zip(x,y)]
+
+
 
 
 

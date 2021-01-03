@@ -177,4 +177,4 @@ def turtle_plots(save=False):
 if __name__ == '__main__':
     general_example()
     statistical_plots()
-    turtle_plots()
+    # turtle_plots()
